@@ -16,6 +16,12 @@ from app.utils.datetime import utc_now
 
 
 def create_connect_url(user_id: str, redirect_to: str | None = None) -> str:
+    settings = get_settings()
+    if not settings.github_client_id or not settings.github_client_secret:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="GitHub OAuth is not configured. Set GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET in backend/.env.",
+        )
     state = sign_oauth_state({"userId": user_id, "redirectTo": redirect_to})
     return github_authorize_url(state)
 
@@ -143,3 +149,27 @@ async def github_api(user_id: str, method: str, path: str, **kwargs: Any) -> Any
     if response.content:
         return response.json()
     return None
+
+
+async def github_api_bytes(user_id: str, path: str, *, max_bytes: int) -> tuple[bytes, bool]:
+    """Read bounded non-JSON GitHub content through the existing OAuth service."""
+    token = await get_github_access_token(user_id)
+    data = bytearray()
+    truncated = False
+    async with httpx.AsyncClient(timeout=45, follow_redirects=True) as client:
+        async with client.stream(
+            "GET",
+            f"https://api.github.com{path}",
+            headers={"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json"},
+        ) as response:
+            response.raise_for_status()
+            async for chunk in response.aiter_bytes():
+                remaining = max_bytes - len(data)
+                if remaining <= 0:
+                    truncated = True
+                    break
+                data.extend(chunk[:remaining])
+                if len(chunk) > remaining:
+                    truncated = True
+                    break
+    return bytes(data), truncated
