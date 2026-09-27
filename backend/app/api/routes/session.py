@@ -13,8 +13,10 @@ from app.services.session_service import (
     create_pull_request,
     create_runbook,
     decide_approval,
+    get_run_replay,
     get_session_by_slug,
     get_user_sessions,
+    list_evidence,
     list_runbooks,
     list_sources,
     reindex_session,
@@ -60,6 +62,16 @@ async def reindex(slug_id: str, user: dict = Depends(get_current_user)) -> dict:
 @router.get("/{slug_id}/rag/sources")
 async def sources(slug_id: str, user: dict = Depends(get_current_user)) -> dict:
     return await list_sources(user["_id"], slug_id)
+
+
+@router.get("/{slug_id}/evidence")
+async def evidence(slug_id: str, user: dict = Depends(get_current_user)) -> dict:
+    return await list_evidence(user["_id"], slug_id)
+
+
+@router.get("/{slug_id}/runs/{run_id}")
+async def run_replay(slug_id: str, run_id: str, user: dict = Depends(get_current_user)) -> dict:
+    return await get_run_replay(user["_id"], slug_id, run_id)
 
 
 @router.post("/runbooks")
