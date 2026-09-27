@@ -1,6 +1,6 @@
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import AliasChoices, BaseModel, Field
 
 
 class ChatMessage(BaseModel):
@@ -39,11 +39,18 @@ class RunbookRequest(BaseModel):
 class DiagnosticStreamRequest(BaseModel):
     """Bounded, untrusted CI output supplied by the authenticated workspace user."""
 
-    sessionSlugId: str | None = Field(default=None, max_length=160)
-    failedLog: str = Field(min_length=1, max_length=500_000)
-    gitDiff: str = Field(default="", max_length=500_000)
+    sessionSlugId: str | None = Field(
+        default=None, max_length=160, validation_alias=AliasChoices("sessionSlugId", "session_slug_id")
+    )
+    failedLog: str = Field(
+        min_length=1, max_length=500_000, validation_alias=AliasChoices("failedLog", "failed_log")
+    )
+    gitDiff: str = Field(
+        default="", max_length=500_000, validation_alias=AliasChoices("gitDiff", "git_diff")
+    )
     filePath: str | None = Field(default=None, max_length=1024)
     originalContent: str | None = Field(default=None, max_length=250_000)
+    generateFix: bool = False
 
 
 class ApplyApprovedPatchRequest(BaseModel):

@@ -140,7 +140,7 @@ export const applyApprovedPatch = async (slugId: string, approvalId: string) => 
 };
 
 export const streamDiagnostic = async (
-  payload: { sessionSlugId: string; failedLog: string; gitDiff: string },
+  payload: { sessionSlugId: string; failedLog: string; gitDiff: string; originalContent?: string; generateFix?: boolean },
   onEvent: (event: string, data: Record<string, unknown>) => void,
 ) => {
   const token = await getAccessToken();

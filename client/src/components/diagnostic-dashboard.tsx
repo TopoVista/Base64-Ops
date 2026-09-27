@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { motion } from "motion/react";
-import { Bot, LoaderCircle, Play, ShieldCheck, Sparkles } from "lucide-react";
+import { Bot, FileCode2, LoaderCircle, Play, ShieldCheck, Sparkles, WandSparkles } from "lucide-react";
 import { toast } from "sonner";
 import { DiffViewer } from "@/components/diff-viewer";
 import { Button } from "@/components/ui/button";
@@ -11,14 +11,16 @@ type Props = {
   slugId: string;
   initialLog?: string;
   initialPatch?: string;
+  initialOriginalContent?: string;
   approvalId?: string;
 };
 
 type DiagnosticStatus = "idle" | "streaming" | "complete" | "error";
 
-export default function DiagnosticDashboard({ slugId, initialLog = "", initialPatch = "", approvalId }: Props) {
+export default function DiagnosticDashboard({ slugId, initialLog = "", initialPatch = "", initialOriginalContent = "", approvalId }: Props) {
   const [failedLog, setFailedLog] = useState(initialLog);
   const [gitDiff, setGitDiff] = useState(initialPatch);
+  const [originalContent, setOriginalContent] = useState(initialOriginalContent);
   const [analysis, setAnalysis] = useState("");
   const [proposalPatch, setProposalPatch] = useState<string | null>(initialPatch || null);
   const [status, setStatus] = useState<DiagnosticStatus>("idle");
@@ -28,14 +30,14 @@ export default function DiagnosticDashboard({ slugId, initialLog = "", initialPa
   const canDiagnose = failedLog.trim().length > 0 && status !== "streaming";
   const logLines = useMemo(() => failedLog.split("\n").slice(-80).join("\n"), [failedLog]);
 
-  const runDiagnostic = async () => {
+  const runDiagnostic = async (generateFix = false) => {
     setStatus("streaming");
     setAnalysis("");
     setProposalPatch(null);
     setStateLabel("Opening secure diagnostic stream...");
     try {
       await streamDiagnostic(
-        { sessionSlugId: slugId, failedLog, gitDiff },
+        { sessionSlugId: slugId, failedLog, gitDiff, originalContent, generateFix },
         (event, data) => {
           if (event === "state") setStateLabel(String(data.label ?? "Working..."));
           if (event === "log_analysis") setAnalysis((current) => current + String(data.delta ?? ""));
@@ -81,7 +83,7 @@ export default function DiagnosticDashboard({ slugId, initialLog = "", initialPa
           <label className="mb-2 block text-xs font-medium text-slate-300">Failed CI log</label>
           <Textarea value={failedLog} onChange={(event) => setFailedLog(event.target.value)} placeholder="Paste bounded CI output here…" className="min-h-52 border-white/10 bg-slate-900 font-mono text-xs leading-5 text-slate-100 placeholder:text-slate-600" />
           <p className="mt-2 text-xs text-slate-500">Preview: {logLines ? `${logLines.split("\n").length} lines` : "no log supplied"}. Secrets are redacted server-side before processing.</p>
-          <Button className="mt-4 bg-cyan-500 text-slate-950 hover:bg-cyan-300" onClick={runDiagnostic} disabled={!canDiagnose}>
+          <Button className="mt-4 bg-cyan-500 text-slate-950 hover:bg-cyan-300" onClick={() => void runDiagnostic()} disabled={!canDiagnose}>
             {status === "streaming" ? <LoaderCircle className="size-4 animate-spin" /> : <Play className="size-4" />} Analyze failure
           </Button>
         </motion.div>
@@ -93,6 +95,21 @@ export default function DiagnosticDashboard({ slugId, initialLog = "", initialPa
       <div className="grid gap-px border-t border-white/10 bg-white/10 xl:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
         <div className="bg-slate-950 p-4"><label className="mb-2 block text-xs font-medium text-slate-300">Workspace diff context</label><Textarea value={gitDiff} onChange={(event) => setGitDiff(event.target.value)} placeholder="Optional current git diff…" className="min-h-48 border-white/10 bg-slate-900 font-mono text-xs leading-5 text-slate-100 placeholder:text-slate-600" /><p className="mt-2 text-xs text-slate-500">Context is treated as untrusted data and never executed as a command.</p></div>
         <div className="bg-slate-950 p-4"><div className="mb-2 flex items-center justify-between gap-3"><p className="text-xs font-medium text-slate-300">Exact proposal diff</p><Button type="button" size="sm" onClick={deployApprovedPatch} disabled={!approvalId || deploying} className="bg-violet-500 text-white hover:bg-violet-400 disabled:opacity-50"><ShieldCheck className={deploying ? "size-4 animate-pulse" : "size-4"} />{deploying ? "Delivering…" : "Deploy approved patch"}</Button></div>{activePatch ? <DiffViewer patch={activePatch} viewMode="split" className="max-h-80 border-white/10 bg-slate-900 text-xs" /> : <div className="flex min-h-48 items-center rounded-lg border border-dashed border-white/15 bg-slate-900/70 p-4 text-sm leading-6 text-slate-400">No executable proposal yet. Ask the repository-backed assistant to create a validated DeliveryPlan; its exact diff will appear here for review.</div>}<p className="mt-2 text-xs text-slate-500">Delivery is enabled only for a pre-existing exact approval. It never commits an arbitrary pasted patch.</p></div>
+      </div>
+      <div className="grid gap-px border-t border-white/10 bg-white/10 xl:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+        <div className="bg-slate-950 p-4">
+          <div className="mb-2 flex items-center gap-2 text-xs font-medium text-slate-300"><FileCode2 className="size-4 text-cyan-300" /> Original workspace file</div>
+          <Textarea value={originalContent} onChange={(event) => setOriginalContent(event.target.value)} placeholder="Paste the affected source file for editable side-by-side review…" className="min-h-48 border-white/10 bg-slate-900 font-mono text-xs leading-5 text-slate-100 placeholder:text-slate-600" />
+          <p className="mt-2 text-xs text-slate-500">This editor is local review context. It is never written directly to your repository.</p>
+        </div>
+        <div className="flex flex-col justify-center bg-slate-950 p-4">
+          <WandSparkles className="size-5 text-cyan-300" />
+          <h3 className="mt-3 text-sm font-semibold">Generate a reviewed proposal</h3>
+          <p className="mt-2 text-sm leading-6 text-slate-400">Run the existing evidence, validation, risk, and exact-approval pipeline against this session. CI text and editor content remain untrusted evidence.</p>
+          <Button type="button" className="mt-4 w-fit border border-cyan-300/30 bg-cyan-300/10 text-cyan-100 hover:bg-cyan-300/20" onClick={() => void runDiagnostic(true)} disabled={!canDiagnose}>
+            {status === "streaming" ? <LoaderCircle className="size-4 animate-spin" /> : <WandSparkles className="size-4" />} Generate reviewed proposal
+          </Button>
+        </div>
       </div>
     </section>
   );
