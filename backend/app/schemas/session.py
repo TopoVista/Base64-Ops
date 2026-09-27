@@ -34,3 +34,20 @@ class RunbookRequest(BaseModel):
     title: str = Field(min_length=1)
     content: str = Field(min_length=1)
     tags: list[str] = Field(default_factory=list)
+
+
+class DiagnosticStreamRequest(BaseModel):
+    """Bounded, untrusted CI output supplied by the authenticated workspace user."""
+
+    sessionSlugId: str | None = Field(default=None, max_length=160)
+    failedLog: str = Field(min_length=1, max_length=500_000)
+    gitDiff: str = Field(default="", max_length=500_000)
+    filePath: str | None = Field(default=None, max_length=1024)
+    originalContent: str | None = Field(default=None, max_length=250_000)
+
+
+class ApplyApprovedPatchRequest(BaseModel):
+    """A browser may execute only an already-bound, pending approval."""
+
+    slugId: str = Field(min_length=1, max_length=160)
+    approvalId: str = Field(min_length=1, max_length=160)

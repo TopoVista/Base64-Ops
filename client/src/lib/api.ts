@@ -1,5 +1,7 @@
 import type { AuthResponse } from "@/types/auth.type";
 import API from "./axios-client";
+import { getAccessToken } from "./axios-client";
+import { BASE_API_URL } from "./env";
 import type { ApprovalRequest, AgentMessage, RagSource } from "@/types/agent.type";
 import type { CreatePullRequestResponse, SessionsResponse, SingleSessionResponse } from "@/types/session.type";
 import type { GithubConnectResponse, GithubReposResponse } from "@/types/github.type";
@@ -130,4 +132,47 @@ export const askProductAssistant = async (
     conversationId,
   });
   return response.data;
+};
+
+export const applyApprovedPatch = async (slugId: string, approvalId: string) => {
+  const response = await API.post("/apply-patch", { slugId, approvalId });
+  return response.data as { result?: { pull_request_url?: string } };
+};
+
+export const streamDiagnostic = async (
+  payload: { sessionSlugId: string; failedLog: string; gitDiff: string },
+  onEvent: (event: string, data: Record<string, unknown>) => void,
+) => {
+  const token = await getAccessToken();
+  const response = await fetch(`${BASE_API_URL}stream-diagnostic`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok || !response.body) throw new Error(`Diagnostic request failed (${response.status})`);
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+  while (true) {
+    const { value, done } = await reader.read();
+    buffer += decoder.decode(value ?? new Uint8Array(), { stream: !done });
+    let boundary = buffer.indexOf("\n\n");
+    while (boundary >= 0) {
+      const frame = buffer.slice(0, boundary);
+      buffer = buffer.slice(boundary + 2);
+      const event = frame.match(/^event:\s*(.+)$/m)?.[1]?.trim();
+      const raw = frame.match(/^data:\s*(.+)$/m)?.[1];
+      if (event && raw) {
+        let data: Record<string, unknown>;
+        try {
+          data = JSON.parse(raw) as Record<string, unknown>;
+        } catch {
+          continue;
+        }
+        onEvent(event, data);
+      }
+      boundary = buffer.indexOf("\n\n");
+    }
+    if (done) break;
+  }
 };

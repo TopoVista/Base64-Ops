@@ -6,7 +6,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from app.api.routes import assistant, auth, dev, github, memory, session, system
+from app.api.routes import assistant, auth, dev, diagnostic, github, memory, session, system
 from app.core.config import get_settings
 from app.db.mongo import close_mongo, connect_mongo, mongo_is_connected
 
@@ -59,6 +59,9 @@ app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
 
 # GitHub OAuth (repo connection, not user auth)
 app.include_router(github.router, prefix="/api/github", tags=["github"])
+
+# Pasted CI output is streamed as redacted, untrusted diagnostic evidence.
+app.include_router(diagnostic.router, prefix="/api", tags=["diagnostic"])
 
 # Agent sessions
 app.include_router(session.router, prefix="/api/session", tags=["session"])
