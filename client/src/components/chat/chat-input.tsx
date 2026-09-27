@@ -163,7 +163,21 @@ const ChatInput = ({
               </Button>
             )}
 
-            {isGithubConnected && repoLoadError ? <p className="basis-full text-xs text-destructive">Could not load repositories: {repoLoadError}. Reconnect GitHub if access has expired.</p> : null}
+            {isGithubConnected && repoLoadError ? (
+              <div className="basis-full flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-destructive" role="alert">
+                <span>Could not load repositories: {repoLoadError}</span>
+                <Button
+                  type="button"
+                  variant="link"
+                  size="sm"
+                  className="h-auto px-0 py-0 text-xs font-semibold text-primary"
+                  onClick={handleConnect}
+                  disabled={isConnectingGithub}
+                >
+                  {isConnectingGithub ? "Opening GitHub…" : "Reconnect GitHub"}
+                </Button>
+              </div>
+            ) : null}
             {isGithubConnected && !isFetchingRepos && !repoLoadError && repoOptions.length === 0 ? <p className="basis-full text-xs text-muted-foreground">GitHub returned no accessible repositories. Check the connected account and repository permissions, then refresh.</p> : null}
 
             <Button
