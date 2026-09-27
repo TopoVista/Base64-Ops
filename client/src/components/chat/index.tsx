@@ -451,7 +451,11 @@ const ChatInterface = ({
         : `Indexing did not complete: ${data.reason ?? "no supported repository files were found."}`;
       setIndexStatusMessage(message);
       setIndexStatus(data.status ?? (data.success ? "ready" : "failed"));
-      data.success ? toast.success(message) : toast.error(message);
+      if (data.success) {
+        toast.success(message);
+      } else {
+        toast.error(message);
+      }
     },
     onError: (error) => {
       const message = error instanceof Error ? error.message : "Unable to reindex RAG sources";

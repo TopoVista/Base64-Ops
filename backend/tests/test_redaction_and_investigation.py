@@ -127,6 +127,49 @@ def test_safe_tool_result_is_bounded_and_redacted() -> None:
     assert len(safe["output"]) == 4_000
 
 
+def test_session_code_read_is_tenant_scoped_bounded_and_redacted(tmp_path: Path, monkeypatch) -> None:
+    source = tmp_path / "app.py"
+    source.write_text("token = 'sk-secret-value-123456789'\n" + "x" * 65_000, encoding="utf-8")
+
+    class Sessions:
+        async def find_one(self, query: dict) -> dict | None:
+            if query == {"userId": "user_a", "slugId": "session_a"}:
+                return {
+                    "userId": "user_a",
+                    "slugId": "session_a",
+                    "repoUrl": "https://example/repo",
+                    "defaultBranch": "main",
+                }
+            return None
+
+    class Database:
+        sessions = Sessions()
+
+    class Workspace:
+        async def ensure_workspace(self, *_args):
+            return tmp_path, "repo"
+
+        def read_file(self, _repo_path: Path, path: str) -> str:
+            return (tmp_path / path).read_text(encoding="utf-8")
+
+        def head_commit(self, _repo_path: Path) -> str:
+            return "abc123"
+
+        def iter_indexable_files(self, _repo_path: Path) -> list[Path]:
+            return [source]
+
+    monkeypatch.setattr(session_service, "get_db", lambda: Database())
+    monkeypatch.setattr(session_service, "WorkspaceService", Workspace)
+
+    payload = asyncio.run(session_service.read_session_code_file("user_a", "session_a", "app.py"))
+    tree = asyncio.run(session_service.list_session_code_files("user_a", "session_a"))
+
+    assert payload["truncated"] is True
+    assert "sk-secret-value-123456789" not in payload["content"]
+    assert payload["headSha"] == "abc123"
+    assert tree["files"] == [{"path": "app.py", "bytes": source.stat().st_size}]
+
+
 def test_index_failure_reason_distinguishes_mongo_from_repository_failures() -> None:
     from pymongo.errors import AutoReconnect
 

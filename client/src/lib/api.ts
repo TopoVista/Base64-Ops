@@ -102,6 +102,16 @@ export const getSessionBySlug = async (slugId: string): Promise<SingleSessionRes
   return response.data;
 };
 
+export const getSessionCodeFiles = async (slugId: string): Promise<{ headSha?: string; files: Array<{ path: string; bytes: number }> }> => {
+  const response = await API.get(`/session/${slugId}/code/files`);
+  return response.data;
+};
+
+export const getSessionCodeFile = async (slugId: string, path: string): Promise<{ path: string; headSha?: string; content: string; truncated: boolean }> => {
+  const response = await API.get(`/session/${slugId}/code/file`, { params: { path } });
+  return response.data;
+};
+
 export const getUserSessionsWithSearch = async (params?: {
   search?: string;
   pageSize?: number;

@@ -18,7 +18,9 @@ from app.services.session_service import (
     get_user_sessions,
     list_evidence,
     list_runbooks,
+    list_session_code_files,
     list_sources,
+    read_session_code_file,
     reindex_session,
 )
 
@@ -72,6 +74,16 @@ async def evidence(slug_id: str, user: dict = Depends(get_current_user)) -> dict
 @router.get("/{slug_id}/runs/{run_id}")
 async def run_replay(slug_id: str, run_id: str, user: dict = Depends(get_current_user)) -> dict:
     return await get_run_replay(user["_id"], slug_id, run_id)
+
+
+@router.get("/{slug_id}/code/files")
+async def code_files(slug_id: str, user: dict = Depends(get_current_user)) -> dict:
+    return await list_session_code_files(user["_id"], slug_id)
+
+
+@router.get("/{slug_id}/code/file")
+async def code_file(slug_id: str, path: str, user: dict = Depends(get_current_user)) -> dict:
+    return await read_session_code_file(user["_id"], slug_id, path)
 
 
 @router.post("/runbooks")

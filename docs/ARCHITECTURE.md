@@ -22,7 +22,7 @@ The graph is intentionally small: workspace context, repository map, retrieval, 
 
 Every authenticated session is a stable workspace, not a single chat screen. `/session/:slugid` redirects to `/session/:slugid/overview`; the same session exposes `overview`, `assistant`, `pipelines`, `investigation`, `knowledge`, `code`, `changes`, and `history` routes. These focused pages reuse the persisted command-center snapshot, evidence, exact delivery plan, approval records, and run replay already owned by that session.
 
-The Pipelines page visualizes only returned workflow/job metadata and never invents dependency edges, rerun controls, or live log content. The Code page is evidence-focused: files are shown after normal repository retrieval and any proposed edit still follows the candidate-workspace, validation, risk, approval, and delivery pipeline.
+The Pipelines page visualizes only returned workflow/job metadata and never invents dependency edges, rerun controls, or live log content. The Code page uses tenant-scoped, read-only session endpoints to list supported repository files and return a 64 KB centrally-redacted file view. It has no write endpoint; any proposed edit still follows the candidate-workspace, validation, risk, approval, and delivery pipeline.
 
 ## Safety boundary
 

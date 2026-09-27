@@ -163,6 +163,48 @@ async def get_session_by_slug(user_id: str, slug_id: str) -> dict:
     }
 
 
+async def list_session_code_files(user_id: str, slug_id: str) -> dict:
+    """Return a bounded, read-only file tree for the authenticated session repository."""
+    session = await get_db().sessions.find_one({"userId": user_id, "slugId": slug_id})
+    if not session:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
+    workspace = WorkspaceService()
+    repo_path, _ = await workspace.ensure_workspace(
+        user_id, slug_id, session["repoUrl"], session.get("defaultBranch")
+    )
+    files = []
+    for path in workspace.iter_indexable_files(repo_path):
+        files.append({
+            "path": str(path.relative_to(repo_path)).replace("\\", "/"),
+            "bytes": path.stat().st_size,
+        })
+    return {"headSha": workspace.head_commit(repo_path), "files": files}
+
+
+async def read_session_code_file(user_id: str, slug_id: str, path: str) -> dict:
+    """Read one safe repository file through the existing workspace boundary.
+
+    This endpoint deliberately has no write counterpart. Content is bounded and sent through
+    centralized redaction before it reaches the browser.
+    """
+    session = await get_db().sessions.find_one({"userId": user_id, "slugId": slug_id})
+    if not session:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
+    workspace = WorkspaceService()
+    repo_path, _ = await workspace.ensure_workspace(
+        user_id, slug_id, session["repoUrl"], session.get("defaultBranch")
+    )
+    content = workspace.read_file(repo_path, path)
+    max_chars = 64_000
+    truncated = len(content) > max_chars
+    return {
+        "path": path,
+        "headSha": workspace.head_commit(repo_path),
+        "content": redactor.redact(content[:max_chars]),
+        "truncated": truncated,
+    }
+
+
 def extract_interrupt(result: dict[str, Any]) -> dict[str, Any] | None:
     interrupts = result.get("__interrupt__") if isinstance(result, dict) else None
     if interrupts:
