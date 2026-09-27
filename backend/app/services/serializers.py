@@ -8,7 +8,14 @@ def serialize_doc(doc: dict[str, Any] | None) -> dict[str, Any] | None:
     if "_id" in serialized:
         serialized["_id"] = str(serialized["_id"])
         serialized.setdefault("id", serialized["_id"])
-    for key in ("createdAt", "updatedAt", "repoInitializedAt", "tokenExpiresAt"):
+    for key in (
+        "createdAt",
+        "updatedAt",
+        "repoInitializedAt",
+        "tokenExpiresAt",
+        "retrievedAt",
+        "sourceTimestamp",
+    ):
         if key in serialized and serialized[key] is not None:
             serialized[key] = serialized[key].isoformat()
     return serialized
