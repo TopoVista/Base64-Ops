@@ -104,7 +104,22 @@ async def list_repositories(user_id: str) -> list[dict[str, Any]]:
                 },
                 headers={"Authorization": f"Bearer {access_token}", "Accept": "application/json"},
             )
-            response.raise_for_status()
+            try:
+                response.raise_for_status()
+            except httpx.HTTPStatusError as exc:
+                code = exc.response.status_code
+                if code == status.HTTP_401_UNAUTHORIZED:
+                    detail = "GitHub connection expired. Reconnect GitHub and try again."
+                elif code == status.HTTP_403_FORBIDDEN:
+                    detail = "GitHub denied repository access. Reconnect GitHub with repository access enabled."
+                elif code in {status.HTTP_429_TOO_MANY_REQUESTS, 502, 503, 504}:
+                    detail = "GitHub is temporarily unavailable. Wait a moment and refresh repositories."
+                else:
+                    detail = "GitHub could not list repositories. Refresh or reconnect GitHub."
+                raise HTTPException(
+                    status_code=code if code < 500 else status.HTTP_503_SERVICE_UNAVAILABLE,
+                    detail=detail,
+                ) from None
             batch = response.json()
             if not batch:
                 break

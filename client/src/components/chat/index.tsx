@@ -426,7 +426,7 @@ const ChatInterface = ({
     hydrate(initialCommandCenter);
   }, [hydrate, initialCommandCenter]);
 
-  const { data: githubRepos, isPending: isGithubRepoPending } = useQuery({
+  const { data: githubRepos, isPending: isGithubRepoPending, error: githubReposError, refetch: refetchGithubRepos } = useQuery({
     queryKey: ["github-repos"],
     queryFn: getGithubRepos,
     enabled: isGithubConnected,
@@ -547,7 +547,9 @@ const ChatInterface = ({
             approvals={approvals}
             isGithubConnected={isGithubConnected}
             isFetchingRepos={isGithubRepoPending}
+            repoLoadError={githubReposError instanceof Error ? githubReposError.message : null}
             repoOptions={repoOptions}
+            onRefreshRepos={() => { void refetchGithubRepos(); }}
             onSubmit={handleSubmit}
             onStop={stop}
             onRepoChange={handleRepoChange}

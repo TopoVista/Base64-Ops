@@ -28,7 +28,9 @@ type ChatInputProps = {
   approvals: ApprovalRequest[];
   isGithubConnected: boolean;
   isFetchingRepos: boolean;
+  repoLoadError?: string | null;
   repoOptions: Array<{ value: string; label: string; defaultBranch: string }>;
+  onRefreshRepos: () => void;
   onSubmit: (message: string) => void;
   onStop: () => void;
   onRepoChange: (value: string) => void;
@@ -50,7 +52,9 @@ const ChatInput = ({
   approvals,
   isGithubConnected,
   isFetchingRepos,
+  repoLoadError,
   repoOptions,
+  onRefreshRepos,
   onSubmit,
   onStop,
   onRepoChange,
@@ -134,12 +138,13 @@ const ChatInput = ({
         <div className="flex flex-col gap-3 md:flex-row md:items-center">
           <div className="flex flex-wrap items-center gap-2">
             {isGithubConnected ? (
-              <PromptInputSelect value={repo?.value ?? ""} onValueChange={onRepoChange}>
-                <PromptInputSelectTrigger className="h-10 min-w-72 border-white/10 bg-white/5 text-zinc-100">
+              <>
+              <PromptInputSelect value={repo?.value ?? ""} onValueChange={onRepoChange} disabled={isFetchingRepos || repoOptions.length === 0}>
+                <PromptInputSelectTrigger className="h-10 min-w-72 border-border bg-background text-foreground hover:bg-muted">
                   <img src={githubLogo} alt="" className="mr-2 size-4" />
-                  <PromptInputSelectValue placeholder={isFetchingRepos ? "Loading repos..." : "Select repository"} />
+                  <PromptInputSelectValue placeholder={isFetchingRepos ? "Loading repositories…" : repoOptions.length ? "Select repository" : "No repositories available"} />
                 </PromptInputSelectTrigger>
-                <PromptInputSelectContent>
+                <PromptInputSelectContent className="border-border bg-popover text-popover-foreground">
                   {repoOptions.map((option) => (
                     <PromptInputSelectItem key={option.value} value={option.value}>
                       {option.label}
@@ -147,6 +152,10 @@ const ChatInput = ({
                   ))}
                 </PromptInputSelectContent>
               </PromptInputSelect>
+              <Button type="button" variant="ghost" size="sm" onClick={onRefreshRepos} disabled={isFetchingRepos} className="text-muted-foreground hover:text-foreground">
+                {isFetchingRepos ? <Spinner className="size-4" /> : "Refresh"}
+              </Button>
+              </>
             ) : (
               <Button variant="outline" onClick={handleConnect} disabled={isConnectingGithub}>
                 {isConnectingGithub ? <Spinner className="size-4" /> : <img src={githubLogo} alt="" className="size-4" />}
@@ -154,10 +163,13 @@ const ChatInput = ({
               </Button>
             )}
 
+            {isGithubConnected && repoLoadError ? <p className="basis-full text-xs text-destructive">Could not load repositories: {repoLoadError}. Reconnect GitHub if access has expired.</p> : null}
+            {isGithubConnected && !isFetchingRepos && !repoLoadError && repoOptions.length === 0 ? <p className="basis-full text-xs text-muted-foreground">GitHub returned no accessible repositories. Check the connected account and repository permissions, then refresh.</p> : null}
+
             <Button
               type="button"
               variant="outline"
-              className="border-white/10 bg-white/5 text-zinc-100"
+              className="border-border bg-background text-foreground hover:bg-muted"
               onClick={onReindex}
               disabled={isDemo || !repo || !isSessionReady || isReindexing}
               title={!isSessionReady ? "Run the agent once to create this session before indexing it." : undefined}
