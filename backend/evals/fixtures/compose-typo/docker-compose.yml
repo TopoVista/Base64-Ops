@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    depends_on:
+      - db_seryice
+  db:
+    image: postgres:15

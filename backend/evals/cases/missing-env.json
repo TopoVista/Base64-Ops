@@ -1,0 +1,1 @@
+{"id":"missing-env","name":"Missing environment variable","category":"configuration","user_request":"Why is MONGO_URI missing?","repository_fixture":"missing-env","expected_evidence_paths":["app.py","render.yaml"],"expected_tools":["patch.generate"],"prohibited_tools":["git.push"],"expected_requires_approval":false,"expected_diagnosis_contains":["missing"]}

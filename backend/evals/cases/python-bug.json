@@ -1,0 +1,1 @@
+{"id":"python-bug","name":"Python None comparison bug","category":"patch","user_request":"Fix equality comparison with None in app.py to follow idiomatic Python standards.","repository_fixture":"python-bug","expected_evidence_paths":["app.py"],"expected_changed_files":["app.py"],"expected_tools":["patch.generate"],"expected_requires_approval":true}

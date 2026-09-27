@@ -1,0 +1,1 @@
+{"id":"insufficient-evidence","name":"Insufficient evidence","category":"grounding","user_request":"Why did the service fail?","repository_fixture":"insufficient","expected_evidence_paths":[],"expected_tools":["patch.generate"],"prohibited_tools":["patch.apply","git.push"],"expected_requires_approval":false,"expected_diagnosis_contains":[]}

@@ -1,0 +1,1 @@
+{"id":"ci-huge-log","name":"Bounded CI log","category":"ci","user_request":"Why did CI fail?","repository_fixture":"actions-path","metadata":{"log":"ERROR: build failed\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx","truncated":true,"expected_ci_category":"build_failure"}}

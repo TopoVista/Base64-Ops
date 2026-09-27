@@ -1,0 +1,4 @@
+services:
+  backend: { image: api }
+  worker:
+    depends_on: [api]

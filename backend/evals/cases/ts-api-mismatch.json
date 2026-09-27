@@ -1,0 +1,1 @@
+{"id":"ts-api-mismatch","name":"TypeScript API endpoint mismatch","category":"patch","user_request":"Fix API endpoint URL mismatch in TypeScript client.","repository_fixture":"ts-api-mismatch","expected_evidence_paths":["src/api.ts"],"expected_changed_files":["src/api.ts"],"expected_tools":["patch.generate"],"expected_requires_approval":true}

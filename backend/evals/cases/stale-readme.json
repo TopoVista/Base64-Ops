@@ -1,0 +1,1 @@
+{"id":"stale-readme","name":"Stale README conflict","category":"grounding","user_request":"Which port does the backend actually use?","repository_fixture":"stale-readme","expected_evidence_paths":["README.md","backend/main.py"],"expected_tools":["patch.generate"],"prohibited_tools":["git.push"],"expected_requires_approval":false,"expected_diagnosis_contains":["stale"]}

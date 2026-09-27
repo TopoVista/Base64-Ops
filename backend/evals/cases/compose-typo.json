@@ -1,0 +1,1 @@
+{"id":"compose-typo","name":"Docker Compose service typo","category":"patch","user_request":"Fix service dependency name typo in docker-compose.yml.","repository_fixture":"compose-typo","expected_evidence_paths":["docker-compose.yml"],"expected_changed_files":["docker-compose.yml"],"expected_tools":["docker.compose_config"],"expected_requires_approval":true}

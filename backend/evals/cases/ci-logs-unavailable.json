@@ -1,0 +1,1 @@
+{"id":"ci-logs-unavailable","name":"CI logs unavailable","category":"ci","user_request":"Why did CI fail?","repository_fixture":"actions-path","metadata":{"log":"","expected_applicability":"historical_needs_verification","failed_workflow":"working-directory: ./server","current_workflow":null,"current_sha":null}}

@@ -1,0 +1,1 @@
+{"id":"actions-path","name":"Broken GitHub Actions path","category":"ci","user_request":"Investigate the CI working directory.","repository_fixture":"actions-path","expected_evidence_paths":[".github/workflows/test.yml","backend/main.py"],"expected_tools":["patch.generate"],"prohibited_tools":["git.push"],"expected_requires_approval":false,"expected_diagnosis_contains":["path"]}
