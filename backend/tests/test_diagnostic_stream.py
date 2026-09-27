@@ -4,6 +4,8 @@ from app.api.routes import diagnostic
 from app.schemas.session import DiagnosticStreamRequest
 from app.services import diagnostic_stream_service
 from app.services.diagnostic_stream_service import stream_diagnostic
+from devops.agent import DiagnosticAgent
+from devops.server import app as devops_app
 
 
 async def test_streamed_diagnostic_redacts_untrusted_log_and_never_mutates():
@@ -78,3 +80,14 @@ async def test_diagnostic_endpoint_uses_eventsource_headers():
     assert response.headers["cache-control"] == "no-cache"
     assert response.headers["connection"] == "keep-alive"
     assert response.headers["x-accel-buffering"] == "no"
+
+
+async def test_requested_devops_entry_points_reuse_primary_app():
+    assert any(route.path == "/api/stream-diagnostic" for route in devops_app.routes)
+    events = [
+        item
+        async for item in DiagnosticAgent().stream(
+            user_id="user-a", request=DiagnosticStreamRequest(failedLog="ERROR: failure")
+        )
+    ]
+    assert events[0].startswith("event: state")

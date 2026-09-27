@@ -1,5 +1,5 @@
 import ChatInterface from "@/components/chat";
-import DiagnosticDashboard from "@/components/diagnostic-dashboard";
+import DiagnosticDashboard from "@/devops/ui/diagnostic-dashboard";
 import { Badge } from "@/components/ui/badge";
 import { getSessionBySlug, getSessionCodeFile, getSessionCodeFiles, reindexSessionRag } from "@/lib/api";
 import { cn } from "@/lib/utils";
