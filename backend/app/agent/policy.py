@@ -1,4 +1,5 @@
 from app.agent.state import AgentAction
+from app.policy import requires_approval
 
 MUTATING_KEYWORDS = {
     "write",
@@ -14,6 +15,14 @@ MUTATING_KEYWORDS = {
     "rerun",
     "dispatch",
     "cancel workflow",
+}
+
+ACTION_TOOL_NAMES = {
+    "git_status": "git.status",
+    "compose_config_check": "docker.compose_config",
+    "answer_with_rag": "patch.generate",
+    # A mutation-intent request enters exact-patch generation. It is never an executable tool by itself.
+    "propose_change": "patch.apply",
 }
 
 
@@ -38,7 +47,7 @@ def choose_action(prompt: str) -> AgentAction:
             "risk": "safe",
             "summary": "Validate Docker Compose configuration.",
         }
-    if "status" in normalized or "changed" in normalized:
+    if "status" in normalized or "changed" in normalized or "modified" in normalized:
         return {
             "name": "git_status",
             "args": {},
@@ -61,4 +70,10 @@ def choose_action(prompt: str) -> AgentAction:
 
 
 def action_requires_approval(action: AgentAction | None) -> bool:
-    return bool(action and action.get("risk") == "approval_required")
+    if not action:
+        return False
+    tool_name = ACTION_TOOL_NAMES.get(action.get("name", ""))
+    if tool_name:
+        return requires_approval(tool_name)
+    # Unregistered tools are never allowed to silently become executable.
+    return bool(action.get("risk") == "approval_required")

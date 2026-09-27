@@ -77,6 +77,13 @@ class WorkspaceService:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="File not found")
         return target.read_text(encoding="utf-8", errors="replace")
 
+    def read_file_at_ref(self, repo_path: Path, relative_path: str, ref: str) -> str | None:
+        """Read a tracked file at a Git ref without checking out or mutating the workspace."""
+        self._safe_path(repo_path, relative_path)
+        normalized_path = relative_path.replace("\\", "/")
+        result = self._run(["git", "show", f"{ref}:{normalized_path}"], cwd=repo_path)
+        return result["output"] if result["success"] else None
+
     def write_file(self, repo_path: Path, relative_path: str, content: str) -> dict[str, Any]:
         target = self._safe_path(repo_path, relative_path)
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -99,6 +106,41 @@ class WorkspaceService:
 
     def git_diff(self, repo_path: Path) -> dict[str, Any]:
         return self._run(["git", "diff", "--stat"], cwd=repo_path)
+
+    def head_commit(self, repo_path: Path) -> str | None:
+        result = self._run(["git", "rev-parse", "HEAD"], cwd=repo_path)
+        return result["output"].strip() if result["success"] else None
+
+    def parent_commit(self, repo_path: Path, ref: str) -> str | None:
+        """Return a commit parent using Git only; this never changes checkout state."""
+        result = self._run(["git", "rev-parse", f"{ref}^"], cwd=repo_path)
+        return result["output"].strip() if result["success"] else None
+
+    def current_branch(self, repo_path: Path) -> str | None:
+        result = self._run(["git", "branch", "--show-current"], cwd=repo_path)
+        return result["output"].strip() if result["success"] else None
+
+    def repository_map(self, repo_path: Path) -> dict[str, Any]:
+        files = [str(path.relative_to(repo_path)).replace("\\", "/") for path in self.iter_indexable_files(repo_path)]
+        return {
+            "services": [
+                path for path in files if path.endswith(("main.py", "server.py", "package.json", "Dockerfile"))
+            ],
+            "containers": [path for path in files if "docker" in path.lower()],
+            "ci": [path for path in files if path.startswith(".github/workflows/")],
+            "manifests": [
+                path
+                for path in files
+                if path.rsplit("/", 1)[-1]
+                in {"package.json", "pyproject.toml", "requirements.txt", "docker-compose.yml", "compose.yml"}
+            ],
+            "runbooks": [
+                path
+                for path in files
+                if path.lower().startswith(("docs/", ".base64ops/playbooks/")) or path.lower().endswith("runbook.md")
+            ],
+            "fileCount": len(files),
+        }
 
     def docker_build_check(self, repo_path: Path) -> dict[str, Any]:
         if not (repo_path / "Dockerfile").exists():
