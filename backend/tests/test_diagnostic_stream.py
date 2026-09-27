@@ -1,5 +1,6 @@
 import json
 
+from app.api.routes import diagnostic
 from app.schemas.session import DiagnosticStreamRequest
 from app.services import diagnostic_stream_service
 from app.services.diagnostic_stream_service import stream_diagnostic
@@ -65,3 +66,15 @@ async def test_repository_backed_proposal_maps_only_existing_delivery_plan(monke
     assert any('event: code_fix' in event and 'plan_1' in event for event in events)
     assert events[-1].startswith("event: complete")
     assert '"mutation_performed": false' in events[-1]
+
+
+async def test_diagnostic_endpoint_uses_eventsource_headers():
+    response = await diagnostic.stream(
+        DiagnosticStreamRequest(failedLog="ERROR: failed"),
+        {"_id": "user-a"},
+    )
+
+    assert response.media_type == "text/event-stream"
+    assert response.headers["cache-control"] == "no-cache"
+    assert response.headers["connection"] == "keep-alive"
+    assert response.headers["x-accel-buffering"] == "no"

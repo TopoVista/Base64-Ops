@@ -31,7 +31,13 @@ interface SplitLinePair {
 }
 
 function parsePatch(patch: string): ParsedFile[] {
-  const files = parseDiff(patch);
+  let files: ReturnType<typeof parseDiff>;
+  try {
+    files = parseDiff(patch);
+  } catch {
+    // A partially streamed or hand-pasted diff must not take down the review UI.
+    return [];
+  }
   return files.map((file) => {
     const lines: ParsedLine[] = [];
     let additions = 0;
