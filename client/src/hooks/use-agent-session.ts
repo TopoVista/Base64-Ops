@@ -1,12 +1,22 @@
 import { BASE_API_URL } from "@/lib/env";
+import { getAccessToken } from "@/lib/axios-client";
 import { decideSessionApproval } from "@/lib/api";
 import type {
   AgentChatStatus,
   AgentMessage,
   AgentSessionEvent,
   ApprovalRequest,
+  CIInvestigationSummary,
+  CommandCenterSnapshot,
+  DeliveryPlanSummary,
+  DeliveryResult,
+  EvidenceItem,
+  InvestigationSummary,
   RagSource,
+  RelatedMemory,
+  RepositoryContext,
   TimelineEvent,
+  ToolResult,
 } from "@/types/agent.type";
 import { useCallback, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -49,16 +59,35 @@ const parseSsePayloads = (buffer: string) => {
   return { events, rest };
 };
 
-export const useAgentSession = (initialMessages: AgentMessage[] = []) => {
+type UseAgentSessionOptions = {
+  onSessionUpdated?: () => void;
+};
+
+export const useAgentSession = (
+  initialMessages: AgentMessage[] = [],
+  { onSessionUpdated }: UseAgentSessionOptions = {},
+) => {
   const [messages, setMessages] = useState<AgentMessage[]>(initialMessages);
   const [sources, setSources] = useState<RagSource[]>([]);
+  const [evidence, setEvidence] = useState<EvidenceItem[]>([]);
   const [timeline, setTimeline] = useState<TimelineEvent[]>([]);
+  const [ciSummary, setCiSummary] = useState<CIInvestigationSummary | null>(null);
+  const [repositoryContext, setRepositoryContext] = useState<RepositoryContext | null>(null);
+  const [investigation, setInvestigation] = useState<InvestigationSummary | null>(null);
+  const [relatedMemory, setRelatedMemory] = useState<RelatedMemory[]>([]);
+  const [deliveryPlan, setDeliveryPlan] = useState<DeliveryPlanSummary | null>(null);
+  const [deliveryResult, setDeliveryResult] = useState<DeliveryResult | null>(null);
+  const [toolResult, setToolResult] = useState<ToolResult | null>(null);
   const [approvals, setApprovals] = useState<ApprovalRequest[]>([]);
   const [status, setStatus] = useState<AgentChatStatus>("idle");
   const abortRef = useRef<AbortController | null>(null);
 
   const applyEvent = useCallback((event: AgentSessionEvent) => {
     switch (event.type) {
+      case "session.updated": {
+        onSessionUpdated?.();
+        break;
+      }
       case "tool.started": {
         const item = event.data as TimelineEvent;
         setTimeline((current) => [
@@ -89,6 +118,41 @@ export const useAgentSession = (initialMessages: AgentMessage[] = []) => {
       case "rag.sources": {
         const data = event.data as { sources?: RagSource[] };
         setSources(data.sources ?? []);
+        break;
+      }
+      case "evidence.items": {
+        const data = event.data as { evidence?: EvidenceItem[] };
+        setEvidence(data.evidence ?? []);
+        break;
+      }
+      case "ci.summary": {
+        const data = event.data as { ci: CIInvestigationSummary };
+        setCiSummary(data.ci);
+        break;
+      }
+      case "repository.context": {
+        const data = event.data as { repository: RepositoryContext };
+        setRepositoryContext(data.repository);
+        break;
+      }
+      case "investigation.result": {
+        const data = event.data as { investigation: InvestigationSummary };
+        setInvestigation(data.investigation);
+        break;
+      }
+      case "memory.related": {
+        const data = event.data as { items?: RelatedMemory[] };
+        setRelatedMemory(data.items ?? []);
+        break;
+      }
+      case "delivery.plan": {
+        const data = event.data as { plan: DeliveryPlanSummary };
+        setDeliveryPlan(data.plan);
+        break;
+      }
+      case "tool.result": {
+        const data = event.data as { result: ToolResult };
+        setToolResult(data.result);
         break;
       }
       case "approval.requested": {
@@ -141,7 +205,7 @@ export const useAgentSession = (initialMessages: AgentMessage[] = []) => {
       default:
         break;
     }
-  }, [sources]);
+  }, [onSessionUpdated, sources]);
 
   const sendMessage = useCallback(
     async ({ slugId, repoUrl, defaultBranch, message }: SendMessageInput) => {
@@ -150,7 +214,15 @@ export const useAgentSession = (initialMessages: AgentMessage[] = []) => {
       abortRef.current = abortController;
       setStatus("submitted");
       setTimeline([]);
+      setCiSummary(null);
+      setRepositoryContext(null);
+      setInvestigation(null);
+      setRelatedMemory([]);
+      setDeliveryPlan(null);
+      setDeliveryResult(null);
+      setToolResult(null);
       setSources([]);
+      setEvidence([]);
       setApprovals([]);
       const userMessage: AgentMessage = {
         id: crypto.randomUUID(),
@@ -161,16 +233,24 @@ export const useAgentSession = (initialMessages: AgentMessage[] = []) => {
       setMessages((current) => [...current, userMessage]);
 
       try {
+        const token = await getAccessToken();
+        if (!token) {
+          throw new Error("Your login session is not ready. Refresh the page and try again.");
+        }
         const response = await fetch(`${BASE_API_URL}session/chat`, {
           method: "POST",
           credentials: "include",
           signal: abortController.signal,
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
           body: JSON.stringify({ slugId, repoUrl, defaultBranch, message }),
         });
 
         if (!response.ok || !response.body) {
-          throw new Error("Unable to start agent stream");
+          const error = await response.json().catch(() => null);
+          throw new Error(error?.message || error?.detail || "Unable to start agent stream");
         }
 
         setStatus("streaming");
@@ -205,6 +285,20 @@ export const useAgentSession = (initialMessages: AgentMessage[] = []) => {
     setStatus("idle");
   }, []);
 
+  const hydrate = useCallback((snapshot: CommandCenterSnapshot | null | undefined) => {
+    if (!snapshot) return;
+    setRepositoryContext(snapshot.repository ?? null);
+    setInvestigation(snapshot.investigation ?? null);
+    setRelatedMemory(snapshot.memory ?? []);
+    setCiSummary(snapshot.ci ?? null);
+    setTimeline(snapshot.timeline ?? []);
+    setDeliveryPlan(snapshot.deliveryPlan ?? null);
+    setDeliveryResult(snapshot.deliveryResult ?? null);
+    setToolResult(snapshot.toolResult ?? null);
+    setApprovals(snapshot.approvals ?? []);
+    setEvidence(snapshot.evidence ?? []);
+  }, []);
+
   const decideApproval = useCallback(
     async (
       slugId: string,
@@ -223,6 +317,9 @@ export const useAgentSession = (initialMessages: AgentMessage[] = []) => {
       if (result.message) {
         setMessages((current) => [...current, result.message as AgentMessage]);
       }
+      if (result.result && typeof result.result === "object") {
+        setDeliveryResult(result.result as DeliveryResult);
+      }
       toast.success(decision === "reject" ? "Approval rejected" : "Approved operation resumed");
     },
     [],
@@ -232,11 +329,20 @@ export const useAgentSession = (initialMessages: AgentMessage[] = []) => {
     messages,
     setMessages,
     sources,
+    evidence,
     timeline,
+    ciSummary,
+    repositoryContext,
+    investigation,
+    relatedMemory,
+    deliveryPlan,
+    deliveryResult,
+    toolResult,
     approvals,
     status,
     sendMessage,
     stop,
     decideApproval,
+    hydrate,
   };
 };

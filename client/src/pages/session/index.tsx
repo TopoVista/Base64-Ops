@@ -37,6 +37,9 @@ const SessionPage = () => {
         repoUrl={data.session.repoUrl ?? ""}
         defaultBranch={data.session.defaultBranch ?? "main"}
         branchName={data.session.branchName ?? null}
+        initialCommandCenter={data.commandCenter}
+        initialIndexStatus={data.session.indexStatus}
+        initialIndexError={data.session.indexError}
       />
     </div>
   )

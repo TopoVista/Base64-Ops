@@ -1,67 +1,83 @@
-# Base64 Ops — LangGraph DevOps Coding Agent
+# Base64 Ops
 
-Base64 Ops is a full-stack AI coding and DevOps agent. The project now uses a Python FastAPI backend with LangChain, LangGraph, MongoDB, MongoDB Atlas Vector Search, GitHub OAuth, and a redesigned React command-center UI.
+Evidence-first AI operations engineer for investigating repository and CI failures, preparing constrained fixes, and delivering them only after exact human approval.
 
-## What Changed
+Base64 Ops is designed to demonstrate a safer workflow than “LLM + terminal”: it gathers provenance-backed evidence, reconstructs the revision where an incident occurred, separates historical failures from current defects, validates candidate changes, classifies deterministic risk, and binds approval to the exact bytes that will be delivered.
 
-- **Backend:** FastAPI replaces the previous Node/Express AI orchestration layer.
-- **Agent:** LangGraph coordinates context loading, RAG retrieval, planning, approval gates, tool execution, and final responses.
-- **RAG:** repository files, docs, CI/CD config, Docker files, and runbooks can be indexed into MongoDB Atlas Vector Search.
-- **DevOps:** GitHub + Docker diagnostics are available, while mutating operations are approval-gated.
-- **Frontend:** Vite React remains, but the UI is rebuilt as a dark Ops Command Center with chat, sources, timeline, approvals, and DevOps context.
+## What it does
 
-## Tech Stack
+- Investigates repository, Docker, configuration, and GitHub Actions failures.
+- Turns bounded, redacted CI logs and source files into first-class Evidence.
+- Compares failed-run SHA state with current HEAD to avoid patching already-fixed incidents.
+- Produces constrained unified diffs in an isolated candidate workspace.
+- Runs deterministic validation, applies risk policy, and requires approval before creating a draft PR.
+- Replays investigations without re-running historical actions.
+- Records verified operational memory without allowing historical memory to override current evidence.
 
-- FastAPI, LangGraph, LangChain, LangChain OpenAI
-- MongoDB, Motor, MongoDB Atlas Vector Search
-- GitHub OAuth and GitHub REST API
-- Docker-backed workspace support
-- React, Vite, Tailwind CSS, shadcn/ui, AI Elements-style markdown rendering
+## Why it is different
 
-## Local Development
+Base64 Ops does not immediately patch a log line. It collects evidence, reconstructs failure state, validates candidate changes, and binds approval to the exact plan, base SHA, diff, and arguments. Repository files, workflow YAML, CI logs, and memory are treated as untrusted data—not instructions.
 
-### Backend
+## Flagship demo
 
-```bash
+The primary deterministic scenario models a frontend moved to `./client` while GitHub Actions still runs from `./server`.
+
+```text
+Why did my PR checks fail?
+  → CI log: package.json missing under ./server
+  → workflow at failed SHA: working-directory ./server
+  → repository evidence: package lives in ./client
+  → current applicability: CURRENT
+  → proposed workflow correction: HIGH risk
+  → exact diff + validation + approval → draft PR
+```
+
+A second scenario demonstrates historical intelligence: the failed workflow used `./server`, but current HEAD already uses `./client`. Base64 explains the historical cause and prepares no duplicate patch.
+
+See [DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) for the 5–8 minute walkthrough.
+
+## Architecture
+
+```mermaid
+flowchart TD
+  U[User] --> API[FastAPI + LangGraph]
+  API --> C[Context engine]
+  C --> R[Repository + repository map]
+  C --> E[Evidence store]
+  C --> G[GitHub Actions read-only adapter]
+  C --> M[Operational memory]
+  E --> I[Structured investigation]
+  G --> I
+  I --> P[Constrained patch engine]
+  P --> W[Candidate workspace + sandbox validation]
+  W --> K[Deterministic risk policy]
+  K --> A[Exact human approval]
+  A --> D[Idempotent draft-PR delivery]
+  API -. safe spans and replay .-> T[Tracing / replay]
+```
+
+## Quick start
+
+```powershell
+Copy-Item backend/.env.example backend/.env
+Copy-Item client/.env.example client/.env
+cd backend; python -m venv venv; .\venv\Scripts\Activate.ps1; pip install -r requirements.txt
+cd ../client; npm install
+.\scripts\verify.ps1
+```
+
+For a guided local demo setup, run `./scripts/demo.ps1`. It does not create GitHub data, bypass approval, or claim a real PR. Live GitHub Actions verification remains **not exercised** unless explicitly run with authorized credentials.
+
+## Evaluation and verification
+
+```powershell
 cd backend
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-copy .env.example .env
-uvicorn app.main:app --reload --port 8000
+python -m pytest -q
+python -m ruff check .
+python -m evals.runner --mode deterministic
+python -m evals.runner --mode deterministic --category ci
 ```
 
-### Frontend
+Latest local deterministic baseline: **120 backend tests** and **28/28 deterministic evals** passed. Evaluation output contains only measured results.
 
-```bash
-cd client
-npm install
-npm run dev
-```
-
-`client/.env.example` points the UI at `http://localhost:8000/api/`.
-
-## Required Environment
-
-- `MONGO_URI`
-- `MONGO_DB_NAME`
-- `JWT_SECRET`
-- `GITHUB_CLIENT_ID`
-- `GITHUB_CLIENT_SECRET`
-- `GITHUB_OAUTH_STATE_SECRET`
-- `GITHUB_TOKEN_ENCRYPTION_KEY`
-- `OPENAI_API_KEY` for full LLM + vector RAG behavior
-- `CHAT_MODEL=gpt-5.4-mini`
-- `EMBEDDING_MODEL=text-embedding-3-small`
-
-## DevOps Safety Model
-
-Read-only diagnostics such as git status, Docker build checks, compose validation, source retrieval, and log-style inspection can run directly. Risky actions such as writes, commits, pushes, workflow dispatches, PR creation, deploys, or rollbacks must first create an approval request in the UI.
-
-## Docker
-
-```bash
-docker compose up --build
-```
-
-For production-grade RAG, use MongoDB Atlas Vector Search. The bundled Mongo service is useful for local persistence but does not replace Atlas vector search configuration.
+See [EVALUATION.md](docs/EVALUATION.md), [DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md), [INTERVIEW_TALK_TRACK.md](docs/INTERVIEW_TALK_TRACK.md), [SYSTEM_DESIGN.md](docs/SYSTEM_DESIGN.md), and [THREAT_MODEL.md](docs/THREAT_MODEL.md).

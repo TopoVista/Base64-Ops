@@ -1,0 +1,41 @@
+name: Live Model & GitHub Delivery Evaluation (Manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      max_cases:
+        description: 'Maximum live model cases to run'
+        required: false
+        default: '5'
+      live_repo:
+        description: 'Allowlisted test repository URL'
+        required: false
+        default: ''
+
+jobs:
+  live-evaluation:
+    name: Live Model Evaluation & Controlled GitHub Delivery
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements.txt pytest
+
+      - name: Run Live Evaluation Runner
+        env:
+          BASE64_ENABLE_LIVE_EVALS: "true"
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BASE64_LIVE_TEST_REPOSITORY: ${{ inputs.live_repo }}
+          BASE64_LIVE_EVAL_ALLOWED_REPOS: ${{ secrets.BASE64_LIVE_EVAL_ALLOWED_REPOS }}
+        run: |
+          cd backend
+          python -m evals.runner --mode live --max-cases ${{ inputs.max_cases }}

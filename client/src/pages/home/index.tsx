@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom"
 const HomePage = () => {
   const location = useLocation()
   return (
-    <div className="w-full min-h-screen overflow-hidden bg-zinc-950">
+    <div className="w-full min-h-screen overflow-hidden bg-background">
       <ChatInterface key={location.key} />
     </div>
   )

@@ -16,38 +16,38 @@
 
 
 :root {
-  --background: oklch(1.0000 0 0);
-  --foreground: oklch(0.2025 0.0543 264.7546);
-  --card: oklch(0.9834 0.0042 236.4956);
-  --card-foreground: oklch(0.2025 0.0543 264.7546);
-  --popover: oklch(1.0000 0 0);
-  --popover-foreground: oklch(0.2025 0.0543 264.7546);
-  --primary: oklch(0.4234 0.2370 263.9162);
-  --primary-foreground: oklch(0.9837 0.0051 247.8759);
-  --secondary: oklch(0.9673 0.0103 247.9325);
-  --secondary-foreground: oklch(0.2762 0.0514 259.0249);
-  --muted: oklch(0.9673 0.0103 247.9325);
-  --muted-foreground: oklch(0.5498 0.0571 256.7089);
-  --accent: oklch(0.9673 0.0103 247.9325);
-  --accent-foreground: oklch(0.2762 0.0514 259.0249);
+  --background: oklch(0.9850 0.0060 250);
+  --foreground: oklch(0.2500 0.0350 258);
+  --card: oklch(0.9980 0.0020 250);
+  --card-foreground: oklch(0.2500 0.0350 258);
+  --popover: oklch(0.9980 0.0020 250);
+  --popover-foreground: oklch(0.2500 0.0350 258);
+  --primary: oklch(0.5000 0.1900 260);
+  --primary-foreground: oklch(0.9900 0.0030 250);
+  --secondary: oklch(0.9520 0.0140 250);
+  --secondary-foreground: oklch(0.3000 0.0420 258);
+  --muted: oklch(0.9620 0.0100 250);
+  --muted-foreground: oklch(0.5000 0.0350 258);
+  --accent: oklch(0.9400 0.0220 245);
+  --accent-foreground: oklch(0.2800 0.0450 258);
   --destructive: oklch(0.6496 0.2362 26.9032);
   --destructive-foreground: oklch(0.9837 0.0051 247.8759);
-  --border: oklch(0.9274 0.0178 253.3431);
-  --input: oklch(0.9274 0.0178 253.3431);
-  --ring: oklch(0.4234 0.2370 263.9162);
-  --chart-1: oklch(0.4234 0.2370 263.9162);
-  --chart-2: oklch(0.6225 0.2041 259.9027);
-  --chart-3: oklch(0.7122 0.1526 254.9868);
+  --border: oklch(0.8900 0.0180 250);
+  --input: oklch(0.8600 0.0200 250);
+  --ring: oklch(0.5000 0.1900 260);
+  --chart-1: oklch(0.5000 0.1900 260);
+  --chart-2: oklch(0.6300 0.1500 225);
+  --chart-3: oklch(0.7000 0.1100 190);
   --chart-4: oklch(0.8088 0.0991 251.7533);
   --chart-5: oklch(0.8820 0.0588 253.9688);
-  --sidebar: oklch(0.9837 0.0051 247.8759);
-  --sidebar-foreground: oklch(0.3679 0.0550 256.8976);
-  --sidebar-primary: oklch(0.4234 0.2370 263.9162);
+  --sidebar: oklch(0.9720 0.0090 250);
+  --sidebar-foreground: oklch(0.3300 0.0400 258);
+  --sidebar-primary: oklch(0.5000 0.1900 260);
   --sidebar-primary-foreground: oklch(1.0000 0 0);
-  --sidebar-accent: oklch(0.9274 0.0178 253.3431);
-  --sidebar-accent-foreground: oklch(0.2025 0.0543 264.7546);
-  --sidebar-border: oklch(0.9274 0.0178 253.3431);
-  --sidebar-ring: oklch(0.4234 0.2370 263.9162);
+  --sidebar-accent: oklch(0.9300 0.0250 245);
+  --sidebar-accent-foreground: oklch(0.2500 0.0350 258);
+  --sidebar-border: oklch(0.8800 0.0160 250);
+  --sidebar-ring: oklch(0.5000 0.1900 260);
   --font-sans: Inter, system-ui, sans-serif;
   --font-serif: Georgia, serif;
   --font-mono: JetBrains Mono, monospace;
@@ -186,32 +186,55 @@
 }
 
 
-.light .chat--interface{
+.light .chat-interface{
   background-color: var(--background);
   background-image:
     radial-gradient(
-      42.4% 36.95% at 50% 50%,
-      color-mix(in oklch, var(--background), transparent 0%) 0%,
+      54% 36% at 50% 0%,
+      color-mix(in oklch, var(--chart-2), transparent 88%) 0%,
       transparent 100%
     ),
     radial-gradient(
-      97.22% 78.13% at 50% -17.36%,
-      color-mix(in oklch, var(--primary), transparent 40%) 22.39%,
-      color-mix(in oklch, var(--primary), transparent 80%) 58.43%,
-      transparent 85.73%
-    ),
-    radial-gradient(
-      79.49% 72.21% at 50% 0%,
-      color-mix(in oklch, var(--chart-2), transparent 40%) 0%,
+      36% 28% at 0% 15%,
+      color-mix(in oklch, var(--primary), transparent 94%) 0%,
       transparent 100%
-    ),
-    linear-gradient(
-      color-mix(in oklch, var(--chart-3), transparent 50%) -26.16%,
-      var(--background) 23.98%
     );
 }
 
-.dark .chat--interface {
+/* The command center uses dark-mode utility accents for the operational
+   surfaces. Map those accents to deliberate light-mode ink colours instead
+   of allowing pale foreground tokens to disappear against white cards. */
+.light .chat-interface .text-zinc-100,
+.light .chat-interface .text-zinc-200,
+.light .chat-interface .text-zinc-300 {
+  color: var(--foreground);
+}
+
+.light .chat-interface .text-zinc-400,
+.light .chat-interface .text-zinc-500 {
+  color: var(--muted-foreground);
+}
+
+.light .chat-interface [class*="text-cyan-100"],
+.light .chat-interface [class*="text-cyan-200"] {
+  color: oklch(0.43 0.11 220);
+}
+
+.light .chat-interface [class*="text-amber-50"],
+.light .chat-interface [class*="text-amber-100"],
+.light .chat-interface [class*="text-amber-200"] {
+  color: oklch(0.38 0.09 78);
+}
+
+.light .chat-interface [class*="text-emerald-100"] {
+  color: oklch(0.38 0.09 155);
+}
+
+.light .chat-interface [class*="text-rose-100"] {
+  color: oklch(0.43 0.13 25);
+}
+
+.dark .chat-interface {
   background-image: none;
 }
 

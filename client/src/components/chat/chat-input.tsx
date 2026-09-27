@@ -38,6 +38,9 @@ type ChatInputProps = {
   ) => void;
   onReindex: () => void;
   isReindexing: boolean;
+  isSessionReady: boolean;
+  indexStatusMessage?: string | null;
+  isDemo?: boolean;
 };
 
 const ChatInput = ({
@@ -54,14 +57,24 @@ const ChatInput = ({
   onApprovalDecision,
   onReindex,
   isReindexing,
+  isSessionReady,
+  indexStatusMessage,
+  isDemo = false,
 }: ChatInputProps) => {
   const [value, setValue] = useState("");
+  const [isConnectingGithub, setIsConnectingGithub] = useState(false);
   const isWorking = status === "submitted" || status === "streaming";
   const pendingApproval = approvals.find((approval) => approval.status === "pending" || !approval.status);
 
   const handleConnect = async () => {
-    const response = await connectGithub(window.location.href);
-    window.location.href = response.url;
+    setIsConnectingGithub(true);
+    try {
+      const response = await connectGithub(window.location.href);
+      window.location.assign(response.url);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Unable to start GitHub connection");
+      setIsConnectingGithub(false);
+    }
   };
 
   const handleSubmit = () => {
@@ -75,25 +88,28 @@ const ChatInput = ({
   };
 
   return (
-    <div className="border-t border-white/10 bg-background/85 px-4 py-4 backdrop-blur-xl">
+    <div className="border-t border-border bg-background/85 px-4 py-4 backdrop-blur-xl">
       {pendingApproval ? (
-        <div className="mx-auto mb-3 max-w-5xl rounded-2xl border border-amber-400/30 bg-amber-400/10 p-4 text-amber-50 shadow-2xl shadow-amber-950/20">
+        <div className="mx-auto mb-3 max-w-5xl rounded-2xl border border-amber-400/30 bg-amber-400/10 p-4 text-amber-950 shadow-2xl shadow-amber-950/20 dark:text-amber-50">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-sm font-semibold">
                 <ShieldCheck className="size-4" />
                 Approval required: {pendingApproval.action}
               </div>
-              <p className="text-sm text-amber-100/80">{pendingApproval.summary}</p>
-              <p className="text-xs text-amber-100/60">
+              <p className="text-sm text-amber-900/80 dark:text-amber-100/80">{pendingApproval.summary}</p>
+              <p className="text-xs text-amber-900/70 dark:text-amber-100/60">
                 Blast radius: {pendingApproval.blastRadius ?? "Repository or workflow side effect"}
               </p>
+              {pendingApproval.baseSha ? <p className="text-xs text-amber-900/70 dark:text-amber-100/60">Base: {pendingApproval.baseBranch} @ {pendingApproval.baseSha.slice(0, 7)}</p> : null}
+              {pendingApproval.validation?.map((item) => <p key={item.step_id} className="text-xs text-amber-900/80 dark:text-amber-100/70">{item.status === "passed" ? "✓" : "•"} {item.summary}</p>)}
+              {pendingApproval.files?.map((file) => <details key={file.path} className="rounded-lg border border-amber-300/40 bg-amber-950/5 p-2 text-xs dark:border-amber-200/15 dark:bg-black/10"><summary className="cursor-pointer font-medium">Exact diff · {file.path}</summary><pre className="mt-2 max-h-48 overflow-auto whitespace-pre-wrap text-amber-950/85 dark:text-amber-50/80">{file.unified_diff}</pre></details>)}
             </div>
             <div className="flex shrink-0 gap-2">
-              <Button size="sm" variant="secondary" onClick={() => onApprovalDecision(pendingApproval, "approve")}>
-                Approve
+              <Button size="sm" variant="secondary" onClick={() => onApprovalDecision(pendingApproval, "approve")} disabled={isDemo} aria-label={pendingApproval.deliveryPlanId ? "Approve the exact plan and create a draft pull request" : "Approve this action"}>
+                {isDemo ? "Demo approval only" : pendingApproval.deliveryPlanId ? "Approve & Create Draft PR" : "Approve"}
               </Button>
-              <Button size="sm" variant="outline" onClick={() => onApprovalDecision(pendingApproval, "reject")}>
+              <Button size="sm" variant="outline" onClick={() => onApprovalDecision(pendingApproval, "reject")} disabled={isDemo} aria-label="Reject this proposed action">
                 Reject
               </Button>
             </div>
@@ -101,12 +117,13 @@ const ChatInput = ({
         </div>
       ) : null}
 
-      <div className="mx-auto flex max-w-5xl flex-col gap-3 rounded-3xl border border-white/10 bg-zinc-950/80 p-3 shadow-2xl shadow-black/30">
+      <div className="mx-auto flex max-w-5xl flex-col gap-3 rounded-3xl border border-border bg-card/80 p-3 shadow-2xl shadow-black/30">
+        {indexStatusMessage ? <p className="rounded-xl border border-amber-300/40 bg-amber-300/10 px-3 py-2 text-xs text-amber-900 dark:border-amber-300/20 dark:bg-amber-300/5 dark:text-amber-100">{indexStatusMessage}</p> : null}
         <Textarea
           value={value}
           onChange={(event) => setValue(event.target.value)}
           placeholder="Ask for a repo diagnosis, Docker check, CI review, RAG-grounded answer, or approved change..."
-          className="min-h-24 resize-none border-0 bg-transparent text-base text-zinc-100 shadow-none outline-none focus-visible:ring-0"
+          className="min-h-24 resize-none border-0 bg-transparent text-base text-foreground shadow-none outline-none focus-visible:ring-0"
           onKeyDown={(event) => {
             if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
               handleSubmit();
@@ -131,9 +148,9 @@ const ChatInput = ({
                 </PromptInputSelectContent>
               </PromptInputSelect>
             ) : (
-              <Button variant="outline" onClick={handleConnect}>
-                <img src={githubLogo} alt="" className="size-4" />
-                Connect GitHub
+              <Button variant="outline" onClick={handleConnect} disabled={isConnectingGithub}>
+                {isConnectingGithub ? <Spinner className="size-4" /> : <img src={githubLogo} alt="" className="size-4" />}
+                {isConnectingGithub ? "Connecting..." : "Connect GitHub"}
               </Button>
             )}
 
@@ -142,7 +159,8 @@ const ChatInput = ({
               variant="outline"
               className="border-white/10 bg-white/5 text-zinc-100"
               onClick={onReindex}
-              disabled={!repo || isReindexing}
+              disabled={isDemo || !repo || !isSessionReady || isReindexing}
+              title={!isSessionReady ? "Run the agent once to create this session before indexing it." : undefined}
             >
               {isReindexing ? <Spinner className="size-4" /> : <Zap className="size-4" />}
               Reindex RAG
@@ -163,7 +181,7 @@ const ChatInput = ({
                 Stop
               </Button>
             ) : null}
-            <Button onClick={handleSubmit} disabled={!repo || isWorking} className="min-w-32">
+            <Button onClick={handleSubmit} disabled={isDemo || !repo || isWorking} className="min-w-32" aria-label="Run repository investigation">
               {isWorking ? <Spinner className="size-4" /> : <Terminal className="size-4" />}
               Run Agent
             </Button>

@@ -1,6 +1,7 @@
 import AppSidebar from "@/components/sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Outlet } from "react-router-dom";
+import ProductGuide from "@/components/product-guide";
 
 const AppLayout = () => {
   return (
@@ -13,9 +14,10 @@ const AppLayout = () => {
       }
     >
       <AppSidebar />
-      <SidebarInset className="h-full overflow-hidden bg-zinc-950 text-foreground">
+      <SidebarInset className="h-full overflow-hidden bg-background text-foreground">
         <Outlet />
       </SidebarInset>
+      <ProductGuide />
     </SidebarProvider>
   );
 };
