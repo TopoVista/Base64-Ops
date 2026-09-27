@@ -95,7 +95,17 @@ export default function DiagnosticDashboard({ slugId, initialLog = "", initialPa
       </div>
       <div className="grid gap-px border-t border-white/10 bg-white/10 xl:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
         <div className="bg-slate-950 p-4"><label className="mb-2 block text-xs font-medium text-slate-300">Workspace diff context</label><Textarea value={gitDiff} onChange={(event) => setGitDiff(event.target.value)} placeholder="Optional current git diff…" className="min-h-48 border-white/10 bg-slate-900 font-mono text-xs leading-5 text-slate-100 placeholder:text-slate-600" /><p className="mt-2 text-xs text-slate-500">Context is treated as untrusted data and never executed as a command.</p></div>
-        <div className="bg-slate-950 p-4"><div className="mb-2 flex items-center justify-between gap-3"><p className="text-xs font-medium text-slate-300">Exact proposal diff</p><Button type="button" size="sm" onClick={deployApprovedPatch} disabled={!approvalId || deploying} className="bg-violet-500 text-white hover:bg-violet-400 disabled:opacity-50"><ShieldCheck className={deploying ? "size-4 animate-pulse" : "size-4"} />{deploying ? "Delivering…" : "Deploy approved patch"}</Button></div>{activePatch ? <DiffViewer patch={activePatch} viewMode="split" className="max-h-80 border-white/10 bg-slate-900 text-xs" /> : <div className="flex min-h-48 items-center rounded-lg border border-dashed border-white/15 bg-slate-900/70 p-4 text-sm leading-6 text-slate-400">No executable proposal yet. Ask the repository-backed assistant to create a validated DeliveryPlan; its exact diff will appear here for review.</div>}<p className="mt-2 text-xs text-slate-500">Delivery is enabled only for a pre-existing exact approval. It never commits an arbitrary pasted patch.</p></div>
+        <div className="bg-slate-950 p-4">
+          <div className="mb-2 flex items-center justify-between gap-3">
+            <p className="text-xs font-medium text-slate-300">Exact proposal diff</p>
+            <Button type="button" size="sm" onClick={deployApprovedPatch} disabled={!approvalId || deploying} className="animate-pulse bg-violet-500 text-white hover:bg-violet-400 disabled:animate-none disabled:opacity-50">
+              <ShieldCheck className={deploying ? "size-4 animate-pulse" : "size-4"} />
+              {deploying ? "Delivering…" : "Deploy Autonomous Patch"}
+            </Button>
+          </div>
+          {activePatch ? <DiffViewer patch={activePatch} viewMode="split" className="max-h-80 border-white/10 bg-slate-900 text-xs" /> : <div className="flex min-h-48 items-center rounded-lg border border-dashed border-white/15 bg-slate-900/70 p-4 text-sm leading-6 text-slate-400">No executable proposal yet. Ask the repository-backed assistant to create a validated DeliveryPlan; its exact diff will appear here for review.</div>}
+          <p className="mt-2 text-xs text-slate-500">Delivery is enabled only for a pre-existing exact approval. It never commits an arbitrary pasted patch.</p>
+        </div>
       </div>
       <div className="grid gap-px border-t border-white/10 bg-white/10 xl:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
         <div className="bg-slate-950 p-4">
