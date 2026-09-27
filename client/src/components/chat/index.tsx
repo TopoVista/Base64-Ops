@@ -1,5 +1,6 @@
 import { useAgentSession } from "@/hooks/use-agent-session";
 import { useBackendUser } from "@/hooks/use-user";
+import { useClerkApiToken } from "@/components/clerk-token-provider";
 import { getBackendHealth, getGithubRepos, reindexSessionRag } from "@/lib/api";
 import { cn, generateSlugId } from "@/lib/utils";
 import type { AgentMessage, ApprovalRequest, CIInvestigationSummary, CommandCenterSnapshot, DeliveryPlanSummary, DeliveryResult, EvidenceItem, InvestigationSummary, RagSource, RelatedMemory, TimelineEvent, ToolResult } from "@/types/agent.type";
@@ -379,6 +380,7 @@ const ChatInterface = ({
   const [indexStatusMessage, setIndexStatusMessage] = useState<string | null>(initialIndexError);
   const queryClient = useQueryClient();
   const { data: currentUser } = useBackendUser();
+  const { isReady: isTokenReady, hasToken } = useClerkApiToken();
   const isGithubConnected = Boolean(currentUser?.user?.githubConnected);
   const { data: backendHealth, isError: isBackendHealthError } = useQuery({
     queryKey: ["backend-health"],
@@ -429,7 +431,7 @@ const ChatInterface = ({
   const { data: githubRepos, isPending: isGithubRepoPending, error: githubReposError, refetch: refetchGithubRepos } = useQuery({
     queryKey: ["github-repos"],
     queryFn: getGithubRepos,
-    enabled: isGithubConnected,
+    enabled: isGithubConnected && isTokenReady && hasToken,
     retry: false,
   });
 
@@ -547,7 +549,7 @@ const ChatInterface = ({
             approvals={approvals}
             isGithubConnected={isGithubConnected}
             isFetchingRepos={isGithubRepoPending}
-            repoLoadError={githubReposError instanceof Error ? githubReposError.message : null}
+            repoLoadError={githubReposError instanceof Error ? githubReposError.message : isTokenReady && !hasToken ? "Your Clerk session token is unavailable. Sign out and sign back in, then retry." : null}
             repoOptions={repoOptions}
             onRefreshRepos={() => { void refetchGithubRepos(); }}
             onSubmit={handleSubmit}

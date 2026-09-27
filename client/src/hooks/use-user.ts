@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@clerk/clerk-react";
 import { syncClerkUser } from "@/lib/api";
+import { useClerkApiToken } from "@/components/clerk-token-provider";
 
 /**
  * Fetches the backend user record (githubConnected, etc.) after Clerk
@@ -9,11 +10,12 @@ import { syncClerkUser } from "@/lib/api";
  */
 export const useBackendUser = () => {
   const { isSignedIn, isLoaded } = useAuth();
+  const { isReady: isTokenReady, hasToken } = useClerkApiToken();
 
   return useQuery({
     queryKey: ["backend-user"],
     queryFn: syncClerkUser,
-    enabled: isLoaded && !!isSignedIn,
+    enabled: isLoaded && !!isSignedIn && isTokenReady && hasToken,
     retry: false,
     staleTime: 1000 * 60 * 5,
   });
