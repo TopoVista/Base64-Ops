@@ -6,6 +6,8 @@
 
 > Portfolio/demo hardening update (2026-09-26): `DONE`. The repository now includes a product-first README, deterministic current/historical CI walkthroughs, PowerShell/POSIX demo and verification scripts, generated eval-summary support, architecture/safety diagrams, interview talk track, system design notes, threat model, and deployment readiness guidance. Live GitHub and live delivery verification remain `NOT EXERCISED`.
 
+> Session workspace update (2026-09-28): `DONE`. Selected sessions now have stable Overview, Assistant, Pipelines, Investigation, Knowledge, Code, Changes, and History routes. They reuse the persisted command-center snapshot rather than creating a second data path; Pipelines and Code are deliberately evidence-focused and do not fabricate live controls or browser-side repository writes. The Render blueprint now declares the two services that truly exist: the API and bounded maintenance cron.
+
 Status reflects executable code in this repository as of 2026-09-25. `BLOCKED` means credentials or an external service are required; it does not mean a simulated integration exists.
 
 | Phase | Status | Notes |
@@ -36,11 +38,11 @@ Status reflects executable code in this repository as of 2026-09-25. `BLOCKED` m
 | 23. Evaluation harness | DONE | 28 deterministic cases, including 13 GitHub Actions CI cases. Results are generated through `evals.runner` and can be written to `artifacts/eval-summary.json`. |
 | 24. Dev Run Inspector UI | DONE | Protected `/dev/runs/:runId` UI displays graph nodes, retrieval scores, token telemetry, PatchProposal files, validation status, and diffs. |
 | 25. Failure states | DONE | Failure taxonomy, failure stage persistence, and bounded retry rules implemented. |
-| 26. Product UI | DONE | The command center exposes persisted/live repository context, indexing state, timeline, safe diagnostic outcome, evidence, hypotheses, CI applicability, memory, exact plan/binding, validators, and delivery result. The public, mutation-disabled `/demo` fixture exercises the complete snapshot contract. A browser-rendered smoke capture is retained at `artifacts/demo-command-center-full.png`; see `FEATURE_PARITY_MATRIX.md`. |
+| 26. Product UI | DONE | Selected sessions use dedicated Overview, Assistant, Pipelines, Investigation, Knowledge, Code, Changes, and History routes over the persisted/live repository context, indexing state, timeline, diagnostic outcome, evidence, hypotheses, CI applicability, memory, exact plan/binding, validators, and delivery result. The public, mutation-disabled `/demo` fixture exercises the complete snapshot contract. |
 | 27. Configuration cleanup | DONE | Configurable patch limits and memory settings (`memory_max_context_entries=5`, `memory_learning_enabled`). |
 | 28. GitHub auth hardening | DONE | OAuth state signing and encrypted token storage implemented. |
 | 29. Security hardening | DONE | Tenant-scoped queries, strict `RepositoryPathPolicy`, allowlisted commands, redaction, memory-cannot-authorize invariant. |
-| 30. Testing | DONE | 116 backend tests, 28/28 deterministic evals, 13/13 CI evals, clean Ruff, frontend TypeScript, and Vite build passing at the latest verification. |
+| 30. Testing | DONE | 120 backend tests, 28/28 deterministic evals, clean Ruff, frontend lint/TypeScript, LangGraph initialization, and Vite build passing at the latest verification. |
 | 31. Documentation | DONE | `PATCH_ENGINE.md`, `EXECUTION_SANDBOX.md`, `LIVE_EVALUATION.md`, `AGENT_SAFETY.md`, `EVALUATION.md`, `OBSERVABILITY.md`, `ARCHITECTURE.md`, `CONTEXT_ENGINEERING.md`, `OPERATIONAL_MEMORY.md`, `FEATURE_PARITY_MATRIX.md`, `IMPLEMENTATION_STATUS.md`. |
 | 32. CI Regression Gate | DONE | `.github/workflows/ci.yml` running backend tests, Ruff, deterministic evals, and frontend build. |
 | 33. Execution Runtime Sandbox | DONE | Subsystem `app.execution` implemented with request/result models, command registry, environment sanitization, process tree termination, output bounding, candidate workspace integrity checks, Docker sandbox runtime (`--network none`), and `GET /api/system/capabilities` API. |

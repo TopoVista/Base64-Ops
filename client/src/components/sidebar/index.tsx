@@ -4,11 +4,11 @@ import NavItems from './navitems'
 import ChatSessions from './chat-sessions'
 import { useUser, useClerk } from '@clerk/clerk-react'
 import { useQueryClient } from '@tanstack/react-query'
-import { useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Button } from '../ui/button'
-import { LogOut } from 'lucide-react'
+import { Activity, BookOpen, Bot, Code2, FileSearch, History, LogOut, Network, ShieldCheck } from 'lucide-react'
 import { ModeToggle } from '../mode-toggle'
 import { useState } from 'react'
 import SessionSearchDialog from './session-search-dialog'
@@ -19,6 +19,7 @@ const AppSidebar = () => {
   const { signOut } = useClerk()
   const queryClient = useQueryClient()
   const navigate = useNavigate()
+  const { pathname } = useLocation()
   const [searchOpen, setSearchOpen] = useState(false)
   const [signingOut, setSigningOut] = useState(false)
 
@@ -43,6 +44,14 @@ const AppSidebar = () => {
       .slice(0, 2)
       .map((part) => part[0]?.toUpperCase())
       .join("") ?? "U"
+  const sessionMatch = pathname.match(/^\/session\/([^/]+)/)
+  const selectedSlug = sessionMatch?.[1]
+  const workspaceLinks = [
+    ["Overview", Activity, "overview"], ["Assistant", Bot, "assistant"],
+    ["Pipelines", Network, "pipelines"], ["Investigation", FileSearch, "investigation"],
+    ["Knowledge", BookOpen, "knowledge"], ["Code", Code2, "code"],
+    ["Changes", ShieldCheck, "changes"], ["History", History, "history"],
+  ] as const
 
   return (
     <Sidebar collapsible='icon' className='border-r border-sidebar-border'>
@@ -53,6 +62,18 @@ const AppSidebar = () => {
 
       <SidebarContent className='flex gap-0 px-0 pb-3'>
         <NavItems onSearchClick={() => setSearchOpen(true)} />
+        {state === "expanded" && selectedSlug ? (
+          <div className="px-3 pb-3">
+            <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Workspace</p>
+            <nav className="space-y-1">
+              {workspaceLinks.map(([label, Icon, section]) => {
+                const href = `/session/${selectedSlug}/${section}`
+                const active = pathname === href
+                return <Link key={section} to={href} className={cn("flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors", active ? "bg-sidebar-accent text-sidebar-accent-foreground" : "text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground")}><Icon className="size-3.5" />{label}</Link>
+              })}
+            </nav>
+          </div>
+        ) : null}
         {state === "expanded" && <ChatSessions />}
       </SidebarContent>
 

@@ -45,6 +45,7 @@ type ChatInterfaceProps = {
   initialIndexStatus?: "indexing" | "ready" | "empty" | "failed" | null;
   initialIndexError?: string | null;
   isDemo?: boolean;
+  workspaceMode?: boolean;
 };
 
 type SelectedRepo = {
@@ -360,6 +361,7 @@ const ChatInterface = ({
   initialIndexStatus = null,
   initialIndexError = null,
   isDemo = false,
+  workspaceMode = false,
 }: ChatInterfaceProps) => {
   const [repo, setRepo] = useState<SelectedRepo | null>(
     repoUrl
@@ -410,7 +412,10 @@ const ChatInterface = ({
     onSessionUpdated: useCallback(() => {
       setIsSessionReady(true);
       queryClient.invalidateQueries({ queryKey: ["user-sessions"] });
-    }, [queryClient]),
+      if (slugIdProp) {
+        queryClient.invalidateQueries({ queryKey: ["session", slugIdProp] });
+      }
+    }, [queryClient, slugIdProp]),
   });
 
   useEffect(() => {
@@ -494,8 +499,8 @@ const ChatInterface = ({
   };
 
   return (
-    <div className={cn("chat-interface flex h-[100dvh] min-h-0 w-full flex-col bg-background text-foreground", className)}>
-      <div className="border-b border-border bg-background/90 px-4 py-3 backdrop-blur-xl">
+    <div className={cn("chat-interface flex min-h-0 w-full flex-col bg-background text-foreground", workspaceMode ? "h-full" : "h-[100dvh]", className)}>
+      {!workspaceMode ? <div className="border-b border-border bg-background/90 px-4 py-3 backdrop-blur-xl">
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-3">
             <div className="rounded-2xl bg-primary/10 p-2 text-primary">
@@ -520,9 +525,9 @@ const ChatInterface = ({
             </Badge>
           </div>
         </div>
-      </div>
+      </div> : null}
 
-      <div className="grid min-h-0 flex-1 grid-cols-1 overflow-hidden xl:grid-cols-[minmax(0,1fr)_24rem]">
+      <div className={cn("grid min-h-0 flex-1 overflow-hidden", workspaceMode ? "grid-cols-1" : "grid-cols-1 xl:grid-cols-[minmax(0,1fr)_24rem]")}>
         <div className="relative flex min-h-0 flex-col overflow-hidden">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(34,211,238,0.18),transparent_28%),radial-gradient(circle_at_80%_0%,rgba(99,102,241,0.14),transparent_22%)]" />
           <ScrollArea className="relative min-h-0 flex-1">
@@ -551,7 +556,7 @@ const ChatInterface = ({
           />
         </div>
 
-        <aside className="hidden min-h-0 border-l border-border bg-background/95 xl:block">
+        {!workspaceMode ? <aside className="hidden min-h-0 border-l border-border bg-background/95 xl:block">
           <ScrollArea className="h-full">
             <div className="space-y-6 p-4">
               <div className="rounded-3xl border border-border bg-card p-4 shadow-sm">
@@ -593,7 +598,7 @@ const ChatInterface = ({
               </div>
             </div>
           </ScrollArea>
-        </aside>
+        </aside> : null}
       </div>
     </div>
   );

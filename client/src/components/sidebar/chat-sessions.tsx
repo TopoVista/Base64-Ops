@@ -32,7 +32,7 @@ const ChatSessions = () => {
         ):(
             <SidebarMenu className="gap-1">
                 {sessions.map((session) => {
-                    const isActive =  pathname === `/session/${session.slugId}`
+                    const isActive =  pathname.startsWith(`/session/${session.slugId}`)
                     return (
                     <SidebarMenuItem key={session._id}>
                         <SidebarMenuButton asChild
@@ -43,7 +43,7 @@ const ChatSessions = () => {
                     "pr-12"
                   )}
                         >
-                            <Link to={`/session/${session.slugId}`}>
+                            <Link to={`/session/${session.slugId}/overview`}>
                               <div className="min-w-0 flex-1">
                       <div className="flex items-start justify-between gap-3">
                         <span className="block truncate text-sm font-medium">

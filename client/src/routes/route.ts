@@ -5,6 +5,8 @@ import SessionPage from "@/pages/session";
 import DevRunInspector from "@/pages/dev/DevRunInspector";
 import DemoPage from "@/pages/demo";
 import GuidePage from "@/pages/guide";
+import { Navigate, useParams } from "react-router-dom";
+import { createElement } from "react";
 
 export const isAuthRoute = (pathname: string): boolean => {
   return Object.values(AUTH_ROUTES).includes(pathname);
@@ -18,7 +20,13 @@ export const AUTH_ROUTES = {
 export const PROTECTED_ROUTES = {
   NEW: "/new",
   SINGLE_SESSION: "/session/:slugid",
+  SESSION_WORKSPACE: "/session/:slugid/:section",
   DEV_RUN_INSPECTOR: "/dev/runs/:runId",
+};
+
+const SessionRedirect = () => {
+  const { slugid } = useParams();
+  return createElement(Navigate, { replace: true, to: `/session/${slugid ?? ""}/overview` });
 };
 
 export const PUBLIC_ROUTES = {
@@ -44,6 +52,10 @@ export const protectedRoutesPaths = [
   },
   {
     path: PROTECTED_ROUTES.SINGLE_SESSION,
+    element: SessionRedirect,
+  },
+  {
+    path: PROTECTED_ROUTES.SESSION_WORKSPACE,
     element: SessionPage,
   },
   {

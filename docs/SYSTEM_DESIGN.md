@@ -12,4 +12,4 @@ Evidence identity includes source/provenance state. Approval binds SHA, diff, ar
 
 ## Failure and scaling considerations
 
-Read-only CI failures degrade to partial investigations with limitations. Transient external failures use bounded retry policy; policy and validation failures are not retried. The Render blueprint separates API and worker roles. Future production scaling could add queue-backed work distribution, cache GitHub metadata per repository/run, and deploy a trace exporter, but those are not claimed as current behavior.
+Read-only CI failures degrade to partial investigations with limitations. Transient external failures use bounded retry policy; policy and validation failures are not retried. The Render blueprint currently uses the API plus an allowlisted maintenance cron; it does not claim unused role-specific workers. Future production scaling could add queue-backed work distribution, cache GitHub metadata per repository/run, and deploy a trace exporter, but those are not claimed as current behavior.

@@ -1,4 +1,4 @@
-# Render Blueprint: public API + five independently scalable workers + cron.
+# Render Blueprint: one public API and one bounded maintenance cron (two Render services).
 # Secrets use sync: false so Render prompts for them during initial Blueprint setup.
 services:
   - type: web
@@ -38,78 +38,6 @@ services:
         value: gpt-5.6-terra
       - key: SUPPORT_MODEL
         value: gpt-5.6-sol
-
-  - type: worker
-    name: base64-agent-runner
-    runtime: python
-    region: singapore
-    plan: 0.5c-512mb
-    rootDir: backend
-    buildCommand: pip install -r requirements.txt
-    startCommand: python -m app.workers.worker
-    envVars:
-      - key: SERVICE_ROLE
-        value: agent
-      - key: MONGO_URI
-        sync: false
-
-  - type: worker
-    name: base64-rag-indexer
-    runtime: python
-    region: singapore
-    plan: 0.5c-512mb
-    rootDir: backend
-    buildCommand: pip install -r requirements.txt
-    startCommand: python -m app.workers.worker
-    envVars:
-      - key: SERVICE_ROLE
-        value: rag
-      - key: MONGO_URI
-        sync: false
-      - key: OPENAI_API_KEY
-        sync: false
-
-  - type: worker
-    name: base64-repo-sync
-    runtime: python
-    region: singapore
-    plan: 0.5c-512mb
-    rootDir: backend
-    buildCommand: pip install -r requirements.txt
-    startCommand: python -m app.workers.worker
-    envVars:
-      - key: SERVICE_ROLE
-        value: repository
-      - key: MONGO_URI
-        sync: false
-
-  - type: worker
-    name: base64-deploy-observer
-    runtime: python
-    region: singapore
-    plan: 0.5c-512mb
-    rootDir: backend
-    buildCommand: pip install -r requirements.txt
-    startCommand: python -m app.workers.worker
-    envVars:
-      - key: SERVICE_ROLE
-        value: observability
-      - key: MONGO_URI
-        sync: false
-
-  - type: worker
-    name: base64-notifier
-    runtime: python
-    region: singapore
-    plan: 0.5c-512mb
-    rootDir: backend
-    buildCommand: pip install -r requirements.txt
-    startCommand: python -m app.workers.worker
-    envVars:
-      - key: SERVICE_ROLE
-        value: notification
-      - key: MONGO_URI
-        sync: false
 
   - type: cron
     name: base64-maintenance

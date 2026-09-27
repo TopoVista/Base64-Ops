@@ -19,7 +19,7 @@ Base64 Ops is a React/Vite command-center frontend and a FastAPI control plane. 
 | Workspaces/tools | `backend/app/services/workspace_service.py`, `backend/app/agent/tools.py` | Clones repo; runs allowlisted git/Docker checks; branch creation and git mutations are approval-gated. |
 | Sessions/streaming | `backend/app/api/routes/session.py`, `backend/app/utils/sse.py` | `POST /api/session/chat` emits session, timeline, sources, approval, and message SSE events. |
 | Frontend | `client/src/components/chat`, `client/src/hooks/use-agent-session.ts` | Chat UI consumes SSE; right rail displays context, timeline, RAG sources, and approvals. |
-| Deployment | `render.yaml`, `backend/Dockerfile`, `client/vercel.json`, `docs/DEPLOYMENT.md` | Vercel SPA frontend and Render API plus role-isolated worker/cron services. |
+| Deployment | `render.yaml`, `backend/Dockerfile`, `client/vercel.json`, `docs/DEPLOYMENT.md` | Vercel SPA frontend and exactly two bounded Render services: the API and an allowlisted maintenance cron. |
 | Tests | `backend/tests` | pytest coverage for policy, chunking, and product-guide fallback. |
 
 ## Existing LangGraph flow
