@@ -62,9 +62,7 @@ def decrypt_secret(value: str) -> str:
 def sign_oauth_state(payload: dict[str, Any]) -> str:
     settings = get_settings()
     raw = json.dumps(payload, separators=(",", ":"), sort_keys=True).encode("utf-8")
-    signature = hmac.new(
-        settings.github_oauth_state_secret.encode("utf-8"), raw, hashlib.sha256
-    ).digest()
+    signature = hmac.new(settings.github_oauth_state_secret.encode("utf-8"), raw, hashlib.sha256).digest()
     return (
         base64.urlsafe_b64encode(raw).decode("utf-8").rstrip("=")
         + "."
@@ -77,9 +75,7 @@ def verify_oauth_state(state: str) -> dict[str, Any]:
     raw_part, signature_part = state.split(".", maxsplit=1)
     raw = base64.urlsafe_b64decode(raw_part + "=" * (-len(raw_part) % 4))
     signature = base64.urlsafe_b64decode(signature_part + "=" * (-len(signature_part) % 4))
-    expected = hmac.new(
-        settings.github_oauth_state_secret.encode("utf-8"), raw, hashlib.sha256
-    ).digest()
+    expected = hmac.new(settings.github_oauth_state_secret.encode("utf-8"), raw, hashlib.sha256).digest()
     if not hmac.compare_digest(signature, expected):
         raise ValueError("Invalid OAuth state")
     return json.loads(raw.decode("utf-8"))

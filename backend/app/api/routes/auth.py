@@ -1,45 +1,40 @@
-from fastapi import APIRouter, Depends, Response
+"""
+Auth routes — Clerk edition.
+
+With Clerk handling sign-up/sign-in on the frontend, the backend only
+needs one endpoint:
+
+    POST /api/auth/me
+        • Verifies the Clerk JWT (via get_current_user dependency).
+        • Upserts the user in MongoDB (first call creates the record).
+        • Returns the backend user profile including githubConnected status.
+
+    GET /api/auth/me
+        • Same as POST but for read-only fetches after the user is already
+          synced (used by useBackendUser hook polling).
+"""
+
+from fastapi import APIRouter, Depends
 
 from app.api.deps import get_current_user
-from app.core.config import get_settings
-from app.schemas.auth import LoginRequest, RegisterRequest
-from app.services.auth_service import get_me, login_user, register_user
+from app.db.mongo import get_db
+from app.services.serializers import public_user
 
 router = APIRouter()
 
 
-def set_auth_cookie(response: Response, token: str) -> None:
-    settings = get_settings()
-    response.set_cookie(
-        "access_token",
-        token,
-        httponly=True,
-        secure=settings.is_production,
-        samesite="lax",
-        max_age=settings.jwt_expires_minutes * 60,
-    )
+async def _me_response(user: dict) -> dict:
+    github_connected = await get_db().github_accounts.count_documents({"userId": user["_id"]}) > 0
+    return {"message": "User retrieved successfully", "user": public_user(user, github_connected)}
 
 
-@router.post("/register")
-async def register(payload: RegisterRequest, response: Response) -> dict:
-    user, token = await register_user(payload)
-    set_auth_cookie(response, token)
-    return {"message": "User registered successfully", "user": user}
-
-
-@router.post("/login")
-async def login(payload: LoginRequest, response: Response) -> dict:
-    user, token = await login_user(payload)
-    set_auth_cookie(response, token)
-    return {"message": "User logged in successfully", "user": user}
+@router.post("/me")
+async def sync_user(user: dict = Depends(get_current_user)) -> dict:
+    """Upsert + return the backend profile for the authenticated Clerk user."""
+    return await _me_response(user)
 
 
 @router.get("/me")
-async def me(user: dict = Depends(get_current_user)) -> dict:
-    return {"message": "User retrieved successfully", "user": await get_me(user)}
-
-
-@router.post("/logout")
-async def logout(response: Response) -> dict:
-    response.delete_cookie("access_token")
-    return {"message": "Logged out successfully"}
+async def get_me(user: dict = Depends(get_current_user)) -> dict:
+    """Return the backend profile for the authenticated Clerk user."""
+    return await _me_response(user)
