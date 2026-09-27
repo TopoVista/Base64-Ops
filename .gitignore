@@ -18,6 +18,8 @@ new-nodejs-project
 build/
 dist/
 .venv/
+backend/venv/
+artifacts/
 __pycache__/
 .pytest_cache/
 .ruff_cache/

@@ -1,0 +1,127 @@
+# Render Blueprint: public API + five independently scalable workers + cron.
+# Secrets use sync: false so Render prompts for them during initial Blueprint setup.
+services:
+  - type: web
+    name: base64-ops-api
+    runtime: python
+    region: singapore
+    plan: 0.5c-512mb
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    autoDeploy: checksPass
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: MONGO_URI
+        sync: false
+      - key: MONGO_DB_NAME
+        value: langgraph_devops_agent
+      - key: FRONTEND_ORIGIN
+        sync: false
+      - key: BASE_URL
+        sync: false
+      - key: CLERK_JWKS_URL
+        sync: false
+      - key: GITHUB_CLIENT_ID
+        sync: false
+      - key: GITHUB_CLIENT_SECRET
+        sync: false
+      - key: GITHUB_OAUTH_STATE_SECRET
+        generateValue: true
+      - key: GITHUB_TOKEN_ENCRYPTION_KEY
+        generateValue: true
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: CHAT_MODEL
+        value: gpt-5.6-terra
+      - key: SUPPORT_MODEL
+        value: gpt-5.6-sol
+
+  - type: worker
+    name: base64-agent-runner
+    runtime: python
+    region: singapore
+    plan: 0.5c-512mb
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m app.workers.worker
+    envVars:
+      - key: SERVICE_ROLE
+        value: agent
+      - key: MONGO_URI
+        sync: false
+
+  - type: worker
+    name: base64-rag-indexer
+    runtime: python
+    region: singapore
+    plan: 0.5c-512mb
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m app.workers.worker
+    envVars:
+      - key: SERVICE_ROLE
+        value: rag
+      - key: MONGO_URI
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+
+  - type: worker
+    name: base64-repo-sync
+    runtime: python
+    region: singapore
+    plan: 0.5c-512mb
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m app.workers.worker
+    envVars:
+      - key: SERVICE_ROLE
+        value: repository
+      - key: MONGO_URI
+        sync: false
+
+  - type: worker
+    name: base64-deploy-observer
+    runtime: python
+    region: singapore
+    plan: 0.5c-512mb
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m app.workers.worker
+    envVars:
+      - key: SERVICE_ROLE
+        value: observability
+      - key: MONGO_URI
+        sync: false
+
+  - type: worker
+    name: base64-notifier
+    runtime: python
+    region: singapore
+    plan: 0.5c-512mb
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m app.workers.worker
+    envVars:
+      - key: SERVICE_ROLE
+        value: notification
+      - key: MONGO_URI
+        sync: false
+
+  - type: cron
+    name: base64-maintenance
+    runtime: python
+    region: singapore
+    plan: 0.5c-512mb
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m app.workers.worker --once
+    schedule: "0 */6 * * *"
+    envVars:
+      - key: SERVICE_ROLE
+        value: maintenance
+      - key: MONGO_URI
+        sync: false
