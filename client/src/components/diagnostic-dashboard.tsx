@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { motion } from "motion/react";
+import Editor from "react-simple-code-editor";
 import { Bot, FileCode2, LoaderCircle, Play, ShieldCheck, Sparkles, WandSparkles } from "lucide-react";
 import { toast } from "sonner";
 import { DiffViewer } from "@/components/diff-viewer";
@@ -99,7 +100,17 @@ export default function DiagnosticDashboard({ slugId, initialLog = "", initialPa
       <div className="grid gap-px border-t border-white/10 bg-white/10 xl:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
         <div className="bg-slate-950 p-4">
           <div className="mb-2 flex items-center gap-2 text-xs font-medium text-slate-300"><FileCode2 className="size-4 text-cyan-300" /> Original workspace file</div>
-          <Textarea value={originalContent} onChange={(event) => setOriginalContent(event.target.value)} placeholder="Paste the affected source file for editable side-by-side review…" className="min-h-48 border-white/10 bg-slate-900 font-mono text-xs leading-5 text-slate-100 placeholder:text-slate-600" />
+          <div className="min-h-48 overflow-auto rounded-lg border border-white/10 bg-slate-900 font-mono text-xs leading-5 text-slate-100">
+            <Editor
+              value={originalContent}
+              onValueChange={setOriginalContent}
+              highlight={(value) => value}
+              padding={12}
+              placeholder="Paste the affected source file for editable side-by-side review…"
+              textareaClassName="min-h-48 outline-none placeholder:text-slate-600"
+              style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}
+            />
+          </div>
           <p className="mt-2 text-xs text-slate-500">This editor is local review context. It is never written directly to your repository.</p>
         </div>
         <div className="flex flex-col justify-center bg-slate-950 p-4">

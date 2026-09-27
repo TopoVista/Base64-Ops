@@ -5,6 +5,9 @@ dark, motion-enhanced workspace for inspecting CI output, reviewing source
 context, and displaying an exact proposed diff without creating a second agent
 or a browser-side Git client.
 
+The editable source pane uses `react-simple-code-editor`; the right-hand review
+surface uses the application's responsive split diff viewer.
+
 ## Streaming contract
 
 `POST /api/stream-diagnostic` requires the normal Clerk bearer token. It accepts
