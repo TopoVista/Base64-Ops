@@ -9,12 +9,18 @@ import { useClerkApiToken } from "@/components/clerk-token-provider";
  * `useUser` from @clerk/clerk-react if you need name/email/avatar directly.
  */
 export const useBackendUser = () => {
-  const { isSignedIn, isLoaded } = useAuth();
+  const { isSignedIn, isLoaded, userId } = useAuth();
   const { isReady: isTokenReady, hasToken } = useClerkApiToken();
 
   return useQuery({
-    queryKey: ["backend-user"],
+    // A browser can switch Clerk accounts without a full page reload. Keeping
+    // this cache identity user-scoped prevents one account's backend profile
+    // (including GitHub connection state) being shown for another account.
+    queryKey: ["backend-user", userId],
     queryFn: syncClerkUser,
+    // The Axios interceptor obtains a fresh Clerk token at request time. A
+    // one-time token probe must not permanently suppress backend/session
+    // loading when Clerk refreshes a token moments after the app mounts.
     enabled: isLoaded && !!isSignedIn && isTokenReady && hasToken,
     retry: false,
     staleTime: 1000 * 60 * 5,
