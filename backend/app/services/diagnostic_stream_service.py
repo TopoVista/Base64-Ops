@@ -67,21 +67,28 @@ async def stream_diagnostic(user_id: str, payload: DiagnosticStreamRequest) -> A
     job = WorkflowJobSummary(id=0, run_id=0, name="Pasted CI output")
     excerpts = extract_failure_excerpts(text=safe_log, run_id=0, job=job, truncated=input_truncated)
     categories = sorted({category for excerpt in excerpts for category in excerpt.categories}, key=str)
-    markdown = _analysis([item.excerpt for item in excerpts], categories)
-    for offset in range(0, len(markdown), 160):
-        yield sse_event("log_analysis", {"delta": markdown[offset : offset + 160]})
-
-    yield sse_event("state", {"label": "Synthesizing minimal code fix..."})
     if payload.generateFix and session:
+        # The Code workbench needs an exact repository-backed proposal, not a
+        # second prose report. The persisted DeliveryPlan rationale and exact
+        # diff are the review artefacts displayed there. Keep the generic log
+        # diagnostic for the standalone pasted-output feature only.
+        yield sse_event("state", {"label": "Building exact repository-backed proposal..."})
         async for event in _stream_repository_backed_proposal(
             user_id=user_id,
             session=session,
             safe_log=safe_log,
             safe_diff=safe_diff,
             safe_original=safe_original,
+            target_path=payload.filePath,
         ):
             yield event
         return
+
+    markdown = _analysis([item.excerpt for item in excerpts], categories)
+    for offset in range(0, len(markdown), 160):
+        yield sse_event("log_analysis", {"delta": markdown[offset : offset + 160]})
+
+    yield sse_event("state", {"label": "Synthesizing minimal code fix..."})
 
     # Do not manufacture an unvalidated write from arbitrary pasted output.
     yield sse_event(
@@ -109,7 +116,13 @@ async def stream_diagnostic(user_id: str, payload: DiagnosticStreamRequest) -> A
 
 
 async def _stream_repository_backed_proposal(
-    *, user_id: str, session: dict, safe_log: str, safe_diff: str, safe_original: str
+    *,
+    user_id: str,
+    session: dict,
+    safe_log: str,
+    safe_diff: str,
+    safe_original: str,
+    target_path: str | None = None,
 ) -> AsyncIterator[str]:
     """Delegate proposal generation to the existing evidence/approval graph.
 
@@ -132,6 +145,7 @@ async def _stream_repository_backed_proposal(
             repoUrl=session["repoUrl"],
             defaultBranch=session.get("defaultBranch") or "main",
             message=prompt,
+            patchTargetPath=target_path,
         )
         async for raw_event in chat_stream(user_id, request):
             event, data = _parse_sse(raw_event)
@@ -150,8 +164,11 @@ async def _stream_repository_backed_proposal(
                     },
                 )
                 plan_emitted = True
+            # Assistant prose belongs to the session investigation/replay, not
+            # the Code workbench. The workbench presents only the persisted
+            # exact plan, diff, validation state and rationale.
             elif event == "message.delta":
-                yield sse_event("log_analysis", {"delta": str(data.get("delta", ""))})
+                continue
             elif event == "error":
                 yield sse_event("error", {"message": str(data.get("message", "Repository investigation failed."))})
                 return

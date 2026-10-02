@@ -70,6 +70,31 @@ async def test_repository_backed_proposal_maps_only_existing_delivery_plan(monke
     assert '"mutation_performed": false' in events[-1]
 
 
+async def test_repository_backed_proposal_forwards_the_evidence_selected_file(monkeypatch):
+    received = {}
+
+    async def fake_chat_stream(_user_id, request):
+        received["target"] = request.patchTargetPath
+        if False:  # make this an async generator without yielding user data
+            yield ""
+
+    monkeypatch.setattr(diagnostic_stream_service, "chat_stream", fake_chat_stream)
+    events = [
+        event
+        async for event in diagnostic_stream_service._stream_repository_backed_proposal(
+            user_id="user-a",
+            session={"slugId": "session-a", "repoUrl": "https://github.com/example/repo.git"},
+            safe_log="ERROR: missing package.json",
+            safe_diff="",
+            safe_original="{}",
+            target_path=".github/workflows/ci.yml",
+        )
+    ]
+
+    assert received["target"] == ".github/workflows/ci.yml"
+    assert any("No validated patch was produced" in event for event in events)
+
+
 async def test_diagnostic_endpoint_uses_eventsource_headers():
     response = await diagnostic.stream(
         DiagnosticStreamRequest(failedLog="ERROR: failed"),
