@@ -89,3 +89,21 @@ def test_runtime_manager_rejects_unregistered_validator(tmp_path: Path) -> None:
 
     assert res.status == "policy_denied"
     assert res.failure_type == "policy_denied"
+
+
+def test_disabled_runtime_never_falls_back_to_local_repository_execution(tmp_path: Path, monkeypatch) -> None:
+    """A small hosted API must fail closed when Docker isolation is absent."""
+    (tmp_path / "app.py").write_text("print('hello world')\n", encoding="utf-8")
+    manager = ExecutionRuntimeManager()
+    monkeypatch.setattr(manager.settings, "execution_mode", "disabled")
+
+    res = manager.execute_validator(
+        validator_id="typescript.tsc",
+        arguments=[],
+        repo_path=tmp_path,
+        run_id="run_test",
+        repository_id="repo_test",
+    )
+
+    assert res.status == "policy_denied"
+    assert res.failure_type == "policy_denied"

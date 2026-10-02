@@ -14,12 +14,18 @@ async def get_system_capabilities() -> dict[str, Any]:
     docker_ok = DockerSandboxRuntime.is_available()
     mode = settings.execution_mode.lower()
 
-    if docker_ok and mode == "docker-sandbox":
+    if mode == "disabled":
+        active_runtime = "disabled"
+        net_isolation = False
+        active_validation = False
+    elif docker_ok and mode == "docker-sandbox":
         active_runtime = "docker-sandbox"
         net_isolation = True
+        active_validation = True
     else:
         active_runtime = "restricted-local"
         net_isolation = False
+        active_validation = True
 
     return {
         "github": {
@@ -39,7 +45,7 @@ async def get_system_capabilities() -> dict[str, Any]:
             "docker_available": docker_ok,
             "network_isolation": net_isolation,
             "resource_limits": True,
-            "active_validation": True,
+            "active_validation": active_validation,
             "environment_sanitizing": True,
             "workspace_integrity_checks": True,
         }

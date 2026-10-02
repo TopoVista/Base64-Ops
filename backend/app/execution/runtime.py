@@ -61,6 +61,17 @@ class ExecutionRuntimeManager:
 
         # Runtime selection: Active repository execution uses Docker sandbox if available
         mode = getattr(self.settings, "execution_mode", "docker-sandbox").lower()
+        if validator.executes_repository_code and mode == "disabled":
+            return ExecutionResult(
+                request_id=request.id,
+                status="policy_denied",
+                exit_code=None,
+                duration_ms=0,
+                stderr_summary=(
+                    "Repository-command validation is disabled in this deployment because an isolated runtime is unavailable."
+                ),
+                failure_type="policy_denied",
+            )
         if validator.executes_repository_code and DockerSandboxRuntime.is_available() and mode == "docker-sandbox":
             result = self.docker_runtime.execute(request, repo_path)
         else:
