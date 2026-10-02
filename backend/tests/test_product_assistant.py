@@ -20,3 +20,17 @@ def test_offline_guide_explains_lexical_rag_baseline() -> None:
 
     assert "Lexical retrieval" in answer
     assert "MongoDB connectivity" in answer
+
+
+def test_default_guide_answers_indexing_without_model() -> None:
+    answer = ProductAssistantService._default_answer("How do I index a repository before asking?")
+
+    assert answer is not None
+    assert "do not need to send a chat message first" in answer
+
+
+def test_default_guide_preserves_approval_boundary() -> None:
+    answer = ProductAssistantService._default_answer("Can it push directly to main?")
+
+    assert answer is not None
+    assert "does not push directly to main" in answer

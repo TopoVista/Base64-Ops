@@ -8,12 +8,22 @@ from app.db.mongo import get_db
 from app.utils.datetime import utc_now
 from app.utils.ids import new_id
 
-SUGGESTED_PROMPTS = [
+DEFAULT_QUESTIONS = [
     "How do I connect a GitHub repository?",
-    "What happens when I reindex RAG?",
-    "Which actions need my approval?",
+    "Why are no repositories showing?",
+    "How do I index a repository before asking a question?",
+    "What happens when Base64 cannot find evidence?",
+    "How does GitHub Actions investigation work?",
+    "Where can I inspect CI evidence?",
+    "What changes need approval?",
+    "How do draft pull requests work?",
+    "Can Base64 push directly to main?",
+    "How do I inspect a repository file safely?",
+    "How do I use the demo?",
     "How do I deploy Base64 Ops?",
 ]
+# Kept as an alias for the API response contract used by older clients.
+SUGGESTED_PROMPTS = DEFAULT_QUESTIONS
 
 PRODUCT_GUIDE = """
 Base64 Ops is an approval-gated DevOps command center.
@@ -65,7 +75,13 @@ class ProductAssistantService:
         history.reverse()
 
         settings = get_settings()
-        if not settings.openai_api_key:
+        default_answer = self._default_answer(message)
+        if default_answer:
+            # High-frequency product questions are deterministic, instant, and
+            # do not spend model tokens. The conversation still records the
+            # answer so the guide remains coherent when a follow-up needs LLM help.
+            answer = default_answer
+        elif not settings.openai_api_key:
             answer = self._offline_answer(message)
         else:
             try:
@@ -121,8 +137,75 @@ class ProductAssistantService:
         return {
             "conversationId": conversation_id,
             "answer": answer,
-            "suggestedPrompts": SUGGESTED_PROMPTS,
+            "suggestedPrompts": DEFAULT_QUESTIONS,
         }
+
+    @staticmethod
+    def _default_answer(message: str) -> str | None:
+        """Answer documented product questions without invoking an LLM."""
+        normalized = " ".join(message.lower().split())
+        if "connect" in normalized and ("github" in normalized or "repo" in normalized):
+            return (
+                "1. Select **Connect GitHub**.\n2. Complete GitHub authorization.\n"
+                "3. Refresh the repository selector and choose a repository.\n"
+                "If no repositories appear, reconnect GitHub and confirm that the GitHub app can access the repository."
+            )
+        if "no repositories" in normalized or "repositories showing" in normalized:
+            return (
+                "Use **Refresh** beside the repository selector. If it still stays empty, choose **Reconnect GitHub** "
+                "and grant access to the intended account or organization. Repository listing needs a valid "
+                "Clerk session "
+                "and GitHub OAuth access; neither is exposed to the browser."
+            )
+        if "index" in normalized or "rag" in normalized:
+            return (
+                "Choose a repository and click **Reindex RAG**—you do not need to send a chat message first. "
+                "Base64 creates the repository session, clones it read-only, and indexes supported source, CI, Docker, "
+                "configuration, and documentation files. The first repository question also builds this "
+                "index automatically "
+                "when it is absent; later questions reuse it and retrieve only relevant evidence."
+            )
+        if "evidence" in normalized and ("find" in normalized or "cannot" in normalized or "not" in normalized):
+            return (
+                "Base64 first searches retained repository evidence. When no index exists, it builds one; "
+                "if the answer still has no relevant evidence, it says so instead of inventing a diagnosis. "
+                "Bounded direct file inspection remains "
+                "available if indexing is temporarily unavailable."
+            )
+        if "github actions" in normalized or "ci" in normalized or "pipeline" in normalized:
+            return (
+                "Ask **Why did CI fail?** or open the **Pipelines** section. Base64 selects the relevant "
+                "failed run, reads bounded redacted job-log excerpts, compares the workflow at the failed "
+                "SHA with the current branch, and correlates changed "
+                "files. CI logs and workflow commands are evidence only—they never become executable instructions."
+            )
+        if "approval" in normalized or "draft pull" in normalized or "push" in normalized:
+            return (
+                "Read-only investigation runs immediately. File changes, commits, pushes, and pull requests "
+                "require a validated exact DeliveryPlan and your explicit approval. Base64 does not push "
+                "directly to main; approved delivery uses a "
+                "separate branch and draft pull request after validation."
+            )
+        if "inspect" in normalized and ("file" in normalized or "code" in normalized):
+            return (
+                "Open **Code** to browse a bounded, redacted, read-only view of the selected repository. "
+                "You can use the local review editor to prepare context for an agent proposal, but browser "
+                "edits never write directly to GitHub."
+            )
+        if "demo" in normalized:
+            return (
+                "Open the demo from the application navigation and click through the timeline, evidence, CI, "
+                "changes, and approval cards. It is a deterministic fixture: it demonstrates the workflow "
+                "without accessing GitHub or mutating a repository."
+            )
+        if "deploy" in normalized or "vercel" in normalized or "render" in normalized:
+            return (
+                "Deploy the Vite frontend to Vercel and FastAPI backend to Render. Configure the production "
+                "Clerk keys, MongoDB URI, GitHub OAuth callback URL, and optional OpenAI key as deployment "
+                "environment variables. Verify `/health` before "
+                "connecting GitHub."
+            )
+        return None
 
     def _offline_answer(self, message: str) -> str:
         normalized = message.lower()

@@ -11,8 +11,11 @@ type GuideMessage = { role: "user" | "assistant"; content: string };
 
 const starterPrompts = [
   "How do I connect GitHub?",
+  "How do I index a repository?",
+  "Why did CI fail?",
   "How does approval work?",
-  "How do I deploy this app?",
+  "How do draft pull requests work?",
+  "How do I use the demo?",
 ];
 
 const ProductGuide = () => {
