@@ -20,6 +20,7 @@ class AgentState(TypedDict, total=False):
     default_branch: str
     branch_name: str
     prompt: str
+    patch_target_path: str | None
     run_id: str
     trace_id: str | None
     repo_commit_sha: str | None

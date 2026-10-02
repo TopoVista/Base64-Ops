@@ -17,6 +17,32 @@ class SessionChatRequest(BaseModel):
     defaultBranch: str | None = "main"
     message: str | None = None
     messages: list[Any] = Field(default_factory=list)
+    # A CI remediation can be constrained to a file selected from server-side
+    # CI evidence. It is not a filesystem authorization mechanism: the patch
+    # engine still validates the path and evidence before any plan exists.
+    patchTargetPath: str | None = Field(default=None, max_length=1_024)
+
+
+class RepositoryIndexRequest(BaseModel):
+    """Repository identity needed when indexing before the first chat request."""
+
+    repoUrl: str = Field(min_length=1, max_length=2_048)
+    defaultBranch: str | None = Field(default="main", max_length=256)
+
+
+class CodeEditProposalRequest(BaseModel):
+    """A browser draft that must still become an approval-bound DeliveryPlan."""
+
+    path: str = Field(min_length=1, max_length=1_024)
+    expectedOriginalHash: str = Field(min_length=64, max_length=64)
+    proposedContent: str = Field(min_length=1, max_length=500_000)
+    commitMessage: str | None = Field(default=None, max_length=120)
+
+
+class CommitMessageUpdateRequest(BaseModel):
+    """Rebind a reviewed delivery to a deliberately chosen commit message."""
+
+    commitMessage: str = Field(min_length=1, max_length=120)
 
 
 class ApprovalDecisionRequest(BaseModel):
