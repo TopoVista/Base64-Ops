@@ -4,7 +4,10 @@ from fastapi.responses import StreamingResponse
 from app.api.deps import get_current_user
 from app.schemas.session import (
     ApprovalDecisionRequest,
+    CodeEditProposalRequest,
+    CommitMessageUpdateRequest,
     CreatePullRequestRequest,
+    RepositoryIndexRequest,
     RunbookRequest,
     SessionChatRequest,
 )
@@ -15,13 +18,20 @@ from app.services.session_service import (
     decide_approval,
     get_run_replay,
     get_session_by_slug,
+    get_session_dependency_graph,
+    get_session_git_diff,
+    get_session_git_status,
     get_user_sessions,
     list_evidence,
     list_runbooks,
     list_session_code_files,
+    list_session_recent_commits,
     list_sources,
+    propose_code_edit,
     read_session_code_file,
+    refresh_latest_ci,
     reindex_session,
+    update_delivery_commit_message,
 )
 
 router = APIRouter()
@@ -57,8 +67,17 @@ async def approval(
 
 
 @router.post("/{slug_id}/rag/reindex")
-async def reindex(slug_id: str, user: dict = Depends(get_current_user)) -> dict:
-    return await reindex_session(user["_id"], slug_id)
+async def reindex(
+    slug_id: str,
+    payload: RepositoryIndexRequest | None = None,
+    user: dict = Depends(get_current_user),
+) -> dict:
+    return await reindex_session(
+        user["_id"],
+        slug_id,
+        repo_url=payload.repoUrl if payload else None,
+        default_branch=payload.defaultBranch if payload else None,
+    )
 
 
 @router.get("/{slug_id}/rag/sources")
@@ -71,6 +90,11 @@ async def evidence(slug_id: str, user: dict = Depends(get_current_user)) -> dict
     return await list_evidence(user["_id"], slug_id)
 
 
+@router.post("/{slug_id}/ci/refresh")
+async def refresh_ci(slug_id: str, user: dict = Depends(get_current_user)) -> dict:
+    return await refresh_latest_ci(user["_id"], slug_id)
+
+
 @router.get("/{slug_id}/runs/{run_id}")
 async def run_replay(slug_id: str, run_id: str, user: dict = Depends(get_current_user)) -> dict:
     return await get_run_replay(user["_id"], slug_id, run_id)
@@ -81,9 +105,48 @@ async def code_files(slug_id: str, user: dict = Depends(get_current_user)) -> di
     return await list_session_code_files(user["_id"], slug_id)
 
 
+@router.get("/{slug_id}/code/commits")
+async def code_commits(slug_id: str, user: dict = Depends(get_current_user)) -> dict:
+    return await list_session_recent_commits(user["_id"], slug_id)
+
+
+@router.get("/{slug_id}/code/dependency-graph")
+async def code_dependency_graph(slug_id: str, user: dict = Depends(get_current_user)) -> dict:
+    return await get_session_dependency_graph(user["_id"], slug_id)
+
+
 @router.get("/{slug_id}/code/file")
 async def code_file(slug_id: str, path: str, user: dict = Depends(get_current_user)) -> dict:
     return await read_session_code_file(user["_id"], slug_id, path)
+
+
+@router.get("/{slug_id}/code/git-status")
+async def code_git_status(slug_id: str, user: dict = Depends(get_current_user)) -> dict:
+    return await get_session_git_status(user["_id"], slug_id)
+
+
+@router.get("/{slug_id}/code/git-diff")
+async def code_git_diff(slug_id: str, user: dict = Depends(get_current_user)) -> dict:
+    return await get_session_git_diff(user["_id"], slug_id)
+
+
+@router.post("/{slug_id}/code/propose")
+async def propose_code_change(
+    slug_id: str,
+    payload: CodeEditProposalRequest,
+    user: dict = Depends(get_current_user),
+) -> dict:
+    return await propose_code_edit(user["_id"], slug_id, payload)
+
+
+@router.patch("/{slug_id}/delivery-plan/{plan_id}/commit-message")
+async def update_commit_message(
+    slug_id: str,
+    plan_id: str,
+    payload: CommitMessageUpdateRequest,
+    user: dict = Depends(get_current_user),
+) -> dict:
+    return await update_delivery_commit_message(user["_id"], slug_id, plan_id, payload)
 
 
 @router.post("/runbooks")
