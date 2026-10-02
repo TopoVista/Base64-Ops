@@ -98,7 +98,7 @@ def test_disabled_runtime_never_falls_back_to_local_repository_execution(tmp_pat
     monkeypatch.setattr(manager.settings, "execution_mode", "disabled")
 
     res = manager.execute_validator(
-        validator_id="typescript.tsc",
+        validator_id="python.pytest",
         arguments=[],
         repo_path=tmp_path,
         run_id="run_test",

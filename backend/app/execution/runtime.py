@@ -68,7 +68,8 @@ class ExecutionRuntimeManager:
                 exit_code=None,
                 duration_ms=0,
                 stderr_summary=(
-                    "Repository-command validation is disabled in this deployment because an isolated runtime is unavailable."
+                    "Repository-command validation is disabled because this deployment "
+                    "does not provide an isolated runtime."
                 ),
                 failure_type="policy_denied",
             )
