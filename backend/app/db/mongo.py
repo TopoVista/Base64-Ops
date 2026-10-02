@@ -8,6 +8,10 @@ from app.core.config import get_settings
 _client: AsyncIOMotorClient | None = None
 
 
+class MongoUnavailableError(RuntimeError):
+    """Raised when a database-backed request arrives during an Atlas outage."""
+
+
 async def connect_mongo() -> None:
     global _client
     settings = get_settings()
@@ -46,7 +50,10 @@ async def close_mongo() -> None:
 def get_db() -> AsyncIOMotorDatabase:
     settings = get_settings()
     if _client is None:
-        raise RuntimeError("MongoDB is not connected. Set MONGO_URI and restart the API.")
+        # The API may intentionally stay up while the background reconnect
+        # loop recovers Atlas.  Do not imply that tenant data was lost or that
+        # callers should change credentials; the frontend can retry safely.
+        raise MongoUnavailableError("MongoDB is temporarily unavailable")
     return _client[settings.mongo_db_name]
 
 

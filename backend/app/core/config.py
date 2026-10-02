@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     mongo_db_name: str = Field(default="langgraph_devops_agent", alias="MONGO_DB_NAME")
     mongo_connect_max_retries: int = Field(default=2, alias="MONGO_CONNECT_MAX_RETRIES")
     mongo_connect_timeout_ms: int = Field(default=5_000, alias="MONGO_CONNECT_TIMEOUT_MS")
+    mongo_reconnect_interval_seconds: int = Field(default=15, alias="MONGO_RECONNECT_INTERVAL_SECONDS")
 
     # Clerk
     clerk_secret_key: str = Field(default="", alias="CLERK_SECRET_KEY")
@@ -56,6 +57,9 @@ class Settings(BaseSettings):
     max_patch_content_bytes: int = Field(default=250_000, alias="MAX_PATCH_CONTENT_BYTES")
 
     # Execution Sandbox Settings
+    # "disabled" is the production-safe default for hosts that cannot provide
+    # an isolated Docker runtime. It keeps static checks available but never
+    # falls back to executing an untrusted repository on the API process.
     execution_mode: str = Field(default="docker-sandbox", alias="EXECUTION_MODE")
     validation_timeout_seconds: int = Field(default=120, alias="VALIDATION_TIMEOUT_SECONDS")
     validation_memory_mb: int = Field(default=1024, alias="VALIDATION_MEMORY_MB")

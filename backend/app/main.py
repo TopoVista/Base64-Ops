@@ -1,6 +1,7 @@
+import asyncio
 import logging
 from collections.abc import AsyncIterator
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, suppress
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,13 +9,27 @@ from fastapi.responses import JSONResponse
 
 from app.api.routes import assistant, auth, dev, diagnostic, github, memory, session, system
 from app.core.config import get_settings
-from app.db.mongo import close_mongo, connect_mongo, mongo_is_connected
+from app.db.mongo import MongoUnavailableError, close_mongo, connect_mongo, mongo_is_connected
 
 logger = logging.getLogger(__name__)
 
 
+async def _retry_mongo_connection() -> None:
+    """Recover from a transient Atlas/DNS/TLS startup failure without restart."""
+    interval = max(5, get_settings().mongo_reconnect_interval_seconds)
+    while not mongo_is_connected():
+        await asyncio.sleep(interval)
+        try:
+            await connect_mongo()
+            logger.info("MongoDB connection recovered after startup degradation")
+            return
+        except Exception as exc:  # Safe server log only; never expose provider details to clients.
+            logger.warning("MongoDB reconnect attempt failed: %s", type(exc).__name__)
+
+
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
+    reconnect_task: asyncio.Task[None] | None = None
     try:
         await connect_mongo()
     except Exception as exc:  # Database-backed routes fail closed via get_db().
@@ -22,8 +37,15 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
         # process disappear. Do not include the provider message here: it may
         # contain connection metadata.
         logger.warning("MongoDB was unavailable during startup: %s", type(exc).__name__)
-    yield
-    await close_mongo()
+        reconnect_task = asyncio.create_task(_retry_mongo_connection())
+    try:
+        yield
+    finally:
+        if reconnect_task is not None:
+            reconnect_task.cancel()
+            with suppress(asyncio.CancelledError):
+                await reconnect_task
+        await close_mongo()
 
 
 settings = get_settings()
@@ -43,6 +65,7 @@ app.add_middleware(
 )
 
 
+@app.get("/api/health", include_in_schema=False)
 @app.get("/health")
 async def health() -> dict[str, str]:
     database_connected = mongo_is_connected()
@@ -81,6 +104,17 @@ app.include_router(memory.router, prefix="/api/memory", tags=["memory"])
 
 @app.exception_handler(Exception)
 async def app_exception_handler(_request, exc: Exception) -> JSONResponse:
+    if isinstance(exc, MongoUnavailableError):
+        return JSONResponse(
+            status_code=503,
+            content={
+                "message": (
+                    "Base64 Ops is temporarily unable to reach its database. "
+                    "Your saved sessions are safe; retry once Atlas connectivity is restored."
+                ),
+                "errorCode": "DATABASE_UNAVAILABLE",
+            },
+        )
     status_code = getattr(exc, "status_code", 500)
     if status_code >= 500:
         # User-facing responses must not reveal connection strings, provider
