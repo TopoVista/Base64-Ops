@@ -28,6 +28,7 @@ from app.services.evidence_service import EvidenceService
 from app.services.patch_engine import PatchEngine, PatchSafetyError
 from app.services.rag_service import RagService
 from app.services.workspace_service import WorkspaceService
+from app.utils.datetime import utc_now
 from app.utils.ids import new_id
 
 
@@ -399,6 +400,37 @@ class AgentGraph:
 
     async def _retrieve(self, state: AgentState) -> AgentState:
         started = time.monotonic()
+        db = get_db()
+        index_created = False
+        index_limitation: str | None = None
+        # A connected repository should be useful on its first real question.
+        # Build the lexical corpus only when none exists for this session; later
+        # requests reuse it and select evidence dynamically from that corpus.
+        has_index = await db.rag_chunks.find_one(
+            {"sessionId": state["session_id"], "kind": "repo"},
+            projection={"_id": 1},
+        )
+        if not has_index:
+            try:
+                result = await self.rag.index_workspace(
+                    {"_id": state["session_id"], "repoName": state.get("repo_name", "repository")},
+                    Path(state["repo_path"]),
+                )
+                index_created = bool(result.get("indexed"))
+                await db.sessions.update_one(
+                    {"_id": state["session_id"]},
+                    {"$set": {
+                        "indexStatus": "ready" if index_created else "empty",
+                        "indexError": None if index_created else "Repository contains no supported indexable files.",
+                        "indexedAt": utc_now(),
+                    }},
+                )
+            except Exception:
+                # Retrieval still has the bounded direct-file fallback below.
+                # Do not turn an optional index build into a failed investigation.
+                index_limitation = (
+                    "Repository indexing was unavailable; bounded direct repository evidence was used instead."
+                )
         sources = await self.rag.retrieve(state["session_id"], state["prompt"], limit=6)
         fallback_used = False
         if not sources:
@@ -556,12 +588,31 @@ class AgentGraph:
             context_pack["historical_memory"] = historical_memory
 
         memory_hint_count = len(recalled_memory) + len(historical_memory)
+        timeline = state.get("timeline", [])
+        if index_created:
+            timeline.append(
+                {
+                    "id": new_id("evt_"),
+                    "label": "Repository indexed",
+                    "detail": "Built lexical retrieval once; future questions reuse the index.",
+                    "status": "completed",
+                }
+            )
+        if index_limitation:
+            timeline.append(
+                {
+                    "id": new_id("evt_"),
+                    "label": "Repository index unavailable",
+                    "detail": index_limitation,
+                    "status": "partial",
+                }
+            )
         return {
             "sources": sources,
             "evidence": records,
             "operational_memory": recalled_memory,
             "context_pack": context_pack,
-            "timeline": state.get("timeline", [])
+            "timeline": timeline
             + [
                 {
                     "id": new_id("evt_"),
@@ -916,6 +967,32 @@ class AgentGraph:
             }
 
         candidates = self.patch_engine.candidate_files(state.get("evidence", []), state.get("repository_map", {}))
+        target_path = state.get("patch_target_path")
+        if target_path:
+            # The browser may request a proposal only for the file selected
+            # from CI evidence.  Do not silently fall back to a different
+            # candidate—doing so is precisely how a CI review becomes an
+            # unrelated assistant report or patch.
+            normalized_target = str(target_path).replace("\\", "/").lstrip("./")
+            if normalized_target not in candidates:
+                return {
+                    "action": {
+                        "name": "answer_with_rag",
+                        "args": {},
+                        "risk": "safe",
+                        "summary": "The selected CI file is not supported by the collected evidence.",
+                    },
+                    "timeline": state.get("timeline", [])
+                    + [
+                        {
+                            "id": new_id("evt_"),
+                            "label": "Patch not proposed",
+                            "detail": "The selected CI file was not evidence-scoped.",
+                            "status": "failed",
+                        }
+                    ],
+                }
+            candidates = {normalized_target: candidates[normalized_target]}
         if not candidates:
             return {
                 "action": {
@@ -967,7 +1044,12 @@ class AgentGraph:
             "set expected_original_hash to the provided file hash, "
             "preserve intent minimally, never use shell commands, "
             "and leave unresolved_questions if evidence is insufficient. "
-            f"Request: {state['prompt']}\nCandidates: {files}\n"
+            + (
+                f"The CI workbench selected {target_path!r}; every edit MUST target exactly that path. "
+                if target_path
+                else ""
+            )
+            + f"Request: {state['prompt']}\nCandidates: {files}\n"
             f"Evidence IDs: {[item['id'] for item in state.get('evidence', [])]}"
         )
 
