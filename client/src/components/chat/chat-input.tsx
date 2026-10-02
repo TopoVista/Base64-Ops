@@ -185,8 +185,12 @@ const ChatInput = ({
               variant="outline"
               className="border-border bg-background text-foreground hover:bg-muted"
               onClick={onReindex}
-              disabled={isDemo || !repo || !isSessionReady || isReindexing}
-              title={!isSessionReady ? "Run the agent once to create this session before indexing it." : undefined}
+              disabled={isDemo || !repo || isReindexing}
+              title={!repo
+                ? "Select a repository before indexing it."
+                : !isSessionReady
+                  ? "Index now to create this repository workspace before your first question."
+                  : "Index supported repository files for evidence retrieval."}
             >
               {isReindexing ? <Spinner className="size-4" /> : <Zap className="size-4" />}
               Reindex RAG
