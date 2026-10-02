@@ -238,10 +238,186 @@
   background-image: none;
 }
 
+/* ── Light-mode overrides for dark-utility chat surfaces ────────────────────
+   The chat component uses dark-palette utilities throughout.
+   These rules remap them to readable light-mode equivalents.
+   They are scoped tightly so nothing outside .chat-interface is affected.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Panel cards: border-white/10 and bg-white/[0.03] become visible borders
+   and a very subtle tinted card background. */
+.light .chat-interface [class*="border-white/10"],
+.light .chat-interface [class*="border-white/"] {
+  border-color: var(--border) !important;
+}
+
+.light .chat-interface [class*="bg-white/"] {
+  background-color: var(--card) !important;
+}
+
+/* bg-black/* overlays become a light tinted surface */
+.light .chat-interface [class*="bg-black/"] {
+  background-color: oklch(0.94 0.01 250 / 0.6) !important;
+}
+
+/* Assistant message bubble: bg-zinc-950/80 is unreadable on light */
+.light .chat-interface .bg-zinc-950\/80 {
+  background-color: var(--card) !important;
+  border-color: var(--border) !important;
+}
+
+/* text-zinc-300 in pre / output panels */
+.light .chat-interface .text-zinc-300 {
+  color: var(--foreground) !important;
+}
+
+/* Cyan-tinted user message bubble: the light bg is fine but text-cyan-50
+   is nearly white — remap to a readable dark cyan */
+.light .chat-interface .bg-cyan-300\/10 {
+  background-color: oklch(0.91 0.05 220) !important;
+}
+.light .chat-interface .text-cyan-50 {
+  color: oklch(0.25 0.07 220) !important;
+}
+.light .chat-interface .border-cyan-300\/20 {
+  border-color: oklch(0.70 0.09 220) !important;
+}
+
+/* Hypothesis inner cards */
+.light .chat-interface [class*="bg-black"] {
+  background-color: oklch(0.93 0.01 250) !important;
+}
+
+/* ToolResult pre block — pre inherits fine but bg may still be dark */
+.light .chat-interface pre {
+  background-color: oklch(0.95 0.01 250) !important;
+  color: var(--foreground) !important;
+}
+
+/* EmptyState feature cards */
+.light .chat-interface [class*="bg-white/\[0.03\]"] {
+  background-color: var(--card) !important;
+  box-shadow: 0 1px 3px oklch(0 0 0 / 0.06) !important;
+}
+
 
 code {
   font-family: var(--font-sans) !important;
 }
+
+/* ── IDE workspace theme tokens ─────────────────────────────────────────────
+   The IDE uses its own token system so both dark (VS Code Dark+) and light
+   (VS Code Light+) palettes are available, wired to the page theme.
+   Consumers reference these tokens; they never hardcode hex values.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Dark theme — VS Code Dark+ */
+[data-ide-theme="dark"] {
+  --ide-bg:          #1e1e1e;
+  --ide-bg2:         #252526;
+  --ide-bg3:         #2d2d2d;
+  --ide-bg4:         #1b1b1b;
+  --ide-border:      #252526;
+  --ide-border2:     #3c3c3c;
+  --ide-fg:          #cccccc;
+  --ide-fg2:         #ababab;
+  --ide-fg-dim:      #858585;
+  --ide-fg-dimmer:   #6e7681;
+  --ide-fg-dimmest:  #484f58;
+  --ide-fg-bright:   #e6edf3;
+  --ide-accent:      #007acc;
+  --ide-accent-bg:   #1f3b5e;
+  --ide-teal:        #4ec9b0;
+  --ide-blue:        #9cdcfe;
+  --ide-green:       #89d185;
+  --ide-yellow:      #d4a574;
+  --ide-orange:      #d29922;
+  --ide-red:         #f85149;
+  --ide-act-bg:      #333333;
+  --ide-active-file-bg:   #37373d;
+  --ide-hover-bg:    #2a2d2e;
+  --ide-commit-bg:   #262626;
+  --ide-commit-border: #303030;
+  --ide-success-bg:  #173822;
+  --ide-success-border: #2d6a42;
+  --ide-success-fg:  #89d185;
+  --ide-success-strong: #238636;
+  --ide-danger-bg:   #3b1d20;
+  --ide-danger-border: #7d3438;
+  --ide-danger-fg:   #ff7b72;
+  --ide-danger-strong: #a12622;
+  --ide-warning-bg:  #3a2d12;
+  --ide-warning-border: #7c5a15;
+  --ide-warning-fg:  #d4a574;
+  --ide-info-bg:     #162d46;
+  --ide-info-border: #315d88;
+  --ide-info-fg:     #b7d8f5;
+  --ide-scrollbar:   rgba(255,255,255,0.1);
+}
+
+/* Light theme — VS Code Light+ */
+[data-ide-theme="light"] {
+  --ide-bg:          #ffffff;
+  --ide-bg2:         #f3f3f3;
+  --ide-bg3:         #e8e8e8;
+  --ide-bg4:         #fafafa;
+  --ide-border:      #e4e4e4;
+  --ide-border2:     #c8c8c8;
+  --ide-fg:          #1f1f1f;
+  --ide-fg2:         #3b3b3b;
+  --ide-fg-dim:      #6f6f6f;
+  --ide-fg-dimmer:   #8f8f8f;
+  --ide-fg-dimmest:  #aaaaaa;
+  --ide-fg-bright:   #0d0d0d;
+  --ide-accent:      #005fb8;
+  --ide-accent-bg:   #dce8f7;
+  --ide-teal:        #1a8677;
+  --ide-blue:        #001080;
+  --ide-green:       #388a34;
+  --ide-yellow:      #b5641a;
+  --ide-orange:      #85580c;
+  --ide-red:         #cd3131;
+  --ide-act-bg:      #2c2c2c;
+  --ide-active-file-bg:   #dce8f7;
+  --ide-hover-bg:    #e8e8e8;
+  --ide-commit-bg:   #f8f8f8;
+  --ide-commit-border: #ddd;
+  --ide-success-bg:  #e8f5e9;
+  --ide-success-border: #80b98a;
+  --ide-success-fg:  #216e39;
+  --ide-success-strong: #216e39;
+  --ide-danger-bg:   #ffebee;
+  --ide-danger-border: #e19a9a;
+  --ide-danger-fg:   #a12622;
+  --ide-danger-strong: #a12622;
+  --ide-warning-bg:  #fff8e1;
+  --ide-warning-border: #d6ab42;
+  --ide-warning-fg:  #7a4e00;
+  --ide-info-bg:     #edf5ff;
+  --ide-info-border: #8bb8e8;
+  --ide-info-fg:     #0b4f8a;
+  --ide-scrollbar:   rgba(0,0,0,0.1);
+}
+
+/* Apply tokens to the IDE chrome elements */
+.ide-workspace {
+  background-color: var(--ide-bg);
+  color: var(--ide-fg);
+  border-color: var(--ide-border);
+}
+.ide-bg2  { background-color: var(--ide-bg2); }
+.ide-bg3  { background-color: var(--ide-bg3); }
+.ide-border { border-color: var(--ide-border); }
+.ide-border2 { border-color: var(--ide-border2); }
+.ide-fg   { color: var(--ide-fg); }
+.ide-fg2  { color: var(--ide-fg2); }
+.ide-dim  { color: var(--ide-fg-dim); }
+.ide-dimmer { color: var(--ide-fg-dimmer); }
+.ide-dimmest { color: var(--ide-fg-dimmest); }
+.ide-bright { color: var(--ide-fg-bright); }
+.ide-accent { color: var(--ide-accent); }
+.ide-teal { color: var(--ide-teal); }
+.ide-green { color: var(--ide-green); }
 
 button[data-slot="button"] {
   cursor: pointer !important;
