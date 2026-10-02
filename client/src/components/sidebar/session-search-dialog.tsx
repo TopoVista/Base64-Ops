@@ -5,6 +5,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { getUserSessionsWithSearch } from "@/lib/api";
+import { useClerkApiToken } from "@/components/clerk-token-provider";
+import { useAuth } from "@clerk/clerk-react";
 import { cn } from "@/lib/utils";
 
 type SessionSearchDialogProps = {
@@ -15,6 +17,8 @@ type SessionSearchDialogProps = {
 const SessionSearchDialog = ({ open, onOpenChange }: SessionSearchDialogProps) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const { userId, isLoaded, isSignedIn } = useAuth();
+  const { isReady: isTokenReady, hasToken } = useClerkApiToken();
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
 
@@ -34,14 +38,15 @@ const SessionSearchDialog = ({ open, onOpenChange }: SessionSearchDialogProps) =
   }, [open]);
 
   const { data, isPending } = useQuery({
-    queryKey: ["user-sessions", debouncedSearch],
+    // Keep search results tenant-scoped for an in-place Clerk account switch.
+    queryKey: ["user-sessions", userId, debouncedSearch],
     queryFn: () =>
       getUserSessionsWithSearch({
         search: debouncedSearch || undefined,
         pageSize: 10,
         pageNumber: 1,
       }),
-    enabled: open,
+    enabled: open && isLoaded && Boolean(isSignedIn) && isTokenReady && hasToken,
     retry: false,
   });
 
