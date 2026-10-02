@@ -117,14 +117,25 @@ _CATEGORY_RULES = (
 
 
 def extract_failure_excerpts(*, text: str, run_id: int, job: WorkflowJobSummary, truncated: bool) -> list[CILogExcerpt]:
-    """Extract redacted diagnostic windows. Matches are leads, not root-cause proof."""
+    """Extract redacted, high-signal windows. A match is never root-cause proof."""
     settings = get_settings()
     lines = RedactionService().redact(text).splitlines()
     excerpts: list[CILogExcerpt] = []
-    for index, line in enumerate(lines):
-        if not _SIGNAL.search(line):
+    candidates = [
+        (index, _failure_signal_score(line)) for index, line in enumerate(lines) if _SIGNAL.search(line)
+    ]
+    # A long pytest log can contain many generic "FAILED"/"ERROR" markers.
+    # Prefer the concrete exception, compiler error, failed test identifier or
+    # command exit that explains the symptom, while retaining bounded context.
+    selected: list[int] = []
+    for index, _score in sorted(candidates, key=lambda item: (-item[1], item[0])):
+        if any(abs(index - prior) <= 12 for prior in selected):
             continue
-        start, end = max(0, index - 3), min(len(lines), index + 8)
+        selected.append(index)
+        if len(selected) >= settings.ci_log_max_excerpts_per_job:
+            break
+    for index in sorted(selected):
+        start, end = max(0, index - 5), min(len(lines), index + 20)
         value = "\n".join(lines[start:end])[: settings.ci_log_max_excerpt_bytes]
         categories = [category for pattern, category in _CATEGORY_RULES if re.search(pattern, value, re.I)]
         excerpts.append(
@@ -139,9 +150,26 @@ def extract_failure_excerpts(*, text: str, run_id: int, job: WorkflowJobSummary,
                 categories=categories or [CIFailureCategory.UNKNOWN],
             )
         )
-        if len(excerpts) >= settings.ci_log_max_excerpts_per_job:
-            break
     return excerpts
+
+
+def _failure_signal_score(line: str) -> int:
+    """Rank diagnostic specificity without assigning blame or executing text."""
+    lowered = line.lower()
+    if any(token in lowered for token in (
+        "traceback", "modulenotfounderror", "importerror", "assertionerror", "syntaxerror",
+        "typeerror", "enoent", "no such file", "cannot find module",
+    )):
+        return 100
+    if re.search(r"\bts\d{4}\b", lowered):
+        return 100
+    if "failed " in lowered or " failed" in lowered or "::test_" in lowered:
+        return 80
+    if "exit code" in lowered or "npm err!" in lowered or "command not found" in lowered:
+        return 70
+    if "error" in lowered or "exception" in lowered or "failure" in lowered:
+        return 50
+    return 10
 
 
 class GitHubActionsAdapter:
