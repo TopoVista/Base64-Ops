@@ -52,6 +52,18 @@ class WorkspaceService:
         repo_path = path / repo_name
         if repo_path.exists() and (repo_path / ".git").exists():
             return repo_path, repo_name
+        if repo_path.exists():
+            # A previous clone may have been interrupted (expired OAuth,
+            # network loss, or a cancelled first index). This is a
+            # Base64-managed workspace path, never a user-supplied path. A
+            # partial directory cannot be repaired by git clone, so remove it
+            # before rebuilding the workspace from the remote repository.
+            if repo_path.parent.resolve() != path.resolve():
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Unsafe workspace path")
+            if repo_path.is_dir():
+                shutil.rmtree(repo_path)
+            else:
+                repo_path.unlink()
         path.mkdir(parents=True, exist_ok=True)
         token = await get_github_access_token(user_id)
         authed_url = self._with_token(repo_url, token)
@@ -120,6 +132,59 @@ class WorkspaceService:
         result = self._run(["git", "branch", "--show-current"], cwd=repo_path)
         return result["output"].strip() if result["success"] else None
 
+    def recent_commits(self, repo_path: Path, limit: int = 12) -> list[dict[str, str]]:
+        """Return a bounded, presentation-safe local commit history.
+
+        Git is queried only inside the session's cloned workspace. Commit
+        messages remain repository evidence and are never treated as commands.
+        """
+        safe_limit = max(1, min(limit, 30))
+        result = self._run(
+            [
+                "git",
+                "log",
+                f"--max-count={safe_limit}",
+                "--date=short",
+                "--pretty=format:%H%x1f%h%x1f%an%x1f%ad%x1f%s",
+            ],
+            cwd=repo_path,
+        )
+        if not result["success"]:
+            return []
+        commits = []
+        for line in result["output"].splitlines():
+            parts = line.split("\x1f", 4)
+            if len(parts) != 5:
+                continue
+            commit_sha, short_sha, author, committed_on, subject = parts
+            commits.append(
+                {
+                    "sha": commit_sha,
+                    "shortSha": short_sha,
+                    "author": author,
+                    "date": committed_on,
+                    "subject": subject,
+                }
+            )
+        return commits
+
+    def hydrate_recent_history(self, repo_path: Path, branch: str | None, depth: int = 24) -> None:
+        """Extend a shallow clone only enough for the Code history panel.
+
+        Fetching commit objects updates Base64's disposable local clone; it
+        never checks out a branch, changes files, or writes to GitHub. A
+        permission/network failure simply leaves the locally available history
+        intact.
+        """
+        shallow_marker = repo_path / ".git" / "shallow"
+        if not shallow_marker.exists():
+            return
+        safe_depth = max(1, min(depth, 50))
+        args = ["git", "fetch", f"--deepen={safe_depth}", "origin"]
+        if branch:
+            args.append(branch)
+        self._run(args, cwd=repo_path)
+
     def repository_map(self, repo_path: Path) -> dict[str, Any]:
         files = [str(path.relative_to(repo_path)).replace("\\", "/") for path in self.iter_indexable_files(repo_path)]
         return {
@@ -140,6 +205,108 @@ class WorkspaceService:
                 if path.lower().startswith(("docs/", ".base64ops/playbooks/")) or path.lower().endswith("runbook.md")
             ],
             "fileCount": len(files),
+        }
+
+    def dependency_graph(self, repo_path: Path) -> dict[str, Any]:
+        """Build a bounded, read-only graph of local source imports.
+
+        This is deliberately a static hint, not a build-system or runtime
+        dependency resolver. It never executes package scripts or imports.
+        """
+        source_paths = {
+            str(path.relative_to(repo_path)).replace("\\", "/"): path
+            for path in self.iter_indexable_files(repo_path)
+            if path.suffix.lower() in {".py", ".ts", ".tsx", ".js", ".jsx", ".go"}
+        }
+        edges: set[tuple[str, str]] = set()
+        extensions = (".ts", ".tsx", ".js", ".jsx", ".py")
+
+        go_module: str | None = None
+        go_mod = repo_path / "go.mod"
+        if go_mod.exists():
+            module_match = re.search(
+                r"^\s*module\s+([^\s]+)",
+                go_mod.read_text(encoding="utf-8", errors="replace"),
+                re.MULTILINE,
+            )
+            if module_match:
+                go_module = module_match.group(1)
+
+        def resolve_relative(source: str, specifier: str) -> str | None:
+            if specifier.startswith("@/"):
+                candidates = [f"src/{specifier[2:]}"]
+            elif specifier.startswith("."):
+                candidates = [str((Path(source).parent / specifier).as_posix())]
+            else:
+                return None
+            for candidate in candidates:
+                for suffix in ("", *extensions):
+                    target = f"{candidate}{suffix}"
+                    if target in source_paths:
+                        return target
+                for suffix in extensions:
+                    target = f"{candidate}/index{suffix}"
+                    if target in source_paths:
+                        return target
+            return None
+
+        def resolve_python(specifier: str) -> str | None:
+            normalized = specifier.replace(".", "/")
+            for target in (f"{normalized}.py", f"{normalized}/__init__.py"):
+                if target in source_paths:
+                    return target
+            # Repositories do not always expose a single top-level package.
+            matches = [path for path in source_paths if path.endswith(f"/{normalized}.py")]
+            return matches[0] if len(matches) == 1 else None
+
+        def resolve_go(specifier: str) -> str | None:
+            """Resolve local Go module imports without resolving external modules."""
+            if not go_module or not specifier.startswith(f"{go_module}/"):
+                return None
+            package_path = specifier.removeprefix(f"{go_module}/")
+            matches = [
+                path for path in source_paths
+                if Path(path).parent.as_posix() == package_path
+            ]
+            return matches[0] if len(matches) == 1 else None
+
+        for source, file_path in source_paths.items():
+            text = file_path.read_text(encoding="utf-8", errors="replace")
+            if file_path.suffix.lower() == ".py":
+                for match in re.finditer(r"^\s*(?:from|import)\s+([A-Za-z_][\w.]*)", text, re.MULTILINE):
+                    target = resolve_python(match.group(1))
+                    if target and target != source:
+                        edges.add((source, target))
+            elif file_path.suffix.lower() in {".ts", ".tsx", ".js", ".jsx"}:
+                for match in re.finditer(r"(?:import|export)\s+(?:[^'\"]+?\s+from\s+)?['\"]([^'\"]+)['\"]", text):
+                    target = resolve_relative(source, match.group(1))
+                    if target and target != source:
+                        edges.add((source, target))
+            elif file_path.suffix.lower() == ".go":
+                for match in re.finditer(r'^\s*"([^"\n]+)"', text, re.MULTILINE):
+                    target = resolve_go(match.group(1))
+                    if target and target != source:
+                        edges.add((source, target))
+
+        # Showing leaf files matters: otherwise a valid repository with no local
+        # imports is indistinguishable from one the graph could not inspect.
+        selected_paths = sorted(source_paths)[:120]
+        selected = set(selected_paths)
+        selected_edges = sorted(edge for edge in edges if edge[0] in selected and edge[1] in selected)[:240]
+
+        def mermaid_label(path: str) -> str:
+            return path.replace('"', "'").replace("\\", "/")
+
+        node_ids = {path: f"F{index}" for index, path in enumerate(selected_paths)}
+        lines = ["flowchart LR"]
+        lines.extend(f'  {node_ids[path]}["{mermaid_label(path)}"]' for path in selected_paths)
+        lines.extend(f"  {node_ids[source]} --> {node_ids[target]}" for source, target in selected_edges)
+        return {
+            "headSha": self.head_commit(repo_path),
+            "nodes": selected_paths,
+            "edges": [{"from": source, "to": target} for source, target in selected_edges],
+            "mermaid": "\n".join(lines),
+            "truncated": len(edges) > len(selected_edges),
         }
 
     def docker_build_check(self, repo_path: Path) -> dict[str, Any]:
@@ -167,6 +334,7 @@ class WorkspaceService:
             ".js",
             ".jsx",
             ".py",
+            ".go",
             ".md",
             ".mdx",
             ".json",
