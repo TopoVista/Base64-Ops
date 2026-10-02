@@ -12,6 +12,7 @@ import {
   ClipboardCheck,
   Database,
   Container,
+  Copy,
   FileSearch,
   GitPullRequest,
   GitBranch,
@@ -25,6 +26,7 @@ import {
   Wrench,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 type GuideStep = {
   icon: typeof GitBranch;
@@ -97,6 +99,19 @@ function SectionTitle({ eyebrow, title, body }: { eyebrow: string; title: string
 }
 
 export default function GuidePage() {
+  const [selectedStep, setSelectedStep] = useState(workflow[0].number);
+  const [selectedFeature, setSelectedFeature] = useState(features[0].title);
+  const [copiedPrompt, setCopiedPrompt] = useState<string | null>(null);
+  const activeStep = workflow.find((step) => step.number === selectedStep) ?? workflow[0];
+  const activeFeature = features.find((feature) => feature.title === selectedFeature) ?? features[0];
+  const copyPrompt = async (prompt: string) => {
+    try {
+      await navigator.clipboard?.writeText(prompt);
+    } catch {
+      // Clipboard access can be unavailable on an insecure local preview.
+    }
+    setCopiedPrompt(prompt);
+  };
   return (
     <main className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-10 border-b border-border/80 bg-background/90 backdrop-blur">
@@ -132,18 +147,24 @@ export default function GuidePage() {
 
       <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
         <SectionTitle eyebrow="The workflow" title="From question to reviewable delivery" body="Base64 keeps diagnosis, proposed change, approval, and delivery visibly separate. It never turns repository or CI text into permission to act." />
-        <ol className="mt-10 grid gap-4 lg:grid-cols-5">
+        <ol className="mt-10 grid gap-4 lg:grid-cols-5" aria-label="Interactive workflow steps">
           {workflow.map(({ icon: Icon, number, title, description, details }) => (
-            <li key={number} className="rounded-xl border border-border bg-card p-5 shadow-sm">
+            <li key={number}>
+            <button type="button" onClick={() => setSelectedStep(number)} aria-pressed={selectedStep === number} className={`h-full w-full rounded-xl border bg-card p-5 text-left shadow-sm transition hover:border-primary/50 hover:bg-primary/5 ${selectedStep === number ? "border-primary ring-2 ring-primary/20" : "border-border"}`}>
               <div className="flex items-center justify-between"><Icon className="size-5 text-primary" /><span className="font-mono text-xs text-muted-foreground">{number}</span></div>
               <h3 className="mt-5 font-semibold text-card-foreground">{title}</h3>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p>
               <ul className="mt-4 space-y-2 border-t border-border pt-4 text-xs leading-5 text-muted-foreground">
                 {details.map((detail) => <li className="flex gap-2" key={detail}><CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-primary" />{detail}</li>)}
               </ul>
-            </li>
+            </button></li>
           ))}
         </ol>
+        <div className="mt-5 rounded-xl border border-primary/25 bg-primary/5 p-5" aria-live="polite">
+          <p className="text-xs font-semibold tracking-[0.16em] text-primary uppercase">Selected step {activeStep.number}</p>
+          <h3 className="mt-2 font-semibold">{activeStep.title}</h3>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">{activeStep.description} Select another step above to explore the workflow in any order.</p>
+        </div>
       </section>
 
       <section className="border-y border-border bg-muted/45">
@@ -151,12 +172,17 @@ export default function GuidePage() {
           <SectionTitle eyebrow="Feature map" title="What each part of the app does" body="Use these surfaces together: the operation workspace for execution, evidence cards for verification, and the run inspector for debugging a completed run." />
           <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {features.map(({ icon: Icon, title, text }) => (
-              <article className="rounded-xl border border-border bg-card p-5" key={title}>
+              <button type="button" onClick={() => setSelectedFeature(title)} aria-pressed={selectedFeature === title} className={`rounded-xl border bg-card p-5 text-left transition hover:border-primary/50 hover:bg-primary/5 ${selectedFeature === title ? "border-primary ring-2 ring-primary/20" : "border-border"}`} key={title}>
                 <Icon className="size-5 text-primary" />
                 <h3 className="mt-4 font-semibold text-card-foreground">{title}</h3>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">{text}</p>
-              </article>
+              </button>
             ))}
+          </div>
+          <div className="mt-5 rounded-xl border border-border bg-card p-5" aria-live="polite">
+            <p className="text-xs font-semibold tracking-[0.16em] text-primary uppercase">Feature detail</p>
+            <h3 className="mt-2 font-semibold">{activeFeature.title}</h3>
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">{activeFeature.text} Select a feature card to compare it with the rest of the command center.</p>
           </div>
         </div>
       </section>
@@ -166,7 +192,7 @@ export default function GuidePage() {
           <SectionTitle eyebrow="Common tasks" title="Prompts that work well" body="Be concrete about the symptom, target repository, and whether you want investigation only or a proposed remediation." />
           <div className="mt-7 space-y-3">
             {["Why did GitHub Actions fail on this PR?", "Production started returning 502s. Investigate and propose a safe fix.", "Is MONGO_URI configured everywhere this service needs it?", "What changed in the latest commit?", "Explain this delivery plan before I approve it."].map((prompt) => (
-              <div className="rounded-lg border border-border bg-card px-4 py-3 font-mono text-sm text-card-foreground" key={prompt}>{prompt}</div>
+              <button type="button" onClick={() => void copyPrompt(prompt)} className="flex w-full items-center justify-between gap-3 rounded-lg border border-border bg-card px-4 py-3 text-left font-mono text-sm text-card-foreground transition hover:border-primary/50 hover:bg-primary/5" key={prompt}><span>{prompt}</span><span className="shrink-0 text-xs font-sans text-primary">{copiedPrompt === prompt ? "Copied" : <Copy className="size-4" aria-label="Copy prompt" />}</span></button>
             ))}
           </div>
         </div>

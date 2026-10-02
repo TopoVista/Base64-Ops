@@ -1,5 +1,13 @@
 import ChatInterface from "@/components/chat";
 import type { CommandCenterSnapshot } from "@/types/agent.type";
+import { useState } from "react";
+
+const demoSteps = [
+  ["1", "CI signal", "Inspect the failed job and bounded redacted log excerpt."],
+  ["2", "Evidence", "Compare the CI symptom with the workflow and repository files."],
+  ["3", "Proposal", "Review the exact workflow diff and its HIGH CI/CD risk."],
+  ["4", "Approval", "See why a fixture can demonstrate approval but never create a real pull request."],
+] as const;
 
 const snapshot: CommandCenterSnapshot = {
   runId: "demo-ci-stale-working-directory",
@@ -50,5 +58,7 @@ const snapshot: CommandCenterSnapshot = {
 };
 
 export default function DemoPage() {
-  return <ChatInterface sessionTitle="Deterministic CI fixture" slugId="demo-ci-stale-working-directory" repoUrl="https://github.com/base64-fixtures/actions-path" defaultBranch="main" initialIndexStatus="ready" initialMessages={[{ id: "demo-message", role: "assistant", content: "This read-only fixture demonstrates the full evidence-to-approval workflow, including the shape of a completed delivery result. It does not access GitHub or create a pull request." }]} initialCommandCenter={snapshot} isDemo />;
+  const [activeStep, setActiveStep] = useState(0);
+  const step = demoSteps[activeStep];
+  return <div className="flex h-dvh min-h-0 flex-col"><section className="border-b border-border bg-card px-4 py-3 sm:px-6"><div className="mx-auto flex max-w-7xl flex-wrap items-center gap-3"><p className="mr-auto text-sm font-medium">Interactive safe-CI walkthrough</p>{demoSteps.map(([number, title], index) => <button type="button" key={number} onClick={() => setActiveStep(index)} aria-pressed={activeStep === index} className={`rounded-full border px-3 py-1 text-xs font-medium transition ${activeStep === index ? "border-primary bg-primary text-primary-foreground" : "border-border hover:border-primary/50"}`}>{number}. {title}</button>)}</div><div className="mx-auto mt-2 max-w-7xl text-sm text-muted-foreground" aria-live="polite"><span className="font-medium text-foreground">{step[1]}:</span> {step[2]} Then use the workspace panels below to inspect it.</div></section><div className="min-h-0 flex-1"><ChatInterface sessionTitle="Deterministic CI fixture" slugId="demo-ci-stale-working-directory" repoUrl="https://github.com/base64-fixtures/actions-path" defaultBranch="main" initialIndexStatus="ready" initialMessages={[{ id: "demo-message", role: "assistant", content: "This read-only fixture demonstrates the full evidence-to-approval workflow, including the shape of a completed delivery result. It does not access GitHub or create a pull request." }]} initialCommandCenter={snapshot} isDemo /></div></div>;
 }
