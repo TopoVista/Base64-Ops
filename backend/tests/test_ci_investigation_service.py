@@ -166,3 +166,19 @@ async def test_historical_ci_applicability_blocks_delivery_plan(applicability: s
     assert result["action"]["risk"] == "safe"
     assert "delivery_plan" not in result
     assert "approval_id" not in result
+
+
+@pytest.mark.asyncio
+async def test_unscoped_ci_editor_target_cannot_fall_back_to_another_patch_file():
+    result = await AgentGraph()._generate_delivery(
+        {
+            "patch_target_path": "backend/not-evidenced.py",
+            "evidence": [],
+            "repository_map": {},
+            "timeline": [],
+        }
+    )
+
+    assert result["action"]["risk"] == "safe"
+    assert "selected CI file" in result["action"]["summary"]
+    assert "delivery_plan" not in result

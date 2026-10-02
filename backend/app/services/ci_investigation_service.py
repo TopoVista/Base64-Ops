@@ -197,6 +197,10 @@ class CIInvestigationService:
 
         # Compare the failed commit with its actual parent where it is locally
         # available. A missing parent is an explicit limitation, never a guess.
+        # Path hints from bounded failure excerpts are still useful without a
+        # compare result: the code workbench should focus a file explicitly
+        # named by the failing test/stack trace, never an arbitrary first file.
+        selected_paths: list[str] = []
         if repo_path:
             parent_sha = self.workspace.parent_commit(repo_path, run.head_sha)
             if parent_sha:
@@ -214,38 +218,43 @@ class CIInvestigationService:
                     change_result = None
                 if change_result is not None:
                     selected_paths = _select_relevant_paths(change_result.changed_paths, categories, run.workflow_path)
-                    relevant_paths = list(dict.fromkeys(path_hints + selected_paths))[:8]
-                    if relevant_paths:
-                        changed_sources: list[dict[str, Any]] = []
-                        for path in relevant_paths:
-                            text = self.workspace.read_file_at_ref(repo_path, path, run.head_sha)
-                            if text is not None:
-                                changed_sources.append(
-                                    {
-                                        "kind": "repo",
-                                        "source": path,
-                                        "excerpt": text,
-                                        "metadata": {
-                                            "state": "failed_run",
-                                            "untrusted": True,
-                                            "workflow_run_id": run.id,
-                                            "head_sha": run.head_sha,
-                                            "correlation": "changed_path",
-                                        },
-                                    }
-                                )
-                        changed_records = await self.evidence.record_sources(
-                            user_id=user_id,
-                            session=session,
-                            run_id=graph_run_id,
-                            sources=changed_sources,
-                            commit_sha=run.head_sha,
-                        )
-                        changed_file_evidence_ids = [record["id"] for record in changed_records]
                     if not change_result.complete and change_result.warning:
                         limitations.append(change_result.warning)
             else:
                 limitations.append("Unable to determine the parent commit for the failed run.")
+            relevant_paths = _prioritize_relevant_paths(
+                path_hints=path_hints,
+                changed_paths=selected_paths,
+                categories=categories,
+                workflow_path=run.workflow_path,
+            )
+            if relevant_paths:
+                changed_sources: list[dict[str, Any]] = []
+                for path in relevant_paths:
+                    text = self.workspace.read_file_at_ref(repo_path, path, run.head_sha)
+                    if text is not None:
+                        changed_sources.append(
+                            {
+                                "kind": "repo",
+                                "source": path,
+                                "excerpt": text,
+                                "metadata": {
+                                    "state": "failed_run",
+                                    "untrusted": True,
+                                    "workflow_run_id": run.id,
+                                    "head_sha": run.head_sha,
+                                    "correlation": "log_path" if path in path_hints else "changed_path",
+                                },
+                            }
+                        )
+                changed_records = await self.evidence.record_sources(
+                    user_id=user_id,
+                    session=session,
+                    run_id=graph_run_id,
+                    sources=changed_sources,
+                    commit_sha=run.head_sha,
+                )
+                changed_file_evidence_ids = [record["id"] for record in changed_records]
         return CIInvestigationContext(
             run_id=run.id,
             workflow_name=run.workflow_name,
@@ -303,6 +312,49 @@ def _select_relevant_paths(
         if len(selected) >= 8:
             break
     return selected
+
+
+def _prioritize_relevant_paths(
+    *,
+    path_hints: list[str],
+    changed_paths: list[str],
+    categories: set[CIFailureCategory],
+    workflow_path: str | None,
+) -> list[str]:
+    """Rank concrete log paths before broad changed-file correlation.
+
+    This is deterministic navigation assistance, not a causal claim.  For a
+    failed test, its test path is the safest first editor target. For a missing
+    file/configuration failure, the workflow is the first target because it
+    commonly establishes the failed working directory or command.
+    """
+    candidates = [*path_hints, *changed_paths]
+    if workflow_path and CIFailureCategory.MISSING_FILE in categories:
+        candidates.append(workflow_path)
+    normalized = list(dict.fromkeys([
+        path.replace("\\", "/").lstrip("./") for path in candidates
+    ]))
+
+    def score(path: str) -> tuple[int, int, str]:
+        name = path.rsplit("/", 1)[-1]
+        value = 50
+        if path in path_hints:
+            value -= 30
+        if CIFailureCategory.TEST_FAILURE in categories and ("/tests/" in f"/{path}" or name.startswith("test_")):
+            value -= 35
+        if CIFailureCategory.MISSING_FILE in categories and path == workflow_path:
+            value -= 40
+        dependency_files = {
+            "requirements.txt", "pyproject.toml", "package.json", "package-lock.json",
+            "poetry.lock", "pnpm-lock.yaml", "yarn.lock",
+        }
+        if CIFailureCategory.DEPENDENCY_FAILURE in categories and name in dependency_files:
+            value -= 25
+        if path == workflow_path:
+            value -= 8
+        return (value, len(path), path)
+
+    return sorted(normalized, key=score)[:8]
 
 
 def _extract_safe_path_hints(text: str, repo_path: Path) -> list[str]:
