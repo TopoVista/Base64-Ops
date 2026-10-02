@@ -1,12 +1,20 @@
 import { useMemo, useState } from "react";
 import { motion } from "motion/react";
-import Editor from "react-simple-code-editor";
-import { Bot, FileCode2, LoaderCircle, Play, ShieldCheck, Sparkles, WandSparkles } from "lucide-react";
+import EditorImport from "react-simple-code-editor";
+import { Bot, Copy, FileCode2, LoaderCircle, Play, ShieldCheck, Sparkles, WandSparkles } from "lucide-react";
 import { toast } from "sonner";
 import { DiffViewer } from "@/components/diff-viewer";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { applyApprovedPatch, streamDiagnostic } from "@/lib/api";
+
+// `react-simple-code-editor` is published as CommonJS with a `default` export.
+// Vite's development pre-bundle can expose that module wrapper directly, while
+// production resolves it to the component. Normalize both shapes before JSX so
+// the dashboard never attempts to render the module object.
+const Editor = (
+  EditorImport as unknown as { default?: typeof EditorImport }
+).default ?? EditorImport;
 
 type Props = {
   slugId: string;
@@ -73,6 +81,16 @@ export default function DiagnosticDashboard({ slugId, initialLog = "", initialPa
     }
   };
 
+  const copyProposal = async () => {
+    if (!activePatch) return;
+    try {
+      await navigator.clipboard?.writeText(activePatch);
+      toast.success("Exact proposal diff copied.");
+    } catch {
+      toast.error("Clipboard access is unavailable in this browser.");
+    }
+  };
+
   return (
     <section className="overflow-hidden rounded-2xl border border-cyan-400/20 bg-slate-950 text-slate-100 shadow-2xl shadow-cyan-950/30">
       <header className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 bg-slate-900/80 px-4 py-3">
@@ -98,13 +116,13 @@ export default function DiagnosticDashboard({ slugId, initialLog = "", initialPa
         <div className="bg-slate-950 p-4">
           <div className="mb-2 flex items-center justify-between gap-3">
             <p className="text-xs font-medium text-slate-300">Exact proposal diff</p>
-            <Button type="button" size="sm" onClick={deployApprovedPatch} disabled={!approvalId || deploying} className="animate-pulse bg-violet-500 text-white hover:bg-violet-400 disabled:animate-none disabled:opacity-50">
+            <div className="flex flex-wrap gap-2"><Button type="button" size="sm" variant="outline" onClick={() => void copyProposal()} disabled={!activePatch} className="border-white/20 bg-slate-900 text-slate-100 hover:bg-slate-800"><Copy className="size-4" />Copy diff</Button><Button type="button" size="sm" onClick={deployApprovedPatch} disabled={!approvalId || deploying} className="animate-pulse bg-violet-500 text-white hover:bg-violet-400 disabled:animate-none disabled:opacity-50">
               <ShieldCheck className={deploying ? "size-4 animate-pulse" : "size-4"} />
               {deploying ? "Delivering…" : "Deploy Autonomous Patch"}
-            </Button>
+            </Button></div>
           </div>
           {activePatch ? <DiffViewer patch={activePatch} viewMode="split" className="max-h-80 border-white/10 bg-slate-900 text-xs" /> : <div className="flex min-h-48 items-center rounded-lg border border-dashed border-white/15 bg-slate-900/70 p-4 text-sm leading-6 text-slate-400">No executable proposal yet. Ask the repository-backed assistant to create a validated DeliveryPlan; its exact diff will appear here for review.</div>}
-          <p className="mt-2 text-xs text-slate-500">Delivery is enabled only for a pre-existing exact approval. It never commits an arbitrary pasted patch.</p>
+          <p className="mt-2 text-xs text-slate-500">Copy a suggested exact diff into the reviewable code draft if you want to adapt it. Delivery is enabled only for a pre-existing exact approval; it never commits an arbitrary pasted patch.</p>
         </div>
       </div>
       <div className="grid gap-px border-t border-white/10 bg-white/10 xl:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
