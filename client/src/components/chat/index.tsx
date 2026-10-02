@@ -8,7 +8,7 @@ import type { GithubRepo } from "@/types/github.type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { MessageResponse } from "../ai-elements/message";
 import { DiffViewer } from "../diff-viewer";
@@ -379,8 +379,9 @@ const ChatInterface = ({
   const [indexStatus, setIndexStatus] = useState<"indexing" | "ready" | "empty" | "failed" | null>(initialIndexStatus);
   const [indexStatusMessage, setIndexStatusMessage] = useState<string | null>(initialIndexError);
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const { data: currentUser } = useBackendUser();
-  const { isReady: isTokenReady, hasToken } = useClerkApiToken();
+  const { isReady: isTokenReady } = useClerkApiToken();
   const isGithubConnected = Boolean(currentUser?.user?.githubConnected);
   const { data: backendHealth, isError: isBackendHealthError } = useQuery({
     queryKey: ["backend-health"],
@@ -431,7 +432,7 @@ const ChatInterface = ({
   const { data: githubRepos, isPending: isGithubRepoPending, error: githubReposError, refetch: refetchGithubRepos } = useQuery({
     queryKey: ["github-repos"],
     queryFn: getGithubRepos,
-    enabled: isGithubConnected && isTokenReady && hasToken,
+    enabled: isGithubConnected && isTokenReady,
     retry: false,
   });
 
@@ -446,13 +447,23 @@ const ChatInterface = ({
   );
 
   const reindexMutation = useMutation({
-    mutationFn: () => reindexSessionRag(slugId),
+    mutationFn: () => {
+      if (!repo) throw new Error("Select a repository before indexing it.");
+      return reindexSessionRag(slugId, {
+        repoUrl: repo.value,
+        defaultBranch: repo.defaultBranch,
+      });
+    },
     onSuccess: (data) => {
       const message = data.success
         ? `Index ready: ${data.indexed} repository chunks are available${data.storage ? ` through ${data.storage} retrieval` : ""}.${data.vectorWarning ? ` ${data.vectorWarning}` : ""}`
         : `Indexing did not complete: ${data.reason ?? "no supported repository files were found."}`;
       setIndexStatusMessage(message);
       setIndexStatus(data.status ?? (data.success ? "ready" : "failed"));
+      setIsSessionReady(true);
+      queryClient.invalidateQueries({ queryKey: ["user-sessions"] });
+      queryClient.invalidateQueries({ queryKey: ["session", slugId] });
+      if (!slugIdProp) navigate(`/session/${slugId}/assistant`, { replace: true });
       if (data.success) {
         toast.success(message);
       } else {
@@ -549,7 +560,7 @@ const ChatInterface = ({
             approvals={approvals}
             isGithubConnected={isGithubConnected}
             isFetchingRepos={isGithubRepoPending}
-            repoLoadError={githubReposError instanceof Error ? githubReposError.message : isTokenReady && !hasToken ? "Your Clerk session token is unavailable. Sign out and sign back in, then retry." : null}
+            repoLoadError={githubReposError instanceof Error ? githubReposError.message : null}
             repoOptions={repoOptions}
             onRefreshRepos={() => { void refetchGithubRepos(); }}
             onSubmit={handleSubmit}
