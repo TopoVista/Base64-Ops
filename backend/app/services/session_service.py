@@ -1,5 +1,6 @@
 import asyncio
 from collections.abc import AsyncIterator
+from datetime import UTC, datetime, timedelta
 from typing import Any
 from urllib.parse import urlparse
 
@@ -9,11 +10,24 @@ from pymongo.errors import PyMongoError
 
 from app.agent.graph import AgentGraph
 from app.db.mongo import get_db
+from app.git.actions import GitHubActionsAdapter
 from app.observability.recorder import MongoTraceExporter, TraceRecorder
-from app.schemas.session import ApprovalDecisionRequest, CreatePullRequestRequest, SessionChatRequest
-from app.services.delivery_service import DeliveryService
+from app.schemas.delivery import DeliveryPlan
+from app.schemas.patch import FileEditIntent, PatchProposal
+from app.schemas.session import (
+    ApprovalDecisionRequest,
+    CodeEditProposalRequest,
+    CommitMessageUpdateRequest,
+    CreatePullRequestRequest,
+    SessionChatRequest,
+)
+from app.services.ci_investigation_service import CIInvestigationService
+from app.services.ci_request_intent import extract_ci_request_intent
+from app.services.ci_run_resolution_service import CIRunResolutionService
+from app.services.delivery_service import DeliveryService, content_hash
 from app.services.evidence_service import EvidenceService
 from app.services.github_service import github_api
+from app.services.patch_engine import PatchEngine, PatchSafetyError
 from app.services.rag_service import RagService
 from app.services.redaction_service import RedactionService
 from app.services.serializers import serialize_doc
@@ -24,6 +38,24 @@ from app.utils.sse import sse_event
 
 agent_graph = AgentGraph()
 redactor = RedactionService()
+CI_REFRESH_INTERVAL = timedelta(minutes=1)
+
+
+def ci_refresh_due(value: Any) -> bool:
+    """Throttle automatic Actions discovery without making it one-shot."""
+    if not value:
+        return True
+    checked_at = value
+    if isinstance(value, str):
+        try:
+            checked_at = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        except ValueError:
+            return True
+    if not isinstance(checked_at, datetime):
+        return True
+    if checked_at.tzinfo is None:
+        checked_at = checked_at.replace(tzinfo=UTC)
+    return datetime.now(UTC) - checked_at >= CI_REFRESH_INTERVAL
 
 
 def safe_tool_result(value: dict[str, Any] | None) -> dict[str, Any] | None:
@@ -137,6 +169,20 @@ async def get_session_by_slug(user_id: str, slug_id: str) -> dict:
     session = await db.sessions.find_one({"userId": user_id, "slugId": slug_id})
     if not session:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
+    # Surface GitHub Actions failures without asking the user to paste a log.
+    # This remains a bounded read-only refresh and is best-effort: an OAuth or
+    # Actions-permission problem must not make the session itself unavailable.
+    if session.get("repoUrl") and ci_refresh_due(session.get("ciLastCheckedAt")):
+        try:
+            await refresh_latest_ci(user_id, slug_id)
+            refreshed = await db.sessions.find_one({"_id": session["_id"]})
+            if refreshed:
+                session = refreshed
+        except Exception:
+            await db.sessions.update_one(
+                {"_id": session["_id"]},
+                {"$set": {"ciLastCheckedAt": utc_now()}},
+            )
     messages = await db.messages.find({"sessionId": session["_id"]}).sort("createdAt", 1).to_list(500)
     latest = await db.investigations.find_one(
         {"userId": user_id, "sessionId": session["_id"]}, sort=[("createdAt", -1)]
@@ -181,6 +227,112 @@ async def list_session_code_files(user_id: str, slug_id: str) -> dict:
     return {"headSha": workspace.head_commit(repo_path), "files": files}
 
 
+async def get_session_git_status(user_id: str, slug_id: str) -> dict:
+    """Return git status --short output for the session workspace (read-only)."""
+    session = await get_db().sessions.find_one({"userId": user_id, "slugId": slug_id})
+    if not session:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
+    workspace = WorkspaceService()
+    repo_path, _ = await workspace.ensure_workspace(
+        user_id, slug_id, session["repoUrl"], session.get("defaultBranch")
+    )
+    result = workspace.git_status(repo_path)
+    redactor = RedactionService()
+    return {
+        "headSha": workspace.head_commit(repo_path),
+        "branch": workspace.current_branch(repo_path),
+        "output": redactor.redact(result.get("output", "")) if result.get("success") else "",
+        "success": result.get("success", False),
+    }
+
+
+async def get_session_git_diff(user_id: str, slug_id: str) -> dict:
+    """Return git diff (staged + unstaged) for the session workspace (read-only)."""
+    session = await get_db().sessions.find_one({"userId": user_id, "slugId": slug_id})
+    if not session:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
+    workspace = WorkspaceService()
+    repo_path, _ = await workspace.ensure_workspace(
+        user_id, slug_id, session["repoUrl"], session.get("defaultBranch")
+    )
+    # Full unified diff is bounded and redacted before returning.
+    result = workspace._run(["git", "diff", "--unified=3"], cwd=repo_path)
+    redactor = RedactionService()
+    raw = result.get("output", "") if result.get("success") else ""
+    return {
+        "headSha": workspace.head_commit(repo_path),
+        "branch": workspace.current_branch(repo_path),
+        "diff": redactor.redact(raw[:80_000]),  # bounded: never send huge diffs to the browser
+        "truncated": len(raw) > 80_000,
+        "success": result.get("success", False),
+    }
+
+
+async def list_session_recent_commits(user_id: str, slug_id: str) -> dict:
+    """Return bounded, read-only commit metadata for the session Code view."""
+    session = await get_db().sessions.find_one({"userId": user_id, "slugId": slug_id})
+    if not session:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
+    workspace = WorkspaceService()
+    repo_path, _ = await workspace.ensure_workspace(
+        user_id, slug_id, session["repoUrl"], session.get("defaultBranch")
+    )
+    workspace.hydrate_recent_history(repo_path, session.get("defaultBranch"))
+    commits = workspace.recent_commits(repo_path)
+
+    # Actions status is optional read-only presentation data. A missing OAuth
+    # grant, transient GitHub issue, or rate limit must never hide local commit
+    # history or turn it into a write capability.
+    try:
+        # A reviewed delivery intentionally runs on its own branch. Query that
+        # branch instead of the session's original default branch so the right
+        # IDE rail can show the real Actions result for the commit the user
+        # just approved and pushed.
+        active_branch = workspace.current_branch(repo_path) or session.get("defaultBranch")
+        runs = await GitHubActionsAdapter().list_workflow_runs(
+            user_id=user_id,
+            repository_id=session["repoUrl"],
+            branch=active_branch,
+        )
+        newest_by_sha: dict[str, Any] = {}
+        for run in runs:
+            existing = newest_by_sha.get(run.head_sha)
+            is_newer = existing is not None and run.updated_at and (
+                not existing.updated_at or run.updated_at > existing.updated_at
+            )
+            if existing is None or is_newer:
+                newest_by_sha[run.head_sha] = run
+        for commit in commits:
+            run = newest_by_sha.get(commit["sha"])
+            commit["ci"] = (
+                {
+                    "status": run.status,
+                    "conclusion": run.conclusion,
+                    "workflow": run.workflow_name,
+                    "url": run.html_url,
+                }
+                if run
+                else {"status": "not_observed", "conclusion": None}
+            )
+    except Exception:
+        for commit in commits:
+            commit["ci"] = {"status": "unavailable", "conclusion": None}
+
+    return {"headSha": workspace.head_commit(repo_path), "commits": commits}
+
+
+async def get_session_dependency_graph(user_id: str, slug_id: str) -> dict:
+    """Return a tenant-scoped, static local-import graph for the Code view."""
+    session = await get_db().sessions.find_one({"userId": user_id, "slugId": slug_id})
+    if not session:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
+    workspace = WorkspaceService()
+    repo_path, _ = await workspace.ensure_workspace(
+        user_id, slug_id, session["repoUrl"], session.get("defaultBranch")
+    )
+    return workspace.dependency_graph(repo_path)
+
+
 async def read_session_code_file(user_id: str, slug_id: str, path: str) -> dict:
     """Read one safe repository file through the existing workspace boundary.
 
@@ -197,11 +349,181 @@ async def read_session_code_file(user_id: str, slug_id: str, path: str) -> dict:
     content = workspace.read_file(repo_path, path)
     max_chars = 64_000
     truncated = len(content) > max_chars
+    displayed_content = redactor.redact(content[:max_chars])
+    contains_redactions = displayed_content != content[:max_chars]
     return {
         "path": path,
         "headSha": workspace.head_commit(repo_path),
-        "content": redactor.redact(content[:max_chars]),
+        "contentHash": content_hash(content),
+        "content": displayed_content,
         "truncated": truncated,
+        # Never let a redacted browser representation become a replacement for
+        # the real source file. It remains readable, but is proposal-locked.
+        "containsRedactions": contains_redactions,
+        "editable": not truncated and not contains_redactions,
+    }
+
+
+async def propose_code_edit(user_id: str, slug_id: str, payload: CodeEditProposalRequest) -> dict:
+    """Turn one browser edit into the normal validated, approval-bound plan.
+
+    The browser never writes a workspace. Its submitted text is untrusted draft
+    input. We first verify the exact current file hash, create current-source
+    evidence, then let the existing patch engine produce the candidate diff,
+    risk classification, validation results, and exact approval binding.
+    """
+    db = get_db()
+    session = await db.sessions.find_one({"userId": user_id, "slugId": slug_id})
+    if not session:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
+    workspace = WorkspaceService()
+    repo_path, _ = await workspace.ensure_workspace(
+        user_id, slug_id, session["repoUrl"], session.get("defaultBranch") or "main"
+    )
+    try:
+        current_content = workspace.read_file(repo_path, payload.path)
+    except HTTPException:
+        raise
+    if redactor.redact(current_content) != current_content:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Files containing redacted values cannot be edited from the browser.",
+        )
+    if content_hash(current_content) != payload.expectedOriginalHash:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="The source file changed after it was opened. Reload it and review the edit again.",
+        )
+
+    run_id = new_id("run_")
+    source_records = await EvidenceService().record_sources(
+        user_id=user_id,
+        session={
+            "_id": session["_id"],
+            "repoUrl": session["repoUrl"],
+            "defaultBranch": session.get("defaultBranch"),
+        },
+        run_id=run_id,
+        sources=[
+            {
+                "kind": "repo",
+                "source": payload.path,
+                "excerpt": current_content,
+                "metadata": {"state": "current", "origin": "code_editor", "untrusted": True},
+            }
+        ],
+        commit_sha=workspace.head_commit(repo_path),
+    )
+    evidence_ids = [record["id"] for record in source_records]
+    summary = (payload.commitMessage or f"Update {payload.path}").strip()
+    proposal = PatchProposal(
+        summary=summary,
+        rationale="User-authored code draft, constrained to the currently evidenced repository file.",
+        evidence_ids=evidence_ids,
+        edits=[
+            FileEditIntent(
+                path=payload.path,
+                operation="modify",
+                reason="User-authored draft requires exact review and approval.",
+                evidence_ids=evidence_ids,
+                expected_original_hash=payload.expectedOriginalHash,
+                proposed_content=payload.proposedContent,
+            )
+        ],
+    )
+    repository_map = workspace.repository_map(repo_path)
+    try:
+        plan, surfaces = PatchEngine().build_delivery_plan(
+            proposal=proposal,
+            user_id=user_id,
+            session_id=session["_id"],
+            run_id=run_id,
+            repository_id=session["repoUrl"],
+            base_branch=workspace.current_branch(repo_path) or session.get("defaultBranch") or "main",
+            base_sha=workspace.head_commit(repo_path) or "",
+            repo_path=repo_path,
+            evidence=source_records,
+            repo_map=repository_map,
+        )
+    except PatchSafetyError as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
+
+    delivery = DeliveryService()
+    validation = delivery.validate_plan(plan, repo_path)
+    if any(result.status in {"failed", "error"} and result.step_id != "review" for result in validation):
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="The proposed edit did not pass its required pre-approval validation.",
+        )
+    plan_document = await delivery.persist_plan(plan)
+    approval = await delivery.create_approval(plan)
+    await db.investigations.update_one(
+        {"userId": user_id, "sessionId": session["_id"], "runId": run_id},
+        {
+            "$set": {
+                "userId": user_id,
+                "sessionId": session["_id"],
+                "runId": run_id,
+                "repository": {
+                    "name": session.get("repoName"),
+                    "branch": plan.base_branch,
+                    "commit_sha": plan.base_sha,
+                    "file_count": repository_map["fileCount"],
+                    "ci_files": repository_map["ci"],
+                    "manifests": repository_map["manifests"],
+                },
+                "investigation": None,
+                "memory": [],
+                "ci": None,
+                "timeline": [
+                    {
+                        "id": new_id("evt_"),
+                        "label": "Code edit proposed",
+                        "detail": payload.path,
+                        "status": "completed",
+                    },
+                    {
+                        "id": new_id("evt_"),
+                        "label": "Risk classified",
+                        "detail": plan.risk_level.upper(),
+                        "status": "completed",
+                    },
+                    {
+                        "id": new_id("evt_"),
+                        "label": "Approval requested",
+                        "detail": "Exact diff is ready for review",
+                        "status": "completed",
+                    },
+                ],
+                "deliveryPlan": plan_document,
+                "toolResult": None,
+                "approvals": [{
+                    **approval,
+                    "action": "Create reviewable code edit",
+                    "summary": plan.rationale,
+                    "risk": "approval_required",
+                    "riskLevel": plan.risk_level,
+                    "baseBranch": plan.base_branch,
+                    "baseSha": plan.base_sha,
+                    "files": [item.model_dump(exclude={"proposed_content"}) for item in plan.files],
+                    "validation": [item.model_dump() for item in validation],
+                    "evidenceIds": evidence_ids,
+                }],
+                "evidence": [serialize_doc(item) for item in source_records],
+                "createdAt": utc_now(),
+            }
+        },
+        upsert=True,
+    )
+    await db.sessions.update_one({"_id": session["_id"]}, {"$set": {"latestRunId": run_id}})
+    return {
+        "deliveryPlan": plan_document,
+        "approval": {
+            **approval,
+            "riskLevel": plan.risk_level,
+            "validation": [item.model_dump() for item in validation],
+        },
+        "changeSurfaces": [item.model_dump() for item in surfaces],
     }
 
 
@@ -236,6 +558,10 @@ async def chat_stream(user_id: str, payload: SessionChatRequest) -> AsyncIterato
             "default_branch": session.get("defaultBranch") or "main",
             "branch_name": session.get("branchName") or branch_name_from_prompt(prompt),
             "prompt": prompt,
+            # Explicitly write None for ordinary chats too. LangGraph keeps
+            # session state, so omitting this field could accidentally retain
+            # a target from an earlier CI remediation request.
+            "patch_target_path": payload.patchTargetPath,
             "run_id": run_id,
             "trace_id": trace.id,
         }
@@ -360,6 +686,54 @@ def chunk_for_stream(text: str, size: int = 80) -> list[str]:
     return [text[index : index + size] for index in range(0, len(text), size)] or [""]
 
 
+async def update_delivery_commit_message(
+    user_id: str,
+    slug_id: str,
+    plan_id: str,
+    payload: CommitMessageUpdateRequest,
+) -> dict:
+    """Replace a pending approval after the user changes its commit message.
+
+    The exact diff never changes here. The prior approval is invalidated and a
+    new one is created with the selected title in canonical arguments, so a
+    later push cannot use a message the reviewer did not see.
+    """
+    db = get_db()
+    session = await db.sessions.find_one({"userId": user_id, "slugId": slug_id})
+    if not session:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
+    plan = await db.delivery_plans.find_one(
+        {"id": plan_id, "userId": user_id, "sessionId": session["_id"]}
+    )
+    if not plan:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Delivery plan not found")
+    message = payload.commitMessage.strip()
+    if not message:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Commit message is required")
+    if plan.get("title") == message:
+        pending = await db.approvals.find_one(
+            {"deliveryPlanId": plan_id, "userId": user_id, "status": "pending"}
+        )
+        return {"deliveryPlan": serialize_doc(plan), "approval": serialize_doc(pending) if pending else None}
+
+    await db.approvals.update_many(
+        {"deliveryPlanId": plan_id, "userId": user_id, "status": "pending"},
+        {"$set": {"status": "invalidated", "invalidationReason": "Commit message changed", "updatedAt": utc_now()}},
+    )
+    await db.delivery_plans.update_one(
+        {"id": plan_id, "userId": user_id}, {"$set": {"title": message, "updatedAt": utc_now()}}
+    )
+    updated = await db.delivery_plans.find_one({"id": plan_id, "userId": user_id})
+    if not updated:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Delivery plan not found")
+    approval = await DeliveryService().create_approval(DeliveryPlan.model_validate(updated))
+    await db.investigations.update_many(
+        {"userId": user_id, "sessionId": session["_id"], "deliveryPlan.id": plan_id},
+        {"$set": {"deliveryPlan": updated, "approvals": [approval]}},
+    )
+    return {"deliveryPlan": serialize_doc(updated), "approval": serialize_doc(approval)}
+
+
 async def decide_approval(user_id: str, slug_id: str, approval_id: str, payload: ApprovalDecisionRequest) -> dict:
     db = get_db()
     session = await db.sessions.find_one({"userId": user_id, "slugId": slug_id})
@@ -427,12 +801,52 @@ async def decide_approval(user_id: str, slug_id: str, approval_id: str, payload:
     return {"approval": {**approval, "status": payload.decision}, "message": serialize_doc(message), "result": result}
 
 
-async def reindex_session(user_id: str, slug_id: str) -> dict:
-    session = await get_db().sessions.find_one({"userId": user_id, "slugId": slug_id})
-    if not session:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
+async def reindex_session(
+    user_id: str,
+    slug_id: str,
+    *,
+    repo_url: str | None = None,
+    default_branch: str | None = None,
+) -> dict:
+    """Index an existing session or create a repository-only session first.
+
+    Indexing is a read-only workspace operation. It must not require an
+    unrelated agent prompt merely to create the session that owns its evidence.
+    A pre-existing session remains bound to its original repository so a browser
+    cannot silently swap repositories under an existing slug.
+    """
     db = get_db()
-    await db.sessions.update_one({"_id": session["_id"]}, {"$set": {"indexStatus": "indexing", "indexError": None}})
+    try:
+        session = await db.sessions.find_one({"userId": user_id, "slugId": slug_id})
+    except PyMongoError as exc:
+        return {"success": False, "status": "failed", "indexed": 0, "reason": index_failure_reason(exc)}
+    if not session:
+        if not repo_url:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Select a repository before indexing it.",
+            )
+        session = await get_or_create_session(
+            user_id,
+            SessionChatRequest(
+                slugId=slug_id,
+                repoUrl=repo_url,
+                defaultBranch=default_branch or "main",
+            ),
+            "Repository index",
+        )
+    elif repo_url and repo_url != session.get("repoUrl"):
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="This session is already bound to a different repository.",
+        )
+    try:
+        await db.sessions.update_one(
+            {"_id": session["_id"]},
+            {"$set": {"indexStatus": "indexing", "indexError": None}},
+        )
+    except PyMongoError as exc:
+        return {"success": False, "status": "failed", "indexed": 0, "reason": index_failure_reason(exc)}
     try:
         repo_path, _repo_name = await WorkspaceService().ensure_workspace(
             user_id,
@@ -443,19 +857,27 @@ async def reindex_session(user_id: str, slug_id: str) -> dict:
         result = await RagService().index_workspace(session, repo_path)
         reason = "Repository contains no supported indexable files." if not result.get("indexed") else None
         index_status = "ready" if result.get("indexed") else "empty"
-        await db.sessions.update_one(
-            {"_id": session["_id"]},
-            {"$set": {"indexStatus": index_status, "indexError": reason, "indexedAt": utc_now()}},
-        )
+        try:
+            await db.sessions.update_one(
+                {"_id": session["_id"]},
+                {"$set": {"indexStatus": index_status, "indexError": reason, "indexedAt": utc_now()}},
+            )
+        except PyMongoError as exc:
+            return {"success": False, "status": "failed", "indexed": 0, "reason": index_failure_reason(exc)}
         return {"success": bool(result.get("indexed")), "status": index_status, "reason": reason, **result}
     except HTTPException as exc:
         reason = str(exc.detail)
     except Exception as exc:
         reason = index_failure_reason(exc)
-    await db.sessions.update_one(
-        {"_id": session["_id"]},
-        {"$set": {"indexStatus": "failed", "indexError": reason, "indexedAt": utc_now()}},
-    )
+    try:
+        await db.sessions.update_one(
+            {"_id": session["_id"]},
+            {"$set": {"indexStatus": "failed", "indexError": reason, "indexedAt": utc_now()}},
+        )
+    except PyMongoError:
+        # A lost Atlas connection must not turn an understandable indexing
+        # failure into a generic 500 response in the browser.
+        pass
     return {"success": False, "status": "failed", "indexed": 0, "reason": reason}
 
 
@@ -483,6 +905,102 @@ async def list_evidence(user_id: str, slug_id: str) -> dict:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
     evidence = await EvidenceService().list_for_session(user_id, session["_id"])
     return {"evidence": [serialize_doc(item) for item in evidence]}
+
+
+async def refresh_latest_ci(user_id: str, slug_id: str) -> dict:
+    """Bring the newest failed Actions run into the session's read-only CI view.
+
+    This is intentionally an explicit server-side read operation: it uses the
+    repository bound to the authenticated session, never a browser-supplied
+    owner/name or run ID. It persists only normal, redacted evidence produced
+    by the existing CI investigation service.
+    """
+    db = get_db()
+    session = await db.sessions.find_one({"userId": user_id, "slugId": slug_id})
+    if not session:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
+    workspace = WorkspaceService()
+    repo_path, repo_name = await workspace.ensure_workspace(
+        user_id, slug_id, session["repoUrl"], session.get("defaultBranch") or "main"
+    )
+    resolved = await CIRunResolutionService().resolve(
+        user_id=user_id,
+        repository_id=session["repoUrl"],
+        intent=extract_ci_request_intent("latest failed CI run"),
+    )
+    if not resolved:
+        await db.sessions.update_one({"_id": session["_id"]}, {"$set": {"ciLastCheckedAt": utc_now()}})
+        return {
+            "status": "no_failed_runs",
+            "message": "No failed GitHub Actions run was available for this repository.",
+        }
+
+    graph_run_id = new_id("run_")
+    context = await CIInvestigationService(workspace=workspace).investigate_actions_run(
+        user_id=user_id,
+        repository_id=session["repoUrl"],
+        run_id=resolved.run_id,
+        session={
+            "_id": session["_id"],
+            "repoUrl": session["repoUrl"],
+            "defaultBranch": session.get("defaultBranch"),
+        },
+        graph_run_id=graph_run_id,
+        current_head_sha=workspace.head_commit(repo_path),
+        repo_path=repo_path,
+    )
+    evidence_ids = context.evidence_ids + context.workflow_evidence_ids + context.changed_file_evidence_ids
+    evidence = await db.evidence.find({"id": {"$in": evidence_ids}}).to_list(len(evidence_ids) or 1)
+    repository_map = workspace.repository_map(repo_path)
+    timeline = [
+        {
+            "id": new_id("evt_"),
+            "label": "GitHub Actions refreshed",
+            "detail": f"{resolved.workflow_name or 'Workflow'} run #{resolved.run_id}; "
+            f"{len(context.failed_jobs)} failed job(s)",
+            "status": "partial" if context.incomplete else "completed",
+        }
+    ]
+    await db.investigations.update_one(
+        {"userId": user_id, "sessionId": session["_id"], "runId": graph_run_id},
+        {
+            "$set": {
+                "userId": user_id,
+                "sessionId": session["_id"],
+                "runId": graph_run_id,
+                "repository": {
+                    "name": repo_name,
+                    "branch": session.get("defaultBranch") or "main",
+                    "commit_sha": workspace.head_commit(repo_path),
+                    "file_count": repository_map["fileCount"],
+                    "ci_files": repository_map["ci"],
+                    "manifests": repository_map["manifests"],
+                },
+                "investigation": None,
+                "memory": [],
+                "ci": context.model_dump(mode="json"),
+                "timeline": timeline,
+                "deliveryPlan": None,
+                "toolResult": None,
+                "approvals": [],
+                "evidence": [serialize_doc(item) for item in evidence],
+                "createdAt": utc_now(),
+            }
+        },
+        upsert=True,
+    )
+    await db.sessions.update_one(
+        {"_id": session["_id"]},
+        {"$set": {"latestRunId": graph_run_id, "ciLastCheckedAt": utc_now()}},
+    )
+    return {
+        "status": "found",
+        "runId": resolved.run_id,
+        "workflowName": resolved.workflow_name,
+        "failedJobs": len(context.failed_jobs),
+        "incomplete": context.incomplete,
+        "limitations": context.limitations,
+    }
 
 
 async def get_run_replay(user_id: str, slug_id: str, run_id: str) -> dict:
