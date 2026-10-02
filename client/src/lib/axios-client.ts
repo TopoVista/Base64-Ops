@@ -45,6 +45,11 @@ API.interceptors.response.use(
     apiError.errorCode = data?.errorCode || "UNKNOWN_ERROR";
     if (data?.detail || data?.message) {
       apiError.message = data.detail || data.message;
+    } else if (error.code === "ECONNABORTED") {
+      apiError.message = "The Base64 backend took too long to respond. Check the backend and MongoDB connection, then retry.";
+    } else if (error.message === "Network Error") {
+      const backendUrl = BASE_API_URL?.replace(/\/api\/?$/, "") ?? "the configured backend";
+      apiError.message = `Cannot reach the Base64 backend at ${backendUrl}. Confirm it is running and that the local network/DNS connection is available.`;
     }
     return Promise.reject(apiError);
   }
