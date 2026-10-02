@@ -27,6 +27,22 @@ Register this GitHub OAuth callback:
 - The maintenance cron accepts only allowlisted internal job types from `background_jobs`; it never executes user-provided shell commands.
 - GitHub writes, workflow dispatches, deployments, commits, pushes, and pull requests remain approval-gated.
 - Add a dedicated worker only when a real, durable long-running job type exists; document its ownership and resource budget first.
+
+## Release checklist
+
+1. In Vercel, set the project root to `client`, use `npm run build`, and set the two `VITE_*` variables for **Production**, Preview, and Development as appropriate. The public API URL must end in `/api/`.
+2. In Render, create the Blueprint from this repository and enter every `sync: false` value in Render's secret manager. Do not place secrets in `render.yaml`, Vercel variables committed to Git, or client bundles.
+3. Set `FRONTEND_ORIGIN` to the exact Vercel production origin and `BASE_URL` to the exact Render API origin. Register `<BASE_URL>/api/github/callback` with the GitHub OAuth application.
+4. Allow Render's outbound addresses in the MongoDB Atlas network access rules, then wait for `GET <BASE_URL>/health` to report `database: connected`.
+5. Verify a signed-in browser can call `/api/auth/me`, reconnect GitHub, list repositories, and create a read-only session before enabling delivery work.
+
+## 512 MB service boundary
+
+The Blueprint deliberately runs the public API and maintenance cron at Render's `0.5c-512mb` size. Repository data, evidence, sessions, approvals, and traces are durable in Atlas; a Render filesystem is never the source of truth.
+
+Render's native Python service does not provide the Docker isolation required to run repository-controlled test commands safely. The Blueprint therefore sets `EXECUTION_MODE=disabled`: static checks and all evidence/approval controls remain available, but an active validator is denied rather than falling back to execution inside the API process. Deploy a dedicated isolated worker before enabling active repository-command validation in production.
+
+After an approved draft-PR delivery, GitHub Actions remains the authoritative CI result. Base64 displays the reported run state; it does not claim that tests passed until GitHub reports a completed successful run.
 # Deployment readiness audit
 
 The repository contains a Vercel SPA configuration and a Render blueprint for the API and maintenance job. The production API binds to `$PORT` and provides `/health`; browser origin and OAuth callback values must be configured through `FRONTEND_ORIGIN` and `BASE_URL` rather than committed.
