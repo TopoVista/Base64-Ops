@@ -12,12 +12,22 @@ services:
     healthCheckPath: /health
     autoDeploy: checksPass
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.5
       - key: ENVIRONMENT
         value: production
       - key: MONGO_URI
         sync: false
       - key: MONGO_DB_NAME
         value: langgraph_devops_agent
+      # Render's native runtime does not expose Docker isolation. Never run
+      # repository-controlled validation commands in the API process.
+      - key: EXECUTION_MODE
+        value: disabled
+      - key: USE_DOCKER_WORKSPACES
+        value: "false"
+      - key: VALIDATION_MEMORY_MB
+        value: "384"
       - key: FRONTEND_ORIGIN
         sync: false
       - key: BASE_URL
@@ -49,6 +59,8 @@ services:
     startCommand: python -m app.workers.worker --once
     schedule: "0 */6 * * *"
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.5
       - key: SERVICE_ROLE
         value: maintenance
       - key: MONGO_URI
