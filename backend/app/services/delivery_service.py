@@ -169,7 +169,13 @@ class DeliveryService:
         return document
 
     async def create_approval(self, plan: DeliveryPlan) -> dict[str, Any]:
-        payload = self.approval_payload(plan, "create_draft_pull_request")
+        # The commit/PR title is an execution argument, so it must be bound to
+        # approval just like branch, SHA and exact diff. Changing it requires
+        # an explicit replacement approval rather than silently altering an
+        # approved delivery.
+        payload = self.approval_payload(
+            plan, "create_draft_pull_request", {"commit_message": plan.title}
+        )
         record = ApprovalRecord(
             id=new_id("apr_"),
             user_id=plan.user_id,

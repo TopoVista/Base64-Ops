@@ -4,7 +4,7 @@ from pathlib import Path
 from app.policy import ToolRisk, get_policy, requires_approval
 from app.schemas.delivery import DeliveryPlan, ProposedFileChange
 from app.schemas.patch import FileEditIntent, PatchProposal
-from app.services.delivery_service import DeliveryService, content_hash
+from app.services.delivery_service import DeliveryService, canonical_json, content_hash
 from app.services.patch_engine import PatchEngine, PatchSafetyError
 
 
@@ -115,6 +115,44 @@ def test_approval_hash_is_stable_and_changes_with_diff() -> None:
     assert service.approval_payload(plan, "create_draft_pull_request") == payload
     changed = plan.model_copy(update={"files": [change.model_copy(update={"unified_diff": "different"})]})
     assert service.approval_payload(changed, "create_draft_pull_request")["diff_hash"] != payload["diff_hash"]
+
+
+def test_commit_message_is_part_of_the_delivery_approval_binding() -> None:
+    change = ProposedFileChange(
+        path="backend/app/main.py",
+        change_type="modify",
+        original_hash=content_hash("before\n"),
+        proposed_hash=content_hash("after\n"),
+        unified_diff="-before\n+after\n",
+        proposed_content="after\n",
+    )
+    plan = DeliveryPlan(
+        id="dpl_commit_message",
+        user_id="usr_1",
+        session_id="ses_1",
+        run_id="run_1",
+        repository_id="repo_1",
+        base_branch="main",
+        base_sha="a" * 40,
+        title="Fix CI working directory",
+        rationale="The workflow needs the current application path.",
+        files=[change],
+        validation_steps=[],
+        risk_level="high",
+        created_at=datetime.now(UTC),
+    )
+    service = DeliveryService()
+    initial = service.approval_payload(
+        plan, "create_draft_pull_request", {"commit_message": plan.title}
+    )
+    renamed = plan.model_copy(update={"title": "ci: correct the working directory"})
+    replacement = service.approval_payload(
+        renamed, "create_draft_pull_request", {"commit_message": renamed.title}
+    )
+
+    assert initial["diff_hash"] == replacement["diff_hash"]
+    assert initial["canonical_arguments"] != replacement["canonical_arguments"]
+    assert canonical_json(initial) != canonical_json(replacement)
 
 
 def test_changed_head_invalidates_approval(tmp_path: Path) -> None:
