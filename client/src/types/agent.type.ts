@@ -61,6 +61,8 @@ export type CIInvestigationSummary = {
   applicability?: "current" | "historical_fixed" | "historical_needs_verification";
   applicability_reason?: string;
   failed_jobs: Array<{ name: string; failed_step?: string }>;
+  /** Ordered navigation targets derived from bounded CI evidence. */
+  relevant_paths?: string[];
   limitations: string[];
 };
 

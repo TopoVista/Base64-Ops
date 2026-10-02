@@ -74,9 +74,10 @@ export const decideSessionApproval = async (
 };
 
 export const reindexSessionRag = async (
-  slugId: string
+  slugId: string,
+  repository?: { repoUrl: string; defaultBranch?: string },
 ): Promise<{ success: boolean; indexed: number; status?: "ready" | "empty" | "failed"; reason?: string; storage?: "lexical" | "vector"; vectorWarning?: string }> => {
-  const response = await API.post(`/session/${slugId}/rag/reindex`);
+  const response = await API.post(`/session/${slugId}/rag/reindex`, repository);
   return response.data;
 };
 
@@ -84,6 +85,19 @@ export const getSessionRagSources = async (
   slugId: string
 ): Promise<{ sources: RagSource[] }> => {
   const response = await API.get(`/session/${slugId}/rag/sources`);
+  return response.data;
+};
+
+export const refreshLatestSessionCi = async (slugId: string) => {
+  const response = await API.post<{
+    status: "found" | "no_failed_runs";
+    runId?: number;
+    workflowName?: string;
+    failedJobs?: number;
+    incomplete?: boolean;
+    limitations?: string[];
+    message?: string;
+  }>(`/session/${slugId}/ci/refresh`);
   return response.data;
 };
 
@@ -109,9 +123,55 @@ export const getSessionCodeFiles = async (slugId: string): Promise<{ headSha?: s
   return response.data;
 };
 
-export const getSessionCodeFile = async (slugId: string, path: string): Promise<{ path: string; headSha?: string; content: string; truncated: boolean }> => {
-  const response = await API.get(`/session/${slugId}/code/file`, { params: { path } });
+export const getSessionRecentCommits = async (slugId: string): Promise<{
+  headSha?: string;
+  commits: Array<{ sha: string; shortSha: string; author: string; date: string; subject: string }>;
+}> => {
+  const response = await API.get(`/session/${slugId}/code/commits`);
   return response.data;
+};
+
+export const getSessionDependencyGraph = async (slugId: string): Promise<{ headSha?: string; nodes: string[]; edges: Array<{ from: string; to: string }>; mermaid: string; truncated: boolean }> => {
+  const response = await API.get(`/session/${slugId}/code/dependency-graph`);
+  return response.data;
+};
+
+export const getSessionCodeFile = async (slugId: string, path: string): Promise<{ path: string; headSha?: string; contentHash: string; content: string; truncated: boolean; containsRedactions: boolean; editable: boolean }> => {
+  const response = await API.get(`/session/${slugId}/code/file`, { params: { path } });
+  // A redacted representation is safe to inspect but must be locked in the
+  // browser as well as enforced by the server-side proposal endpoint.
+  return { ...response.data, truncated: Boolean(response.data.truncated || !response.data.editable) };
+};
+
+export const getSessionGitStatus = async (slugId: string): Promise<{
+  headSha?: string; branch?: string; output: string; success: boolean;
+}> => {
+  const response = await API.get(`/session/${slugId}/code/git-status`);
+  return response.data;
+};
+
+export const getSessionGitDiff = async (slugId: string): Promise<{
+  headSha?: string; branch?: string; diff: string; truncated: boolean; success: boolean;
+}> => {
+  const response = await API.get(`/session/${slugId}/code/git-diff`);
+  return response.data;
+};
+
+export const proposeSessionCodeEdit = async (
+  slugId: string,
+  payload: { path: string; expectedOriginalHash: string; proposedContent: string; commitMessage?: string },
+) => {
+  const response = await API.post(`/session/${slugId}/code/propose`, payload);
+  return response.data as { approval: { id: string; riskLevel: string }; deliveryPlan: { id: string } };
+};
+
+export const updateSessionDeliveryCommitMessage = async (
+  slugId: string,
+  planId: string,
+  commitMessage: string,
+) => {
+  const response = await API.patch(`/session/${slugId}/delivery-plan/${planId}/commit-message`, { commitMessage });
+  return response.data as { deliveryPlan: { id: string; title: string }; approval: { id: string } | null };
 };
 
 export const getUserSessionsWithSearch = async (params?: {
@@ -140,7 +200,7 @@ export const applyApprovedPatch = async (slugId: string, approvalId: string) => 
 };
 
 export const streamDiagnostic = async (
-  payload: { sessionSlugId: string; failedLog: string; gitDiff: string; originalContent?: string; generateFix?: boolean },
+  payload: { sessionSlugId: string; failedLog: string; gitDiff: string; filePath?: string; originalContent?: string; generateFix?: boolean },
   onEvent: (event: string, data: Record<string, unknown>) => void,
 ) => {
   const token = await getAccessToken();
