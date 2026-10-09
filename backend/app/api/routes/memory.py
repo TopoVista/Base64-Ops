@@ -30,32 +30,6 @@ def _repository_id_from_url(raw: str) -> str:
     return raw.strip()
 
 
-@router.get("/{repository_id:path}")
-async def list_memory_entries(
-    repository_id: str,
-    include_stale: bool = Query(default=False),
-    limit: int = Query(default=50, ge=1, le=200),
-    current_user: dict[str, Any] = Depends(get_current_user),
-) -> dict[str, Any]:
-    """List operational memory entries for a repository, scoped to the current user."""
-    settings = get_settings()
-    if not settings.memory_enabled:
-        return {"entries": [], "memory_enabled": False}
-
-    entries = await _memory.list_entries(
-        user_id=current_user["id"],
-        repository_id=_repository_id_from_url(repository_id),
-        include_stale=include_stale,
-        limit=limit,
-    )
-    return {
-        "repository_id": repository_id,
-        "count": len(entries),
-        "include_stale": include_stale,
-        "entries": entries,
-    }
-
-
 @router.get("/{repository_id:path}/staleness")
 async def get_staleness_report(
     repository_id: str,
@@ -72,7 +46,7 @@ async def get_staleness_report(
 
     db = get_db()
     base_filter = {
-        "user_id": current_user["id"],
+        "user_id": current_user["_id"],
         "repository_id": _repository_id_from_url(repository_id),
         "branch": branch,
         "deleted_at": None,
@@ -116,7 +90,7 @@ async def trigger_staleness_check(
         )
 
     report = await _memory.check_staleness(
-        user_id=current_user["id"],
+        user_id=current_user["_id"],
         repository_id=_repository_id_from_url(repository_id),
         branch=branch,
         current_commit_sha=commit_sha,
@@ -131,7 +105,7 @@ async def delete_memory_entry(
 ) -> dict[str, Any]:
     """Soft-delete a single memory entry.  Only the owning user may delete their entries."""
     deleted = await _memory.delete_entry(
-        user_id=current_user["id"],
+        user_id=current_user["_id"],
         entry_id=entry_id,
     )
     if not deleted:
@@ -168,7 +142,7 @@ async def refresh_memory_entry(
 
     result = await _memory.refresh_entry_freshness(
         entry_id=entry_id,
-        user_id=current_user["id"],
+        user_id=current_user["_id"],
         current_sha=commit_sha,
         repository_id=_repository_id_from_url(repository_id),
     )
@@ -207,14 +181,44 @@ async def promote_memory_entry(
 
     result = await _memory.promote_to_merged_fix(
         entry_id=entry_id,
-        user_id=current_user["id"],
+        user_id=current_user["_id"],
         repository_id=_repository_id_from_url(repository_id),
         pr_number=pr_number,
-        user_id_for_github=current_user["id"],
+        user_id_for_github=current_user["_id"],
     )
 
     return {
         "entry_id": entry_id,
         "repository_id": repository_id,
         **result,
+    }
+
+
+@router.get("/{repository_id:path}")
+async def list_memory_entries(
+    repository_id: str,
+    include_stale: bool = Query(default=False),
+    limit: int = Query(default=50, ge=1, le=200),
+    current_user: dict[str, Any] = Depends(get_current_user),
+) -> dict[str, Any]:
+    """List operational memory entries for a repository, scoped to the current user.
+
+    This catch-all route is intentionally registered last so `/staleness`
+    remains reachable for a repository identifier containing slashes.
+    """
+    settings = get_settings()
+    if not settings.memory_enabled:
+        return {"entries": [], "memory_enabled": False}
+
+    entries = await _memory.list_entries(
+        user_id=current_user["_id"],
+        repository_id=_repository_id_from_url(repository_id),
+        include_stale=include_stale,
+        limit=limit,
+    )
+    return {
+        "repository_id": repository_id,
+        "count": len(entries),
+        "include_stale": include_stale,
+        "entries": entries,
     }
