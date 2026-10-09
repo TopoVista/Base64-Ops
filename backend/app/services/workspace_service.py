@@ -1,3 +1,4 @@
+import asyncio
 import os
 import re
 import shutil
@@ -9,7 +10,7 @@ from urllib.parse import quote, urlparse, urlunparse
 from fastapi import HTTPException, status
 
 from app.core.config import get_settings
-from app.services.github_service import get_github_access_token
+from app.services.github_service import get_github_access_token, normalize_github_repository_url
 
 SAFE_READ_COMMANDS = {
     "git status",
@@ -47,8 +48,12 @@ class WorkspaceService:
         repo_url: str,
         default_branch: str | None,
     ) -> tuple[Path, str]:
+        # Defense in depth: sessions are authorized at creation, and the
+        # workspace boundary independently refuses a token-bearing clone to
+        # any non-GitHub host.
+        _owner, _repository, canonical_repo_url = normalize_github_repository_url(repo_url)
         path = workspace_path(user_id, slug_id)
-        repo_name = repo_name_from_url(repo_url)
+        repo_name = repo_name_from_url(canonical_repo_url)
         repo_path = path / repo_name
         if repo_path.exists() and (repo_path / ".git").exists():
             return repo_path, repo_name
@@ -66,12 +71,16 @@ class WorkspaceService:
                 repo_path.unlink()
         path.mkdir(parents=True, exist_ok=True)
         token = await get_github_access_token(user_id)
-        authed_url = self._with_token(repo_url, token)
+        authed_url = self._with_token(canonical_repo_url, token)
         args = ["git", "clone", "--depth", "1"]
         if default_branch:
             args.extend(["--branch", default_branch])
         args.extend([authed_url, repo_name])
-        result = self._run(args, cwd=path, hide_token=token)
+        # ``git clone`` may spend seconds on a large repository. This service
+        # is called by the API graph and indexed-worker jobs, so blocking the
+        # event loop here would delay SSE, database I/O, and job lease
+        # heartbeats for unrelated tenants.
+        result = await asyncio.to_thread(self._run, args, cwd=path, hide_token=token)
         if result["exitCode"] != 0:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -346,8 +355,11 @@ class WorkspaceService:
         }
         files: list[Path] = []
         for root, dirs, names in os.walk(repo_path):
-            dirs[:] = [directory for directory in dirs if directory not in ignored_dirs]
-            for name in names:
+            # A bounded index must select the same subset for the same Git
+            # revision. ``os.walk`` makes no ordering guarantee, so sort both
+            # levels before applying the file cap used by RAG and maps.
+            dirs[:] = sorted(directory for directory in dirs if directory not in ignored_dirs)
+            for name in sorted(names):
                 path = Path(root) / name
                 suffix = path.suffix.lower()
                 if name == "Dockerfile" or suffix in extensions:
@@ -357,8 +369,11 @@ class WorkspaceService:
 
     def _safe_path(self, repo_path: Path, relative_path: str) -> Path:
         target = (repo_path / relative_path).resolve()
-        if not str(target).startswith(str(repo_path.resolve())):
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Unsafe path")
+        root = repo_path.resolve()
+        try:
+            target.relative_to(root)
+        except ValueError:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Unsafe path") from None
         return target
 
     def _with_token(self, repo_url: str, token: str) -> str:
