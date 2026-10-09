@@ -22,6 +22,8 @@ Base64 Ops treats repository files, CI output, logs, runbooks, screenshots, and 
 8. **No supporting evidence → no confident executable remediation.** `PatchEngine` enforces that every file edit has a verified evidence ID.
 9. **Failure to validate → no push.** Failed pre-approval validation prevents branch push and PR creation.
 10. **Mutation ends at a reviewable draft PR.** The system never merges automatically.
+11. **Retrieved evidence has no authority.** Each evidence excerpt is explicitly delimited as `UNTRUSTED EVIDENCE` at the model boundary; CI logs, workflow YAML, repository files, and runbooks cannot alter policy or tool selection.
+12. **Provider failure cannot create a patch.** A timed-out or unavailable model returns a safe, retryable diagnostic response and never produces a `DeliveryPlan`.
 
 ## Operational Memory Safety
 
@@ -32,6 +34,13 @@ Base64 Ops treats repository files, CI output, logs, runbooks, screenshots, and 
 15. **Every reused fix requires fresh approval.** Historical memory of a prior fix cannot reuse the prior approval. A new `PatchProposal → diff → validation → DeliveryPlan → approval` cycle is always required.
 16. **Stale memory is labelled, not hidden.** Historical entries remain visible but are explicitly labelled `[HISTORICAL — REQUIRES CURRENT VERIFICATION]` and must not be used as current evidence.
 17. **Learning can be disabled.** `MEMORY_LEARNING_ENABLED=false` prevents all writes while allowing reads to continue.
+
+## Model Cost and Availability Bounds
+
+- Answer and patch calls admit only ranked, bounded evidence and candidate-file excerpts.
+- `LLM_MAX_OUTPUT_TOKENS`, `SUPPORT_MAX_OUTPUT_TOKENS`, `LLM_TIMEOUT_SECONDS`, and `LLM_MAX_RETRIES` are server-side settings. A browser cannot raise them.
+- Product-guide messages are limited to 4,000 characters; repository-sized material must enter through the evidence-first investigation path.
+- The product guide resolves known help flows deterministically without a model call.
 
 ## Path Security
 

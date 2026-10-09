@@ -18,3 +18,9 @@ langgraph-checkpoint-mongodb==0.4.0
 pytest==9.0.1
 pytest-asyncio==1.3.0
 ruff==0.14.8
+# Parse and regression-test the Render Blueprint in CI rather than relying on
+# an invalid worker/scaling declaration being caught only during deployment.
+PyYAML==6.0.3
+# Shared distributed rate limits in production. Imported lazily so the
+# deterministic test suite does not need a running Redis service.
+redis==5.2.1
