@@ -14,10 +14,18 @@ const readCachedSessions = (userId: string | null | undefined): SessionsResponse
   if (!userId || typeof window === "undefined") return undefined;
 
   try {
-    const cached = window.sessionStorage.getItem(sessionCacheKey(userId));
+    // Session records are already tenant-scoped in MongoDB. Keeping this
+    // browser-side metadata cache under the stable Clerk subject lets the
+    // sidebar restore immediately after a normal browser restart, while the
+    // query below still refreshes from the server.  A legacy tab-scoped cache
+    // is accepted once so existing users retain their current sidebar state.
+    const key = sessionCacheKey(userId);
+    const cached = window.localStorage.getItem(key) ?? window.sessionStorage.getItem(key);
     if (!cached) return undefined;
     const parsed = JSON.parse(cached) as SessionsResponse;
-    return Array.isArray(parsed.sessions) ? parsed : undefined;
+    if (!Array.isArray(parsed.sessions)) return undefined;
+    window.localStorage.setItem(key, cached);
+    return parsed;
   } catch {
     return undefined;
   }
@@ -35,8 +43,8 @@ const ChatSessions = () => {
     enabled: isLoaded && Boolean(isSignedIn) && isTokenReady && hasToken,
     retry: false,
     // An outage must not make an account look empty after a refresh. This
-    // cache is browser-session scoped and keyed by the Clerk subject, so it is
-    // never reused across local account switches.
+    // small cache is persistent but keyed by the Clerk subject, so it is never
+    // reused across local account switches.
     initialData: () => readCachedSessions(userId),
   });
 
@@ -44,9 +52,9 @@ const ChatSessions = () => {
   useEffect(() => {
     if (!userId || !data || typeof window === "undefined") return;
     try {
-      window.sessionStorage.setItem(sessionCacheKey(userId), JSON.stringify(data));
+      window.localStorage.setItem(sessionCacheKey(userId), JSON.stringify(data));
     } catch {
-      // Session storage is only resilience UI; failure must not affect data.
+      // Browser storage is only resilience UI; failure must not affect data.
     }
   }, [data, userId]);
 

@@ -1,5 +1,5 @@
 import { PROTECTED_ROUTES, PUBLIC_ROUTES } from "@/routes/route";
-import { BookOpenIcon, PlusIcon, SearchIcon } from "lucide-react";
+import { BookOpenIcon, CreditCardIcon, PlusIcon, SearchIcon } from "lucide-react";
 import { SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarSeparator } from "../ui/sidebar";
 import { Link } from "react-router-dom";
 
@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 const navItems = [
   { title: "New operation", icon: PlusIcon, href: PROTECTED_ROUTES.NEW },
   { title: "How to use Base64", icon: BookOpenIcon, href: PUBLIC_ROUTES.GUIDE },
+  { title: "Usage & billing", icon: CreditCardIcon, href: PROTECTED_ROUTES.BILLING },
 ];
 
 

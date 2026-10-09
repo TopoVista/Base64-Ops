@@ -8,7 +8,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Button } from '../ui/button'
-import { Activity, BookOpen, Bot, Code2, FileSearch, History, LogOut, Network, ShieldCheck } from 'lucide-react'
+import { Activity, BookOpen, Code2, FileSearch, History, LogOut, Network } from 'lucide-react'
 import { ModeToggle } from '../mode-toggle'
 import { useState } from 'react'
 import SessionSearchDialog from './session-search-dialog'
@@ -46,11 +46,16 @@ const AppSidebar = () => {
       .join("") ?? "U"
   const sessionMatch = pathname.match(/^\/session\/([^/]+)/)
   const selectedSlug = sessionMatch?.[1]
+  // Keep the MVP navigation centered on the repair loop. Generic chat and a
+  // duplicate changes page remain addressable for existing links, but they do
+  // not compete with the evidence → exact diff → approval → delivery flow.
   const workspaceLinks = [
-    ["Overview", Activity, "overview"], ["Assistant", Bot, "assistant"],
-    ["Pipelines", Network, "pipelines"], ["Investigation", FileSearch, "investigation"],
-    ["Knowledge", BookOpen, "knowledge"], ["Code", Code2, "code"],
-    ["Changes", ShieldCheck, "changes"], ["History", History, "history"],
+    ["Overview", Activity, "overview"],
+    ["Safe Repair", Code2, "code"],
+    ["CI evidence", Network, "pipelines"],
+    ["Evidence", FileSearch, "investigation"],
+    ["Repository map", BookOpen, "knowledge"],
+    ["Run history", History, "history"],
   ] as const
 
   return (
