@@ -1,6 +1,7 @@
 import asyncio
 from datetime import UTC, datetime
 from pathlib import Path
+from types import SimpleNamespace
 
 from app.agent.graph import AgentGraph
 from app.schemas.investigation import EvidenceItem
@@ -14,6 +15,25 @@ def test_redaction_removes_common_credentials_from_evidence() -> None:
     assert "abc.def-123" not in redacted
     assert "sk-secret-value-123456789" not in redacted
     assert "[REDACTED]" in redacted
+
+
+def test_redaction_removes_cloud_tokens_and_non_mongo_connection_strings() -> None:
+    # Construct a deliberately fake token at runtime so the fixture exercises the
+    # Slack redactor without committing a credential-shaped static value.
+    slack_fixture = "-".join(("xoxb", "fixturetoken1234"))
+    value = (
+        "AWS=AKIAIOSFODNN7EXAMPLE "
+        f"slack={slack_fixture} "
+        "postgresql://ops:database-password@db.example/app "
+        "redis://:cache-password@cache.example:6379/0"
+    )
+    redacted = RedactionService().redact(value)
+
+    for secret in ("AKIAIOSFODNN7EXAMPLE", slack_fixture, "database-password", "cache-password"):
+        assert secret not in redacted
+    assert "[REDACTED_AWS_ACCESS_KEY]" in redacted
+    assert "[REDACTED_SLACK_TOKEN]" in redacted
+    assert redacted.count("[REDACTED_CONNECTION_STRING]") == 2
 
 
 def test_evidence_requires_stable_provenance_fields() -> None:
@@ -57,7 +77,7 @@ def test_empty_rag_can_fall_back_to_bounded_direct_repository_reads(tmp_path: Pa
     assert all(source["metadata"]["retrieval"] == "direct_read_fallback" for source in sources)
 
 
-def test_session_hydration_returns_only_the_users_latest_command_center() -> None:
+def test_session_hydration_returns_only_the_users_latest_command_center(monkeypatch) -> None:
     """The persisted run snapshot is the source of truth when reopening a session."""
 
     class Cursor:
@@ -87,7 +107,14 @@ def test_session_hydration_returns_only_the_users_latest_command_center() -> Non
             ])
 
     class Database:
-        sessions = Collection([{"_id": "ses_a", "userId": "user_a", "slugId": "diagnose"}])
+        sessions = Collection([
+            {
+                "_id": "ses_a",
+                "userId": "user_a",
+                "slugId": "diagnose",
+                "repoUrl": "https://github.com/example/repo.git",
+            }
+        ])
         messages = Collection([])
         investigations = Collection([
             {
@@ -104,17 +131,23 @@ def test_session_hydration_returns_only_the_users_latest_command_center() -> Non
             },
         ])
 
-    original_get_db = session_service.get_db
-    session_service.get_db = lambda: Database()  # type: ignore[assignment]
-    try:
-        result = asyncio.run(session_service.get_session_by_slug("user_a", "diagnose"))
-    finally:
-        session_service.get_db = original_get_db
+    refresh_calls: list[tuple[str, str]] = []
+
+    async def no_automatic_refresh(user_id: str, slug_id: str) -> None:
+        refresh_calls.append((user_id, slug_id))
+
+    monkeypatch.setattr(session_service, "get_db", lambda: Database())
+    monkeypatch.setattr(
+        session_service, "get_settings", lambda: SimpleNamespace(ci_auto_refresh_seconds=0)
+    )
+    monkeypatch.setattr(session_service, "refresh_latest_ci", no_automatic_refresh)
+    result = asyncio.run(session_service.get_session_by_slug("user_a", "diagnose"))
 
     assert result["commandCenter"]["runId"] == "run_latest"
     assert result["commandCenter"]["repository"]["commit_sha"] == "abc123"
     assert result["commandCenter"]["evidence"] == [{"id": "evd_1"}]
     assert result["commandCenter"]["toolResult"]["output"] == "On branch main"
+    assert refresh_calls == []
 
 
 def test_safe_tool_result_is_bounded_and_redacted() -> None:

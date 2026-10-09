@@ -8,8 +8,14 @@ class RedactionService:
         (re.compile(r"(?i)(bearer\s+)[a-z0-9._~+/-]+"), r"\1[REDACTED]"),
         (re.compile(r"\bgh[pousr]_[A-Za-z0-9_]{20,}\b"), "[REDACTED_GITHUB_TOKEN]"),
         (re.compile(r"\bsk-[A-Za-z0-9_-]{16,}\b"), "[REDACTED_API_KEY]"),
+        (re.compile(r"\bAKIA[0-9A-Z]{16}\b"), "[REDACTED_AWS_ACCESS_KEY]"),
+        (re.compile(r"\bxox(?:[abprs]|o)-[A-Za-z0-9-]{10,}\b"), "[REDACTED_SLACK_TOKEN]"),
         (re.compile(r"eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+"), "[REDACTED_JWT]"),
         (re.compile(r"(?i)(mongodb(?:\+srv)?://)[^\s'\"]+"), r"\1[REDACTED]"),
+        (
+            re.compile(r"(?i)\b(?:postgres(?:ql)?|mysql|redis|rediss|amqp|amqps)://[^\s'\"]+"),
+            "[REDACTED_CONNECTION_STRING]",
+        ),
         (re.compile(r"(?i)(password|secret|token|api[_-]?key)\s*[:=]\s*[^\s,;]+"), r"\1=[REDACTED]"),
         (
             re.compile(r"-----BEGIN [A-Z ]*PRIVATE KEY-----[\s\S]*?-----END [A-Z ]*PRIVATE KEY-----"),
