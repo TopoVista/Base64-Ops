@@ -13,9 +13,6 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { cjk } from "@streamdown/cjk";
-import { code } from "@streamdown/code";
-import { math } from "@streamdown/math";
-import { mermaid } from "@streamdown/mermaid";
 import type { UIMessage } from "ai";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import type { ComponentProps, HTMLAttributes, ReactElement } from "react";
@@ -321,7 +318,13 @@ export const MessageBranchPage = ({
 
 export type MessageResponseProps = ComponentProps<typeof Streamdown>;
 
-const streamdownPlugins = { cjk, code, math, mermaid };
+// General assistant text is untrusted. Mermaid rendering is intentionally
+// reserved for the dedicated repository dependency-graph surface, which has
+// bounded server-generated graph data rather than arbitrary message content.
+// Syntax highlighting belongs in the on-demand Monaco Code workspace. Keeping
+// chat markdown lightweight avoids downloading language grammars/wasm for
+// every normal investigation or support conversation.
+const streamdownPlugins = { cjk };
 
 export const MessageResponse = memo(
   ({ className, ...props }: MessageResponseProps) => (

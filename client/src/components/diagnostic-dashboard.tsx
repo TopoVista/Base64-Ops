@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { motion } from "motion/react";
 import EditorImport from "react-simple-code-editor";
 import { Bot, Copy, FileCode2, LoaderCircle, Play, ShieldCheck, Sparkles, WandSparkles } from "lucide-react";
@@ -26,6 +26,9 @@ type Props = {
 
 type DiagnosticStatus = "idle" | "streaming" | "complete" | "error";
 
+const newDiagnosticRequestId = () =>
+  globalThis.crypto?.randomUUID?.() ?? `diagnostic-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
 export default function DiagnosticDashboard({ slugId, initialLog = "", initialPatch = "", initialOriginalContent = "", approvalId }: Props) {
   const [failedLog, setFailedLog] = useState(initialLog);
   const [gitDiff, setGitDiff] = useState(initialPatch);
@@ -35,18 +38,33 @@ export default function DiagnosticDashboard({ slugId, initialLog = "", initialPa
   const [status, setStatus] = useState<DiagnosticStatus>("idle");
   const [stateLabel, setStateLabel] = useState("Ready to inspect CI output");
   const [deploying, setDeploying] = useState(false);
+  // Retain the identifier after a broken browser/SSE connection. A retry then
+  // reaches the server's idempotency boundary rather than starting another
+  // paid proposal run. It is cleared only after a complete response.
+  const proposalRequestId = useRef<string | null>(null);
   const activePatch = proposalPatch || initialPatch;
   const canDiagnose = failedLog.trim().length > 0 && status !== "streaming";
   const logLines = useMemo(() => failedLog.split("\n").slice(-80).join("\n"), [failedLog]);
 
   const runDiagnostic = async (generateFix = false) => {
+    const requestId = generateFix
+      ? (proposalRequestId.current ??= newDiagnosticRequestId())
+      : undefined;
+    let completed = false;
     setStatus("streaming");
     setAnalysis("");
     setProposalPatch(null);
     setStateLabel("Opening secure diagnostic stream...");
     try {
       await streamDiagnostic(
-        { sessionSlugId: slugId, failedLog, gitDiff, originalContent, generateFix },
+        {
+          sessionSlugId: slugId,
+          failedLog,
+          gitDiff,
+          originalContent,
+          generateFix,
+          ...(requestId ? { clientRequestId: requestId } : {}),
+        },
         (event, data) => {
           if (event === "state") setStateLabel(String(data.label ?? "Working..."));
           if (event === "log_analysis") setAnalysis((current) => current + String(data.delta ?? ""));
@@ -55,12 +73,14 @@ export default function DiagnosticDashboard({ slugId, initialLog = "", initialPa
             if (data.message) setAnalysis((current) => `${current}\n\n> ${String(data.message)}`);
           }
           if (event === "complete") {
+            completed = true;
             setStatus("complete");
             setStateLabel(data.mutation_performed ? "Completed" : "Diagnosis complete — no mutation performed");
           }
           if (event === "error") throw new Error(String(data.message ?? "Diagnostic stream failed"));
         },
       );
+      if (generateFix && completed) proposalRequestId.current = null;
       setStatus((current) => (current === "streaming" ? "complete" : current));
     } catch (error) {
       setStatus("error");
