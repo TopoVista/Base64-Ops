@@ -1,4 +1,6 @@
 import asyncio
+import logging
+import re
 from collections.abc import AsyncIterator
 from datetime import UTC, datetime, timedelta
 from typing import Any
@@ -6,9 +8,11 @@ from urllib.parse import urlparse
 
 from fastapi import HTTPException, status
 from pymongo import ReturnDocument
-from pymongo.errors import PyMongoError
+from pymongo.errors import DuplicateKeyError, PyMongoError
 
 from app.agent.graph import AgentGraph
+from app.billing.usage_service import UsageService
+from app.core.config import get_settings
 from app.db.mongo import get_db
 from app.git.actions import GitHubActionsAdapter
 from app.observability.recorder import MongoTraceExporter, TraceRecorder
@@ -21,12 +25,13 @@ from app.schemas.session import (
     CreatePullRequestRequest,
     SessionChatRequest,
 )
+from app.services.background_job_service import BackgroundJobService
 from app.services.ci_investigation_service import CIInvestigationService
 from app.services.ci_request_intent import extract_ci_request_intent
 from app.services.ci_run_resolution_service import CIRunResolutionService
 from app.services.delivery_service import DeliveryService, content_hash
 from app.services.evidence_service import EvidenceService
-from app.services.github_service import github_api
+from app.services.github_service import github_api, resolve_authorized_repository
 from app.services.patch_engine import PatchEngine, PatchSafetyError
 from app.services.rag_service import RagService
 from app.services.redaction_service import RedactionService
@@ -38,11 +43,27 @@ from app.utils.sse import sse_event
 
 agent_graph = AgentGraph()
 redactor = RedactionService()
+logger = logging.getLogger(__name__)
 CI_REFRESH_INTERVAL = timedelta(minutes=1)
+_SAFE_BRANCH = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._/-]{0,254}$")
 
 
-def ci_refresh_due(value: Any) -> bool:
-    """Throttle automatic Actions discovery without making it one-shot."""
+async def ensure_session_indexes() -> None:
+    """Install tenant and timeline indexes used by the interactive API."""
+
+    db = get_db()
+    await db.sessions.create_index(
+        [("userId", 1), ("slugId", 1)],
+        unique=True,
+        name="sessions_one_slug_per_tenant",
+    )
+    await db.sessions.create_index([("userId", 1), ("createdAt", -1)])
+    await db.messages.create_index([("sessionId", 1), ("createdAt", 1)])
+    await db.investigations.create_index([("userId", 1), ("sessionId", 1), ("createdAt", -1)])
+
+
+def ci_refresh_due(value: Any, *, interval: timedelta = CI_REFRESH_INTERVAL) -> bool:
+    """Return whether a configured, opt-in Actions discovery interval elapsed."""
     if not value:
         return True
     checked_at = value
@@ -55,7 +76,7 @@ def ci_refresh_due(value: Any) -> bool:
         return True
     if checked_at.tzinfo is None:
         checked_at = checked_at.replace(tzinfo=UTC)
-    return datetime.now(UTC) - checked_at >= CI_REFRESH_INTERVAL
+    return datetime.now(UTC) - checked_at >= interval
 
 
 def safe_tool_result(value: dict[str, Any] | None) -> dict[str, Any] | None:
@@ -101,23 +122,43 @@ async def get_or_create_session(user_id: str, payload: SessionChatRequest, promp
     session = await db.sessions.find_one({"userId": user_id, "slugId": payload.slugId})
     if session:
         return session
-    repo_name = repo_name_from_url(payload.repoUrl)
+    authorized_repository = await resolve_authorized_repository(user_id, payload.repoUrl)
+    repo_url = authorized_repository["cloneUrl"]
+    repo_name = repo_name_from_url(repo_url)
+    default_branch = payload.defaultBranch or authorized_repository["defaultBranch"]
+    if (
+        not _SAFE_BRANCH.fullmatch(default_branch)
+        or ".." in default_branch
+        or "//" in default_branch
+        or default_branch.endswith((".", "/"))
+        or "@{" in default_branch
+    ):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid repository branch.")
     now = utc_now()
     session = {
         "_id": new_id("ses_"),
         "userId": user_id,
         "slugId": payload.slugId,
         "title": prompt[:48] or "Untitled Session",
-        "repoUrl": payload.repoUrl,
+        "repoUrl": repo_url,
         "repoName": repo_name,
-        "defaultBranch": payload.defaultBranch or "main",
+        "defaultBranch": default_branch,
         "branchName": branch_name_from_prompt(prompt),
         "status": "active",
         "repoInitializedAt": None,
         "createdAt": now,
         "updatedAt": now,
     }
-    await db.sessions.insert_one(session)
+    try:
+        await db.sessions.insert_one(session)
+    except DuplicateKeyError:
+        # A different API replica may have created this exact tenant session
+        # while we verified the repository. Never create a second workspace or
+        # overwrite the existing session's repository binding.
+        existing = await db.sessions.find_one({"userId": user_id, "slugId": payload.slugId})
+        if existing:
+            return existing
+        raise
     return session
 
 
@@ -144,9 +185,12 @@ async def append_message(
 async def get_user_sessions(user_id: str, search: str | None, page_size: int, page_number: int) -> dict:
     query: dict[str, Any] = {"userId": user_id}
     if search:
+        # Browser search must never become an arbitrary Mongo regular
+        # expression. Literal escaping protects the database from regex DoS.
+        safe_search = re.escape(search[:100])
         query["$or"] = [
-            {"title": {"$regex": search, "$options": "i"}},
-            {"repoName": {"$regex": search, "$options": "i"}},
+            {"title": {"$regex": safe_search, "$options": "i"}},
+            {"repoName": {"$regex": safe_search, "$options": "i"}},
         ]
     skip = (page_number - 1) * page_size
     db = get_db()
@@ -169,10 +213,19 @@ async def get_session_by_slug(user_id: str, slug_id: str) -> dict:
     session = await db.sessions.find_one({"userId": user_id, "slugId": slug_id})
     if not session:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
-    # Surface GitHub Actions failures without asking the user to paste a log.
-    # This remains a bounded read-only refresh and is best-effort: an OAuth or
-    # Actions-permission problem must not make the session itself unavailable.
-    if session.get("repoUrl") and ci_refresh_due(session.get("ciLastCheckedAt")):
+    # Browser session state is fetched repeatedly. Automatic Actions discovery
+    # is therefore opt-in; explicit CI refresh and post-delivery verification
+    # remain the normal ways to contact GitHub. This prevents page polling from
+    # multiplying workspace/API work as the tenant count grows.
+    auto_refresh_seconds = get_settings().ci_auto_refresh_seconds
+    if (
+        auto_refresh_seconds > 0
+        and session.get("repoUrl")
+        and ci_refresh_due(
+            session.get("ciLastCheckedAt"),
+            interval=timedelta(seconds=auto_refresh_seconds),
+        )
+    ):
         try:
             await refresh_latest_ci(user_id, slug_id)
             refreshed = await db.sessions.find_one({"_id": session["_id"]})
@@ -189,6 +242,17 @@ async def get_session_by_slug(user_id: str, slug_id: str) -> dict:
     )
     command_center = None
     if latest:
+        # Delivery results are mutable only for read-only follow-up state such
+        # as CI verification. Load the canonical delivery record rather than
+        # serving a stale nested snapshot from the original investigation.
+        delivery_result = latest.get("deliveryResult")
+        plan_id = (latest.get("deliveryPlan") or {}).get("id")
+        if plan_id:
+            current_delivery = await db.delivery_results.find_one(
+                {"user_id": user_id, "delivery_plan_id": plan_id}, sort=[("created_at", -1)]
+            )
+            if current_delivery:
+                delivery_result = current_delivery
         command_center = {
             "runId": latest.get("runId"),
             "repository": latest.get("repository", {}),
@@ -197,7 +261,7 @@ async def get_session_by_slug(user_id: str, slug_id: str) -> dict:
             "ci": latest.get("ci"),
             "timeline": latest.get("timeline", []),
             "deliveryPlan": latest.get("deliveryPlan"),
-            "deliveryResult": latest.get("deliveryResult"),
+            "deliveryResult": delivery_result,
             "toolResult": latest.get("toolResult"),
             "approvals": latest.get("approvals", []),
             "evidence": latest.get("evidence", []),
@@ -535,7 +599,21 @@ def extract_interrupt(result: dict[str, Any]) -> dict[str, Any] | None:
     return None
 
 
-async def chat_stream(user_id: str, payload: SessionChatRequest) -> AsyncIterator[str]:
+async def chat_stream(
+    user_id: str,
+    payload: SessionChatRequest,
+    *,
+    persist_messages: bool = True,
+    force_delivery_plan: bool = False,
+) -> AsyncIterator[str]:
+    """Run the evidence graph for a session.
+
+    ``persist_messages`` is deliberately opt-out only for first-party, focused
+    workflows such as the Code workbench's CI repair.  Those workflows need
+    the normal investigation, approval, trace, and delivery records, but are
+    not conversational turns and must not add an opaque internal prompt or a
+    generated report to the user's chat transcript.
+    """
     prompt = extract_prompt(payload).strip()
     if not prompt:
         yield sse_event("error", {"message": "Message is required"})
@@ -543,7 +621,8 @@ async def chat_stream(user_id: str, payload: SessionChatRequest) -> AsyncIterato
     trace = None
     try:
         session = await get_or_create_session(user_id, payload, prompt)
-        await append_message(session["_id"], "user", prompt)
+        if persist_messages:
+            await append_message(session["_id"], "user", prompt)
         yield sse_event("session.updated", {"session": serialize_doc(session)})
         yield sse_event("tool.started", {"name": "langgraph", "label": "Starting LangGraph run"})
 
@@ -564,6 +643,8 @@ async def chat_stream(user_id: str, payload: SessionChatRequest) -> AsyncIterato
             "patch_target_path": payload.patchTargetPath,
             "run_id": run_id,
             "trace_id": trace.id,
+            "workbench_mode": not persist_messages,
+            "force_delivery_plan": force_delivery_plan,
         }
         emitted_timeline_ids: set[str] = set()
         async with recorder.span(
@@ -581,7 +662,28 @@ async def chat_stream(user_id: str, payload: SessionChatRequest) -> AsyncIterato
                             emitted_timeline_ids.add(event_id)
                         yield sse_event("tool.completed", item)
             result = await agent_graph.current_state(session["slugId"])
-            span.safe_output_summary = {"timeline_events": len(result.get("timeline", []))}
+            # Provider usage comes only from the completed graph state; never
+            # accept token counts from the browser. A graph can invoke both a
+            # patch-proposal model and its final-answer model, so meter every
+            # captured provider event rather than silently retaining only the
+            # final call. This is best-effort observability, while pre-run
+            # entitlement and context ceilings remain the enforceable spend
+            # boundary.
+            try:
+                usage_events = result.get("model_usage_events")
+                if isinstance(usage_events, list):
+                    for usage_event in usage_events:
+                        await UsageService().record_model_usage(user_id, usage_event)
+                else:
+                    # Backward-compatible state produced before the usage
+                    # event field existed.
+                    await UsageService().record_model_usage(user_id, result.get("model_usage"))
+            except Exception:
+                pass
+            span.safe_output_summary = {
+                "timeline_events": len(result.get("timeline", [])),
+                "model_usage": result.get("model_usage", {}),
+            }
 
         interrupt = extract_interrupt(result)
 
@@ -659,26 +761,42 @@ async def chat_stream(user_id: str, payload: SessionChatRequest) -> AsyncIterato
         await get_db().sessions.update_one({"_id": session["_id"]}, {"$set": {"latestRunId": run_id}})
         if approval_payload:
             yield sse_event("approval.requested", {"approval": serialize_doc(approval_payload)})
+            trace.model_usage = result.get("model_usage", {})
             await recorder.complete_run(trace, "completed")
             return
 
-        final = result.get("final", "")
-        assistant = await append_message(session["_id"], "assistant", final, sources)
-        for chunk in chunk_for_stream(final):
-            yield sse_event("message.delta", {"id": assistant["id"], "delta": chunk})
-            await asyncio.sleep(0)
-        yield sse_event("message.completed", {"message": serialize_doc(assistant)})
+        if persist_messages:
+            final = result.get("final", "")
+            assistant = await append_message(session["_id"], "assistant", final, sources)
+            for chunk in chunk_for_stream(final):
+                yield sse_event("message.delta", {"id": assistant["id"], "delta": chunk})
+                await asyncio.sleep(0)
+            yield sse_event("message.completed", {"message": serialize_doc(assistant)})
+        trace.model_usage = result.get("model_usage", {})
         await recorder.complete_run(trace, "completed")
     except HTTPException as exc:
         if trace:
             await TraceRecorder(MongoTraceExporter()).complete_run(trace, "failed", errors=1)
         yield sse_event("error", {"message": str(exc.detail)})
-    except Exception:
+    except Exception as exc:
         if trace:
             await TraceRecorder(MongoTraceExporter()).complete_run(trace, "failed", errors=1)
+        # Keep server-side observability useful without serializing provider
+        # details (which can include request metadata) into a browser response.
+        response = getattr(exc, "response", None)
+        status_code = getattr(response, "status_code", None)
+        if isinstance(status_code, int):
+            logger.error("Agent stream failed: %s (provider HTTP %d)", type(exc).__name__, status_code)
+        else:
+            logger.error("Agent stream failed: %s", type(exc).__name__)
         yield sse_event(
             "error",
-            {"message": ("The agent could not complete this request. Check the API configuration and try again.")},
+            {
+                "message": (
+                    "The Safe Repair request could not be completed. Retry once; "
+                    "if it persists, check the backend logs for a provider, quota, or connectivity failure."
+                )
+            },
         )
 
 
@@ -776,8 +894,33 @@ async def decide_approval(user_id: str, slug_id: str, approval_id: str, payload:
         execution = await DeliveryService().execute(
             user_id=user_id, approval_id=approval_id, repo_path=repo_path, repo_url=session["repoUrl"]
         )
+        if execution.get("status") == "success" and execution.get("result", {}).get("id"):
+            if get_settings().ci_verification_mode.lower() == "queued":
+                job = await BackgroundJobService().enqueue_delivery_ci_verification(
+                    user_id=user_id, delivery_result_id=execution["result"]["id"]
+                )
+                execution["ciVerification"] = {"status": "queued", "jobId": job["id"]}
+            else:
+                # Minimal-cost mode intentionally has no always-on observer.
+                # The Code workbench's bounded commit-status query remains
+                # read-only and is still correlated to the delivered SHA.
+                execution["ciVerification"] = {
+                    "status": "pending",
+                    "message": "GitHub Actions status will refresh in the Code commits rail.",
+                }
+            await db.delivery_results.update_one(
+                {"_id": execution["result"]["id"], "user_id": user_id},
+                {"$set": {"ciVerification": execution["ciVerification"]}},
+            )
         content = (
-            "Draft pull request created successfully."
+            (
+                "Draft pull request created successfully. GitHub Actions verification was queued."
+                if execution.get("ciVerification", {}).get("status") == "queued"
+                else (
+                    "Draft pull request created successfully. GitHub Actions status will refresh "
+                    "in the Code commits rail."
+                )
+            )
             if execution["status"] == "success"
             else f"Delivery {execution['status']}: {execution.get('reason', 'No mutation was completed.')}"
         )
@@ -843,10 +986,23 @@ async def reindex_session(
     try:
         await db.sessions.update_one(
             {"_id": session["_id"]},
-            {"$set": {"indexStatus": "indexing", "indexError": None}},
+            {"$set": {"indexStatus": "indexing", "indexError": None, "indexTruncated": False}},
         )
     except PyMongoError as exc:
         return {"success": False, "status": "failed", "indexed": 0, "reason": index_failure_reason(exc)}
+    if get_settings().indexing_mode.lower() == "queued":
+        job = await BackgroundJobService().enqueue_reindex(user_id=user_id, session_id=session["_id"])
+        await db.sessions.update_one(
+            {"_id": session["_id"]},
+            {"$set": {"indexStatus": "queued", "indexTruncated": False, "indexJobId": job["id"]}},
+        )
+        return {
+            "success": True,
+            "status": "queued",
+            "indexed": 0,
+            "jobId": job["id"],
+            "reason": "Repository indexing was queued and will continue in the background.",
+        }
     try:
         repo_path, _repo_name = await WorkspaceService().ensure_workspace(
             user_id,
@@ -860,7 +1016,14 @@ async def reindex_session(
         try:
             await db.sessions.update_one(
                 {"_id": session["_id"]},
-                {"$set": {"indexStatus": index_status, "indexError": reason, "indexedAt": utc_now()}},
+                {
+                    "$set": {
+                        "indexStatus": index_status,
+                        "indexError": reason,
+                        "indexTruncated": bool(result.get("truncated")),
+                        "indexedAt": utc_now(),
+                    }
+                },
             )
         except PyMongoError as exc:
             return {"success": False, "status": "failed", "indexed": 0, "reason": index_failure_reason(exc)}

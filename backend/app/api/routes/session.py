@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends, Query
 from fastapi.responses import StreamingResponse
 
 from app.api.deps import get_current_user
+from app.billing.usage_service import UsageService
+from app.core.agent_run_guard import AgentRunGuard
 from app.schemas.session import (
     ApprovalDecisionRequest,
     CodeEditProposalRequest,
@@ -35,13 +37,15 @@ from app.services.session_service import (
 )
 
 router = APIRouter()
+usage_service = UsageService()
+agent_run_guard = AgentRunGuard()
 
 
 @router.get("/all")
 async def all_sessions(
-    search: str | None = None,
-    pageSize: int = Query(default=20, ge=1),
-    pageNumber: int = Query(default=1, ge=1),
+    search: str | None = Query(default=None, max_length=100),
+    pageSize: int = Query(default=20, ge=1, le=100),
+    pageNumber: int = Query(default=1, ge=1, le=10_000),
     user: dict = Depends(get_current_user),
 ) -> dict:
     return await get_user_sessions(user["_id"], search, pageSize, pageNumber)
@@ -49,8 +53,24 @@ async def all_sessions(
 
 @router.post("/chat")
 async def chat(payload: SessionChatRequest, user: dict = Depends(get_current_user)) -> StreamingResponse:
+    # Reserve the bounded entitlement before a stream can invoke retrieval or
+    # an LLM. The client cannot choose or increase this quota.
+    lease = await agent_run_guard.acquire(str(user["_id"]))
+    try:
+        await usage_service.consume_agent_run(user, request_id=payload.clientRequestId)
+    except Exception:
+        await agent_run_guard.release(lease)
+        raise
+
+    async def guarded_stream():
+        try:
+            async for event in chat_stream(user["_id"], payload):
+                yield event
+        finally:
+            await agent_run_guard.release(lease)
+
     return StreamingResponse(
-        chat_stream(user["_id"], payload),
+        guarded_stream(),
         media_type="text/event-stream",
         headers={"Cache-Control": "no-cache", "Connection": "keep-alive"},
     )

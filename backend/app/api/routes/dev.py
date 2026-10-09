@@ -32,7 +32,9 @@ async def get_dev_run_inspector(
 
     delivery_result = None
     if plan:
-        delivery_result = await db.delivery_results.find_one({"delivery_plan_id": plan["id"]})
+        delivery_result = await db.delivery_results.find_one(
+            {"delivery_plan_id": plan["id"], "user_id": user_id}
+        )
 
     evidence_records = []
     cursor_evd = db.evidence.find({"$or": [{"runId": run_id}, {"run_id": run_id}], "userId": user_id})
