@@ -18,6 +18,8 @@ const starterPrompts = [
   "How do I use the demo?",
 ];
 
+const newRequestId = () => globalThis.crypto?.randomUUID?.() ?? `guide-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
 const ProductGuide = () => {
   const [conversationId, setConversationId] = useState<string>();
   const [messages, setMessages] = useState<GuideMessage[]>([]);
@@ -32,7 +34,7 @@ const ProductGuide = () => {
     setMessages((current) => [...current, { role: "user", content: message }]);
     setIsSending(true);
     try {
-      const response = await askProductAssistant(message, conversationId);
+      const response = await askProductAssistant(message, conversationId, newRequestId());
       setConversationId(response.conversationId);
       setMessages((current) => [...current, { role: "assistant", content: response.answer }]);
     } catch (error) {

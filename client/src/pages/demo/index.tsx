@@ -1,64 +1,62 @@
-import ChatInterface from "@/components/chat";
-import type { CommandCenterSnapshot } from "@/types/agent.type";
-import { useState } from "react";
+import {
+  AlertTriangle,
+  CheckCircle2,
+  ChevronRight,
+  FileCode2,
+  Folder,
+  GitBranch,
+  GitPullRequest,
+  Pause,
+  Play,
+  RotateCcw,
+  ShieldCheck,
+  Sparkles,
+  Workflow,
+} from "lucide-react";
+import { useEffect, useState } from "react";
 
-const demoSteps = [
-  ["1", "CI signal", "Inspect the failed job and bounded redacted log excerpt."],
-  ["2", "Evidence", "Compare the CI symptom with the workflow and repository files."],
-  ["3", "Proposal", "Review the exact workflow diff and its HIGH CI/CD risk."],
-  ["4", "Approval", "See why a fixture can demonstrate approval but never create a real pull request."],
+const steps = [
+  { title: "Failure captured", caption: "Base64 pins the failing workflow, job, log window, and commit before suggesting anything." },
+  { title: "Evidence checked", caption: "It compares the failed workflow with the repository layout at that exact SHA." },
+  { title: "Exact repair reviewed", caption: "Only the smallest supported workflow change is proposed in a green/red diff." },
+  { title: "Change staged", caption: "Applying changes updates only this local review draft. GitHub is untouched." },
+  { title: "Delivery verified", caption: "An approval-bound branch and draft PR are created, then Actions remains the final verifier." },
 ] as const;
 
-const snapshot: CommandCenterSnapshot = {
-  runId: "demo-ci-stale-working-directory",
-  repository: {
-    name: "fixture/actions-path",
-    branch: "main",
-    commit_sha: "abc1234567890def",
-    file_count: 14,
-    ci_files: [".github/workflows/ci.yml"],
-    manifests: ["client/package.json"],
-  },
-  timeline: [
-    { id: "demo-workspace", label: "Workspace ready", detail: "Fixture workspace on main", status: "completed" },
-    { id: "demo-map", label: "Repository map loaded", detail: "14 files; 1 CI file", status: "completed" },
-    { id: "demo-ci", label: "GitHub Actions investigated", detail: "Run #842; 1 failed job; 3 evidence items", status: "completed" },
-    { id: "demo-plan", label: "Exact patch proposed", detail: "1 file changed", status: "completed" },
-  ],
-  evidence: [
-    { id: "evd_log", sourceType: "ci_log", title: "frontend-build log", path: "Backend CI / frontend-build", excerpt: "npm ERR! enoent ENOENT: no such file or directory, open '/repo/server/package.json'", commitSha: "abc1234567890def", metadata: { workflow_run_id: 842, workflow_name: "Backend CI", job_name: "frontend-build", failed_step: "npm run build", categories: ["missing_file"], state: "failed_run" } },
-    { id: "evd_workflow", sourceType: "repo_file", title: ".github/workflows/ci.yml", path: ".github/workflows/ci.yml", excerpt: "defaults:\n  run:\n    working-directory: ./server", commitSha: "abc1234567890def" },
-    { id: "evd_package", sourceType: "repo_file", title: "client/package.json", path: "client/package.json", excerpt: '{ "name": "frontend" }', commitSha: "abc1234567890def" },
-  ],
-  investigation: {
-    run_id: "demo-ci-stale-working-directory",
-    status: "awaiting_approval",
-    summary: "The workflow executes frontend commands from ./server, while the package manifest is under ./client.",
-    evidence_ids: ["evd_log", "evd_workflow", "evd_package"],
-    hypotheses: [{ id: "hyp_path", title: "Workflow working-directory is stale", explanation: "The CI symptom, workflow configuration, and repository layout support this diagnosis. Changed-file correlation is evidence, not proof by itself.", evidence_ids: ["evd_log", "evd_workflow", "evd_package"], confidence: 0.85, status: "supported" }],
-    limitations: [],
-  },
-  memory: [{ id: "mem_ci", kind: "incident_outcome", key: "frontend working directory", value: "A prior CI incident involved a repository move; current workflow evidence remains the source of truth.", freshness: "current", source_commit_sha: "9876543210abcdef" }],
-  ci: { run_id: 842, workflow_name: "Backend CI", head_sha: "abc1234567890def", current_head_sha: "abc1234567890def", applicability: "current", applicability_reason: "The same ./server path remains in the current workflow.", failed_jobs: [{ name: "frontend-build", failed_step: "npm run build" }], limitations: [] },
-  deliveryPlan: {
-    id: "dpl_demo", title: "Update CI working directory", rationale: "Point the workflow at the frontend package directory supported by current repository evidence.", base_branch: "main", base_sha: "abc1234567890def", risk_level: "high", risk_reasons: ["CI/CD behavior change"], evidence_ids: ["evd_log", "evd_workflow", "evd_package"], validation_steps: [{ id: "validate-workflow", kind: "config", description: "Validate workflow syntax and repository path" }], files: [{ path: ".github/workflows/ci.yml", change_type: "modify", unified_diff: "--- a/.github/workflows/ci.yml\n+++ b/.github/workflows/ci.yml\n@@ -1,3 +1,3 @@\n defaults:\n   run:\n-    working-directory: ./server\n+    working-directory: ./client\n" }],
-  },
-  deliveryResult: {
-    status: "partial",
-    branch_name: "agent/fix-ci-working-directory",
-    commit_sha: "abc1234567890def",
-    reason: "Deterministic fixture only: no GitHub branch, commit, or pull request was created.",
-    validation_results: [{ step_id: "validate-workflow", status: "passed", summary: "Workflow path is valid in the fixture." }],
-  },
-  toolResult: {
-    success: true,
-    output: "Read-only repository map loaded: client/package.json and .github/workflows/ci.yml were inspected.",
-  },
-  approvals: [{ id: "apr_demo", action: "Create reviewable fix", summary: "Update the stale CI working-directory.", args: {}, risk: "approval_required", riskLevel: "high", deliveryPlanId: "dpl_demo", baseBranch: "main", baseSha: "abc1234567890def", diffHash: "demo-diff-hash", approvalHash: "demo-approval-binding-hash", evidenceIds: ["evd_log", "evd_workflow", "evd_package"], validation: [{ step_id: "validate-workflow", status: "passed", summary: "Workflow path is valid in the fixture." }], files: [{ path: ".github/workflows/ci.yml", unified_diff: "-    working-directory: ./server\n+    working-directory: ./client\n" }], status: "pending" }],
-};
+const sourceBefore = [
+  "name: Frontend CI", "on: [push, pull_request]", "", "defaults:", "  run:", "    working-directory: ./server", "",
+  "jobs:", "  frontend-build:", "    runs-on: ubuntu-latest", "    steps:", "      - uses: actions/checkout@v4", "      - run: npm ci", "      - run: npm run build",
+];
+
+function Stepper({ active, onSelect }: { active: number; onSelect: (index: number) => void }) {
+  return <ol className="grid gap-2 md:grid-cols-5" aria-label="Safe Repair demo steps">
+    {steps.map((step, index) => <li key={step.title}><button type="button" onClick={() => onSelect(index)} aria-current={active === index ? "step" : undefined} className={`group w-full rounded-lg border px-3 py-2 text-left transition-all ${active === index ? "border-cyan-300/70 bg-cyan-400/15 shadow-[0_0_22px_rgba(34,211,238,0.14)]" : index < active ? "border-emerald-400/30 bg-emerald-400/5 hover:border-emerald-400/60" : "border-slate-700 bg-slate-900/50 hover:border-slate-500"}`}><span className={`mr-1.5 inline-flex size-4 items-center justify-center rounded-full text-[9px] font-bold ${index < active ? "bg-emerald-400 text-slate-950" : active === index ? "bg-cyan-300 text-slate-950" : "bg-slate-700 text-slate-300"}`}>{index < active ? "✓" : index + 1}</span><span className="text-[11px] font-semibold text-slate-100">{step.title}</span></button></li>)}
+  </ol>;
+}
+
+function SourceView({ active }: { active: number }) {
+  return <div className="min-h-0 overflow-auto bg-[#1e1e1e] font-mono text-[12px] leading-6 text-[#d4d4d4]"><div className="sticky top-0 flex items-center gap-2 border-b border-white/10 bg-[#252526] px-4 py-2 text-[10px] text-[#cccccc]"><FileCode2 className="size-3.5 text-[#519aba]" /> .github/workflows/ci.yml <span className="ml-auto text-[#858585]">abc1234</span></div><pre className="p-4">{sourceBefore.map((line, index) => { const changed = index === 5; const value = active >= 3 && changed ? "    working-directory: ./client" : line; return <div key={`${line}-${index}`} className={`grid grid-cols-[2rem_1fr] px-2 ${changed ? active >= 3 ? "bg-[#144620] text-[#d7f0d7]" : "bg-[#4b1818] text-[#ffd7d7]" : ""}`}><span className="select-none pr-3 text-right text-[#858585]">{index + 1}</span><code>{value || " "}</code></div>; })}</pre></div>;
+}
+
+function ExactDiff() {
+  return <div className="overflow-hidden rounded-md border border-slate-700 bg-[#0d1117] font-mono text-[12px] leading-6"><div className="border-b border-slate-700 bg-slate-900 px-3 py-2 text-[10px] text-slate-300">.github/workflows/ci.yml · 1 file · +1 −1</div><div className="px-3 py-3 text-slate-300">@@ -3,7 +3,7 @@</div><div className="bg-rose-500/20 px-3 text-rose-100">−    working-directory: ./server</div><div className="bg-emerald-500/20 px-3 text-emerald-100">+    working-directory: ./client</div></div>;
+}
 
 export default function DemoPage() {
-  const [activeStep, setActiveStep] = useState(0);
-  const step = demoSteps[activeStep];
-  return <div className="flex h-dvh min-h-0 flex-col"><section className="border-b border-border bg-card px-4 py-3 sm:px-6"><div className="mx-auto flex max-w-7xl flex-wrap items-center gap-3"><p className="mr-auto text-sm font-medium">Interactive safe-CI walkthrough</p>{demoSteps.map(([number, title], index) => <button type="button" key={number} onClick={() => setActiveStep(index)} aria-pressed={activeStep === index} className={`rounded-full border px-3 py-1 text-xs font-medium transition ${activeStep === index ? "border-primary bg-primary text-primary-foreground" : "border-border hover:border-primary/50"}`}>{number}. {title}</button>)}</div><div className="mx-auto mt-2 max-w-7xl text-sm text-muted-foreground" aria-live="polite"><span className="font-medium text-foreground">{step[1]}:</span> {step[2]} Then use the workspace panels below to inspect it.</div></section><div className="min-h-0 flex-1"><ChatInterface sessionTitle="Deterministic CI fixture" slugId="demo-ci-stale-working-directory" repoUrl="https://github.com/base64-fixtures/actions-path" defaultBranch="main" initialIndexStatus="ready" initialMessages={[{ id: "demo-message", role: "assistant", content: "This read-only fixture demonstrates the full evidence-to-approval workflow, including the shape of a completed delivery result. It does not access GitHub or create a pull request." }]} initialCommandCenter={snapshot} isDemo /></div></div>;
+  const [active, setActive] = useState(0);
+  const [playing, setPlaying] = useState(true);
+  const [commitMessage, setCommitMessage] = useState("fix(ci): run frontend workflow from client");
+  useEffect(() => { if (!playing) return; const timer = window.setInterval(() => setActive((current) => (current + 1) % steps.length), 4_600); return () => window.clearInterval(timer); }, [playing]);
+  const select = (index: number) => { setPlaying(false); setActive(index); };
+  const current = steps[active];
+
+  return <main className="min-h-dvh bg-[#090d16] px-3 py-4 text-slate-100 sm:px-6 sm:py-7"><section className="mx-auto max-w-[1440px]"><header className="mb-5 flex flex-wrap items-center gap-3"><div className="mr-auto"><p className="flex items-center gap-2 text-sm font-semibold"><ShieldCheck className="size-4 text-cyan-300" /> Safe Repair Playground</p><p className="mt-1 text-xs text-slate-400">Click through a complete evidence → diff → approval → delivery loop. This is a deterministic fixture: it never reads GitHub or changes a repository.</p></div><button type="button" onClick={() => setPlaying((value) => !value)} className="inline-flex items-center gap-1.5 rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-xs font-medium hover:border-cyan-300/70">{playing ? <Pause className="size-3.5" /> : <Play className="size-3.5" />}{playing ? "Pause" : "Play tour"}</button><button type="button" onClick={() => { setActive(0); setPlaying(true); }} className="inline-flex items-center gap-1.5 rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-xs font-medium hover:border-cyan-300/70"><RotateCcw className="size-3.5" /> Replay</button></header>
+    <Stepper active={active} onSelect={select} />
+    <div className="mt-4 rounded-xl border border-cyan-400/20 bg-cyan-400/[0.06] px-4 py-3 text-sm text-slate-200" aria-live="polite"><span className="font-semibold text-cyan-200">{active + 1}. {current.title}:</span> {current.caption}</div>
+    <section className="mt-4 overflow-hidden rounded-xl border border-slate-700/80 bg-[#111827] shadow-2xl shadow-black/30"><div className="flex h-9 items-center gap-3 border-b border-slate-700 bg-[#181818] px-4 text-[11px] text-slate-400"><span className="font-semibold text-slate-100">fixture/actions-path — Base64 Code</span><span className="ml-auto inline-flex items-center gap-1 font-mono"><GitBranch className="size-3" /> main</span><span className="font-mono">abc1234</span></div>
+      <div className="grid min-h-[640px] grid-cols-1 lg:grid-cols-[220px_minmax(0,1fr)_300px]"><aside className="border-b border-slate-700 bg-[#181818] p-3 lg:border-b-0 lg:border-r"><p className="mb-3 text-[10px] font-bold tracking-[0.14em] text-slate-400">EXPLORER</p><div className="space-y-1 text-xs text-slate-300"><p className="flex items-center gap-1.5"><Folder className="size-3.5 text-[#dcb67a]" /> .github</p><p className="ml-4 flex items-center gap-1.5"><Folder className="size-3.5 text-[#dcb67a]" /> workflows</p><p className="ml-8 rounded bg-[#37373d] px-2 py-1 text-white"><FileCode2 className="mr-1 inline size-3.5 text-[#519aba]" /> ci.yml</p><p className="mt-2 flex items-center gap-1.5"><Folder className="size-3.5 text-[#dcb67a]" /> client</p><p className="ml-4"><FileCode2 className="mr-1 inline size-3.5 text-[#cbcb41]" /> package.json</p><p className="mt-2 flex items-center gap-1.5"><Folder className="size-3.5 text-[#dcb67a]" /> backend</p></div><div className="mt-7 border-t border-slate-700 pt-3"><p className="text-[10px] font-bold tracking-[0.14em] text-slate-400">COMMIT</p><p className="mt-2 font-mono text-[10px] text-slate-400">abc1234 · move client app</p><p className="mt-1 text-[11px] text-rose-300">● Frontend CI failed</p></div></aside>
+        <div className="flex min-w-0 flex-col bg-[#1e1e1e]">{active === 0 ? <div className="flex min-h-[640px] flex-col items-center justify-center p-8 text-center"><AlertTriangle className="size-10 text-rose-300" /><h1 className="mt-4 text-xl font-semibold">Frontend CI failed on abc1234</h1><p className="mt-2 max-w-md text-sm leading-6 text-slate-400">Base64 has not guessed a change. Start with the exact failed run and prove whether the defect is still present.</p><button type="button" onClick={() => select(1)} className="mt-6 inline-flex items-center gap-2 rounded bg-cyan-500 px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-cyan-300"><Workflow className="size-4" /> Inspect failed CI</button></div> : active === 1 ? <div className="p-5"><p className="text-[10px] font-bold tracking-[0.14em] text-cyan-300">EVIDENCE LOCKED TO FAILED RUN #842</p><h2 className="mt-2 text-lg font-semibold">The job cannot find package.json under <code className="rounded bg-slate-800 px-1.5 py-0.5 text-cyan-200">./server</code>.</h2><div className="mt-5 grid gap-3 md:grid-cols-3">{[["CI log", "npm ERR! ENOENT /repo/server/package.json", "failed step: npm run build"], ["Workflow at abc1234", "working-directory: ./server", ".github/workflows/ci.yml"], ["Repository layout", "client/package.json exists", "current source at the failed SHA"]].map(([label, value, detail]) => <article key={label} className="rounded-lg border border-slate-700 bg-slate-900/60 p-3"><p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">{label}</p><p className="mt-2 font-mono text-[11px] text-slate-100">{value}</p><p className="mt-2 text-[10px] text-slate-400">{detail}</p></article>)}</div><div className="mt-6 rounded border border-amber-400/30 bg-amber-400/10 p-3 text-xs text-amber-100"><ShieldCheck className="mr-1.5 inline size-3.5" /> Observed evidence, not a model instruction. The workflow command is never executed locally.</div><button type="button" onClick={() => select(2)} className="mt-5 inline-flex items-center gap-2 rounded bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-cyan-300">Review smallest safe diff <ChevronRight className="size-4" /></button></div> : active === 2 ? <div className="p-5"><div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-[10px] font-bold tracking-[0.14em] text-emerald-300">CHANGE PROOF</p><h2 className="mt-1 text-lg font-semibold">Update the stale workflow directory</h2><p className="mt-1 text-sm text-slate-400">One evidenced CI file changes. No source refactor, no unrelated formatting.</p></div><span className="rounded border border-amber-400/40 bg-amber-400/10 px-2 py-1 text-[10px] font-bold text-amber-200">HIGH · CI/CD CHANGE</span></div><div className="mt-5"><ExactDiff /></div><div className="mt-4 grid gap-3 text-xs md:grid-cols-2"><div className="rounded border border-rose-400/25 bg-rose-400/5 p-3"><p className="font-semibold text-rose-200">Why it failed</p><p className="mt-1 leading-5 text-slate-300">The workflow still enters <code>./server</code> after the frontend moved to <code>./client</code>.</p></div><div className="rounded border border-emerald-400/25 bg-emerald-400/5 p-3"><p className="font-semibold text-emerald-200">Why this is expected to pass</p><p className="mt-1 leading-5 text-slate-300">The replacement matches the package path verified at the failed commit. Actions remains the final verifier.</p></div></div><button type="button" onClick={() => select(3)} className="mt-5 inline-flex items-center gap-2 rounded bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-cyan-300"><CheckCircle2 className="size-4" /> Apply reviewed change</button></div> : <div className="flex min-h-0 flex-1 flex-col"><SourceView active={active} /><div className="border-t border-slate-700 bg-[#252526] p-4"><div className="flex flex-wrap items-center gap-3"><div className="min-w-[240px] flex-1"><label className="text-[10px] font-bold uppercase tracking-wider text-slate-400"><Sparkles className="mr-1 inline size-3.5 text-cyan-300" /> AI-suggested commit message</label><input value={commitMessage} onChange={(event) => setCommitMessage(event.target.value)} className="mt-1.5 h-9 w-full rounded border border-slate-600 bg-[#1e1e1e] px-3 font-mono text-xs text-slate-100 outline-none focus:border-cyan-300" /></div>{active === 3 ? <button type="button" onClick={() => select(4)} className="mt-5 inline-flex items-center gap-2 rounded bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-emerald-300"><GitPullRequest className="size-4" /> Push approved repair</button> : <span className="mt-5 inline-flex items-center gap-2 rounded border border-emerald-400/30 bg-emerald-400/10 px-3 py-2 text-xs font-semibold text-emerald-200"><CheckCircle2 className="size-4" /> Draft PR created · CI queued</span>}</div><p className="mt-2 text-[10px] text-slate-500">In the real workspace this button requires approval of this exact diff, base SHA, and commit message before a branch is pushed.</p></div></div>}</div>
+        <aside className="border-t border-slate-700 bg-[#111827] p-4 lg:border-l lg:border-t-0"><p className="text-[10px] font-bold tracking-[0.14em] text-slate-400">SAFE REPAIR</p><div className="mt-4 space-y-4 text-xs"><div><p className="font-semibold text-slate-100">Current incident</p><p className="mt-1 text-slate-400">Frontend CI · run #842<br />frontend-build / npm run build</p></div><div><p className="font-semibold text-slate-100">Applicability</p><p className="mt-1 text-emerald-300">Still present on current HEAD</p></div><div><p className="font-semibold text-slate-100">Proof chain</p><ol className="mt-2 space-y-2 text-slate-400"><li>✓ Failed CI excerpt</li><li>✓ Workflow at abc1234</li><li>✓ Repository file at abc1234</li><li className={active >= 2 ? "text-emerald-300" : ""}>{active >= 2 ? "✓" : "○"} Exact one-file diff</li><li className={active >= 3 ? "text-emerald-300" : ""}>{active >= 3 ? "✓" : "○"} Approval-bound delivery</li></ol></div><div className="rounded border border-slate-700 bg-slate-900/70 p-3 text-[11px] leading-5 text-slate-400"><strong className="text-slate-200">Why Base64 is different:</strong> it connects a failure to one exact, validated change and records what happens after delivery.</div></div></aside>
+      </div></section>
+  </section></main>;
 }
