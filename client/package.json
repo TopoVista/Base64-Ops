@@ -9,11 +9,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "verify:bundle": "node scripts/check-bundle-budget.mjs",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ai-sdk/react": "^3.0.193",
     "@assistant-ui/react-markdown": "^0.14.1",
     "@clerk/clerk-react": "5.61.9",
     "@fontsource-variable/geist": "^5.2.9",
@@ -23,11 +23,11 @@
     "@streamdown/cjk": "^1.0.3",
     "@streamdown/code": "^1.1.1",
     "@streamdown/math": "^1.0.2",
-    "@streamdown/mermaid": "^1.0.2",
+    "@streamdown/mermaid": "^1.0.3",
     "@tailwindcss/vite": "^4.3.0",
     "@tanstack/react-query": "^5.100.14",
-    "ai": "^6.0.191",
-    "axios": "^1.16.1",
+    "ai": "^7.0.127",
+    "axios": "^1.20.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
@@ -35,22 +35,27 @@
     "lucide-react": "^1.16.0",
     "monaco-editor": "^0.57.0",
     "motion": "^12.40.0",
-    "nanoid": "^5.1.11",
+    "nanoid": "^6.0.1",
     "next-themes": "^0.4.6",
     "parse-diff": "^0.12.0",
     "radix-ui": "^1.4.3",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-hook-form": "^7.76.1",
-    "react-router-dom": "^7.15.1",
+    "react-router-dom": "^7.18.4",
     "react-simple-code-editor": "^0.14.1",
-    "shadcn": "^4.8.0",
     "sonner": "^2.0.7",
-    "streamdown": "^2.5.0",
+    "streamdown": "^2.7.0",
     "tailwind-merge": "^3.6.0",
     "tailwindcss": "^4.3.0",
     "tw-animate-css": "^1.4.0",
     "use-stick-to-bottom": "^1.1.4"
+  },
+  "overrides": {
+    "baseline-browser-mapping": "2.11.27",
+    "brace-expansion": "5.0.12",
+    "browserslist": "4.29.3",
+    "dompurify": "3.4.16"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -64,6 +69,6 @@
     "globals": "^17.6.0",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.59.2",
-    "vite": "^8.0.12"
+    "vite": "^8.3.2"
   }
 }
