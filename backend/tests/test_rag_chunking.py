@@ -1,5 +1,7 @@
 import asyncio
 
+import pytest
+from fastapi import HTTPException
 from langchain_core.documents import Document
 
 from app.services import rag_service, workspace_service
@@ -32,6 +34,8 @@ def test_rag_rows_always_include_lexical_retrieval_fields() -> None:
     assert rows[0]["sessionId"] == "ses_1"
     assert rows[0]["text"] == "FastAPI binds on 0.0.0.0"
     assert rows[0]["source"] == "backend/main.py"
+    assert "fastapi" in rows[0]["searchTerms"]
+    assert "backend" in rows[0]["searchTerms"]
 
 
 def test_lexical_rag_scores_natural_language_terms_and_has_safe_fallback() -> None:
@@ -54,6 +58,10 @@ def test_index_workspace_persists_lexical_chunks_without_vector_search(tmp_path,
         def __init__(self) -> None:
             self.deleted: list[dict] = []
             self.rows: list[dict] = []
+            self.indexes: list[list[tuple[str, int]]] = []
+
+        async def create_index(self, fields: list[tuple[str, int]]) -> None:
+            self.indexes.append(fields)
 
         async def delete_many(self, query: dict) -> None:
             self.deleted.append(query)
@@ -86,6 +94,44 @@ def test_index_workspace_persists_lexical_chunks_without_vector_search(tmp_path,
     assert result["indexed"] == 1
     assert result["storage"] == "lexical"
     assert Database.rag_chunks.rows[0]["source"] == "backend/main.py"
+    assert Database.rag_chunks.indexes == [[("sessionId", 1), ("searchTerms", 1)]]
+
+
+def test_repository_index_uses_aggregate_file_and_byte_limits(tmp_path) -> None:
+    for name in ("a.py", "b.py", "c.py"):
+        (tmp_path / name).write_text("x" * 200, encoding="utf-8")
+
+    documents, stats = RagService()._build_repository_documents(
+        {"_id": "ses_1", "repoName": "fixture"},
+        tmp_path,
+        max_files=2,
+        max_total_bytes=1_000,
+        max_chunks=100,
+    )
+
+    assert len(documents) == 2
+    assert stats == {
+        "filesIndexed": 2,
+        "indexedBytes": 400,
+        "skippedFiles": 1,
+        "truncated": True,
+    }
+
+
+def test_repository_index_stops_at_the_chunk_ceiling(tmp_path) -> None:
+    (tmp_path / "large.py").write_text("x" * 5_000, encoding="utf-8")
+
+    documents, stats = RagService()._build_repository_documents(
+        {"_id": "ses_1", "repoName": "fixture"},
+        tmp_path,
+        max_files=10,
+        max_total_bytes=10_000,
+        max_chunks=1,
+    )
+
+    assert len(documents) == 1
+    assert stats["filesIndexed"] == 1
+    assert stats["truncated"] is True
 
 
 def test_dependency_graph_resolves_local_python_and_typescript_imports(tmp_path) -> None:
@@ -140,3 +186,32 @@ def test_workspace_includes_go_source_files_for_index_and_editor(tmp_path) -> No
     indexed = WorkspaceService().iter_indexable_files(tmp_path)
 
     assert source in indexed
+
+
+def test_workspace_file_selection_is_stable_before_bounded_indexing(tmp_path) -> None:
+    (tmp_path / "z").mkdir()
+    (tmp_path / "a").mkdir()
+    (tmp_path / "z" / "last.py").write_text("pass\n", encoding="utf-8")
+    (tmp_path / "a" / "first.py").write_text("pass\n", encoding="utf-8")
+    (tmp_path / "middle.py").write_text("pass\n", encoding="utf-8")
+
+    indexed = WorkspaceService().iter_indexable_files(tmp_path)
+
+    assert [path.relative_to(tmp_path).as_posix() for path in indexed] == [
+        "middle.py",
+        "a/first.py",
+        "z/last.py",
+    ]
+
+
+def test_workspace_path_guard_rejects_sibling_prefix_escape(tmp_path) -> None:
+    repository = tmp_path / "repo"
+    sibling = tmp_path / "repo-shadow"
+    repository.mkdir()
+    sibling.mkdir()
+    (sibling / "secret.py").write_text("not repository content", encoding="utf-8")
+
+    with pytest.raises(HTTPException) as exc:
+        WorkspaceService()._safe_path(repository, "../repo-shadow/secret.py")
+
+    assert exc.value.status_code == 400
