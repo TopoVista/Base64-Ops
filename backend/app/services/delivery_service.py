@@ -60,6 +60,18 @@ class DeliveryService:
                 candidate, reason = "high", "Authentication, authorization, or credential surface modified"
             elif any(token in path for token in ("docker", "compose", "config", "main.py", "server.py")):
                 candidate, reason = "medium", "Runtime or container configuration modified"
+            elif path.endswith(
+                (
+                    "requirements.txt",
+                    "pyproject.toml",
+                    "poetry.lock",
+                    "package.json",
+                    "package-lock.json",
+                    "pnpm-lock.yaml",
+                    "yarn.lock",
+                )
+            ):
+                candidate, reason = "medium", "Dependency manifest modified"
             elif path.endswith((".md", ".rst", ".txt")):
                 candidate, reason = "low", "Documentation-only change"
             elif "test" in path or path.startswith("tests/"):

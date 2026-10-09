@@ -225,3 +225,44 @@ def test_workflow_change_has_deterministic_high_risk(tmp_path: Path) -> None:
 
     assert plan.base_sha == "def456"
     assert plan.risk_level == "high"
+
+
+def test_patch_engine_can_enforce_a_strict_ci_minimality_budget(tmp_path: Path) -> None:
+    for name in ("one.yml", "two.yml", "three.yml"):
+        (tmp_path / name).write_text("value: old\n", encoding="utf-8")
+    proposal = PatchProposal(
+        summary="Overly broad CI repair",
+        rationale="Three files should not be an automatic minimal repair.",
+        evidence_ids=["evd_1", "evd_2", "evd_3"],
+        edits=[
+            FileEditIntent(
+                path=name,
+                operation="modify",
+                reason="Test fixture",
+                evidence_ids=[f"evd_{index}"],
+                expected_original_hash=content_hash("value: old\n"),
+                proposed_content="value: new\n",
+            )
+            for index, name in enumerate(("one.yml", "two.yml", "three.yml"), start=1)
+        ],
+    )
+
+    with pytest.raises(PatchSafetyError, match="too many files changed"):
+        PatchEngine().build_delivery_plan(
+            proposal=proposal,
+            user_id="usr_1",
+            session_id="ses_1",
+            run_id="run_1",
+            repository_id="repo_1",
+            base_branch="main",
+            base_sha="a" * 40,
+            repo_path=tmp_path,
+            evidence=[
+                {"id": "evd_1", "path": "one.yml"},
+                {"id": "evd_2", "path": "two.yml"},
+                {"id": "evd_3", "path": "three.yml"},
+            ],
+            repo_map={},
+            max_files=2,
+            max_changed_lines=80,
+        )

@@ -103,6 +103,8 @@ class PatchEngine:
         repo_path: Path,
         evidence: list[dict[str, Any]],
         repo_map: dict[str, Any],
+        max_files: int | None = None,
+        max_changed_lines: int | None = None,
     ) -> tuple[DeliveryPlan, list[ChangeSurface]]:
         if proposal.unresolved_questions:
             raise PatchSafetyError(
@@ -110,7 +112,9 @@ class PatchEngine:
             )
         if not proposal.edits:
             raise PatchSafetyError("Patch proposal contains no edits")
-        if len(proposal.edits) > self.settings.max_patch_files:
+        file_budget = self.settings.max_patch_files if max_files is None else max_files
+        line_budget = self.settings.max_patch_lines if max_changed_lines is None else max_changed_lines
+        if len(proposal.edits) > file_budget:
             raise PatchSafetyError("Patch proposal exceeds safe automatic-edit scope (too many files changed)")
 
         evidence_by_id = {str(item.get("id")): item for item in evidence}
@@ -201,7 +205,7 @@ class PatchEngine:
             total_changed_lines = sum(
                 change.unified_diff.count("\n+") + change.unified_diff.count("\n-") for change in changes
             )
-            if total_changed_lines > self.settings.max_patch_lines:
+            if total_changed_lines > line_budget:
                 raise PatchSafetyError("Patch proposal exceeds safe automatic-edit scope (too many lines changed)")
 
             risk, reasons = self.delivery.classify_risk(changes)

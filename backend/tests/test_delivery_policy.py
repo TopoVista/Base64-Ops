@@ -54,6 +54,21 @@ def test_structured_edit_produces_exact_hashes_and_diff(tmp_path: Path) -> None:
     assert all(result.status == "passed" for result in DeliveryService().validate_plan(plan))
 
 
+def test_dependency_manifest_is_not_misclassified_as_documentation() -> None:
+    change = ProposedFileChange(
+        path="backend/requirements.txt",
+        change_type="modify",
+        original_hash="a" * 64,
+        proposed_hash="b" * 64,
+        unified_diff="--- a/backend/requirements.txt\n+++ b/backend/requirements.txt\n+PyJWT==2.6.0\n",
+    )
+
+    risk, reasons = DeliveryService().classify_risk([change])
+
+    assert risk == "medium"
+    assert reasons == ["Dependency manifest modified"]
+
+
 def test_patch_engine_rejects_path_traversal_and_sensitive_files(tmp_path: Path) -> None:
     (tmp_path / "app.py").write_text("x = 1\n", encoding="utf-8")
     engine = PatchEngine()
