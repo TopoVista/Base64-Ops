@@ -14,7 +14,7 @@ router = APIRouter()
 
 @router.get("/connect")
 async def connect(redirectTo: str | None = None, user: dict = Depends(get_current_user)) -> dict:
-    return {"url": create_connect_url(user["_id"], redirectTo)}
+    return {"url": await create_connect_url(user["_id"], redirectTo)}
 
 
 @router.get("/callback")

@@ -59,9 +59,13 @@ def decrypt_secret(value: str) -> str:
     return _fernet().decrypt(value.encode("utf-8")).decode("utf-8")
 
 
-def sign_oauth_state(payload: dict[str, Any]) -> str:
+def sign_oauth_state(payload: dict[str, Any], *, issued_at: datetime | None = None) -> str:
+    """Sign a short-lived OAuth state payload with an issuance timestamp."""
+
     settings = get_settings()
-    raw = json.dumps(payload, separators=(",", ":"), sort_keys=True).encode("utf-8")
+    issued = issued_at or datetime.now(UTC)
+    state_payload = {**payload, "iat": int(issued.timestamp())}
+    raw = json.dumps(state_payload, separators=(",", ":"), sort_keys=True).encode("utf-8")
     signature = hmac.new(settings.github_oauth_state_secret.encode("utf-8"), raw, hashlib.sha256).digest()
     return (
         base64.urlsafe_b64encode(raw).decode("utf-8").rstrip("=")
@@ -70,15 +74,40 @@ def sign_oauth_state(payload: dict[str, Any]) -> str:
     )
 
 
-def verify_oauth_state(state: str) -> dict[str, Any]:
+def verify_oauth_state(
+    state: str,
+    *,
+    max_age_seconds: int | None = None,
+    now: datetime | None = None,
+) -> dict[str, Any]:
+    """Verify OAuth state integrity and a bounded creation time.
+
+    One-time use is enforced by the GitHub service's hashed state record;
+    this function keeps the cryptographic envelope independent and testable.
+    """
+
     settings = get_settings()
-    raw_part, signature_part = state.split(".", maxsplit=1)
-    raw = base64.urlsafe_b64decode(raw_part + "=" * (-len(raw_part) % 4))
-    signature = base64.urlsafe_b64decode(signature_part + "=" * (-len(signature_part) % 4))
+    try:
+        raw_part, signature_part = state.split(".", maxsplit=1)
+        raw = base64.urlsafe_b64decode(raw_part + "=" * (-len(raw_part) % 4))
+        signature = base64.urlsafe_b64decode(signature_part + "=" * (-len(signature_part) % 4))
+    except (ValueError, UnicodeError) as exc:
+        raise ValueError("Invalid OAuth state") from exc
     expected = hmac.new(settings.github_oauth_state_secret.encode("utf-8"), raw, hashlib.sha256).digest()
     if not hmac.compare_digest(signature, expected):
         raise ValueError("Invalid OAuth state")
-    return json.loads(raw.decode("utf-8"))
+    try:
+        payload = json.loads(raw.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise ValueError("Invalid OAuth state") from exc
+    if not isinstance(payload, dict) or isinstance(payload.get("iat"), bool) or not isinstance(payload.get("iat"), int):
+        raise ValueError("Invalid OAuth state")
+    current = now or datetime.now(UTC)
+    age = int(current.timestamp()) - payload["iat"]
+    ttl = max_age_seconds if max_age_seconds is not None else settings.github_oauth_state_ttl_seconds
+    if age < -30 or age > ttl:
+        raise ValueError("OAuth state has expired")
+    return payload
 
 
 def github_authorize_url(state: str) -> str:
