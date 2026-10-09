@@ -39,7 +39,7 @@ const ClerkTokenProvider = ({ children }: { children: React.ReactNode }) => {
     setTokenState({ isReady: false, hasToken: false });
     void getToken().then((token) => {
       if (!active) return;
-      setTokenGetter(() => getToken());
+      setTokenGetter((options) => getToken(options));
       setTokenState({ isReady: true, hasToken: Boolean(token) });
     }).catch(() => {
       if (!active) return;

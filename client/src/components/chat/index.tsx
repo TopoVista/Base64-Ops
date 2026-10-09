@@ -43,8 +43,9 @@ type ChatInterfaceProps = {
   branchName?: string | null;
   isSingleSession?: boolean;
   initialCommandCenter?: CommandCenterSnapshot | null;
-  initialIndexStatus?: "indexing" | "ready" | "empty" | "failed" | null;
+  initialIndexStatus?: "queued" | "indexing" | "ready" | "empty" | "failed" | null;
   initialIndexError?: string | null;
+  initialIndexTruncated?: boolean;
   isDemo?: boolean;
   workspaceMode?: boolean;
 };
@@ -284,7 +285,7 @@ const DeliveryPlanPanel = ({ plan, result, expandDiffs = false }: { plan: Delive
         {plan.files.map((file) => <details key={file.path} open={expandDiffs} className="mt-3 rounded-xl border border-white/10 bg-black/20 p-2"><summary className="cursor-pointer text-xs font-medium text-zinc-100">Exact diff / {file.path}</summary><div className="mt-2 overflow-auto"><DiffViewer patch={file.unified_diff} /></div></details>)}
       </article>
     )}
-    {result ? <article className={`rounded-xl border p-3 text-xs ${result.status === "success" ? "border-emerald-300/25 text-emerald-100" : result.status === "partial" ? "border-amber-300/25 text-amber-100" : "border-rose-300/25 text-rose-100"}`}><p>Delivery {result.status}{result.reason ? `: ${result.reason}` : ""}{result.pull_request_url ? <a className="ml-2 underline" href={result.pull_request_url} target="_blank" rel="noreferrer">Open draft PR</a> : null}</p>{result.branch_name ? <p className="mt-2">Branch: {result.branch_name}{result.commit_sha ? ` / commit ${result.commit_sha.slice(0, 12)}` : ""}</p> : null}{result.validation_results?.length ? <div className="mt-2 space-y-1"><p className="font-medium">Delivery validators</p>{result.validation_results.map((step) => <p key={step.step_id}>{step.status === "passed" ? "✓" : "•"} {step.summary}</p>)}</div> : null}</article> : null}
+    {result ? <article className={`rounded-xl border p-3 text-xs ${result.status === "success" ? "border-emerald-300/25 text-emerald-100" : result.status === "partial" ? "border-amber-300/25 text-amber-100" : "border-rose-300/25 text-rose-100"}`}><p>Delivery {result.status}{result.reason ? `: ${result.reason}` : ""}{result.pull_request_url ? <a className="ml-2 underline" href={result.pull_request_url} target="_blank" rel="noreferrer">Open draft PR</a> : null}</p>{result.branch_name ? <p className="mt-2">Branch: {result.branch_name}{result.commit_sha ? ` / commit ${result.commit_sha.slice(0, 12)}` : ""}</p> : null}{result.ciVerification ? <p className={`mt-2 ${result.ciVerification.status === "passed" ? "text-emerald-300" : result.ciVerification.status === "failed" ? "text-rose-300" : "text-amber-200"}`}>GitHub Actions: {result.ciVerification.status} — {result.ciVerification.message ?? "Awaiting read-only verification."}</p> : null}{result.validation_results?.length ? <div className="mt-2 space-y-1"><p className="font-medium">Delivery validators</p>{result.validation_results.map((step) => <p key={step.step_id}>{step.status === "passed" ? "✓" : "•"} {step.summary}</p>)}</div> : null}</article> : null}
   </div>
 );
 
@@ -361,6 +362,7 @@ const ChatInterface = ({
   initialCommandCenter,
   initialIndexStatus = null,
   initialIndexError = null,
+  initialIndexTruncated = false,
   isDemo = false,
   workspaceMode = false,
 }: ChatInterfaceProps) => {
@@ -376,8 +378,9 @@ const ChatInterface = ({
   const [branchName] = useState<string | null>(branchNameProp ?? null);
   const [slugId] = useState(() => slugIdProp || generateSlugId());
   const [isSessionReady, setIsSessionReady] = useState(Boolean(slugIdProp));
-  const [indexStatus, setIndexStatus] = useState<"indexing" | "ready" | "empty" | "failed" | null>(initialIndexStatus);
+  const [indexStatus, setIndexStatus] = useState<"queued" | "indexing" | "ready" | "empty" | "failed" | null>(initialIndexStatus);
   const [indexStatusMessage, setIndexStatusMessage] = useState<string | null>(initialIndexError);
+  const [indexTruncated, setIndexTruncated] = useState(initialIndexTruncated);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { data: currentUser } = useBackendUser();
@@ -455,11 +458,14 @@ const ChatInterface = ({
       });
     },
     onSuccess: (data) => {
-      const message = data.success
-        ? `Index ready: ${data.indexed} repository chunks are available${data.storage ? ` through ${data.storage} retrieval` : ""}.${data.vectorWarning ? ` ${data.vectorWarning}` : ""}`
-        : `Indexing did not complete: ${data.reason ?? "no supported repository files were found."}`;
+      const message = data.status === "queued"
+        ? "Repository indexing was queued and will continue in the background."
+        : data.success
+          ? `Index ready: ${data.indexed} repository chunks are available${data.storage ? ` through ${data.storage} retrieval` : ""}.${data.truncated ? " The index is a bounded partial corpus; direct inspection remains available for excluded files." : ""}${data.vectorWarning ? ` ${data.vectorWarning}` : ""}`
+          : `Indexing did not complete: ${data.reason ?? "no supported repository files were found."}`;
       setIndexStatusMessage(message);
       setIndexStatus(data.status ?? (data.success ? "ready" : "failed"));
+      setIndexTruncated(Boolean(data.truncated));
       setIsSessionReady(true);
       queryClient.invalidateQueries({ queryKey: ["user-sessions"] });
       queryClient.invalidateQueries({ queryKey: ["session", slugId] });
@@ -480,6 +486,7 @@ const ChatInterface = ({
 
   const startReindex = () => {
     setIndexStatus("indexing");
+    setIndexTruncated(false);
     setIndexStatusMessage("Indexing repository files…");
     reindexMutation.mutate();
   };
@@ -598,7 +605,7 @@ const ChatInterface = ({
                 </div>
               </div>
               <TimelinePanel timeline={timeline} />
-              <div className="rounded-3xl border border-border bg-card p-4 shadow-sm"><PanelTitle icon={<Search className="size-4" />} title="Repository Index" /><p className="mt-2 text-xs text-zinc-200">{indexStatus === "indexing" ? "Indexing in progress…" : indexStatus === "ready" ? "Index ready for retrieval." : indexStatus === "empty" ? "No supported indexable files were found; direct inspection remains available." : indexStatus === "failed" ? `Indexing failed: ${indexStatusMessage ?? "see recovery guidance below."}` : "Not indexed yet. The agent can use bounded direct read-only inspection."}</p></div>
+              <div className="rounded-3xl border border-border bg-card p-4 shadow-sm"><PanelTitle icon={<Search className="size-4" />} title="Repository Index" /><p className="mt-2 text-xs text-zinc-200">{indexStatus === "indexing" ? "Indexing in progress…" : indexStatus === "ready" ? indexTruncated ? "Index ready with a bounded partial corpus; direct inspection remains available for excluded files." : "Index ready for retrieval." : indexStatus === "empty" ? "No supported indexable files were found; direct inspection remains available." : indexStatus === "failed" ? `Indexing failed: ${indexStatusMessage ?? "see recovery guidance below."}` : "Not indexed yet. The agent can use bounded direct read-only inspection."}</p></div>
               <SourcesPanel sources={sources} />
               <EvidencePanel evidence={evidence} ciSummary={ciSummary} />
               <InvestigationPanel investigation={investigation} />

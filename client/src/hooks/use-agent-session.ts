@@ -239,13 +239,21 @@ export const useAgentSession = (
         }
         const response = await fetch(`${BASE_API_URL}session/chat`, {
           method: "POST",
-          credentials: "include",
+          // Authentication is the explicit Clerk Bearer header below. Never
+          // attach ambient browser cookies to a cross-origin API request.
+          credentials: "omit",
           signal: abortController.signal,
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ slugId, repoUrl, defaultBranch, message }),
+          body: JSON.stringify({
+            slugId,
+            repoUrl,
+            defaultBranch,
+            message,
+            clientRequestId: userMessage.id,
+          }),
         });
 
         if (!response.ok || !response.body) {

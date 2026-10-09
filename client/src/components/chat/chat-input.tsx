@@ -14,6 +14,7 @@ import {
 import { GitBranch, ShieldCheck, Square, Terminal, Zap } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useClerkApiToken } from "@/components/clerk-token-provider";
 
 type SelectedRepo = {
   value: string;
@@ -67,10 +68,16 @@ const ChatInput = ({
 }: ChatInputProps) => {
   const [value, setValue] = useState("");
   const [isConnectingGithub, setIsConnectingGithub] = useState(false);
+  const { isReady: isTokenReady, hasToken } = useClerkApiToken();
   const isWorking = status === "submitted" || status === "streaming";
   const pendingApproval = approvals.find((approval) => approval.status === "pending" || !approval.status);
+  const canConnectGithub = isTokenReady && hasToken;
 
   const handleConnect = async () => {
+    if (!canConnectGithub) {
+      toast.message("Your sign-in session is still initializing. Please wait a moment and try again.");
+      return;
+    }
     setIsConnectingGithub(true);
     try {
       const response = await connectGithub(window.location.href);
@@ -157,9 +164,9 @@ const ChatInput = ({
               </Button>
               </>
             ) : (
-              <Button variant="outline" onClick={handleConnect} disabled={isConnectingGithub}>
+              <Button variant="outline" onClick={handleConnect} disabled={isConnectingGithub || !canConnectGithub} title={!canConnectGithub ? "Waiting for your secure sign-in token." : undefined}>
                 {isConnectingGithub ? <Spinner className="size-4" /> : <img src={githubLogo} alt="" className="size-4" />}
-                {isConnectingGithub ? "Connecting..." : "Connect GitHub"}
+                {isConnectingGithub ? "Connecting..." : !isTokenReady ? "Preparing sign-in…" : !hasToken ? "Sign in required" : "Connect GitHub"}
               </Button>
             )}
 
@@ -172,7 +179,7 @@ const ChatInput = ({
                   size="sm"
                   className="h-auto px-0 py-0 text-xs font-semibold text-primary"
                   onClick={handleConnect}
-                  disabled={isConnectingGithub}
+                  disabled={isConnectingGithub || !canConnectGithub}
                 >
                   {isConnectingGithub ? "Opening GitHub…" : "Reconnect GitHub"}
                 </Button>
