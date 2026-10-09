@@ -95,6 +95,19 @@ type CodeFile = {
 
 type BottomPanel = "terminal" | "source-control" | null;
 
+// Repository maps can be rooted at either the clone root or a selected
+// service directory. Delivery plans always retain the GitHub-relative path.
+// Treat those equivalent only when one is an exact trailing path of the other;
+// this keeps a diff from ever being staged against an unrelated open file.
+const pathsReferToSameFile = (left?: string, right?: string) => {
+  if (!left || !right) return false;
+  const normalize = (value: string) =>
+    value.replaceAll("\\", "/").replace(/^\.\//, "").replace(/^\/+|\/+$/g, "");
+  const a = normalize(left);
+  const b = normalize(right);
+  return a === b || a.endsWith(`/${b}`) || b.endsWith(`/${a}`);
+};
+
 // ─── Language info ────────────────────────────────────────────────────────────
 
 const LANG: Record<string, { name: string; color: string }> = {
@@ -742,25 +755,37 @@ function StatusBar({ path, branch, repoName, ciStatus, sha, onFullscreen, fullsc
 
 // ─── CI banner ────────────────────────────────────────────────────────────────
 
-function CIBanner({ ci, relevantPaths, selectedPath, onJumpToFile, onGenerateProposal, generatingProposal, proposalReady, ciProposalAvailable }: {
+function CIBanner({ ci, relevantPaths, selectedPath, onJumpToFile, onGenerateProposal, generatingProposal, proposalReady, ciProposalAvailable, repairBlockedReason }: {
   ci: CIInvestigationSummary; relevantPaths: string[];
   selectedPath: string | null; onJumpToFile: (path: string) => void;
   onGenerateProposal: () => void; generatingProposal: boolean;
-  proposalReady: boolean; ciProposalAvailable: boolean;
+  proposalReady: boolean; ciProposalAvailable: boolean; repairBlockedReason?: string;
 }) {
   const failed = ci.failed_jobs[0];
+  const alreadyFixed = ci.applicability === "historical_fixed";
   return (
-    <div className="shrink-0 border-b px-4 py-2.5" style={{ borderColor: "var(--ide-danger-border)", background: "var(--ide-danger-bg)" }}>
+    <div className="shrink-0 border-b px-4 py-2.5" style={alreadyFixed
+      ? { borderColor: "var(--ide-info-border)", background: "var(--ide-info-bg)" }
+      : { borderColor: "var(--ide-danger-border)", background: "var(--ide-danger-bg)" }}>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex min-w-0 flex-1 items-start gap-2">
-          <span className="mt-0.5 inline-flex shrink-0 items-center gap-1 rounded px-2 py-0.5 text-[10px] font-semibold text-white" style={{ background: "var(--ide-danger-strong)" }}>
-            <AlertTriangle className="size-2.5" /> CI FAILURE · RUN #{ci.run_id}
+          <span className="mt-0.5 inline-flex shrink-0 items-center gap-1 rounded px-2 py-0.5 text-[10px] font-semibold text-white" style={{ background: alreadyFixed ? "var(--ide-accent)" : "var(--ide-danger-strong)" }}>
+            {alreadyFixed ? <CheckCircle className="size-2.5" /> : <AlertTriangle className="size-2.5" />}
+            {alreadyFixed ? "HISTORICAL CI RUN" : "CI FAILURE"} · #{ci.run_id}
           </span>
           <div className="min-w-0">
             <p className="truncate text-[11px]" style={{ color: "var(--ide-fg2)" }}>
               <span className="font-medium" style={{ color: "var(--ide-fg-bright)" }}>{ci.workflow_name ?? "GitHub Actions"}</span>
               {failed && <span style={{ color: "var(--ide-fg-dim)" }}>{" · "}{failed.name}{failed.failed_step && ` · step: ${failed.failed_step}`}</span>}
             </p>
+            {alreadyFixed && ci.applicability_reason && (
+              <p className="mt-1 text-[10px]" style={{ color: "var(--ide-info-fg)" }}>{ci.applicability_reason}</p>
+            )}
+            {!alreadyFixed && repairBlockedReason && (
+              <p className="mt-1 max-w-3xl text-[10px]" style={{ color: "var(--ide-danger-fg)" }}>
+                Safe repair is unavailable: {repairBlockedReason}
+              </p>
+            )}
             {relevantPaths.length > 0 && (
               <div className="mt-1 flex flex-wrap items-center gap-1">
                 <span className="text-[10px]" style={{ color: "var(--ide-fg-dim)" }}>Jump to:</span>
@@ -786,10 +811,12 @@ function CIBanner({ ci, relevantPaths, selectedPath, onJumpToFile, onGeneratePro
               style={ciProposalAvailable
                 ? { background: "var(--ide-accent)", color: "white" }
                 : { background: "var(--ide-bg3)", color: "var(--ide-fg-dim)" }}
-              title={!ciProposalAvailable ? "Collect CI evidence first via Pipelines" : undefined}>
+              title={alreadyFixed
+                ? "The failure condition is already absent on the current branch; a duplicate repair is intentionally not generated."
+                : !ciProposalAvailable ? "Collect CI evidence with “Repair latest failed CI” first." : undefined}>
               {generatingProposal
                 ? <><LoaderCircle className="size-3 animate-spin" /> Generating…</>
-                : <><Zap className="size-3" />{ciProposalAvailable ? "Analyze & fix CI" : "No CI evidence"}</>}
+                : <><Zap className="size-3" />{alreadyFixed ? "Already fixed on current HEAD" : ciProposalAvailable ? "Generate safe repair" : ci.incomplete ? "Actions logs unavailable" : "No CI evidence"}</>}
             </button>
           )}
         </div>
@@ -798,18 +825,84 @@ function CIBanner({ ci, relevantPaths, selectedPath, onJumpToFile, onGeneratePro
   );
 }
 
+/**
+ * Makes the repair boundary visible while the evidence-backed proposal is built.
+ * This is deliberately a status surface, not hidden model reasoning: every stage
+ * corresponds to an observable artifact that is later rendered in the review panel.
+ */
+function RepairProgress({ ci }: { ci: CIInvestigationSummary }) {
+  const failed = ci.failed_jobs[0];
+  const stages = [
+    {
+      title: "Evidence locked to the failed run",
+      detail: `Run #${ci.run_id} · ${ci.head_sha.slice(0, 12)}${failed ? ` · ${failed.name}` : ""}`,
+      state: "complete" as const,
+    },
+    {
+      title: "Building the smallest supported diff",
+      detail: "Only files connected to the CI evidence are eligible for this proposal.",
+      state: "active" as const,
+    },
+    {
+      title: "Preparing validation and approval gates",
+      detail: "Nothing is changed on GitHub until the exact diff is reviewed and approved.",
+      state: "pending" as const,
+    },
+  ];
+
+  return (
+    <section
+      className="shrink-0 border-b px-4 py-3"
+      style={{ borderColor: "var(--ide-info-border)", background: "var(--ide-info-bg)" }}
+      aria-live="polite"
+      aria-label="Safe repair progress"
+    >
+      <div className="flex items-center gap-2">
+        <LoaderCircle className="size-3.5 animate-spin" style={{ color: "var(--ide-blue)" }} />
+        <p className="text-[11px] font-semibold" style={{ color: "var(--ide-info-fg)" }}>Preparing a reviewable CI repair</p>
+      </div>
+      <ol className="mt-2 grid gap-2 lg:grid-cols-3">
+        {stages.map((stage, index) => (
+          <li key={stage.title} className="flex min-w-0 gap-2 rounded border px-2.5 py-2" style={{ borderColor: "var(--ide-border2)", background: "var(--ide-bg)" }}>
+            <span
+              className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full text-[9px] font-bold"
+              style={stage.state === "complete"
+                ? { background: "var(--ide-success-strong)", color: "white" }
+                : stage.state === "active"
+                  ? { background: "var(--ide-accent)", color: "white" }
+                  : { background: "var(--ide-bg3)", color: "var(--ide-fg-dim)" }}
+            >
+              {stage.state === "complete" ? "✓" : index + 1}
+            </span>
+            <div className="min-w-0">
+              <p className="text-[10px] font-semibold" style={{ color: "var(--ide-fg)" }}>{stage.title}</p>
+              <p className="mt-0.5 text-[10px] leading-4" style={{ color: "var(--ide-fg-dim)" }}>{stage.detail}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
 // ─── Review panel ─────────────────────────────────────────────────────────────
 
-function ReviewPanel({ file, draft, deliveryPlan, stagedForCommit, commitMessage, onCommitMessageChange, pendingApproval, onStage, onDeliver, delivering, deliveryResult }: {
+function ReviewPanel({ file, draft, deliveryPlan, ci, stagedForCommit, commitMessage, onCommitMessageChange, pendingApproval, onStage, onDeliver, delivering, deliveryResult }: {
   file?: CodeFile; draft: string; deliveryPlan: DeliveryPlanSummary;
+  ci?: CIInvestigationSummary | null;
   stagedForCommit: boolean; commitMessage: string;
   onCommitMessageChange: (v: string) => void; pendingApproval?: ApprovalRequest;
   onStage: () => void; onDeliver: () => void; delivering: boolean;
-  deliveryResult?: { status: string; pull_request_url?: string } | null;
+  deliveryResult?: { status: string; pull_request_url?: string; ciVerification?: { status: string; message?: string } } | null;
 }) {
   const ideTheme = useIDETheme();
   const exactDiff = deliveryPlan.files.map((f) => f.unified_diff).join("\n");
+  const selectedPlanFile = file
+    ? deliveryPlan.files.find((planFile) => pathsReferToSameFile(planFile.path, file.path))
+    : undefined;
+  const targetPath = deliveryPlan.files[0]?.path;
   const passedValidation = (pendingApproval?.validation ?? []).filter((v) => v.status === "passed");
+  const failedJob = ci?.failed_jobs[0];
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <div className="shrink-0 border-b px-5 py-3" style={{ borderColor: "var(--ide-danger-border)", background: "var(--ide-danger-bg)" }}>
@@ -817,6 +910,11 @@ function ReviewPanel({ file, draft, deliveryPlan, stagedForCommit, commitMessage
           <div className="min-w-0">
             <p className="text-[10px] font-semibold uppercase tracking-[0.12em]" style={{ color: "var(--ide-danger-fg)" }}>Why it failed</p>
             <p className="mt-0.5 text-[13px] font-medium" style={{ color: "var(--ide-fg-bright)" }}>{deliveryPlan.rationale}</p>
+            {ci ? (
+              <p className="mt-1 text-[11px]" style={{ color: "var(--ide-fg2)" }}>
+                Evidence from run #{ci.run_id}{failedJob ? ` · ${failedJob.name}${failedJob.failed_step ? ` / ${failedJob.failed_step}` : ""}` : ""} at {ci.head_sha.slice(0, 12)}.
+              </p>
+            ) : null}
             {passedValidation.length > 0 && (
               <p className="mt-1.5 text-[11px]" style={{ color: "var(--ide-success-fg)" }}>
                 ✓ Passed {passedValidation.length} pre-delivery validation {passedValidation.length === 1 ? "check" : "checks"}
@@ -827,6 +925,14 @@ function ReviewPanel({ file, draft, deliveryPlan, stagedForCommit, commitMessage
             {deliveryPlan.risk_level.toUpperCase()} RISK
           </span>
         </div>
+      </div>
+      <div className="shrink-0 border-b px-5 py-2.5" style={{ borderColor: "var(--ide-success-border)", background: "var(--ide-success-bg)" }}>
+        <p className="text-[10px] font-semibold uppercase tracking-[0.12em]" style={{ color: "var(--ide-success-fg)" }}>Why this is expected to pass</p>
+        <p className="mt-0.5 text-[11px] leading-5" style={{ color: "var(--ide-fg2)" }}>
+          This exact diff is bound to the failed-run evidence and current repository SHA. {passedValidation.length
+            ? `${passedValidation.length} required pre-delivery validation ${passedValidation.length === 1 ? "check has" : "checks have"} passed.`
+            : "Validation results will be recorded before delivery."} GitHub Actions remains the final verifier after push.
+        </p>
       </div>
       <div className="grid min-h-0 flex-1 grid-cols-1 overflow-hidden xl:grid-cols-2">
         <div className="flex min-h-0 flex-col overflow-hidden border-r" style={{ borderColor: "var(--ide-border)" }}>
@@ -858,19 +964,32 @@ function ReviewPanel({ file, draft, deliveryPlan, stagedForCommit, commitMessage
                 ? <a href={deliveryResult.pull_request_url} target="_blank" rel="noreferrer" className="underline">Open draft PR ↗</a>
                 : "Check the Commits & CI rail for the GitHub Actions result."}
             </span>
+            {deliveryResult.ciVerification ? (
+              <span className="ml-auto text-right text-[11px]" style={{ color: "var(--ide-fg2)" }}>
+                GitHub Actions: {deliveryResult.ciVerification.status}
+                {deliveryResult.ciVerification.message ? ` — ${deliveryResult.ciVerification.message}` : ""}
+              </span>
+            ) : null}
           </div>
         )}
         {!stagedForCommit ? (
+          <>
           <div className="flex flex-wrap items-center justify-between gap-4 rounded border p-4" style={{ borderColor: "var(--ide-info-border)", background: "var(--ide-info-bg)" }}>
             <div>
               <p className="text-[12px] font-semibold" style={{ color: "var(--ide-info-fg)" }}>Step 1 — Apply the reviewed change</p>
               <p className="mt-1 max-w-2xl text-[11px] leading-[1.6]" style={{ color: "var(--ide-fg2)" }}>Stages the exact approved diff. Nothing is written to GitHub yet.</p>
             </div>
-            <button type="button" onClick={onStage} disabled={!file}
+            <button type="button" onClick={onStage} disabled={!selectedPlanFile}
               className="rounded px-4 py-2 text-[12px] font-semibold text-white disabled:opacity-50" style={{ background: "var(--ide-accent)" }}>
-              Apply changes
+              {selectedPlanFile ? "Apply changes" : "Open affected file"}
             </button>
           </div>
+          {!selectedPlanFile && targetPath ? (
+            <p className="mt-2 text-[11px]" style={{ color: "var(--ide-warning-fg)" }}>
+              Select <code>{targetPath}</code> to review and apply this exact diff.
+            </p>
+          ) : null}
+          </>
         ) : (
           <div className="space-y-3">
             <p className="flex items-center gap-2 text-[12px] font-semibold" style={{ color: "var(--ide-success-fg)" }}>✓ Step 1 complete — change staged in editor</p>
@@ -930,9 +1049,12 @@ export interface IDEWorkspaceProps {
   commits: CommitItem[];
   commitsPending: boolean;
   ci?: CIInvestigationSummary | null;
+  onStartCiRepair: () => void;
+  ciRefreshPending: boolean;
   onGenerateCiProposal: () => void;
   ciProposalPending: boolean;
   ciProposalAvailable: boolean;
+  ciRepairBlockedReason?: string;
   deliveryPlan?: DeliveryPlanSummary | null;
   pendingApproval?: ApprovalRequest;
   onDeliver: () => void;
@@ -944,7 +1066,7 @@ export function IDEWorkspace({
   file, filePending, fileError, draft, onDraftChange,
   commitMessage, onCommitMessageChange, changed,
   onPropose, proposalPending, commits, commitsPending,
-  ci, onGenerateCiProposal, ciProposalPending, ciProposalAvailable,
+  ci, onStartCiRepair, ciRefreshPending, onGenerateCiProposal, ciProposalPending, ciProposalAvailable, ciRepairBlockedReason,
   deliveryPlan, pendingApproval, onDeliver, deliveryPending,
 }: IDEWorkspaceProps) {
   const [fullscreen, setFullscreen] = useState(false);
@@ -998,14 +1120,19 @@ export function IDEWorkspace({
   }, [selectedPath, onSelectPath]);
 
   const stageExactChange = useCallback(() => {
-    const diff = deliveryPlan?.files.find((f) => f.path === selectedPath)?.unified_diff ?? deliveryPlan?.files[0]?.unified_diff;
-    if (!file || !diff) { toast.error("Affected source or exact diff unavailable."); return; }
+    const diff = file
+      ? deliveryPlan?.files.find((planFile) => pathsReferToSameFile(planFile.path, file.path))?.unified_diff
+      : undefined;
+    if (!file || !diff) {
+      toast.error(`Open ${deliveryPlan?.files[0]?.path ?? "the affected source"} before applying its exact diff.`);
+      return;
+    }
     const result = applyPatch(draft, diff);
     if (result === false) { toast.error("The exact diff no longer applies. Regenerate the proposal."); return; }
     onDraftChange(result);
     setStagedForCommit(true);
     toast.success("Exact change applied to the editor.");
-  }, [deliveryPlan, file, draft, selectedPath, onDraftChange]);
+  }, [deliveryPlan, file, draft, onDraftChange]);
 
   const slugId = data.session.slugId;
   const deliveredSha = data.commandCenter?.deliveryResult?.commit_sha;
@@ -1032,7 +1159,20 @@ export function IDEWorkspace({
       <div className="flex h-8 shrink-0 items-center gap-3 border-b px-4 text-[11px]"
         style={{ borderColor: "var(--ide-border)", background: "var(--ide-bg2)", color: "var(--ide-fg2)" }}>
         <span className="truncate font-medium" style={{ color: "var(--ide-fg)" }}>{session.repoName ?? "Repository"} — Base64 Code</span>
-        <span className="ml-auto font-mono text-[10px] opacity-60">{branch}</span>
+        {!ci && !deliveryPlan && (
+          <button
+            type="button"
+            onClick={onStartCiRepair}
+            disabled={ciRefreshPending}
+            className="ml-auto inline-flex shrink-0 items-center gap-1.5 rounded px-2 py-1 text-[10px] font-semibold text-white transition-opacity disabled:opacity-55"
+            style={{ background: "var(--ide-accent)" }}
+            title="Inspect the latest failed GitHub Actions run and build a reviewable, evidence-bound repair"
+          >
+            <RefreshCw className={cn("size-3", ciRefreshPending && "animate-spin")} />
+            {ciRefreshPending ? "Inspecting CI…" : "Repair latest failed CI"}
+          </button>
+        )}
+        <span className={cn(!ci && !deliveryPlan ? "" : "ml-auto", "font-mono text-[10px] opacity-60")}>{branch}</span>
         <button type="button" onClick={() => setFullscreen((v) => !v)}
           className="shrink-0 rounded p-1 transition-colors"
           style={{ color: "var(--ide-fg-dim)" }}
@@ -1061,17 +1201,26 @@ export function IDEWorkspace({
         <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
           {ci && (
             <CIBanner ci={ci} relevantPaths={ci.relevant_paths ?? []} selectedPath={selectedPath}
-              onJumpToFile={(p) => { onSelectPath(p); setOpenTabs((prev) => prev.includes(p) ? prev : [...prev, p]); }}
+              onJumpToFile={(p) => {
+                // A repository tree can be rooted at a subdirectory while CI
+                // provenance remains GitHub-root-relative. Always select the
+                // concrete workspace file, never a synthetic unmatched path.
+                const resolvedPath = files.find((candidate) => pathsReferToSameFile(candidate.path, p))?.path ?? p;
+                onSelectPath(resolvedPath);
+                setOpenTabs((prev) => prev.includes(resolvedPath) ? prev : [...prev, resolvedPath]);
+              }}
               onGenerateProposal={onGenerateCiProposal} generatingProposal={ciProposalPending}
-              proposalReady={Boolean(deliveryPlan)} ciProposalAvailable={ciProposalAvailable} />
+              proposalReady={Boolean(deliveryPlan)} ciProposalAvailable={ciProposalAvailable}
+              repairBlockedReason={ciRepairBlockedReason} />
           )}
+          {ci && ciProposalPending && !deliveryPlan && <RepairProgress ci={ci} />}
           <TabBar tabs={openTabs} active={selectedPath} dirty={changed} onActivate={onSelectPath} onClose={closeTab} />
           {selectedPath && <Breadcrumb path={selectedPath} changed={changed} sha={file?.headSha} />}
 
           {/* Editor area — shrinks when bottom panel is open */}
           <div className={cn("flex min-h-0 flex-col overflow-hidden", bottomPanel ? "flex-[3]" : "flex-1")}>
             {deliveryPlan ? (
-              <ReviewPanel file={file} draft={draft} deliveryPlan={deliveryPlan}
+              <ReviewPanel file={file} draft={draft} deliveryPlan={deliveryPlan} ci={ci}
                 stagedForCommit={stagedForCommit} commitMessage={commitMessage}
                 onCommitMessageChange={onCommitMessageChange} pendingApproval={pendingApproval}
                 onStage={stageExactChange} onDeliver={onDeliver} delivering={deliveryPending}

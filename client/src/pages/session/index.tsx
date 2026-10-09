@@ -40,7 +40,7 @@ import {
 } from "lucide-react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Streamdown } from "streamdown";
 import { mermaid } from "@streamdown/mermaid";
 
@@ -59,6 +59,15 @@ const label = (value?: string | null) =>
   value ? value.replaceAll("_", " ") : "Unavailable";
 const shortSha = (sha?: string | null) =>
   sha ? sha.slice(0, 12) : "Unavailable";
+
+const pathsReferToSameFile = (left?: string, right?: string) => {
+  if (!left || !right) return false;
+  const normalize = (value: string) =>
+    value.replaceAll("\\", "/").replace(/^\.\//, "").replace(/^\/+|\/+$/g, "");
+  const a = normalize(left);
+  const b = normalize(right);
+  return a === b || a.endsWith(`/${b}`) || b.endsWith(`/${a}`);
+};
 
 function PageTitle({
   title,
@@ -189,12 +198,12 @@ function ContextBar({ data }: { data: SingleSessionResponse }) {
         Index {data.session.indexStatus ?? "not started"}
       </Badge>
       <Link
-        to={`/session/${data.session.slugId}/pipelines`}
-        state={{ autoAnalyzeCi: true }}
+        to={`/session/${data.session.slugId}/code`}
+        state={{ startCiRepair: true }}
         className="ml-auto inline-flex items-center gap-1 rounded-md border border-primary/30 bg-primary/5 px-2.5 py-1 font-medium text-primary hover:bg-primary/10"
       >
         <Workflow className="size-3" />
-        Analyze CI failures
+        Repair latest CI failure
       </Link>
     </div>
   );
@@ -590,7 +599,9 @@ function Knowledge({
   const mutation = useMutation({
     mutationFn: () => reindexSessionRag(slugId),
     onSuccess: (result) => {
-      if (result.success)
+      if (result.status === "queued")
+        toast.success("Repository indexing was queued and will continue in the background.");
+      else if (result.success)
         toast.success(
           `Indexed ${result.indexed} chunks from ${repoSources.length || "repository"} source files.`,
         );
@@ -939,6 +950,7 @@ function SessionPage() {
               initialCommandCenter={data.commandCenter}
               initialIndexStatus={data.session.indexStatus}
               initialIndexError={data.session.indexError}
+              initialIndexTruncated={data.session.indexTruncated}
             />
           </div>
         ) : section === "pipelines" ? (
@@ -973,8 +985,21 @@ function ReadOnlyCode({ data }: { data: SingleSessionResponse }) {
   const [draft, setDraft] = useState("");
   const [commitMessage, setCommitMessage] = useState("");
   const [focusedCiRun, setFocusedCiRun] = useState<number | null>(null);
+  const ciProposalRequestId = useRef<string | null>(null);
+  // Navigation state is intentionally consumed once. In React development
+  // mode an effect may be replayed; without this guard that can submit two
+  // identical SSE repairs and make the second request correctly receive 409.
+  const handledCiProposalNavigation = useRef<string | null>(null);
   const ci = data.commandCenter?.ci;
   const deliveryPlan = data.commandCenter?.deliveryPlan;
+  // A repair can only use excerpts from the currently selected Actions run.
+  // Historical CI logs remain useful context, but cannot authorize a new
+  // remediation for a different failure.
+  const activeCiLogEvidence = (data.commandCenter?.evidence ?? []).filter(
+    (item) =>
+      item.sourceType === "ci_log" &&
+      item.metadata?.workflow_run_id === ci?.run_id,
+  );
   const pendingApproval = data.commandCenter?.approvals?.find(
     (approval) => approval.status === "pending" && approval.deliveryPlanId,
   );
@@ -997,6 +1022,17 @@ function ReadOnlyCode({ data }: { data: SingleSessionResponse }) {
     enabled: Boolean(selectedPath),
     retry: false,
   });
+  const ciRepairBlockedReason = !ci
+    ? undefined
+    : ci.applicability === "historical_fixed"
+      ? "The failure condition is already absent on the current branch."
+      : ci.incomplete
+        ? ci.limitations[0] ?? "GitHub Actions evidence is incomplete."
+        : activeCiLogEvidence.length === 0
+          ? "No bounded failure excerpt is available for this Actions run."
+          : !file || !ci.relevant_paths?.includes(file.path)
+            ? "Select a file linked to the CI evidence before generating a repair."
+            : undefined;
   const { data: commitData, isPending: commitsPending } = useQuery({
     queryKey: ["session-code-commits", slugId],
     queryFn: () => getSessionRecentCommits(slugId),
@@ -1026,14 +1062,16 @@ function ReadOnlyCode({ data }: { data: SingleSessionResponse }) {
     // A generated plan is the authoritative file target for the review split.
     // Its selected source must never remain on a previously opened unrelated file.
     const plannedPath = deliveryPlan?.files[0]?.path;
+    const workspacePath = plannedPath
+      ? tree?.files.find((item) => pathsReferToSameFile(item.path, plannedPath))?.path
+      : undefined;
     if (
-      plannedPath &&
-      tree?.files.some((item) => item.path === plannedPath) &&
-      selectedPath !== plannedPath
+      workspacePath &&
+      selectedPath !== workspacePath
     ) {
-      setSelectedPath(plannedPath);
+      setSelectedPath(workspacePath);
     }
-  }, [deliveryPlan?.id, deliveryPlan?.files, selectedPath, tree?.files]);
+  }, [deliveryPlan, selectedPath, tree?.files]);
   useEffect(() => {
     if (file) {
       setDraft(file.content);
@@ -1042,7 +1080,7 @@ function ReadOnlyCode({ data }: { data: SingleSessionResponse }) {
   }, [file]);
   useEffect(() => {
     if (deliveryPlan) setCommitMessage(deliveryPlan.title);
-  }, [deliveryPlan?.id, deliveryPlan?.title]);
+  }, [deliveryPlan]);
   const propose = useMutation({
     mutationFn: () => {
       if (!file) throw new Error("Select a file before creating a proposal.");
@@ -1068,9 +1106,14 @@ function ReadOnlyCode({ data }: { data: SingleSessionResponse }) {
   });
   const proposeCiFix = useMutation({
     mutationFn: async () => {
+      let deliveryPlanGenerated = false;
+      let noPlanMessage = "";
+      const requestId =
+        ciProposalRequestId.current ??=
+        globalThis.crypto?.randomUUID?.() ??
+        `ci-proposal-${Date.now()}-${Math.random().toString(36).slice(2)}`;
       // Collect CI log excerpts from retained evidence.
-      const ciLog = (data.commandCenter?.evidence ?? [])
-        .filter((item) => item.sourceType === "ci_log")
+      const ciLog = activeCiLogEvidence
         .map((item) => item.excerpt)
         .join("\n\n")
         .slice(0, 100_000);
@@ -1090,33 +1133,63 @@ function ReadOnlyCode({ data }: { data: SingleSessionResponse }) {
           filePath: targetPath,
           originalContent: targetPath && file ? file.content : undefined,
           generateFix: true,
+          clientRequestId: requestId,
         },
         (event, eventData) => {
+          if (event === "code_fix") {
+            if (typeof eventData.delivery_plan_id === "string") {
+              deliveryPlanGenerated = true;
+            } else if (typeof eventData.message === "string") {
+              noPlanMessage = eventData.message;
+            }
+            return;
+          }
           if (event === "error") {
             const msg = String(eventData.message ?? "");
-            // Surface actionable messages; suppress noisy infrastructure errors.
-            if (msg.toLowerCase().includes("api configuration") || msg.toLowerCase().includes("openai")) {
+            const normalized = msg.toLowerCase();
+            // Do not call a configured key missing because an unrelated
+            // provider, quota, network, or structured-output failure happened.
+            if (
+              normalized.includes("requires a configured model") ||
+              normalized.includes("model is not configured")
+            ) {
               throw new Error(
                 "The AI model is not configured. Ask your workspace administrator to set OPENAI_API_KEY on the backend, then retry.",
               );
             }
-            throw new Error(msg || "CI proposal generation failed. Check API configuration and try again.");
+            throw new Error(msg || "The Safe Repair request could not be completed. Retry once, then check the backend logs if it persists.");
           }
         },
       );
+      if (!deliveryPlanGenerated) {
+        throw new Error(
+          noPlanMessage ||
+            "No validated exact repair was produced. The evidence may be insufficient, the candidate was unsafe, or the model provider was temporarily unavailable.",
+        );
+      }
     },
     onSuccess: () => {
+      ciProposalRequestId.current = null;
       void queryClient.invalidateQueries({ queryKey: ["session", slugId] });
       toast.success(
         "CI remediation proposal ready. Review the exact diff and apply changes.",
       );
     },
-    onError: (error) =>
+    onError: (error) => {
+      // The server correctly treats one client request ID as idempotent. A
+      // failed stream must therefore release the browser-held ID so an
+      // intentional retry is a fresh request rather than a confusing 409.
+      ciProposalRequestId.current = null;
+      // A first request can have completed while its SSE response was lost.
+      // Refreshing the persisted session lets the exact DeliveryPlan win over
+      // an error toast from a duplicate browser submission.
+      void queryClient.invalidateQueries({ queryKey: ["session", slugId] });
       toast.error(
         error instanceof Error
           ? error.message
           : "Unable to create a CI remediation proposal.",
-      ),
+      );
+    },
   });
   const deliver = useMutation({
     mutationFn: async () => {
@@ -1161,8 +1234,39 @@ function ReadOnlyCode({ data }: { data: SingleSessionResponse }) {
           : "Approved delivery could not be completed.",
       ),
   });
+  const startCiRepair = useMutation({
+    mutationFn: () => refreshLatestSessionCi(slugId),
+    onSuccess: async (result) => {
+      await queryClient.invalidateQueries({ queryKey: ["session", slugId] });
+      if (result.status !== "found") {
+        toast.success("No failed GitHub Actions runs found.");
+        return;
+      }
+      // Route state, rather than a chat prompt, starts the focused repair
+      // once the freshly persisted CI evidence has reached the Code view.
+      navigate(location.pathname, {
+        replace: true,
+        state: { generateCiProposal: true },
+      });
+      toast.success("CI evidence collected. Building the smallest safe repair.");
+    },
+    onError: (error) =>
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Unable to inspect GitHub Actions.",
+      ),
+  });
   useEffect(() => {
-    const state = location.state as { generateCiProposal?: boolean } | null;
+    const state = location.state as {
+      generateCiProposal?: boolean;
+      startCiRepair?: boolean;
+    } | null;
+    if (state?.startCiRepair && !startCiRepair.isPending) {
+      navigate(location.pathname, { replace: true, state: null });
+      startCiRepair.mutate();
+      return;
+    }
     if (
       !state?.generateCiProposal ||
       !ci ||
@@ -1170,15 +1274,20 @@ function ReadOnlyCode({ data }: { data: SingleSessionResponse }) {
       proposeCiFix.isPending
     )
       return;
+    const navigationKey = `${ci.run_id}:${location.key}`;
+    if (handledCiProposalNavigation.current === navigationKey) return;
+    handledCiProposalNavigation.current = navigationKey;
     navigate(location.pathname, { replace: true, state: null });
     proposeCiFix.mutate();
   }, [
     ci,
     deliveryPlan,
+    location.key,
     location.pathname,
     location.state,
     navigate,
     proposeCiFix,
+    startCiRepair,
   ]);
   const files = tree?.files ?? [];
   const changed = Boolean(file && draft !== file.content);
@@ -1211,11 +1320,18 @@ function ReadOnlyCode({ data }: { data: SingleSessionResponse }) {
           commits={commitData?.commits ?? []}
           commitsPending={commitsPending}
           ci={ci}
+          onStartCiRepair={() => startCiRepair.mutate()}
+          ciRefreshPending={startCiRepair.isPending}
           onGenerateCiProposal={() => proposeCiFix.mutate()}
           ciProposalPending={proposeCiFix.isPending}
           ciProposalAvailable={Boolean(
-            file && ci?.relevant_paths?.includes(file.path),
+            file &&
+              ci?.relevant_paths?.includes(file.path) &&
+              ci.applicability !== "historical_fixed" &&
+              !ci.incomplete &&
+              activeCiLogEvidence.length > 0,
           )}
+          ciRepairBlockedReason={ciRepairBlockedReason}
           deliveryPlan={deliveryPlan}
           pendingApproval={pendingApproval}
           onDeliver={() => deliver.mutate()}
