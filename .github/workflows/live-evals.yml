@@ -1,4 +1,4 @@
-name: Live Model & GitHub Delivery Evaluation (Manual)
+name: Manually Enabled Evaluation (No Provider Calls)
 
 on:
   workflow_dispatch:
@@ -12,9 +12,16 @@ on:
         required: false
         default: ''
 
+permissions:
+  contents: read
+
+concurrency:
+  group: manual-evals-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   live-evaluation:
-    name: Live Model Evaluation & Controlled GitHub Delivery
+    name: Deterministic Evaluation With Explicit External Status
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -32,10 +39,15 @@ jobs:
       - name: Run Live Evaluation Runner
         env:
           BASE64_ENABLE_LIVE_EVALS: "true"
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MAX_CASES: ${{ inputs.max_cases }}
           BASE64_LIVE_TEST_REPOSITORY: ${{ inputs.live_repo }}
           BASE64_LIVE_EVAL_ALLOWED_REPOS: ${{ secrets.BASE64_LIVE_EVAL_ALLOWED_REPOS }}
         run: |
+          case "$MAX_CASES" in
+            ''|*[!0-9]*) echo "max_cases must be a non-negative integer"; exit 1 ;;
+          esac
+          if [ "$MAX_CASES" -gt 5 ]; then
+            echo "max_cases cannot exceed 5"; exit 1
+          fi
           cd backend
-          python -m evals.runner --mode live --max-cases ${{ inputs.max_cases }}
+          python -m evals.runner --mode live --max-cases "$MAX_CASES"

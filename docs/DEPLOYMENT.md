@@ -13,9 +13,15 @@ The checked-in `client/vercel.json` rewrites all routes to `index.html`, so Reac
 
 ## Render backend
 
-Create a Render Blueprint from `render.yaml`. It provisions exactly two `0.5c-512mb` Render services: the public FastAPI API and a bounded six-hour maintenance cron. Agent runs, repository indexing, and read-only GitHub inspection are request-scoped today, so the blueprint does not pretend they are independently scalable workers. All durable state uses MongoDB Atlas; Render filesystems are intentionally ephemeral.
+For the 100–500-user MVP, create the Render Blueprint from `render.mvp.yaml`. It provisions one `0.5c-512mb` FastAPI API role, performs bounded repository indexing inline, and lets the Code commits rail read the delivered branch's GitHub Actions status. This keeps the flagship Safe Repair workflow intact without paying for idle indexer and CI-observer workers.
 
-Provide every `sync: false` value during Blueprint setup. Set `FRONTEND_ORIGIN` to the exact Vercel production domain and `BASE_URL` to the exact Render API domain, both including `https://` and without a trailing slash.
+Use `render.yaml` only after measured queue latency or post-delivery CI follow-up warrants the four-role setup: API, bounded maintenance cron, indexer, and read-only CI observer. The scaled blueprint keeps clone/index and autonomous CI follow-up off the API request path.
+
+Both blueprints keep `CI_AUTO_REFRESH_SECONDS=0`: normal browser session polling reads persisted state only. In the MVP profile, the Code rail performs its bounded read-only Actions lookup when open. In the scaled profile, the read-only delivery observer additionally performs bounded follow-up for delivered commits.
+
+The indexer and CI observer reference the API service's `MONGO_URI` and `GITHUB_TOKEN_ENCRYPTION_KEY` through Render's service-to-service environment-variable references. Do not replace these with independently generated worker values: all replicas that read encrypted GitHub tokens must use the same encryption key. The workers intentionally do not receive the GitHub OAuth client secret, Razorpay secrets, Clerk configuration, or public API traffic settings.
+
+Provide every `sync: false` value during Blueprint setup. Set `FRONTEND_ORIGIN` to the exact Vercel production domain and `BASE_URL` to the exact Render API domain, both including `https://` and without a trailing slash. Set `CLERK_ISSUER` to the Clerk Frontend API URL and `CLERK_AUTHORIZED_PARTIES` to the exact browser origins allowed to use production API tokens (including any intentionally supported preview origins).
 
 Register this GitHub OAuth callback:
 
@@ -30,11 +36,12 @@ Register this GitHub OAuth callback:
 
 ## Release checklist
 
-1. In Vercel, set the project root to `client`, use `npm run build`, and set the two `VITE_*` variables for **Production**, Preview, and Development as appropriate. The public API URL must end in `/api/`.
+1. In Vercel, set the project root to `client`, use `npm run build`, and set the two `VITE_*` variables for **Production**, Preview, and Development as appropriate. The public API URL must end in `/api/`. The repository CI then verifies the production bundle budget and fails on high-or-worse npm dependency advisories.
 2. In Render, create the Blueprint from this repository and enter every `sync: false` value in Render's secret manager. Do not place secrets in `render.yaml`, Vercel variables committed to Git, or client bundles.
 3. Set `FRONTEND_ORIGIN` to the exact Vercel production origin and `BASE_URL` to the exact Render API origin. Register `<BASE_URL>/api/github/callback` with the GitHub OAuth application.
-4. Allow Render's outbound addresses in the MongoDB Atlas network access rules, then wait for `GET <BASE_URL>/health` to report `database: connected`.
+4. Allow Render's outbound addresses in the MongoDB Atlas network access rules, then wait for `GET <BASE_URL>/ready` to return `200` and `status: ready`.
 5. Verify a signed-in browser can call `/api/auth/me`, reconnect GitHub, list repositories, and create a read-only session before enabling delivery work.
+6. Before making a scale claim, run the non-billable staging load harness in [`../load/k6/README.md`](../load/k6/README.md). Do not send load-test traffic to model, approval, delivery, billing, or customer-data paths.
 
 ## 512 MB service boundary
 
@@ -45,7 +52,7 @@ Render's native Python service does not provide the Docker isolation required to
 After an approved draft-PR delivery, GitHub Actions remains the authoritative CI result. Base64 displays the reported run state; it does not claim that tests passed until GitHub reports a completed successful run.
 # Deployment readiness audit
 
-The repository contains a Vercel SPA configuration and a Render blueprint for the API and maintenance job. The production API binds to `$PORT` and provides `/health`; browser origin and OAuth callback values must be configured through `FRONTEND_ORIGIN` and `BASE_URL` rather than committed.
+The repository contains a Vercel SPA configuration and a Render blueprint for the API and internal workers. The production API binds to `$PORT`; `/health` is liveness only, while `/ready` is the strict traffic-readiness gate. Browser origin and OAuth callback values must be configured through `FRONTEND_ORIGIN` and `BASE_URL` rather than committed.
 
 Before deployment, configure MongoDB, Clerk JWKS, GitHub OAuth client/callback URLs, and encrypted token/approval secrets using the host secret manager. Confirm that Vercel points `VITE_BASE_API_URL` at the deployed API, Render health checks succeed, and CORS has only the intended frontend origin. Docker sandbox availability is environment-specific; capability status must be interpreted as implemented/configured/available rather than assumed from deployed code.
 

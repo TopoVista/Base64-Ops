@@ -6,6 +6,13 @@ on:
   pull_request:
     branches: [main, master]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-regression-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   backend-unit-tests:
     name: Backend Unit Tests & Ruff Linting
@@ -63,7 +70,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
 
       - name: Install Client Dependencies
         run: |
@@ -79,3 +86,13 @@ jobs:
         run: |
           cd client
           npm run build
+
+      - name: Enforce Frontend Bundle Budget
+        run: |
+          cd client
+          npm run verify:bundle
+
+      - name: Audit Frontend Dependencies
+        run: |
+          cd client
+          npm audit --audit-level=high
