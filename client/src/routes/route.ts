@@ -1,12 +1,16 @@
-import SignInPage from "@/pages/auth/sign-in";
-import SignUpPage from "@/pages/auth/sign-up";
-import HomePage from "@/pages/home";
-import SessionPage from "@/pages/session";
-import DevRunInspector from "@/pages/dev/DevRunInspector";
-import DemoPage from "@/pages/demo";
-import GuidePage from "@/pages/guide";
 import { Navigate, useParams } from "react-router-dom";
-import { createElement } from "react";
+import { createElement, lazy } from "react";
+
+// Pages contain editor, diagram, markdown, and Clerk-aware UI. Load every
+// route on demand so one surface does not force its tooling into another.
+const SignInPage = lazy(() => import("@/pages/auth/sign-in"));
+const SignUpPage = lazy(() => import("@/pages/auth/sign-up"));
+const HomePage = lazy(() => import("@/pages/home"));
+const DemoPage = lazy(() => import("@/pages/demo"));
+const GuidePage = lazy(() => import("@/pages/guide"));
+const BillingPage = lazy(() => import("@/pages/billing"));
+const SessionPage = lazy(() => import("@/pages/session"));
+const DevRunInspector = lazy(() => import("@/pages/dev/DevRunInspector"));
 
 export const isAuthRoute = (pathname: string): boolean => {
   return Object.values(AUTH_ROUTES).includes(pathname);
@@ -22,6 +26,7 @@ export const PROTECTED_ROUTES = {
   SINGLE_SESSION: "/session/:slugid",
   SESSION_WORKSPACE: "/session/:slugid/:section",
   DEV_RUN_INSPECTOR: "/dev/runs/:runId",
+  BILLING: "/billing",
 };
 
 const SessionRedirect = () => {
@@ -61,6 +66,10 @@ export const protectedRoutesPaths = [
   {
     path: PROTECTED_ROUTES.DEV_RUN_INSPECTOR,
     element: DevRunInspector,
+  },
+  {
+    path: PROTECTED_ROUTES.BILLING,
+    element: BillingPage,
   },
 ];
 
