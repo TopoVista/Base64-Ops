@@ -19,6 +19,27 @@ export type BackendHealth = {
   stack: string;
 };
 
+export type UsageEntitlement = {
+  tier: "free" | "pro" | "team";
+  monthly_agent_run_limit: number;
+  period_key: string;
+  consumed_agent_runs: number;
+  remaining_agent_runs: number;
+  monthly_model_token_limit: number;
+  consumed_model_tokens: number;
+  remaining_model_tokens: number;
+};
+
+export const getUsageEntitlement = async (): Promise<UsageEntitlement> => {
+  const response = await API.get<UsageEntitlement>("/billing/entitlement");
+  return response.data;
+};
+
+export const startSubscriptionCheckout = async (tier: "pro" | "team") => {
+  const response = await API.post<{ checkoutUrl: string }>("/billing/checkout", { tier });
+  return response.data;
+};
+
 export const getBackendHealth = async (): Promise<BackendHealth> => {
   const response = await API.get<BackendHealth>("/health");
   return response.data;
@@ -76,7 +97,7 @@ export const decideSessionApproval = async (
 export const reindexSessionRag = async (
   slugId: string,
   repository?: { repoUrl: string; defaultBranch?: string },
-): Promise<{ success: boolean; indexed: number; status?: "ready" | "empty" | "failed"; reason?: string; storage?: "lexical" | "vector"; vectorWarning?: string }> => {
+): Promise<{ success: boolean; indexed: number; status?: "queued" | "indexing" | "ready" | "empty" | "failed"; reason?: string; storage?: "lexical" | "vector"; vectorWarning?: string; truncated?: boolean }> => {
   const response = await API.post(`/session/${slugId}/rag/reindex`, repository);
   return response.data;
 };
@@ -186,10 +207,12 @@ export const getUserSessionsWithSearch = async (params?: {
 export const askProductAssistant = async (
   message: string,
   conversationId?: string,
+  clientRequestId?: string,
 ): Promise<ProductAssistantResponse> => {
   const response = await API.post<ProductAssistantResponse>("/assistant/chat", {
     message,
     conversationId,
+    clientRequestId,
   });
   return response.data;
 };
@@ -200,16 +223,64 @@ export const applyApprovedPatch = async (slugId: string, approvalId: string) => 
 };
 
 export const streamDiagnostic = async (
-  payload: { sessionSlugId: string; failedLog: string; gitDiff: string; filePath?: string; originalContent?: string; generateFix?: boolean },
+  payload: {
+    sessionSlugId: string;
+    failedLog: string;
+    gitDiff: string;
+    filePath?: string;
+    originalContent?: string;
+    generateFix?: boolean;
+    clientRequestId?: string;
+  },
   onEvent: (event: string, data: Record<string, unknown>) => void,
 ) => {
-  const token = await getAccessToken();
-  const response = await fetch(`${BASE_API_URL}stream-diagnostic`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
-    body: JSON.stringify(payload),
-  });
-  if (!response.ok || !response.body) throw new Error(`Diagnostic request failed (${response.status})`);
+  const request = async (refreshToken = false) => {
+    const token = await getAccessToken(refreshToken ? { skipCache: true } : undefined);
+    return fetch(`${BASE_API_URL}stream-diagnostic`, {
+      method: "POST",
+      // Diagnostic input is idempotency-bound on the server. A single retry
+      // after a Clerk 401 is therefore safe: the first request did not enter
+      // the authenticated agent pipeline.
+      headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+      body: JSON.stringify(payload),
+    });
+  };
+  let response = await request();
+  if (response.status === 401) response = await request(true);
+  if (response.status === 401) {
+    throw new Error("Your Base64 sign-in session could not be refreshed. Reload the page and sign in again.");
+  }
+  if (!response.ok || !response.body) {
+    // FastAPI returns structured details for an idempotency collision.  This
+    // can happen when an SSE connection completes after the browser has lost
+    // its response, so a bare HTTP status is not useful to the operator.
+    let message = `Diagnostic request failed (${response.status}).`;
+    try {
+      const body = (await response.json()) as {
+        detail?: string | { code?: string; message?: string };
+      };
+      const detail = body.detail;
+      if (typeof detail === "string" && detail.trim()) {
+        message = detail;
+      } else if (
+        typeof detail === "object" &&
+        detail?.code === "AGENT_RUN_REQUEST_ALREADY_ACCEPTED"
+      ) {
+        message =
+          "That repair request was already accepted. Refreshing the session will show its proposal if it completed; otherwise retry Generate safe repair once.";
+      } else if (
+        typeof detail === "object" &&
+        typeof detail?.message === "string" &&
+        detail.message.trim()
+      ) {
+        message = detail.message;
+      }
+    } catch {
+      // Some proxies replace JSON error bodies with HTML. The safe status
+      // fallback above still tells the user the request did not start.
+    }
+    throw new Error(message);
+  }
   const reader = response.body.getReader();
   const decoder = new TextDecoder();
   let buffer = "";

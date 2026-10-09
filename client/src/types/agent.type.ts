@@ -63,6 +63,9 @@ export type CIInvestigationSummary = {
   failed_jobs: Array<{ name: string; failed_step?: string }>;
   /** Ordered navigation targets derived from bounded CI evidence. */
   relevant_paths?: string[];
+  /** Actions metadata is available but one or more read-only sources, such as
+   * bounded job logs, could not be retrieved. */
+  incomplete?: boolean;
   limitations: string[];
 };
 
@@ -128,6 +131,12 @@ export type DeliveryResult = {
   pull_request_number?: number;
   pull_request_url?: string;
   validation_results?: Array<{ step_id: string; status: string; summary: string; duration_ms?: number }>;
+  ciVerification?: {
+    status: "queued" | "pending" | "running" | "passed" | "failed" | "unknown";
+    runIds?: number[];
+    message?: string;
+    checkedAt?: string;
+  };
 };
 
 export type ToolResult = {

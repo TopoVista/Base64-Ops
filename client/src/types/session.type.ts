@@ -13,6 +13,9 @@ export type SessionRecord = {
   repoInitializedAt?: string | null;
   indexStatus?: "indexing" | "ready" | "empty" | "failed" | null;
   indexError?: string | null;
+  // True means the server intentionally retained a bounded, usable subset of
+  // a large repository rather than claiming complete retrieval coverage.
+  indexTruncated?: boolean;
   status: "active" | "completed" | "failed";
   createdAt: string;
   updatedAt: string;
