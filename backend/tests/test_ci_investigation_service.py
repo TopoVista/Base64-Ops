@@ -55,6 +55,7 @@ class FakeWorkspace:
             (".github/workflows/ci.yml", "failed-sha"): "working-directory: ./server",
             (".github/workflows/ci.yml", "current-sha"): "working-directory: ./client",
             ("client/package.json", "failed-sha"): '{"name": "client"}',
+            ("backend/requirements.txt", "failed-sha"): "fastapi==1.0\n",
         }
         return versions.get((path, ref))
 
@@ -97,6 +98,42 @@ async def test_ci_service_persists_separate_historical_current_and_changed_evide
     assert [call["commit_sha"] for call in evidence.calls] == ["failed-sha", "failed-sha", "current-sha", "failed-sha"]
     assert evidence.calls[1]["sources"][0]["metadata"]["state"] == "failed_run"
     assert evidence.calls[2]["sources"][0]["metadata"]["state"] == "current"
+
+
+@pytest.mark.asyncio
+async def test_ci_service_includes_existing_manifest_for_dependency_failures():
+    class DependencyActions(FakeActions):
+        async def get_job_logs(self, **_kwargs):
+            return [
+                CILogExcerpt(
+                    run_id=842,
+                    job_id=17,
+                    job_name="backend-tests",
+                    excerpt="ModuleNotFoundError: No module named 'jwt'",
+                    categories=[CIFailureCategory.DEPENDENCY_FAILURE],
+                )
+            ]
+
+    service = CIInvestigationService(
+        actions=DependencyActions(), workspace=FakeWorkspace(), changes=FakeChanges()
+    )
+    evidence = FakeEvidence()
+    service.evidence = evidence
+
+    context = await service.investigate_actions_run(
+        user_id="user-a",
+        repository_id="owner/repo",
+        run_id=842,
+        session={"_id": "session-a"},
+        graph_run_id="run-a",
+        current_head_sha="failed-sha",
+        repo_path=Path("/fixture"),
+    )
+
+    assert "backend/requirements.txt" in context.relevant_paths
+    assert context.relevant_paths[0] == "backend/requirements.txt"
+    changed_sources = evidence.calls[-1]["sources"]
+    assert any(source["source"] == "backend/requirements.txt" for source in changed_sources)
 
 
 @pytest.mark.asyncio

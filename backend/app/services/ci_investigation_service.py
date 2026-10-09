@@ -68,6 +68,7 @@ class CIInvestigationService:
         sources: list[dict[str, Any]] = []
         categories = set()
         path_hints: list[str] = []
+        failure_text: list[str] = []
         for job in jobs:
             try:
                 excerpts = await self.actions.get_job_logs(
@@ -78,6 +79,7 @@ class CIInvestigationService:
                 continue
             for excerpt in excerpts:
                 categories.update(excerpt.categories)
+                failure_text.append(excerpt.excerpt)
                 if repo_path:
                     path_hints.extend(_extract_safe_path_hints(excerpt.excerpt, repo_path))
                 sources.append(
@@ -222,6 +224,19 @@ class CIInvestigationService:
                         limitations.append(change_result.warning)
             else:
                 limitations.append("Unable to determine the parent commit for the failed run.")
+            # A missing package is often exposed by an unchanged manifest: a
+            # source import can be added without its corresponding dependency
+            # declaration. Include existing, conventional manifests as
+            # repository evidence for dependency failures, but do not infer
+            # that any one manifest caused the failure.
+            if CIFailureCategory.DEPENDENCY_FAILURE in categories:
+                dependency_surface = _dependency_surface("\n".join(failure_text))
+                selected_paths = _filter_dependency_paths(selected_paths, dependency_surface)
+                for path in _existing_dependency_manifests(
+                    self.workspace, repo_path, run.head_sha, dependency_surface
+                ):
+                    if path not in selected_paths:
+                        selected_paths.append(path)
             relevant_paths = _prioritize_relevant_paths(
                 path_hints=path_hints,
                 changed_paths=selected_paths,
@@ -314,6 +329,75 @@ def _select_relevant_paths(
     return selected
 
 
+def _dependency_surface(text: str) -> str:
+    """Classify the package surface only when the bounded log is explicit."""
+
+    normalized = text.lower()
+    python_markers = (
+        "modulenotfounderror",
+        "importerror",
+        "traceback (most recent call last)",
+        ".py:",
+    )
+    if any(marker in normalized for marker in python_markers):
+        return "python"
+    if any(marker in normalized for marker in ("npm err", "node_modules", "module_not_found", "ts[0-9]{4}")):
+        return "node"
+    return "unknown"
+
+
+def _filter_dependency_paths(paths: list[str], surface: str) -> list[str]:
+    """Avoid presenting a Node manifest for an explicit Python import error."""
+
+    node_manifests = {"package.json", "package-lock.json", "pnpm-lock.yaml", "yarn.lock"}
+    python_manifests = {"requirements.txt", "pyproject.toml", "poetry.lock"}
+    if surface == "python":
+        return [path for path in paths if path.rsplit("/", 1)[-1] not in node_manifests]
+    if surface == "node":
+        return [path for path in paths if path.rsplit("/", 1)[-1] not in python_manifests]
+    return paths
+
+
+def _existing_dependency_manifests(
+    workspace: WorkspaceService, repo_path: Path, ref: str, surface: str = "unknown"
+) -> list[str]:
+    """Return bounded, conventional dependency files available at ``ref``.
+
+    This is a correlation aid for a deterministic dependency-failure signal,
+    not a package-manager guess. Reading through ``read_file_at_ref`` keeps
+    failed-run provenance intact and avoids silently substituting current
+    branch files.
+    """
+
+    python_candidates = (
+        "backend/requirements.txt",
+        "requirements.txt",
+        "backend/pyproject.toml",
+        "pyproject.toml",
+        "backend/poetry.lock",
+        "poetry.lock",
+    )
+    node_candidates = (
+        "client/package.json",
+        "package.json",
+        "client/package-lock.json",
+        "package-lock.json",
+        "pnpm-lock.yaml",
+        "yarn.lock",
+    )
+    if surface == "python":
+        candidates = python_candidates
+    elif surface == "node":
+        candidates = node_candidates
+    else:
+        candidates = python_candidates + node_candidates
+    return [
+        path
+        for path in candidates
+        if workspace.read_file_at_ref(repo_path, path, ref) is not None
+    ]
+
+
 def _prioritize_relevant_paths(
     *,
     path_hints: list[str],
@@ -349,7 +433,7 @@ def _prioritize_relevant_paths(
             "poetry.lock", "pnpm-lock.yaml", "yarn.lock",
         }
         if CIFailureCategory.DEPENDENCY_FAILURE in categories and name in dependency_files:
-            value -= 25
+            value -= 30 if name == "requirements.txt" else 25
         if path == workflow_path:
             value -= 8
         return (value, len(path), path)

@@ -1,5 +1,7 @@
+import httpx
 import pytest
 
+from app.agent.graph import AgentGraph
 from app.git.actions import WorkflowRunSummary
 from app.services.ci_request_intent import CIRequestIntent
 from app.services.ci_run_resolution_service import CIRunResolutionService
@@ -53,3 +55,44 @@ async def test_pr_run_resolution_uses_matching_repository_head_sha():
         user_id="u", repository_id="owner/a", intent=CIRequestIntent(is_ci_investigation=True, pr_number=27)
     )
     assert result and result.run_id == 846 and result.selection_reason == "pull_request_head"
+
+
+@pytest.mark.asyncio
+async def test_expired_github_actions_access_is_a_partial_investigation():
+    """An expired Actions OAuth grant cannot abort the normal evidence graph."""
+
+    class ExpiredResolver:
+        async def resolve(self, **_):
+            request = httpx.Request("GET", "https://api.github.com/repos/owner/a/actions/runs")
+            response = httpx.Response(401, request=request)
+            raise httpx.HTTPStatusError("unauthorized", request=request, response=response)
+
+    graph = AgentGraph()
+    graph.ci_run_resolution = ExpiredResolver()
+    result = await graph._investigate_ci(
+        {
+            "prompt": "Why did GitHub Actions fail?",
+            "user_id": "user_1",
+            "repo_url": "owner/a",
+            "timeline": [],
+        }
+    )
+
+    assert result["ci_context"]["incomplete"] is True
+    assert "GitHub access has expired" in result["ci_context"]["limitations"][0]
+    assert result["timeline"][-1]["status"] == "partial"
+
+
+@pytest.mark.asyncio
+async def test_code_workbench_forces_proposal_not_log_selected_diagnostic():
+    graph = AgentGraph()
+    result = await graph._plan(
+        {
+            "prompt": "UNTRUSTED CI LOG: docker build failed",
+            "force_delivery_plan": True,
+            "timeline": [],
+        }
+    )
+
+    assert result["action"]["name"] == "propose_change"
+    assert result["action"]["risk"] == "approval_required"
