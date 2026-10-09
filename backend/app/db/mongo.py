@@ -25,6 +25,8 @@ async def connect_mongo() -> None:
             serverSelectionTimeoutMS=settings.mongo_connect_timeout_ms,
             connectTimeoutMS=settings.mongo_connect_timeout_ms,
             socketTimeoutMS=settings.mongo_connect_timeout_ms,
+            maxPoolSize=settings.mongo_max_pool_size,
+            waitQueueTimeoutMS=settings.mongo_wait_queue_timeout_ms,
         )
         try:
             await client.admin.command("ping")
