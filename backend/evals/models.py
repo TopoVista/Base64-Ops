@@ -67,6 +67,7 @@ class LiveEvalReport(BaseModel):
     deterministic_passed: int = 0
     live_passed: int = 0
     live_failed: int = 0
+    external_checks_exercised: int = 0
     github_delivery: LiveDeliveryTestResult | None = None
     total_token_usage: dict[str, int] = Field(default_factory=dict)
     results: list[EvalResult] = Field(default_factory=list)

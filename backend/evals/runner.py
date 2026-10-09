@@ -241,17 +241,25 @@ def run_live_github_test(target_repo: str, allowed_repos: list[str]) -> LiveDeli
             status="aborted",
             details={"reason": f"Target repository '{target_repo}' is not in allowed repos: {allowed_repos}"},
         )
-    # Architecture scaffold for controlled live GitHub delivery test
+    # This runner has no GitHub mutation implementation. Reporting a passing
+    # delivery check here would be materially misleading, even for an
+    # allowlisted repository. Keep the explicit record so reports distinguish
+    # deterministic coverage from an authenticated provider verification.
     branch = f"eval/live-test-{int(time.time())}"
     return LiveDeliveryTestResult(
         repository_url=target_repo,
         test_branch=branch,
         pr_number=None,
         pr_url=None,
-        status="success",
-        diff_verified=True,
-        cleaned_up=True,
-        details={"message": "Live GitHub delivery test completed architecture check on allowlisted repository."},
+        status="not_exercised",
+        diff_verified=False,
+        cleaned_up=False,
+        details={
+            "reason": (
+                "No live GitHub delivery call was made. This repository has only deterministic delivery "
+                "coverage; perform an explicit, separately implemented read-only or controlled delivery test."
+            )
+        },
     )
 
 
@@ -297,7 +305,7 @@ def main() -> int:
             print("Set BASE64_ENABLE_LIVE_EVALS=true or configure Settings.enable_live_evals to enable live mode.")
             return 0
 
-        print(f"Running Live Evaluation Mode (max cases: {args.max_cases})...")
+        print(f"Running manually enabled evaluation mode (max cases: {args.max_cases}; no provider calls)...")
         cases = load_cases()[: args.max_cases]
         results = [run_ci_case(case) if case.category == "ci" else run_case(case) for case in cases]
 
@@ -313,8 +321,12 @@ def main() -> int:
             mode="live",
             enabled=True,
             deterministic_passed=sum(r.passed for r in results),
-            live_passed=sum(r.passed for r in results),
-            live_failed=sum(not r.passed for r in results),
+            # This mode intentionally makes no external/provider call today.
+            # Keep these separate from deterministic case results so an
+            # operator cannot mistake fixture coverage for live verification.
+            live_passed=0,
+            live_failed=0,
+            external_checks_exercised=0,
             github_delivery=github_result,
             results=results,
         )
@@ -322,15 +334,15 @@ def main() -> int:
         if args.format == "json":
             print(live_report.model_dump_json(indent=2))
         else:
-            print("\nBase64 Ops Live Evaluation Report")
-            print("=================================")
-            print(f"Live cases evaluated: {len(results)}")
-            print(f"Passed: {live_report.live_passed}")
-            print(f"Failed: {live_report.live_failed}")
+            print("\nBase64 Ops Manually Enabled Evaluation Report")
+            print("================================================")
+            print(f"Deterministic cases evaluated: {len(results)}")
+            print(f"Deterministic passed: {live_report.deterministic_passed}")
+            print(f"External provider checks exercised: {live_report.external_checks_exercised}")
             if github_result:
                 print(f"GitHub Delivery Test: {github_result.status} on {github_result.repository_url}")
 
-        return 0 if live_report.live_failed == 0 else 1
+        return 0 if all(result.passed for result in results) and live_report.live_failed == 0 else 1
 
     # Deterministic mode (default)
     cases = [
