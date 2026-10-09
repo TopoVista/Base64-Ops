@@ -1,0 +1,98 @@
+# Low-cost Base64 Ops MVP Blueprint (100–500 users).
+#
+# This deliberately deploys one 512 MB API service. Repository indexing runs
+# inline with strict corpus limits, and the Code commits rail observes the
+# delivered branch's GitHub Actions status on its normal, read-only refresh.
+# Upgrade to render.yaml only when measured queue latency or CI follow-up load
+# justifies the separate always-on worker roles.
+services:
+  - type: web
+    name: base64-ops-api
+    runtime: python
+    region: singapore
+    plan: 0.5c-512mb
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /ready
+    maxShutdownDelaySeconds: 120
+    # Keep the inexpensive MVP service on the same reviewed-release gate as
+    # the scaled Blueprint; Render calls this `autoDeployTrigger`.
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.5
+      - key: ENVIRONMENT
+        value: production
+      - key: MONGO_URI
+        sync: false
+      - key: MONGO_DB_NAME
+        value: langgraph_devops_agent
+      - key: MONGO_MAX_POOL_SIZE
+        value: "12"
+      - key: MONGO_WAIT_QUEUE_TIMEOUT_MS
+        value: "5000"
+      - key: EXECUTION_MODE
+        value: disabled
+      - key: INDEXING_MODE
+        value: inline
+      - key: RAG_INDEX_MAX_FILES
+        value: "300"
+      - key: RAG_INDEX_MAX_TOTAL_BYTES
+        value: "12000000"
+      - key: RAG_INDEX_MAX_CHUNKS
+        value: "8000"
+      - key: CI_AUTO_REFRESH_SECONDS
+        value: "0"
+      - key: CI_VERIFICATION_MODE
+        value: on_read
+      - key: FREE_MONTHLY_MODEL_TOKENS
+        value: "250000"
+      - key: PRO_MONTHLY_MODEL_TOKENS
+        value: "5000000"
+      - key: TEAM_MONTHLY_MODEL_TOKENS
+        value: "25000000"
+      - key: USE_DOCKER_WORKSPACES
+        value: "false"
+      - key: FRONTEND_ORIGIN
+        sync: false
+      - key: TRUSTED_HOSTS
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: RATE_LIMIT_FAIL_CLOSED
+        value: "true"
+      - key: TRUSTED_CLIENT_IP_HEADER
+        value: CF-Connecting-IP
+      - key: BASE_URL
+        sync: false
+      - key: CLERK_JWKS_URL
+        sync: false
+      - key: CLERK_ISSUER
+        sync: false
+      - key: CLERK_AUTHORIZED_PARTIES
+        sync: false
+      - key: GITHUB_CLIENT_ID
+        sync: false
+      - key: GITHUB_CLIENT_SECRET
+        sync: false
+      - key: GITHUB_OAUTH_STATE_SECRET
+        generateValue: true
+      - key: GITHUB_TOKEN_ENCRYPTION_KEY
+        generateValue: true
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false
+      - key: RAZORPAY_WEBHOOK_SECRET
+        sync: false
+      - key: RAZORPAY_PRO_PLAN_ID
+        sync: false
+      - key: RAZORPAY_TEAM_PLAN_ID
+        sync: false
+      - key: CHAT_MODEL
+        value: gpt-5.6-terra
+      - key: SUPPORT_MODEL
+        value: gpt-5.6-luna

@@ -1,4 +1,4 @@
-# Render Blueprint: one public API and one bounded maintenance cron (two Render services).
+# Render Blueprint: API, bounded maintenance cron, indexer, and read-only CI observer workers.
 # Secrets use sync: false so Render prompts for them during initial Blueprint setup.
 services:
   - type: web
@@ -9,8 +9,23 @@ services:
     rootDir: backend
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
-    healthCheckPath: /health
-    autoDeploy: checksPass
+    # `/health` is liveness and remains diagnostic during an Atlas outage;
+    # `/ready` is strict so Render does not route customer traffic to an API
+    # replica that cannot enforce tenant, quota, or approval invariants.
+    healthCheckPath: /ready
+    # External model calls are bounded, but SSE clients still need graceful
+    # drain time on deploy/scale-down. Autoscaling adds capacity only when the
+    # stateless API actually needs it, keeping the idle cost at one 512 MB
+    # instance. Render autoscaling requires a Pro-or-higher workspace.
+    scaling:
+      minInstances: 1
+      maxInstances: 10
+      targetCPUPercent: 60
+      targetMemoryPercent: 65
+    maxShutdownDelaySeconds: 120
+    # Current Render Blueprint field: deploy only after the linked GitHub
+    # checks pass. This replaces the deprecated `autoDeploy` syntax.
+    autoDeployTrigger: checksPass
     envVars:
       - key: PYTHON_VERSION
         value: 3.13.5
@@ -20,19 +35,53 @@ services:
         sync: false
       - key: MONGO_DB_NAME
         value: langgraph_devops_agent
+      - key: MONGO_MAX_POOL_SIZE
+        value: "20"
+      - key: MONGO_WAIT_QUEUE_TIMEOUT_MS
+        value: "5000"
       # Render's native runtime does not expose Docker isolation. Never run
       # repository-controlled validation commands in the API process.
       - key: EXECUTION_MODE
         value: disabled
+      - key: INDEXING_MODE
+        value: queued
+      # Browser session reads must not fan out into GitHub API/workspace work.
+      # CI is refreshed explicitly and after a delivered change instead.
+      - key: CI_AUTO_REFRESH_SECONDS
+        value: "0"
+      # Per-tier safety ceilings for provider-reported model usage. These are
+      # usage limits, not prices; tune after observing real tenant workloads.
+      - key: FREE_MONTHLY_MODEL_TOKENS
+        value: "250000"
+      - key: PRO_MONTHLY_MODEL_TOKENS
+        value: "5000000"
+      - key: TEAM_MONTHLY_MODEL_TOKENS
+        value: "25000000"
       - key: USE_DOCKER_WORKSPACES
         value: "false"
       - key: VALIDATION_MEMORY_MB
         value: "384"
       - key: FRONTEND_ORIGIN
         sync: false
+      - key: TRUSTED_HOSTS
+        sync: false
+      # Shared Redis is required for production-wide rate limits across API
+      # instances. The API fails closed for non-health requests if it is down.
+      - key: REDIS_URL
+        sync: false
+      - key: RATE_LIMIT_FAIL_CLOSED
+        value: "true"
+      # Render routes public traffic through Cloudflare, which overwrites this
+      # single-IP header. Do not use X-Forwarded-For as a rate-limit identity.
+      - key: TRUSTED_CLIENT_IP_HEADER
+        value: CF-Connecting-IP
       - key: BASE_URL
         sync: false
       - key: CLERK_JWKS_URL
+        sync: false
+      - key: CLERK_ISSUER
+        sync: false
+      - key: CLERK_AUTHORIZED_PARTIES
         sync: false
       - key: GITHUB_CLIENT_ID
         sync: false
@@ -44,10 +93,20 @@ services:
         generateValue: true
       - key: OPENAI_API_KEY
         sync: false
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false
+      - key: RAZORPAY_WEBHOOK_SECRET
+        sync: false
+      - key: RAZORPAY_PRO_PLAN_ID
+        sync: false
+      - key: RAZORPAY_TEAM_PLAN_ID
+        sync: false
       - key: CHAT_MODEL
         value: gpt-5.6-terra
       - key: SUPPORT_MODEL
-        value: gpt-5.6-sol
+        value: gpt-5.6-luna
 
   - type: cron
     name: base64-maintenance
@@ -61,7 +120,108 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: 3.13.5
+      - key: ENVIRONMENT
+        value: production
       - key: SERVICE_ROLE
         value: maintenance
       - key: MONGO_URI
-        sync: false
+        fromService:
+          name: base64-ops-api
+          type: web
+          envVarKey: MONGO_URI
+      - key: MONGO_MAX_POOL_SIZE
+        value: "3"
+
+  # Long-running clone and index work is deliberately kept out of API request
+  # handlers. This worker accepts only server-created job IDs/payloads.
+  - type: worker
+    name: base64-indexer
+    runtime: python
+    region: singapore
+    plan: 0.5c-512mb
+    # Jobs have Mongo-backed fencing leases, so multiple indexers may safely
+    # claim distinct server-created jobs. Keep one idle worker for latency and
+    # expand only while clone/index work uses sustained resources.
+    scaling:
+      minInstances: 1
+      maxInstances: 4
+      targetCPUPercent: 65
+      targetMemoryPercent: 70
+    maxShutdownDelaySeconds: 120
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m app.workers.worker
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.5
+      - key: ENVIRONMENT
+        value: production
+      - key: SERVICE_ROLE
+        value: indexer
+      - key: MONGO_URI
+        fromService:
+          name: base64-ops-api
+          type: web
+          envVarKey: MONGO_URI
+      - key: MONGO_DB_NAME
+        value: langgraph_devops_agent
+      - key: MONGO_MAX_POOL_SIZE
+        value: "5"
+      - key: BACKGROUND_JOB_LEASE_SECONDS
+        value: "900"
+      # Aggregate corpus limits keep indexing within the 512 MB worker
+      # budget even when a repository has many individually valid files.
+      - key: RAG_INDEX_MAX_FILES
+        value: "300"
+      - key: RAG_INDEX_MAX_TOTAL_BYTES
+        value: "12000000"
+      - key: RAG_INDEX_MAX_CHUNKS
+        value: "8000"
+      - key: GITHUB_TOKEN_ENCRYPTION_KEY
+        fromService:
+          name: base64-ops-api
+          type: web
+          envVarKey: GITHUB_TOKEN_ENCRYPTION_KEY
+
+  # Delivery CI status is a read-only observer. It never reruns, cancels, or
+  # dispatches workflows; it reports only runs tied to the delivered SHA.
+  - type: worker
+    name: base64-ci-observer
+    runtime: python
+    region: singapore
+    plan: 0.5c-512mb
+    # Read-only CI polling is lease/dedupe protected. It is normally quiet,
+    # so retain one inexpensive observer and add capacity only under delivery
+    # follow-up load.
+    scaling:
+      minInstances: 1
+      maxInstances: 3
+      targetCPUPercent: 60
+      targetMemoryPercent: 65
+    maxShutdownDelaySeconds: 120
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m app.workers.worker
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.5
+      - key: ENVIRONMENT
+        value: production
+      - key: SERVICE_ROLE
+        value: ci_observer
+      - key: MONGO_URI
+        fromService:
+          name: base64-ops-api
+          type: web
+          envVarKey: MONGO_URI
+      - key: MONGO_DB_NAME
+        value: langgraph_devops_agent
+      - key: MONGO_MAX_POOL_SIZE
+        value: "5"
+      - key: BACKGROUND_JOB_LEASE_SECONDS
+        value: "900"
+      - key: GITHUB_TOKEN_ENCRYPTION_KEY
+        fromService:
+          name: base64-ops-api
+          type: web
+          envVarKey: GITHUB_TOKEN_ENCRYPTION_KEY
