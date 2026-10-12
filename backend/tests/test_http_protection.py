@@ -142,6 +142,28 @@ def test_production_security_configuration_accepts_explicit_safe_values() -> Non
     assert settings.is_production
 
 
+def test_production_rejects_loopback_oauth_callback_base_url() -> None:
+    values = {
+        "environment": "production",
+        "trusted_hosts": "api.example",
+        "redis_url": "redis://example",
+        "frontend_origin": "https://app.example",
+        "base_url": "https://localhost:8001",
+        "mongo_uri": "mongodb://example",
+        "clerk_jwks_url": "https://clerk.example/jwks",
+        "clerk_issuer": "https://clerk.example",
+        "github_client_id": "client-id",
+        "github_client_secret": "client-secret",
+        "github_oauth_state_secret": "x" * 32,
+        "github_token_encryption_key": FERNET_KEY,
+        "rate_limit_fail_closed": True,
+        "trusted_client_ip_header": "CF-Connecting-IP",
+    }
+
+    with pytest.raises(ValueError, match="must not target a loopback host"):
+        Settings(**values)
+
+
 def test_production_workers_require_only_their_least_privileged_dependencies() -> None:
     maintenance = Settings(
         environment="production",

@@ -1,5 +1,6 @@
 from functools import lru_cache
 from pathlib import Path
+from urllib.parse import urlparse
 
 from cryptography.fernet import Fernet
 from pydantic import Field, model_validator
@@ -266,6 +267,8 @@ class Settings(BaseSettings):
             raise ValueError("FRONTEND_ORIGIN must use HTTPS in production")
         if not self.base_url.startswith("https://"):
             raise ValueError("BASE_URL must use HTTPS in production")
+        if urlparse(self.base_url).hostname in {"localhost", "127.0.0.1", "::1"}:
+            raise ValueError("BASE_URL must not target a loopback host in production")
         if not self.mongo_uri:
             raise ValueError("MONGO_URI must be configured in production")
         if not self.clerk_jwks_url.startswith("https://"):
