@@ -2,8 +2,15 @@ from pathlib import Path
 
 import pytest
 
+from app.execution.docker_runtime import DockerSandboxRuntime
 from app.execution.policy import ExecutionPolicy, ExecutionPolicyError
 from app.execution.runtime import ExecutionRuntimeManager
+
+
+def test_direct_docker_sandbox_default_matches_selected_python_runtime() -> None:
+    """Direct sandbox callers cannot accidentally validate under Python 3.11."""
+
+    assert DockerSandboxRuntime().image == "python:3.13.5-slim"
 
 
 def test_environment_sanitization_strips_secrets() -> None:
@@ -107,3 +114,41 @@ def test_disabled_runtime_never_falls_back_to_local_repository_execution(tmp_pat
 
     assert res.status == "policy_denied"
     assert res.failure_type == "policy_denied"
+
+
+def test_missing_docker_runtime_never_falls_back_to_local_repository_execution(tmp_path: Path, monkeypatch) -> None:
+    """A misconfigured sandbox is unavailable, not an excuse to run tests locally."""
+    (tmp_path / "app.py").write_text("print('hello world')\n", encoding="utf-8")
+    manager = ExecutionRuntimeManager()
+    monkeypatch.setattr(manager.settings, "execution_mode", "docker-sandbox")
+    monkeypatch.setattr("app.execution.runtime.DockerSandboxRuntime.is_available", lambda: False)
+
+    res = manager.execute_validator(
+        validator_id="python.pytest",
+        arguments=[],
+        repo_path=tmp_path,
+        run_id="run_test",
+        repository_id="repo_test",
+    )
+
+    assert res.status == "policy_denied"
+    assert res.failure_type == "policy_denied"
+    assert "isolated execution provider" in res.stderr_summary
+
+
+def test_production_restricted_local_mode_never_runs_repository_code(tmp_path: Path, monkeypatch) -> None:
+    """The local-development escape hatch is rejected by a production process."""
+    (tmp_path / "app.py").write_text("print('hello world')\n", encoding="utf-8")
+    manager = ExecutionRuntimeManager()
+    monkeypatch.setattr(manager.settings, "execution_mode", "restricted-local")
+    monkeypatch.setattr(manager.settings, "environment", "production")
+
+    res = manager.execute_validator(
+        validator_id="python.pytest",
+        arguments=[],
+        repo_path=tmp_path,
+        run_id="run_test",
+        repository_id="repo_test",
+    )
+
+    assert res.status == "policy_denied"

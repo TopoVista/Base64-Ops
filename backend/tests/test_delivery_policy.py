@@ -1,9 +1,14 @@
 from datetime import UTC, datetime
 from pathlib import Path
 
+import pytest
+from fastapi import HTTPException
+
 from app.policy import ToolRisk, get_policy, requires_approval
 from app.schemas.delivery import DeliveryPlan, ProposedFileChange
 from app.schemas.patch import FileEditIntent, PatchProposal
+from app.schemas.session import CreatePullRequestRequest
+from app.services import session_service
 from app.services.delivery_service import DeliveryService, canonical_json, content_hash
 from app.services.patch_engine import PatchEngine, PatchSafetyError
 
@@ -229,3 +234,42 @@ def test_changed_arguments_or_branch_invalidates_approval(tmp_path: Path) -> Non
     service.workspace.current_branch = lambda _path: "main"  # type: ignore[method-assign]
     approval["canonical_arguments"] = {"other": True}
     assert "canonical binding changed" in (service.validate_binding(approval, plan.model_dump(), tmp_path) or "")
+
+
+@pytest.mark.asyncio
+async def test_legacy_pull_request_route_fails_closed_before_any_delivery_mutation(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """An old approved record must never bypass exact delivery-plan binding."""
+
+    class Sessions:
+        async def find_one(self, query: dict) -> dict | None:
+            assert query == {"userId": "usr_1", "slugId": "ses_slug"}
+            return {"_id": "ses_1", "repoUrl": "https://github.com/example/repo"}
+
+    class Approvals:
+        async def find_one(self, _query: dict) -> dict:
+            return {"action": "create_pull_request", "status": "approve"}
+
+    class Database:
+        sessions = Sessions()
+        approvals = Approvals()
+
+    monkeypatch.setattr(session_service, "get_db", lambda: Database())
+
+    async def unexpected_workspace(*_args: object, **_kwargs: object) -> None:
+        raise AssertionError("legacy endpoint must not prepare a workspace")
+
+    def unexpected_push(*_args: object, **_kwargs: object) -> None:
+        raise AssertionError("legacy endpoint must not push a branch")
+
+    monkeypatch.setattr(session_service.WorkspaceService, "ensure_workspace", unexpected_workspace)
+    monkeypatch.setattr(session_service.WorkspaceService, "push_branch", unexpected_push)
+
+    with pytest.raises(HTTPException) as error:
+        await session_service.create_pull_request(
+            "usr_1", "ses_slug", CreatePullRequestRequest(title="stale approval")
+        )
+
+    assert error.value.status_code == 409
+    assert "legacy pull-request endpoint is disabled" in str(error.value.detail)

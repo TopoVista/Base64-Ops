@@ -1,4 +1,5 @@
 import pytest
+from cryptography.fernet import Fernet
 from pydantic import ValidationError
 
 from app.api.middleware import (
@@ -12,6 +13,8 @@ from app.core.config import Settings
 from app.core.rate_limit import InMemoryRateLimitStore, rate_limit_key
 from app.schemas.session import SessionChatRequest
 from app.services import session_service
+
+FERNET_KEY = Fernet.generate_key().decode("ascii")
 
 
 def test_access_logs_redact_oauth_callback_query_values() -> None:
@@ -130,8 +133,8 @@ def test_production_security_configuration_accepts_explicit_safe_values() -> Non
         clerk_issuer="https://clerk.example",
         github_client_id="client-id",
         github_client_secret="client-secret",
-        github_oauth_state_secret="long-random-state-secret",
-        github_token_encryption_key="long-random-encryption-secret",
+        github_oauth_state_secret="x" * 32,
+        github_token_encryption_key=FERNET_KEY,
         rate_limit_fail_closed=True,
         trusted_client_ip_header="CF-Connecting-IP",
     )
@@ -149,7 +152,7 @@ def test_production_workers_require_only_their_least_privileged_dependencies() -
         environment="production",
         service_role="indexer",
         mongo_uri="mongodb://example",
-        github_token_encryption_key="shared-worker-token-key",
+        github_token_encryption_key=FERNET_KEY,
     )
 
     assert maintenance.service_role == "maintenance"
@@ -179,8 +182,8 @@ def test_production_requires_fail_closed_traffic_protection() -> None:
         "clerk_issuer": "https://clerk.example",
         "github_client_id": "client-id",
         "github_client_secret": "client-secret",
-        "github_oauth_state_secret": "long-random-state-secret",
-        "github_token_encryption_key": "long-random-encryption-secret",
+        "github_oauth_state_secret": "x" * 32,
+        "github_token_encryption_key": FERNET_KEY,
     }
 
     with pytest.raises(ValueError, match="RATE_LIMIT_FAIL_CLOSED"):
@@ -199,8 +202,8 @@ def test_production_rejects_spoofable_forwarded_for_rate_limit_header() -> None:
         "clerk_issuer": "https://clerk.example",
         "github_client_id": "client-id",
         "github_client_secret": "client-secret",
-        "github_oauth_state_secret": "long-random-state-secret",
-        "github_token_encryption_key": "long-random-encryption-secret",
+        "github_oauth_state_secret": "x" * 32,
+        "github_token_encryption_key": FERNET_KEY,
         "rate_limit_fail_closed": True,
         "trusted_client_ip_header": "X-Forwarded-For",
     }
@@ -222,11 +225,38 @@ def test_production_rejects_development_oauth_secrets() -> None:
         "github_client_id": "client-id",
         "github_client_secret": "client-secret",
         "github_oauth_state_secret": "dev-only-github-state",
-        "github_token_encryption_key": "long-random-encryption-secret",
+        "github_token_encryption_key": FERNET_KEY,
         "rate_limit_fail_closed": True,
         "trusted_client_ip_header": "CF-Connecting-IP",
     }
 
+    with pytest.raises(ValueError, match="GITHUB_OAUTH_STATE_SECRET"):
+        Settings(**values)
+
+
+def test_production_requires_a_real_fernet_key_and_32_byte_oauth_state_secret() -> None:
+    values = {
+        "environment": "production",
+        "trusted_hosts": "api.example",
+        "redis_url": "redis://example",
+        "frontend_origin": "https://app.example",
+        "base_url": "https://api.example",
+        "mongo_uri": "mongodb://example",
+        "clerk_jwks_url": "https://clerk.example/jwks",
+        "clerk_issuer": "https://clerk.example",
+        "github_client_id": "client-id",
+        "github_client_secret": "client-secret",
+        "github_oauth_state_secret": "x" * 32,
+        "github_token_encryption_key": "not-a-fernet-key",
+        "rate_limit_fail_closed": True,
+        "trusted_client_ip_header": "CF-Connecting-IP",
+    }
+
+    with pytest.raises(ValueError, match="Fernet key"):
+        Settings(**values)
+
+    values["github_token_encryption_key"] = FERNET_KEY
+    values["github_oauth_state_secret"] = "too-short"
     with pytest.raises(ValueError, match="GITHUB_OAUTH_STATE_SECRET"):
         Settings(**values)
 
@@ -242,8 +272,8 @@ def test_production_requires_a_https_clerk_issuer() -> None:
         "clerk_jwks_url": "https://clerk.example/jwks",
         "github_client_id": "client-id",
         "github_client_secret": "client-secret",
-        "github_oauth_state_secret": "long-random-state-secret",
-        "github_token_encryption_key": "long-random-encryption-secret",
+        "github_oauth_state_secret": "x" * 32,
+        "github_token_encryption_key": FERNET_KEY,
         "rate_limit_fail_closed": True,
         "trusted_client_ip_header": "CF-Connecting-IP",
     }

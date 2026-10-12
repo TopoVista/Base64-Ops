@@ -2,11 +2,32 @@ from datetime import UTC, datetime, timedelta
 from urllib.parse import parse_qs, urlparse
 
 import pytest
+from cryptography.fernet import Fernet, InvalidToken
 from fastapi import HTTPException
 
 from app.core import security
 from app.core.config import Settings
 from app.services import github_service
+
+
+def test_production_fernet_keys_encrypt_natively_and_can_decrypt_a_legacy_token(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    legacy_passphrase = "previous-production-encryption-key-that-is-long-enough"
+    monkeypatch.setattr(security, "get_settings", lambda: Settings(github_token_encryption_key=legacy_passphrase))
+    historical_token = security.encrypt_secret("github-access-token")
+
+    current_settings = Settings(
+        github_token_encryption_key=Fernet.generate_key().decode("ascii"),
+        github_token_encryption_legacy_key=legacy_passphrase,
+    )
+    monkeypatch.setattr(security, "get_settings", lambda: current_settings)
+    current_token = security.encrypt_secret("new-github-access-token")
+
+    assert security.decrypt_secret(current_token) == "new-github-access-token"
+    assert security.decrypt_secret(historical_token) == "github-access-token"
+    with pytest.raises(InvalidToken):
+        Fernet(current_settings.github_token_encryption_key.encode("ascii")).decrypt(historical_token.encode("utf-8"))
 
 
 def test_signed_oauth_state_expires_even_when_its_signature_is_valid(monkeypatch: pytest.MonkeyPatch) -> None:

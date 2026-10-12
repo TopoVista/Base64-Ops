@@ -7,18 +7,20 @@ def _environment(service: dict) -> dict[str, dict]:
     return {item["key"]: item for item in service["envVars"] if "key" in item}
 
 
-def test_render_workers_scale_safely_and_keep_oauth_secrets_out_of_worker_roles() -> None:
+def test_render_workers_stay_on_the_bounded_512_mb_tier_and_keep_oauth_secrets_out_of_worker_roles() -> None:
     root = Path(__file__).resolve().parents[2]
     manifest = yaml.safe_load((root / "render.yaml").read_text(encoding="utf-8"))
     services = {service["name"]: service for service in manifest["services"]}
 
     assert services["base64-ops-api"]["autoDeployTrigger"] == "checksPass"
-    assert services["base64-ops-api"]["scaling"]["maxInstances"] == 10
+    assert services["base64-ops-api"]["plan"] == "0.5c-512mb"
+    assert _environment(services["base64-ops-api"])["GITHUB_TOKEN_ENCRYPTION_KEY"]["sync"] is False
     indexer = services["base64-indexer"]
     observer = services["base64-ci-observer"]
-    assert indexer["scaling"]["minInstances"] == 1
-    assert indexer["scaling"]["maxInstances"] == 4
-    assert observer["scaling"]["maxInstances"] == 3
+    assert indexer["plan"] == "0.5c-512mb"
+    assert observer["plan"] == "0.5c-512mb"
+    assert all(service["plan"] == "0.5c-512mb" for service in services.values())
+    assert all("scaling" not in service for service in services.values())
 
     for worker in (indexer, observer):
         env = _environment(worker)
@@ -42,3 +44,4 @@ def test_mvp_blueprint_keeps_the_100_to_500_user_default_to_one_api_service() ->
     assert env["INDEXING_MODE"]["value"] == "inline"
     assert env["CI_VERIFICATION_MODE"]["value"] == "on_read"
     assert env["REDIS_URL"]["sync"] is False
+    assert env["GITHUB_TOKEN_ENCRYPTION_KEY"]["sync"] is False

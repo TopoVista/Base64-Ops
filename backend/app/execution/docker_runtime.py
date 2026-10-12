@@ -10,7 +10,11 @@ from app.services.redaction_service import RedactionService
 class DockerSandboxRuntime:
     """Ephemeral Docker container sandbox runtime for active validation."""
 
-    def __init__(self, image: str = "python:3.11-slim") -> None:
+    # Keep this direct-use default aligned with the production Dockerfile,
+    # CI runtime, and Settings.workspace_docker_image. RuntimeManager passes
+    # the setting explicitly, but tests and maintenance callers may construct
+    # this class directly.
+    def __init__(self, image: str = "python:3.13.5-slim") -> None:
         self.image = image
         self.redactor = RedactionService()
 

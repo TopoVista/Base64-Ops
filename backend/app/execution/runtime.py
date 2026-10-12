@@ -61,21 +61,27 @@ class ExecutionRuntimeManager:
 
         # Runtime selection: Active repository execution uses Docker sandbox if available
         mode = getattr(self.settings, "execution_mode", "docker-sandbox").lower()
-        if validator.executes_repository_code and mode == "disabled":
-            return ExecutionResult(
-                request_id=request.id,
-                status="policy_denied",
-                exit_code=None,
-                duration_ms=0,
-                stderr_summary=(
-                    "Repository-command validation is disabled because this deployment "
-                    "does not provide an isolated runtime."
-                ),
-                failure_type="policy_denied",
-            )
-        if validator.executes_repository_code and DockerSandboxRuntime.is_available() and mode == "docker-sandbox":
-            result = self.docker_runtime.execute(request, repo_path)
+        if validator.executes_repository_code:
+            # A missing container runtime is not permission to execute a
+            # repository's test/build command on the API or worker host.  In
+            # particular, ordinary Render services do not provide the
+            # isolation boundary required for this work.  Keep the explicit
+            # local-development mode available, but never select it as an
+            # implicit fallback.
+            if mode == "disabled":
+                return self._isolated_runtime_denied(request)
+            if mode == "docker-sandbox":
+                if not DockerSandboxRuntime.is_available():
+                    return self._isolated_runtime_denied(request)
+                result = self.docker_runtime.execute(request, repo_path)
+            elif mode == "restricted-local" and not self.settings.is_production:
+                result = self.local_runtime.execute(request, repo_path)
+            else:
+                return self._isolated_runtime_denied(request)
         else:
+            # Static validators still use the registered executable and the
+            # sanitized environment. They do not gain permission to run a
+            # repository-provided script merely because this branch is local.
             result = self.local_runtime.execute(request, repo_path)
 
         # Verify candidate workspace integrity & side-effect policy if hashes were provided
@@ -93,3 +99,16 @@ class ExecutionRuntimeManager:
                 )
 
         return result
+
+    @staticmethod
+    def _isolated_runtime_denied(request: ExecutionRequest) -> ExecutionResult:
+        return ExecutionResult(
+            request_id=request.id,
+            status="policy_denied",
+            exit_code=None,
+            duration_ms=0,
+            stderr_summary=(
+                "Active validation unavailable: no authorized isolated execution provider configured."
+            ),
+            failure_type="policy_denied",
+        )

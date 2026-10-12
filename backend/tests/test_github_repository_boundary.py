@@ -70,8 +70,8 @@ def test_production_oauth_redirect_does_not_allow_the_alternate_loopback_origin(
             clerk_issuer="https://clerk.example",
             github_client_id="client-id",
             github_client_secret="client-secret",
-            github_oauth_state_secret="long-production-state-secret",
-            github_token_encryption_key="long-production-token-encryption-key",
+            github_oauth_state_secret="0123456789abcdef0123456789abcdef",
+            github_token_encryption_key="MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY=",
         ),
     )
 

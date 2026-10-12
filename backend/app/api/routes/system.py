@@ -14,18 +14,21 @@ async def get_system_capabilities() -> dict[str, Any]:
     docker_ok = DockerSandboxRuntime.is_available()
     mode = settings.execution_mode.lower()
 
-    if mode == "disabled":
-        active_runtime = "disabled"
-        net_isolation = False
-        active_validation = False
-    elif docker_ok and mode == "docker-sandbox":
+    if docker_ok and mode == "docker-sandbox":
         active_runtime = "docker-sandbox"
         net_isolation = True
         active_validation = True
-    else:
+        unavailable_reason = None
+    elif mode == "restricted-local" and not settings.is_production:
         active_runtime = "restricted-local"
         net_isolation = False
         active_validation = True
+        unavailable_reason = None
+    else:
+        active_runtime = "unavailable"
+        net_isolation = False
+        active_validation = False
+        unavailable_reason = "No authorized isolated execution provider is configured."
 
     return {
         "github": {
@@ -46,6 +49,7 @@ async def get_system_capabilities() -> dict[str, Any]:
             "network_isolation": net_isolation,
             "resource_limits": True,
             "active_validation": active_validation,
+            "unavailable_reason": unavailable_reason,
             "environment_sanitizing": True,
             "workspace_integrity_checks": True,
         }

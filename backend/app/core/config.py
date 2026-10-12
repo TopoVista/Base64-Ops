@@ -1,8 +1,19 @@
 from functools import lru_cache
 from pathlib import Path
 
+from cryptography.fernet import Fernet
 from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+def _is_fernet_key(value: str) -> bool:
+    """Return whether ``value`` is a URL-safe base64-encoded 256-bit Fernet key."""
+
+    try:
+        Fernet(value.encode("ascii"))
+    except (AttributeError, UnicodeEncodeError, ValueError):
+        return False
+    return True
 
 
 class Settings(BaseSettings):
@@ -116,6 +127,10 @@ class Settings(BaseSettings):
     github_client_secret: str = Field(default="", alias="GITHUB_CLIENT_SECRET")
     github_oauth_state_secret: str = Field(default="dev-only-github-state", alias="GITHUB_OAUTH_STATE_SECRET")
     github_token_encryption_key: str = Field(default="dev-only-token-key", alias="GITHUB_TOKEN_ENCRYPTION_KEY")
+    # One-time migration aid for deployments that encrypted GitHub tokens with
+    # the pre-Fernet passphrase derivation. It is read only as a decrypt
+    # fallback; all new OAuth tokens use GITHUB_TOKEN_ENCRYPTION_KEY.
+    github_token_encryption_legacy_key: str = Field(default="", alias="GITHUB_TOKEN_ENCRYPTION_LEGACY_KEY")
     github_oauth_state_ttl_seconds: int = Field(
         default=600, ge=60, le=3_600, alias="GITHUB_OAUTH_STATE_TTL_SECONDS"
     )
@@ -171,7 +186,7 @@ class Settings(BaseSettings):
     # Workspace & Patch Limits
     workspace_root: Path = Field(default=Path(".workspaces"), alias="WORKSPACE_ROOT")
     use_docker_workspaces: bool = Field(default=False, alias="USE_DOCKER_WORKSPACES")
-    workspace_docker_image: str = Field(default="python:3.13-slim", alias="WORKSPACE_DOCKER_IMAGE")
+    workspace_docker_image: str = Field(default="python:3.13.5-slim", alias="WORKSPACE_DOCKER_IMAGE")
     max_patch_files: int = Field(default=8, alias="MAX_PATCH_FILES")
     max_patch_lines: int = Field(default=500, alias="MAX_PATCH_LINES")
     # Automatic CI remediation is the flagship, one-click workflow. Its
@@ -221,10 +236,15 @@ class Settings(BaseSettings):
         if role in {"indexer", "ci_observer"}:
             if not self.mongo_uri:
                 raise ValueError("MONGO_URI must be configured for production workers")
-            if self.github_token_encryption_key in {"", "dev-only-token-key"}:
+            if not _is_fernet_key(self.github_token_encryption_key):
                 raise ValueError(
-                    "GITHUB_TOKEN_ENCRYPTION_KEY must not use a development default in production workers"
+                    "GITHUB_TOKEN_ENCRYPTION_KEY must be a URL-safe base64-encoded "
+                    "32-byte Fernet key in production workers"
                 )
+            if self.github_token_encryption_legacy_key and len(
+                self.github_token_encryption_legacy_key.encode("utf-8")
+            ) < 32:
+                raise ValueError("GITHUB_TOKEN_ENCRYPTION_LEGACY_KEY must be at least 32 bytes when configured")
             return self
         if role != "api":
             raise ValueError("SERVICE_ROLE must be api, maintenance, indexer, or ci_observer")
@@ -254,10 +274,18 @@ class Settings(BaseSettings):
             raise ValueError("CLERK_ISSUER must use HTTPS in production")
         if not self.github_client_id or not self.github_client_secret:
             raise ValueError("GitHub OAuth credentials must be configured in production")
-        if self.github_oauth_state_secret in {"", "dev-only-github-state"}:
-            raise ValueError("GITHUB_OAUTH_STATE_SECRET must not use a development default in production")
-        if self.github_token_encryption_key in {"", "dev-only-token-key"}:
-            raise ValueError("GITHUB_TOKEN_ENCRYPTION_KEY must not use a development default in production")
+        if self.github_oauth_state_secret in {"", "dev-only-github-state"} or len(
+            self.github_oauth_state_secret.encode("utf-8")
+        ) < 32:
+            raise ValueError("GITHUB_OAUTH_STATE_SECRET must contain at least 32 bytes in production")
+        if not _is_fernet_key(self.github_token_encryption_key):
+            raise ValueError(
+                "GITHUB_TOKEN_ENCRYPTION_KEY must be a URL-safe base64-encoded 32-byte Fernet key in production"
+            )
+        if self.github_token_encryption_legacy_key and len(
+            self.github_token_encryption_legacy_key.encode("utf-8")
+        ) < 32:
+            raise ValueError("GITHUB_TOKEN_ENCRYPTION_LEGACY_KEY must be at least 32 bytes when configured")
         return self
 
 

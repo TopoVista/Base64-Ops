@@ -2,7 +2,7 @@
 name = "langgraph-devops-agent-api"
 version = "0.1.0"
 description = "FastAPI, LangGraph, LangChain, MongoDB backend for the DevOps coding agent."
-requires-python = ">=3.11"
+requires-python = ">=3.13,<3.14"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
@@ -11,7 +11,7 @@ testpaths = ["tests"]
 
 [tool.ruff]
 line-length = 120
-target-version = "py311"
+target-version = "py313"
 extend-exclude = ["evals/fixtures"]
 
 [tool.ruff.lint]

@@ -7,7 +7,7 @@ from typing import Any
 from urllib.parse import quote, urlencode
 
 import bcrypt
-from cryptography.fernet import Fernet
+from cryptography.fernet import Fernet, InvalidToken
 from jose import JWTError, jwt
 
 from app.core.config import get_settings
@@ -45,10 +45,24 @@ def decode_access_token(token: str) -> str | None:
     return str(subject) if subject else None
 
 
-def _fernet() -> Fernet:
-    settings = get_settings()
-    digest = hashlib.sha256(settings.github_token_encryption_key.encode("utf-8")).digest()
+def _legacy_fernet(passphrase: str) -> Fernet:
+    """Build the historical passphrase-derived key for a bounded migration window."""
+
+    digest = hashlib.sha256(passphrase.encode("utf-8")).digest()
     return Fernet(base64.urlsafe_b64encode(digest))
+
+
+def _fernet() -> Fernet:
+    """Use a native Fernet key when configured, preserving development ergonomics."""
+
+    key = get_settings().github_token_encryption_key
+    try:
+        return Fernet(key.encode("ascii"))
+    except (UnicodeEncodeError, ValueError):
+        # Development settings historically accepted arbitrary passphrases.
+        # Production startup now rejects these values; retaining this path
+        # keeps local fixtures and existing developer .env files usable.
+        return _legacy_fernet(key)
 
 
 def encrypt_secret(value: str) -> str:
@@ -56,7 +70,13 @@ def encrypt_secret(value: str) -> str:
 
 
 def decrypt_secret(value: str) -> str:
-    return _fernet().decrypt(value.encode("utf-8")).decode("utf-8")
+    try:
+        return _fernet().decrypt(value.encode("utf-8")).decode("utf-8")
+    except InvalidToken:
+        legacy_key = get_settings().github_token_encryption_legacy_key
+        if not legacy_key:
+            raise
+        return _legacy_fernet(legacy_key).decrypt(value.encode("utf-8")).decode("utf-8")
 
 
 def sign_oauth_state(payload: dict[str, Any], *, issued_at: datetime | None = None) -> str:
