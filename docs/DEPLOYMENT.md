@@ -9,13 +9,19 @@ Set these production environment variables:
 - `VITE_BASE_API_URL=https://<render-api-domain>/api/`
 - `VITE_CLERK_PUBLISHABLE_KEY=<Clerk publishable key>`
 
-The checked-in `client/vercel.json` rewrites all routes to `index.html`, so React Router deep links such as `/new`, `/session/:slugid`, and `/session/:slugid/pipelines` resolve correctly.
+The checked-in `client/vercel.json` rewrites all routes to `index.html`, so React Router deep links such as `/new`, `/session/:slugid`, `/session/:slugid/pipelines`, and the historical run inspector `/dev/runs/:runId` resolve correctly after a refresh. These pages still require the normal signed-in Clerk session; the rewrite only ensures that Vercel serves the SPA entry point rather than returning a platform 404.
 
 ## Render backend
 
+### Render service count
+
+- `render.mvp.yaml` is the default low-cost profile: **1** Render service, the `base64-ops-api` web service, on the 512 MB tier.
+- `render.yaml` is the production-intelligence profile: **4** Render services, the API, maintenance cron, indexer, and read-only CI observer. Every role uses the `0.5c-512mb` tier, for a fixed **2 vCPU** baseline across four single-instance consumers.
+- MongoDB Atlas and Redis are external managed dependencies and are **not** included in either Render service count.
+
 For the 100–500-user MVP, create the Render Blueprint from `render.mvp.yaml`. It provisions one `0.5c-512mb` FastAPI API role, performs bounded repository indexing inline, and lets the Code commits rail read the delivered branch's GitHub Actions status. This keeps the flagship Safe Repair workflow intact without paying for idle indexer and CI-observer workers.
 
-Use `render.yaml` only after measured queue latency or post-delivery CI follow-up warrants the four-role setup: API, bounded maintenance cron, indexer, and read-only CI observer. The scaled blueprint keeps clone/index and autonomous CI follow-up off the API request path.
+Use `render.yaml` only after measured queue latency or post-delivery CI follow-up warrants the four-role setup: API, bounded maintenance cron, indexer, and read-only CI observer. The profile intentionally uses one instance per role on the 512 MB tier; do not add autoscaling or larger plans without revising the budget after a load test. It keeps clone/index and autonomous CI follow-up off the API request path.
 
 Both blueprints keep `CI_AUTO_REFRESH_SECONDS=0`: normal browser session polling reads persisted state only. In the MVP profile, the Code rail performs its bounded read-only Actions lookup when open. In the scaled profile, the read-only delivery observer additionally performs bounded follow-up for delivered commits.
 
@@ -43,9 +49,9 @@ Register this GitHub OAuth callback:
 5. Verify a signed-in browser can call `/api/auth/me`, reconnect GitHub, list repositories, and create a read-only session before enabling delivery work.
 6. Before making a scale claim, run the non-billable staging load harness in [`../load/k6/README.md`](../load/k6/README.md). Do not send load-test traffic to model, approval, delivery, billing, or customer-data paths.
 
-## 512 MB service boundary
+## Execution and durability boundary
 
-The Blueprint deliberately runs the public API and maintenance cron at Render's `0.5c-512mb` size. Repository data, evidence, sessions, approvals, and traces are durable in Atlas; a Render filesystem is never the source of truth.
+Both deployment profiles run every Render role on the `0.5c-512mb` tier. In both cases, repository data, evidence, sessions, approvals, and traces are durable in Atlas; a Render filesystem is never the source of truth.
 
 Render's native Python service does not provide the Docker isolation required to run repository-controlled test commands safely. The Blueprint therefore sets `EXECUTION_MODE=disabled`: static checks and all evidence/approval controls remain available, but an active validator is denied rather than falling back to execution inside the API process. Deploy a dedicated isolated worker before enabling active repository-command validation in production.
 

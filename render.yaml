@@ -5,6 +5,9 @@ services:
     name: base64-ops-api
     runtime: python
     region: singapore
+    # The reference profile stays within the requested 512 MB service tier.
+    # Keep one bounded public control plane and add capacity only after an
+    # observed staging limit justifies revising this reviewed profile.
     plan: 0.5c-512mb
     rootDir: backend
     buildCommand: pip install -r requirements.txt
@@ -14,14 +17,9 @@ services:
     # replica that cannot enforce tenant, quota, or approval invariants.
     healthCheckPath: /ready
     # External model calls are bounded, but SSE clients still need graceful
-    # drain time on deploy/scale-down. Autoscaling adds capacity only when the
-    # stateless API actually needs it, keeping the idle cost at one 512 MB
-    # instance. Render autoscaling requires a Pro-or-higher workspace.
-    scaling:
-      minInstances: 1
-      maxInstances: 10
-      targetCPUPercent: 60
-      targetMemoryPercent: 65
+    # drain time on deploy. This is an intentionally fixed, reviewed capacity
+    # profile; add autoscaling only after measuring queue latency and revising
+    # the total provisioned CPU budget in deployment documentation.
     maxShutdownDelaySeconds: 120
     # Current Render Blueprint field: deploy only after the linked GitHub
     # checks pass. This replaces the deprecated `autoDeploy` syntax.
@@ -36,7 +34,7 @@ services:
       - key: MONGO_DB_NAME
         value: langgraph_devops_agent
       - key: MONGO_MAX_POOL_SIZE
-        value: "20"
+        value: "12"
       - key: MONGO_WAIT_QUEUE_TIMEOUT_MS
         value: "5000"
       # Render's native runtime does not expose Docker isolation. Never run
@@ -90,7 +88,11 @@ services:
       - key: GITHUB_OAUTH_STATE_SECRET
         generateValue: true
       - key: GITHUB_TOKEN_ENCRYPTION_KEY
-        generateValue: true
+        # This is a strict Fernet key, not an arbitrary generated password.
+        # Supply a value created with Fernet.generate_key() through Render's
+        # secret manager so startup validation and encryption use the same
+        # exact URL-safe base64 format.
+        sync: false
       - key: OPENAI_API_KEY
         sync: false
       - key: RAZORPAY_KEY_ID
@@ -138,15 +140,9 @@ services:
     name: base64-indexer
     runtime: python
     region: singapore
+    # A separate 512 MB worker keeps bounded clone/index/graph work off the
+    # public API without overstating the initial production capacity.
     plan: 0.5c-512mb
-    # Jobs have Mongo-backed fencing leases, so multiple indexers may safely
-    # claim distinct server-created jobs. Keep one idle worker for latency and
-    # expand only while clone/index work uses sustained resources.
-    scaling:
-      minInstances: 1
-      maxInstances: 4
-      targetCPUPercent: 65
-      targetMemoryPercent: 70
     maxShutdownDelaySeconds: 120
     rootDir: backend
     buildCommand: pip install -r requirements.txt
@@ -166,17 +162,17 @@ services:
       - key: MONGO_DB_NAME
         value: langgraph_devops_agent
       - key: MONGO_MAX_POOL_SIZE
-        value: "5"
+        value: "3"
       - key: BACKGROUND_JOB_LEASE_SECONDS
         value: "900"
-      # Aggregate corpus limits keep indexing within the 512 MB worker
-      # budget even when a repository has many individually valid files.
+      # Aggregate corpus limits keep a legitimate large repository from
+      # turning one graph/index job into unbounded memory or Atlas writes.
       - key: RAG_INDEX_MAX_FILES
-        value: "300"
+        value: "200"
       - key: RAG_INDEX_MAX_TOTAL_BYTES
-        value: "12000000"
+        value: "6000000"
       - key: RAG_INDEX_MAX_CHUNKS
-        value: "8000"
+        value: "4000"
       - key: GITHUB_TOKEN_ENCRYPTION_KEY
         fromService:
           name: base64-ops-api
@@ -189,15 +185,9 @@ services:
     name: base64-ci-observer
     runtime: python
     region: singapore
+    # This read-only observer remains a 512 MB, one-at-a-time consumer. It
+    # cannot rerun, cancel, or dispatch GitHub Actions workflows.
     plan: 0.5c-512mb
-    # Read-only CI polling is lease/dedupe protected. It is normally quiet,
-    # so retain one inexpensive observer and add capacity only under delivery
-    # follow-up load.
-    scaling:
-      minInstances: 1
-      maxInstances: 3
-      targetCPUPercent: 60
-      targetMemoryPercent: 65
     maxShutdownDelaySeconds: 120
     rootDir: backend
     buildCommand: pip install -r requirements.txt
@@ -217,7 +207,7 @@ services:
       - key: MONGO_DB_NAME
         value: langgraph_devops_agent
       - key: MONGO_MAX_POOL_SIZE
-        value: "5"
+        value: "3"
       - key: BACKGROUND_JOB_LEASE_SECONDS
         value: "900"
       - key: GITHUB_TOKEN_ENCRYPTION_KEY

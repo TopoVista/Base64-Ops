@@ -62,11 +62,11 @@ The default deployment target is 100–500 users, not a speculative 10,000-user 
 Vercel CDN/WAF
   -> static React application
   -> API gateway / edge rate limits
-       -> Render FastAPI API replicas (stateless, autoscale 1-10)
+       -> Render FastAPI API role (fixed `0.5c-512mb` production profile)
             -> Redis: limits, short-lived locks, cache
             -> MongoDB Atlas: tenant data, evidence, approvals, metering
             -> queue: bounded long-running indexing / CI follow-up work
-                 -> isolated worker replicas
+                 -> fixed indexer and read-only CI observer roles
             -> GitHub / Razorpay / model APIs
 ```
 
@@ -74,7 +74,7 @@ Repository indexing is moved behind a tenant-scoped Mongo job and a dedicated `b
 
 Render workers reference the API's persisted Mongo URI and GitHub token-encryption key rather than independently generating their own values. That preserves decryption compatibility without duplicating the OAuth client secret into workers. Role-specific production validation rejects missing worker dependencies, while the indexer and CI observer retain only the credentials needed to process server-created jobs. On SIGTERM, a worker stops claiming new jobs and drains its active claim when possible; its 15-minute renewable fencing lease bounds recovery if the platform force-stops it.
 
-The Blueprint keeps one 512 MB API instance while idle and allows 1-10 stateless API replicas at CPU/memory targets of 60%/65%, with a 120-second graceful shutdown window for bounded SSE investigations. The indexer (1-4 replicas) and read-only CI observer (1-3 replicas) use the same conservative autoscaling approach; Mongo fencing leases and active dedupe keys make individual background jobs safe to claim once across worker replicas. The API Mongo pool is capped at 20 connections per replica (workers use 3-5), with a 5-second queue timeout. Size the Atlas connection ceiling against the aggregate replica count before increasing these values. This setting requires a Render Pro-or-higher workspace and is capacity configuration, not proof of 10,000-user readiness: establish actual concurrency limits with load tests before raising the maximum.
+The compact Blueprint keeps one 512 MB API instance for low-cost MVP use. The production-intelligence Blueprint keeps the same tier across four fixed roles: API, indexer, read-only CI observer, and maintenance cron. This is a 2-vCPU, single-instance baseline rather than proof that the product can absorb arbitrary concurrent clone or model workloads. Mongo fencing leases and active dedupe keys keep individual background jobs safe across future worker scaling, but scaling is intentionally not configured until a load test justifies a revised capacity budget. The API Mongo pool is capped at 12 connections per replica (workers use 3), with a 5-second queue timeout. Size the Atlas connection ceiling against actual replica counts before changing these values.
 
 ## Cost and accuracy rules
 

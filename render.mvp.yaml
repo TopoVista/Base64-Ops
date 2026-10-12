@@ -79,7 +79,8 @@ services:
       - key: GITHUB_OAUTH_STATE_SECRET
         generateValue: true
       - key: GITHUB_TOKEN_ENCRYPTION_KEY
-        generateValue: true
+        # This must be a Fernet.generate_key() value, not a generic secret.
+        sync: false
       - key: OPENAI_API_KEY
         sync: false
       - key: RAZORPAY_KEY_ID

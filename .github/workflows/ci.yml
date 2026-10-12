@@ -23,7 +23,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.13.5"
 
       - name: Install Dependencies
         run: |
@@ -49,7 +49,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.13.5"
 
       - name: Install Dependencies
         run: |
@@ -81,6 +81,11 @@ jobs:
         run: |
           cd client
           npx tsc --noEmit
+
+      - name: Verify Auth Return Routing
+        run: |
+          cd client
+          npm run verify:auth-routing
 
       - name: Frontend Build
         run: |

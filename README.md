@@ -78,6 +78,6 @@ python -m evals.runner --mode deterministic
 python -m evals.runner --mode deterministic --category ci
 ```
 
-Latest local deterministic baseline: **120 backend tests** and **28/28 deterministic evals** passed. Evaluation output contains only measured results.
+Latest local deterministic baseline on Python 3.13: **312 backend tests** and **28/28 deterministic evals** passed. Evaluation output contains only measured results.
 
 See [EVALUATION.md](docs/EVALUATION.md), [DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md), [INTERVIEW_TALK_TRACK.md](docs/INTERVIEW_TALK_TRACK.md), [SYSTEM_DESIGN.md](docs/SYSTEM_DESIGN.md), and [THREAT_MODEL.md](docs/THREAT_MODEL.md).

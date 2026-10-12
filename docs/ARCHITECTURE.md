@@ -5,6 +5,8 @@ flowchart LR
   UI[React / Vercel] -->|Clerk JWT + SSE| API[FastAPI control plane]
   API --> Graph[LangGraph investigation]
   Graph --> Context[Context pack + repository map]
+  API --> Intelligence[Revision-bound engineering graph]
+  Intelligence --> Mongo
   Graph --> RAG[Repository retrieval]
   RAG --> Evidence[Evidence store]
   Graph --> Policy[Deterministic policy]
@@ -17,6 +19,24 @@ flowchart LR
 ```
 
 The graph is intentionally small: workspace context, repository map, retrieval, optional read-only GitHub Actions context, action selection, investigation scaffold, optional approval, execution, and response. CI logs and workflow files enter only as untrusted, redacted evidence; they never become commands or mutation authority. The UI exposes safe execution events and evidence rather than hidden model reasoning.
+
+## Engineering Intelligence graph
+
+The static dependency graph in Code remains a lightweight compatibility view.
+The newer Engineering Intelligence graph is built during the existing reindex
+lifecycle and persisted as immutable, tenant-scoped snapshots bound to the
+actual Git revision. Its current extractors use Python AST, bounded local
+JavaScript/TypeScript import inspection, safe GitHub Actions YAML parsing, and
+manifest parsing. Browser graph queries are focused neighborhoods instead of a
+whole-repository dump. See [Engineering graph](ENGINEERING_GRAPH.md) for
+provenance, limits, APIs, and safety boundaries.
+
+The Changes workspace can also run a bounded, read-only reverse-dependency
+traversal for an exact delivery plan. It uses only the immutable graph at the
+plan's base SHA, shows potential dependents/tests/workflows with limitations,
+and rejects missing or mismatched revisions. This impact report is advisory
+evidence only: it neither changes a candidate workspace nor creates approval
+or delivery authority.
 
 ## Session workspace
 
