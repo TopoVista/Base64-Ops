@@ -21,7 +21,7 @@ def test_render_workers_stay_on_the_bounded_512_mb_tier_and_keep_oauth_secrets_o
     assert observer["plan"] == "0.5c-512mb"
     rate_limits = services["base64-ops-rate-limits"]
     assert rate_limits["type"] == "keyvalue"
-    assert rate_limits["plan"] == "256mb"
+    assert rate_limits["plan"] == "free"
     assert rate_limits["ipAllowList"] == []
     assert _environment(services["base64-ops-api"])["REDIS_URL"]["fromService"] == {
         "name": "base64-ops-rate-limits",

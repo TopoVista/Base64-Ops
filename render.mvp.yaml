@@ -11,7 +11,9 @@ services:
   - type: keyvalue
     name: base64-ops-rate-limits
     region: oregon
-    plan: 256mb
+    # Free is appropriate for the current demo deployment. Upgrade before
+    # relying on uninterrupted production-wide rate-limit availability.
+    plan: free
     maxmemoryPolicy: allkeys-lru
     persistenceMode: off
     ipAllowList: []
