@@ -4,15 +4,20 @@ import { Textarea } from "@/components/ui/textarea";
 import { IDEWorkspace } from "@/components/ide-workspace";
 import {
   decideSessionApproval,
+  analyzeSessionDeliveryImpact,
   getSessionBySlug,
   getSessionCodeFile,
   getSessionCodeFiles,
   getSessionDependencyGraph,
+  getSessionEngineeringGraphStatus,
   getSessionRagSources,
   getSessionRecentCommits,
+  getSessionRunHistory,
+  getBackendHealth,
   proposeSessionCodeEdit,
   refreshLatestSessionCi,
   reindexSessionRag,
+  requestSessionDeliveryApproval,
   streamDiagnostic,
   updateSessionDeliveryCommitMessage,
 } from "@/lib/api";
@@ -59,11 +64,19 @@ const label = (value?: string | null) =>
   value ? value.replaceAll("_", " ") : "Unavailable";
 const shortSha = (sha?: string | null) =>
   sha ? sha.slice(0, 12) : "Unavailable";
+const formatHistoricalTimestamp = (timestamp?: string | null) => {
+  if (!timestamp) return "Timestamp unavailable";
+  const parsed = new Date(timestamp);
+  return Number.isNaN(parsed.getTime()) ? "Timestamp unavailable" : parsed.toLocaleString();
+};
 
 const pathsReferToSameFile = (left?: string, right?: string) => {
   if (!left || !right) return false;
   const normalize = (value: string) =>
-    value.replaceAll("\\", "/").replace(/^\.\//, "").replace(/^\/+|\/+$/g, "");
+    value
+      .replaceAll("\\", "/")
+      .replace(/^\.\//, "")
+      .replace(/^\/+|\/+$/g, "");
   const a = normalize(left);
   const b = normalize(right);
   return a === b || a.endsWith(`/${b}`) || b.endsWith(`/${a}`);
@@ -171,6 +184,26 @@ function EvidenceCard({ item }: { item: EvidenceItem }) {
 function ContextBar({ data }: { data: SingleSessionResponse }) {
   const snapshot = data.commandCenter;
   const repo = snapshot?.repository;
+  const {
+    data: health,
+    isError: healthError,
+    refetch: refetchHealth,
+    isFetching: healthFetching,
+  } = useQuery({
+    queryKey: ["backend-health"],
+    queryFn: getBackendHealth,
+    // This public dependency probe is shared by all focused session routes.
+    // It makes an outage actionable instead of displaying a vague degraded
+    // badge, while the stale window prevents navigation from polling it.
+    staleTime: 30_000,
+    retry: false,
+  });
+  const dependencyUnavailable = health?.status === "degraded" || healthError;
+  const dependencyLabel = healthError
+    ? "API unavailable"
+    : health?.database === "unavailable"
+      ? "MongoDB unavailable"
+      : "API connected";
   return (
     <div className="flex flex-wrap items-center gap-x-5 gap-y-2 border-b border-border bg-background/90 px-6 py-3 text-xs text-muted-foreground">
       <span className="font-medium text-foreground">
@@ -197,6 +230,31 @@ function ContextBar({ data }: { data: SingleSessionResponse }) {
       >
         Index {data.session.indexStatus ?? "not started"}
       </Badge>
+      <button
+        type="button"
+        onClick={() => void refetchHealth()}
+        disabled={healthFetching}
+        title={
+          healthError
+            ? "The API health endpoint could not be reached. Verify the API URL and service availability, then retry."
+            : health?.message ?? "Checking API dependencies."
+        }
+        className={cn(
+          "inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium transition-colors disabled:opacity-60",
+          dependencyUnavailable
+            ? "border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-300"
+            : "border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
+        )}
+      >
+        {healthFetching ? "Checking connection…" : dependencyLabel}
+      </button>
+      {dependencyUnavailable ? (
+        <span className="text-xs text-muted-foreground">
+          {healthError
+            ? "Check the configured backend URL, then retry."
+            : "Restore Atlas connectivity, then retry."}
+        </span>
+      ) : null}
       <Link
         to={`/session/${data.session.slugId}/code`}
         state={{ startCiRepair: true }}
@@ -473,11 +531,12 @@ function Pipelines({ data }: { data: SingleSessionResponse }) {
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className="text-sm font-semibold">
-              Automatic GitHub Actions monitoring
+              GitHub Actions investigation
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
-              Base64 checks the latest failed run when this workspace opens and
-              refreshes active sessions every minute. No logs need to be pasted.
+              Inspect the latest failed run on demand. Session navigation reads
+              persisted CI evidence and never silently polls GitHub or fetches
+              logs in the background.
             </p>
           </div>
           <button
@@ -600,7 +659,9 @@ function Knowledge({
     mutationFn: () => reindexSessionRag(slugId),
     onSuccess: (result) => {
       if (result.status === "queued")
-        toast.success("Repository indexing was queued and will continue in the background.");
+        toast.success(
+          "Repository indexing was queued and will continue in the background.",
+        );
       else if (result.success)
         toast.success(
           `Indexed ${result.indexed} chunks from ${repoSources.length || "repository"} source files.`,
@@ -801,6 +862,37 @@ function ReadOnlyCodeLegacy({ data }: { data: SingleSessionResponse }) {
 function Changes({ data }: { data: SingleSessionResponse }) {
   const s = data.commandCenter;
   const p = s?.deliveryPlan;
+  const impact = useMutation({
+    mutationFn: () => {
+      if (!p?.id) throw new Error("No exact delivery plan is available.");
+      return analyzeSessionDeliveryImpact(data.session.slugId, p.id);
+    },
+    onError: (error: unknown) => {
+      const message = error instanceof Error ? error.message : "Impact analysis could not be completed.";
+      toast.error(message);
+    },
+  });
+  const renderTargets = (targets: NonNullable<typeof impact.data>["directly_affected"], empty: string) =>
+    targets.length ? (
+      <ul className="mt-2 space-y-2">
+        {targets.map((target) => (
+          <li key={target.node_id} className="rounded-md border border-border bg-background p-2.5">
+            <div className="flex flex-wrap items-center gap-2">
+              <code className="text-xs font-medium text-foreground">
+                {target.path ?? target.qualified_name ?? target.name}
+              </code>
+              <Badge variant="outline" className="text-[10px]">
+                {target.node_type.replaceAll("_", " ")}
+              </Badge>
+              <span className="text-xs text-muted-foreground">{target.distance} hop{target.distance === 1 ? "" : "s"}</span>
+            </div>
+            <p className="mt-1 text-xs leading-5 text-muted-foreground">{target.explanation}</p>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p className="mt-2 text-xs leading-5 text-muted-foreground">{empty}</p>
+    );
   return (
     <>
       <PageTitle
@@ -831,6 +923,62 @@ function Changes({ data }: { data: SingleSessionResponse }) {
                   </article>
                 ))}
               </div>
+              <section className="mt-5 rounded-lg border border-border bg-muted/25 p-4">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <h3 className="text-sm font-medium">Potential change impact</h3>
+                    <p className="mt-1 max-w-2xl text-xs leading-5 text-muted-foreground">
+                      Traverses the revision-bound engineering graph for this exact proposal. It identifies structural dependents, not proof that they will fail.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => impact.mutate()}
+                    disabled={impact.isPending}
+                    className="inline-flex items-center gap-2 rounded-md border border-cyan-500/40 bg-cyan-500/10 px-3 py-2 text-sm font-medium text-cyan-700 transition-colors hover:bg-cyan-500/20 disabled:cursor-not-allowed disabled:opacity-60 dark:text-cyan-200"
+                  >
+                    <GitBranch className={cn("size-4", impact.isPending && "animate-pulse")} />
+                    {impact.isPending ? "Analyzing impact…" : "Analyze impact"}
+                  </button>
+                </div>
+                {impact.data ? (
+                  <div className="mt-4 border-t border-border pt-4">
+                    <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs text-muted-foreground">
+                      <span>Plan SHA <code className="font-mono text-foreground">{shortSha(impact.data.plan_base_sha)}</code></span>
+                      <span>Graph SHA <code className="font-mono text-foreground">{shortSha(impact.data.graph_commit_sha)}</code></span>
+                      {impact.data.truncated ? <span className="text-amber-700 dark:text-amber-300">Results bounded</span> : null}
+                    </div>
+                    {impact.data.status === "available" ? (
+                      <div className="mt-4 grid gap-4 lg:grid-cols-2">
+                        <div>
+                          <h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Direct structural dependents</h4>
+                          {renderTargets(impact.data.directly_affected, "No direct dependents were found within graph coverage.")}
+                        </div>
+                        <div>
+                          <h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Indirect dependents</h4>
+                          {renderTargets(impact.data.indirectly_affected, "No indirect dependents were found within the traversal limit.")}
+                        </div>
+                        <div>
+                          <h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Related tests</h4>
+                          {renderTargets(impact.data.related_tests, "No test nodes were reached from the changed files.")}
+                        </div>
+                        <div>
+                          <h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Related workflows and jobs</h4>
+                          {renderTargets(impact.data.related_workflows, "No workflow or CI job nodes were reached from the changed files.")}
+                        </div>
+                      </div>
+                    ) : null}
+                    {impact.data.unmapped_paths.length ? (
+                      <p className="mt-4 text-xs text-muted-foreground">Not mapped in this graph: {impact.data.unmapped_paths.join(", ")}</p>
+                    ) : null}
+                    {impact.data.limitations.length ? (
+                      <ul className="mt-4 list-disc space-y-1 pl-5 text-xs leading-5 text-amber-700 dark:text-amber-300">
+                        {impact.data.limitations.map((limitation) => <li key={limitation}>{limitation}</li>)}
+                      </ul>
+                    ) : null}
+                  </div>
+                ) : null}
+              </section>
             </>
           ) : (
             <Empty>
@@ -864,13 +1012,93 @@ function Changes({ data }: { data: SingleSessionResponse }) {
 }
 function History({ data }: { data: SingleSessionResponse }) {
   const s = data.commandCenter;
+  const history = useQuery({
+    queryKey: ["session-run-history", data.session.slugId],
+    queryFn: () => getSessionRunHistory(data.session.slugId),
+    retry: false,
+  });
   return (
     <>
       <PageTitle
         title="History"
         description="Persisted run timeline and delivery outcomes. Replay is historical and never re-executes mutations."
+        actions={
+          <button
+            type="button"
+            onClick={() => void history.refetch()}
+            disabled={history.isFetching}
+            className="inline-flex items-center gap-2 rounded-md border border-border bg-background px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            <RefreshCw className={cn("size-3.5", history.isFetching && "animate-spin")} />
+            {history.isFetching ? "Refreshing history…" : "Refresh history"}
+          </button>
+        }
       />
       <div className="grid gap-4 p-6 lg:grid-cols-2">
+        <Panel title="Replayable runs" icon={Clock3} className="lg:col-span-2">
+          {history.isPending ? (
+            <p className="text-sm text-muted-foreground">
+              Loading historical runs…
+            </p>
+          ) : history.isError ? (
+            <Empty>
+              <p>Historical runs could not be loaded. Your current session data is still available.</p>
+              <button
+                type="button"
+                onClick={() => void history.refetch()}
+                className="mt-3 inline-flex items-center gap-2 rounded-md border border-border bg-background px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+              >
+                <RefreshCw className="size-3.5" /> Retry history
+              </button>
+            </Empty>
+          ) : history.data?.runs.length ? (
+            <ol className="divide-y divide-border rounded-lg border border-border">
+              {history.data.runs.map((run) => (
+                <li
+                  key={run.run_id}
+                  className="flex flex-wrap items-center justify-between gap-3 p-3"
+                >
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="truncate text-sm font-medium">
+                        {run.title}
+                      </p>
+                      <Badge variant="outline">{label(run.kind)}</Badge>
+                      {run.has_change_impact ? (
+                        <Badge variant="outline" className="border-cyan-500/40 text-cyan-700 dark:text-cyan-200">
+                          impact recorded
+                        </Badge>
+                      ) : null}
+                      <Badge
+                        variant={
+                          run.status === "failed" ? "destructive" : "secondary"
+                        }
+                      >
+                        {label(run.status)}
+                      </Badge>
+                    </div>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {formatHistoricalTimestamp(run.created_at)}
+                      {` · ${run.evidence_count} evidence item${run.evidence_count === 1 ? "" : "s"}`}
+                      {run.ci_run_id ? ` · CI run #${run.ci_run_id}` : ""}
+                      {!run.has_trace ? " · snapshot replay" : ""}
+                    </p>
+                  </div>
+                  <Link
+                    className="shrink-0 text-sm text-primary hover:underline"
+                    to={`/dev/runs/${run.run_id}`}
+                  >
+                    Open replay
+                  </Link>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <Empty>
+              No replayable runs have been persisted for this session yet.
+            </Empty>
+          )}
+        </Panel>
         <Panel title="Run timeline" icon={Clock3}>
           {s?.timeline?.length ? (
             <ol className="space-y-3 border-l border-border pl-4">
@@ -916,7 +1144,13 @@ function SessionPage() {
   const section: Section = sections.includes(rawSection as Section)
     ? (rawSection as Section)
     : "overview";
-  const { data, isPending } = useQuery({
+  const {
+    data,
+    isPending,
+    isError,
+    refetch,
+    isFetching,
+  } = useQuery({
     queryKey: ["session", slugid],
     queryFn: () => getSessionBySlug(slugid ?? ""),
     enabled: Boolean(slugid),
@@ -928,6 +1162,28 @@ function SessionPage() {
         Loading session workspace…
       </div>
     );
+  if (isError) {
+    return (
+      <main className="mx-auto flex min-h-[50dvh] w-full max-w-xl flex-col justify-center gap-4 px-6">
+        <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-5">
+          <h1 className="text-base font-semibold">Session data is temporarily unavailable</h1>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            The selected session was not loaded, so Base64 cannot safely show stale repository, approval, or delivery information.
+            Verify that the API and Atlas are available, then retry.
+          </p>
+          <button
+            type="button"
+            onClick={() => void refetch()}
+            disabled={isFetching}
+            className="mt-4 inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground disabled:opacity-60"
+          >
+            <RefreshCw className={cn("size-4", isFetching && "animate-spin")} />
+            {isFetching ? "Retrying…" : "Retry session"}
+          </button>
+        </div>
+      </main>
+    );
+  }
   if (!data) return <div className="p-6">Session not found.</div>;
   const props = { data };
   return (
@@ -971,7 +1227,6 @@ function SessionPage() {
   );
 }
 
-
 // Kept temporarily for backwards-compatible deep links while the active Code
 // route uses IDEWorkspace below.
 void ReadOnlyCodeLegacy;
@@ -1001,7 +1256,9 @@ function ReadOnlyCode({ data }: { data: SingleSessionResponse }) {
       item.metadata?.workflow_run_id === ci?.run_id,
   );
   const pendingApproval = data.commandCenter?.approvals?.find(
-    (approval) => approval.status === "pending" && approval.deliveryPlanId,
+    (approval) =>
+      approval.status === "pending" &&
+      approval.deliveryPlanId === deliveryPlan?.id,
   );
   const {
     data: tree,
@@ -1027,7 +1284,7 @@ function ReadOnlyCode({ data }: { data: SingleSessionResponse }) {
     : ci.applicability === "historical_fixed"
       ? "The failure condition is already absent on the current branch."
       : ci.incomplete
-        ? ci.limitations[0] ?? "GitHub Actions evidence is incomplete."
+        ? (ci.limitations[0] ?? "GitHub Actions evidence is incomplete.")
         : activeCiLogEvidence.length === 0
           ? "No bounded failure excerpt is available for this Actions run."
           : !file || !ci.relevant_paths?.includes(file.path)
@@ -1063,12 +1320,10 @@ function ReadOnlyCode({ data }: { data: SingleSessionResponse }) {
     // Its selected source must never remain on a previously opened unrelated file.
     const plannedPath = deliveryPlan?.files[0]?.path;
     const workspacePath = plannedPath
-      ? tree?.files.find((item) => pathsReferToSameFile(item.path, plannedPath))?.path
+      ? tree?.files.find((item) => pathsReferToSameFile(item.path, plannedPath))
+          ?.path
       : undefined;
-    if (
-      workspacePath &&
-      selectedPath !== workspacePath
-    ) {
+    if (workspacePath && selectedPath !== workspacePath) {
       setSelectedPath(workspacePath);
     }
   }, [deliveryPlan, selectedPath, tree?.files]);
@@ -1108,10 +1363,9 @@ function ReadOnlyCode({ data }: { data: SingleSessionResponse }) {
     mutationFn: async () => {
       let deliveryPlanGenerated = false;
       let noPlanMessage = "";
-      const requestId =
-        ciProposalRequestId.current ??=
+      const requestId = (ciProposalRequestId.current ??=
         globalThis.crypto?.randomUUID?.() ??
-        `ci-proposal-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+        `ci-proposal-${Date.now()}-${Math.random().toString(36).slice(2)}`);
       // Collect CI log excerpts from retained evidence.
       const ciLog = activeCiLogEvidence
         .map((item) => item.excerpt)
@@ -1157,7 +1411,10 @@ function ReadOnlyCode({ data }: { data: SingleSessionResponse }) {
                 "The AI model is not configured. Ask your workspace administrator to set OPENAI_API_KEY on the backend, then retry.",
               );
             }
-            throw new Error(msg || "The Safe Repair request could not be completed. Retry once, then check the backend logs if it persists.");
+            throw new Error(
+              msg ||
+                "The Safe Repair request could not be completed. Retry once, then check the backend logs if it persists.",
+            );
           }
         },
       );
@@ -1234,6 +1491,37 @@ function ReadOnlyCode({ data }: { data: SingleSessionResponse }) {
           : "Approved delivery could not be completed.",
       ),
   });
+  const requestPushApproval = useMutation({
+    mutationFn: async () => {
+      if (!deliveryPlan)
+        throw new Error("No exact delivery plan is available.");
+      // A commit title is bound into the approval. Changing it first creates
+      // a replacement approval and never changes the repository.
+      if (
+        commitMessage.trim() &&
+        commitMessage.trim() !== deliveryPlan.title
+      ) {
+        return updateSessionDeliveryCommitMessage(
+          slugId,
+          deliveryPlan.id,
+          commitMessage.trim(),
+        );
+      }
+      return requestSessionDeliveryApproval(slugId, deliveryPlan.id);
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["session", slugId] });
+      toast.success(
+        "Exact push approval is ready. Review it, then approve and push the change.",
+      );
+    },
+    onError: (error) =>
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Unable to prepare the exact push approval.",
+      ),
+  });
   const startCiRepair = useMutation({
     mutationFn: () => refreshLatestSessionCi(slugId),
     onSuccess: async (result) => {
@@ -1248,7 +1536,9 @@ function ReadOnlyCode({ data }: { data: SingleSessionResponse }) {
         replace: true,
         state: { generateCiProposal: true },
       });
-      toast.success("CI evidence collected. Building the smallest safe repair.");
+      toast.success(
+        "CI evidence collected. Building the smallest safe repair.",
+      );
     },
     onError: (error) =>
       toast.error(
@@ -1326,16 +1616,18 @@ function ReadOnlyCode({ data }: { data: SingleSessionResponse }) {
           ciProposalPending={proposeCiFix.isPending}
           ciProposalAvailable={Boolean(
             file &&
-              ci?.relevant_paths?.includes(file.path) &&
-              ci.applicability !== "historical_fixed" &&
-              !ci.incomplete &&
-              activeCiLogEvidence.length > 0,
+            ci?.relevant_paths?.includes(file.path) &&
+            ci.applicability !== "historical_fixed" &&
+            !ci.incomplete &&
+            activeCiLogEvidence.length > 0,
           )}
           ciRepairBlockedReason={ciRepairBlockedReason}
           deliveryPlan={deliveryPlan}
           pendingApproval={pendingApproval}
           onDeliver={() => deliver.mutate()}
           deliveryPending={deliver.isPending}
+          onRequestDeliveryApproval={() => requestPushApproval.mutate()}
+          requestApprovalPending={requestPushApproval.isPending}
         />
       </div>
     );
@@ -1710,6 +2002,11 @@ function DependencyGraphExplorer({
 
 function DependencyGraph({ slugId }: { slugId: string }) {
   const [focusedPath, setFocusedPath] = useState<string | null>(null);
+  const { data: intelligenceStatus } = useQuery({
+    queryKey: ["session-engineering-graph-status", slugId],
+    queryFn: () => getSessionEngineeringGraphStatus(slugId),
+    retry: false,
+  });
   const {
     data: queryData,
     isPending,
@@ -1721,11 +2018,53 @@ function DependencyGraph({ slugId }: { slugId: string }) {
   });
   if (!isPending && !error && queryData)
     return (
-      <DependencyGraphExplorer
-        graph={queryData}
-        focusedPath={focusedPath}
-        onFocus={setFocusedPath}
-      />
+      <>
+        <section className="px-6 pb-3 pt-1">
+          <Panel title="Engineering graph snapshot" icon={GitBranch}>
+            {intelligenceStatus?.available ? (
+              <div className="grid gap-3 text-sm sm:grid-cols-3">
+                <div>
+                  <p className="text-xs text-muted-foreground">Revision</p>
+                  <p className="mt-1 font-mono text-xs text-foreground">
+                    {shortSha(intelligenceStatus.commit_sha)}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Static facts</p>
+                  <p className="mt-1 font-medium text-foreground">
+                    {intelligenceStatus.node_count} nodes ·{" "}
+                    {intelligenceStatus.edge_count} relationships
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Coverage</p>
+                  <p className="mt-1 text-foreground">
+                    {intelligenceStatus.coverage?.parsed_files ?? 0} of{" "}
+                    {intelligenceStatus.coverage?.scanned_files ?? 0} files
+                    parsed
+                  </p>
+                </div>
+                {intelligenceStatus.limitations.length ? (
+                  <p className="sm:col-span-3 text-xs leading-5 text-muted-foreground">
+                    {intelligenceStatus.limitations.join(" ")}
+                  </p>
+                ) : null}
+              </div>
+            ) : (
+              <p className="text-sm leading-6 text-muted-foreground">
+                A revision-bound engineering graph will be built the next time
+                this repository is indexed. The file graph below remains
+                available now.
+              </p>
+            )}
+          </Panel>
+        </section>
+        <DependencyGraphExplorer
+          graph={queryData}
+          focusedPath={focusedPath}
+          onFocus={setFocusedPath}
+        />
+      </>
     );
   // Retain a typed fallback for the transient query state while React Query
   // replaces cached graph data.

@@ -9,6 +9,7 @@ import {
 import { authRouthsPaths, protectedRoutesPaths, publicRoutesPaths } from "./route";
 import AppLayout from "@/layouts/app-layout";
 import NotFoundPage from "@/pages/not-found";
+import RouteErrorBoundary from "@/pages/error-boundary";
 import RouteGuard from "./route-guard";
 
 const RootLayout = () => (
@@ -20,7 +21,7 @@ const RootLayout = () => (
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route element={<RootLayout />}>
+    <Route element={<RootLayout />} errorElement={<RouteErrorBoundary />}>
       <Route element={<RouteGuard requireAuth={false}/>}>
         <Route element={<BaseLayout />}>
           {authRouthsPaths.map(({ path, element: Element }) => (

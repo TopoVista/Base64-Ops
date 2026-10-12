@@ -1,8 +1,9 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { isAuthRoute, PROTECTED_ROUTES } from "./route";
+import { isAuthRoute } from "./route";
 import { useAuth } from "@clerk/clerk-react";
 import Logo from "@/components/logo";
 import { Spinner } from "@/components/ui/spinner";
+import { getPostAuthRedirect } from "@/lib/auth-redirect";
 
 type RouteGuardProps = {
   requireAuth: boolean;
@@ -28,7 +29,7 @@ const RouteGuard = ({ requireAuth }: RouteGuardProps) => {
   }
 
   if (!requireAuth && isSignedIn) {
-    return <Navigate to={PROTECTED_ROUTES.NEW} replace />;
+    return <Navigate to={getPostAuthRedirect(location)} replace />;
   }
 
   return <Outlet />;

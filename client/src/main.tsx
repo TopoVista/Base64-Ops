@@ -23,11 +23,33 @@ const queryClient = new QueryClient({
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
-if (!PUBLISHABLE_KEY) {
-  throw new Error("Missing VITE_CLERK_PUBLISHABLE_KEY in .env")
-}
+const root = createRoot(document.getElementById('root')!)
 
-createRoot(document.getElementById('root')!).render(
+const ConfigurationRequired = () => (
+  <main className="grid min-h-screen place-items-center bg-background p-6 text-foreground">
+    <section className="w-full max-w-lg rounded-2xl border border-border bg-card p-7 shadow-sm">
+      <p className="text-sm font-medium text-muted-foreground">Base64 Ops configuration required</p>
+      <h1 className="mt-1 text-2xl font-semibold tracking-tight">Authentication is not configured</h1>
+      <p className="mt-3 text-sm leading-6 text-muted-foreground">
+        This deployment is missing its public authentication setting. Ask the workspace administrator to set
+        <code className="mx-1 rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-foreground">VITE_CLERK_PUBLISHABLE_KEY</code>
+        in the frontend environment, then redeploy or reload this page.
+      </p>
+      <p className="mt-4 text-xs leading-5 text-muted-foreground">
+        No session, repository, approval, or replay data was requested.
+      </p>
+    </section>
+  </main>
+)
+
+if (!PUBLISHABLE_KEY) {
+  root.render(
+    <StrictMode>
+      <ConfigurationRequired />
+    </StrictMode>,
+  )
+} else {
+  root.render(
   <StrictMode>
     <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
       <QueryClientProvider client={queryClient}>
@@ -43,3 +65,4 @@ createRoot(document.getElementById('root')!).render(
     </ClerkProvider>
   </StrictMode>,
 )
+}

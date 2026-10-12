@@ -18,6 +18,9 @@ export const isAuthRoute = (pathname: string): boolean => {
 
 export const AUTH_ROUTES = {
   SIGN_IN: "/",
+  // Keep the root as the primary sign-in screen while supporting the
+  // conventional direct-link path used by bookmarks and external links.
+  SIGN_IN_ALIAS: "/sign-in",
   SIGN_UP: "/sign-up",
 };
 
@@ -42,6 +45,10 @@ export const PUBLIC_ROUTES = {
 export const authRouthsPaths = [
   {
     path: AUTH_ROUTES.SIGN_IN,
+    element: SignInPage,
+  },
+  {
+    path: AUTH_ROUTES.SIGN_IN_ALIAS,
     element: SignInPage,
   },
   {

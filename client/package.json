@@ -10,6 +10,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "verify:bundle": "node scripts/check-bundle-budget.mjs",
+    "verify:auth-routing": "node scripts/check-auth-redirect.mjs",
     "lint": "eslint .",
     "preview": "vite preview"
   },

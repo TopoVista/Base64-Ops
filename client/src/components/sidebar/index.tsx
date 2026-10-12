@@ -8,7 +8,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Button } from '../ui/button'
-import { Activity, BookOpen, Code2, FileSearch, History, LogOut, Network } from 'lucide-react'
+import { Activity, BookOpen, BotMessageSquare, Code2, FileCheck2, FileSearch, History, LogOut, Network } from 'lucide-react'
 import { ModeToggle } from '../mode-toggle'
 import { useState } from 'react'
 import SessionSearchDialog from './session-search-dialog'
@@ -51,10 +51,12 @@ const AppSidebar = () => {
   // not compete with the evidence → exact diff → approval → delivery flow.
   const workspaceLinks = [
     ["Overview", Activity, "overview"],
+    ["Assistant", BotMessageSquare, "assistant"],
+    ["Pipelines", Network, "pipelines"],
+    ["Investigation", FileSearch, "investigation"],
+    ["Knowledge", BookOpen, "knowledge"],
     ["Safe Repair", Code2, "code"],
-    ["CI evidence", Network, "pipelines"],
-    ["Evidence", FileSearch, "investigation"],
-    ["Repository map", BookOpen, "knowledge"],
+    ["Changes", FileCheck2, "changes"],
     ["Run history", History, "history"],
   ] as const
 

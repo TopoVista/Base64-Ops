@@ -1,16 +1,20 @@
 import { SignIn } from "@clerk/clerk-react";
+import { useLocation } from "react-router-dom";
 import Logo from "@/components/logo";
+import { getPostAuthRedirect, postAuthRedirectQuery } from "@/lib/auth-redirect";
 
 const SignInPage = () => {
+  const location = useLocation();
+  const postAuthRedirect = getPostAuthRedirect(location);
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
-      <div className="flex flex-col justify-between gap-10 p-6 md:p-10">
+      <div className="min-w-0 flex flex-col justify-between gap-10 p-6 md:p-10">
         <Logo />
         <div className="mx-auto flex w-full max-w-sm flex-1 items-center justify-center">
           <SignIn
             routing="hash"
-            signUpUrl="/sign-up"
-            fallbackRedirectUrl="/new"
+            signUpUrl={`/sign-up${postAuthRedirectQuery(postAuthRedirect)}`}
+            fallbackRedirectUrl={postAuthRedirect}
             appearance={{
               elements: {
                 card: "shadow-none border border-border rounded-xl",

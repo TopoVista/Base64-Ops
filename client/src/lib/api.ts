@@ -2,9 +2,20 @@ import type { AuthResponse } from "@/types/auth.type";
 import API from "./axios-client";
 import { getAccessToken } from "./axios-client";
 import { BASE_API_URL } from "./env";
-import type { ApprovalRequest, AgentMessage, RagSource } from "@/types/agent.type";
-import type { CreatePullRequestResponse, SessionsResponse, SingleSessionResponse } from "@/types/session.type";
-import type { GithubConnectResponse, GithubReposResponse } from "@/types/github.type";
+import type {
+  ApprovalRequest,
+  AgentMessage,
+  RagSource,
+} from "@/types/agent.type";
+import type {
+  SessionRunHistoryResponse,
+  SessionsResponse,
+  SingleSessionResponse,
+} from "@/types/session.type";
+import type {
+  GithubConnectResponse,
+  GithubReposResponse,
+} from "@/types/github.type";
 
 export type ProductAssistantResponse = {
   conversationId: string;
@@ -36,12 +47,26 @@ export const getUsageEntitlement = async (): Promise<UsageEntitlement> => {
 };
 
 export const startSubscriptionCheckout = async (tier: "pro" | "team") => {
-  const response = await API.post<{ checkoutUrl: string }>("/billing/checkout", { tier });
+  const response = await API.post<{ checkoutUrl: string }>(
+    "/billing/checkout",
+    { tier },
+  );
   return response.data;
 };
 
 export const getBackendHealth = async (): Promise<BackendHealth> => {
   const response = await API.get<BackendHealth>("/health");
+  return response.data;
+};
+
+/** Historical run replay is read-only: the server never reruns agent tools or mutations. */
+export const getDevRunReplay = async <T>(runId: string): Promise<T> => {
+  const response = await API.get<T>(`/dev/runs/${encodeURIComponent(runId)}`);
+  return response.data;
+};
+
+export const getSystemCapabilities = async <T>(): Promise<T> => {
+  const response = await API.get<T>("/system/capabilities");
   return response.data;
 };
 
@@ -70,40 +95,53 @@ export const getGithubRepos = async (): Promise<GithubReposResponse> => {
   return response.data;
 };
 
-export const connectGithub = async (redirectTo?: string): Promise<GithubConnectResponse> => {
+export const connectGithub = async (
+  redirectTo?: string,
+): Promise<GithubConnectResponse> => {
   const response = await API.get<GithubConnectResponse>("/github/connect", {
     params: redirectTo ? { redirectTo } : undefined,
   });
   return response.data;
 };
 
-export const createSessionPullRequest = async (
-  slugId: string,
-  data: { title?: string; body?: string }
-): Promise<CreatePullRequestResponse> => {
-  const response = await API.post<CreatePullRequestResponse>(`/session/${slugId}/pr`, data);
-  return response.data;
-};
-
 export const decideSessionApproval = async (
   slugId: string,
   approvalId: string,
-  data: { decision: "approve" | "edit" | "reject"; editedArgs?: Record<string, unknown>; note?: string }
-): Promise<{ approval: ApprovalRequest; message?: AgentMessage; result?: unknown }> => {
-  const response = await API.post(`/session/${slugId}/approval/${approvalId}`, data);
+  data: {
+    decision: "approve" | "edit" | "reject";
+    editedArgs?: Record<string, unknown>;
+    note?: string;
+  },
+): Promise<{
+  approval: ApprovalRequest;
+  message?: AgentMessage;
+  result?: unknown;
+}> => {
+  const response = await API.post(
+    `/session/${slugId}/approval/${approvalId}`,
+    data,
+  );
   return response.data;
 };
 
 export const reindexSessionRag = async (
   slugId: string,
   repository?: { repoUrl: string; defaultBranch?: string },
-): Promise<{ success: boolean; indexed: number; status?: "queued" | "indexing" | "ready" | "empty" | "failed"; reason?: string; storage?: "lexical" | "vector"; vectorWarning?: string; truncated?: boolean }> => {
+): Promise<{
+  success: boolean;
+  indexed: number;
+  status?: "queued" | "indexing" | "ready" | "empty" | "failed";
+  reason?: string;
+  storage?: "lexical" | "vector";
+  vectorWarning?: string;
+  truncated?: boolean;
+}> => {
   const response = await API.post(`/session/${slugId}/rag/reindex`, repository);
   return response.data;
 };
 
 export const getSessionRagSources = async (
-  slugId: string
+  slugId: string,
 ): Promise<{ sources: RagSource[] }> => {
   const response = await API.get(`/session/${slugId}/rag/sources`);
   return response.data;
@@ -122,9 +160,11 @@ export const refreshLatestSessionCi = async (slugId: string) => {
   return response.data;
 };
 
-export const createRunbook = async (
-  data: { title: string; content: string; tags?: string[] }
-) => {
+export const createRunbook = async (data: {
+  title: string;
+  content: string;
+  tags?: string[];
+}) => {
   const response = await API.post("/session/runbooks", data);
   return response.data;
 };
@@ -134,45 +174,170 @@ export const getRunbooks = async () => {
   return response.data;
 };
 
-export const getSessionBySlug = async (slugId: string): Promise<SingleSessionResponse> => {
+export const getSessionBySlug = async (
+  slugId: string,
+): Promise<SingleSessionResponse> => {
   const response = await API.get<SingleSessionResponse>(`/session/${slugId}`);
   return response.data;
 };
 
-export const getSessionCodeFiles = async (slugId: string): Promise<{ headSha?: string; files: Array<{ path: string; bytes: number }> }> => {
+export const getSessionRunHistory = async (
+  slugId: string,
+): Promise<SessionRunHistoryResponse> => {
+  const response = await API.get<SessionRunHistoryResponse>(
+    `/session/${slugId}/runs`,
+  );
+  return response.data;
+};
+
+export const getSessionCodeFiles = async (
+  slugId: string,
+): Promise<{
+  headSha?: string;
+  files: Array<{ path: string; bytes: number }>;
+}> => {
   const response = await API.get(`/session/${slugId}/code/files`);
   return response.data;
 };
 
-export const getSessionRecentCommits = async (slugId: string): Promise<{
+export const getSessionRecentCommits = async (
+  slugId: string,
+): Promise<{
   headSha?: string;
-  commits: Array<{ sha: string; shortSha: string; author: string; date: string; subject: string }>;
+  commits: Array<{
+    sha: string;
+    shortSha: string;
+    author: string;
+    date: string;
+    subject: string;
+  }>;
 }> => {
   const response = await API.get(`/session/${slugId}/code/commits`);
   return response.data;
 };
 
-export const getSessionDependencyGraph = async (slugId: string): Promise<{ headSha?: string; nodes: string[]; edges: Array<{ from: string; to: string }>; mermaid: string; truncated: boolean }> => {
+export const getSessionDependencyGraph = async (
+  slugId: string,
+): Promise<{
+  headSha?: string;
+  nodes: string[];
+  edges: Array<{ from: string; to: string }>;
+  mermaid: string;
+  truncated: boolean;
+}> => {
   const response = await API.get(`/session/${slugId}/code/dependency-graph`);
   return response.data;
 };
 
-export const getSessionCodeFile = async (slugId: string, path: string): Promise<{ path: string; headSha?: string; contentHash: string; content: string; truncated: boolean; containsRedactions: boolean; editable: boolean }> => {
-  const response = await API.get(`/session/${slugId}/code/file`, { params: { path } });
-  // A redacted representation is safe to inspect but must be locked in the
-  // browser as well as enforced by the server-side proposal endpoint.
-  return { ...response.data, truncated: Boolean(response.data.truncated || !response.data.editable) };
+export type EngineeringGraphStatus = {
+  available: boolean;
+  snapshot_id?: string;
+  commit_sha?: string;
+  branch?: string;
+  built_at?: string;
+  node_count: number;
+  edge_count: number;
+  coverage?: {
+    scanned_files: number;
+    parsed_files: number;
+    skipped_files: number;
+    unsupported_files: number;
+    truncated: boolean;
+    limitations: string[];
+  };
+  limitations: string[];
 };
 
-export const getSessionGitStatus = async (slugId: string): Promise<{
-  headSha?: string; branch?: string; output: string; success: boolean;
+export type ChangeImpactTarget = {
+  node_id: string;
+  node_type: string;
+  name: string;
+  path?: string | null;
+  qualified_name?: string | null;
+  distance: number;
+  explanation: string;
+};
+
+export type ChangeImpactAnalysis = {
+  id: string;
+  delivery_plan_id: string;
+  plan_base_sha: string;
+  graph_commit_sha?: string | null;
+  status: "available" | "unavailable";
+  changed_paths: string[];
+  unmapped_paths: string[];
+  directly_affected: ChangeImpactTarget[];
+  indirectly_affected: ChangeImpactTarget[];
+  related_tests: ChangeImpactTarget[];
+  related_workflows: ChangeImpactTarget[];
+  truncated: boolean;
+  limitations: string[];
+  created_at: string;
+};
+
+export const getSessionEngineeringGraphStatus = async (
+  slugId: string,
+): Promise<EngineeringGraphStatus> => {
+  const response = await API.get(
+    `/session/${slugId}/intelligence/graph/status`,
+  );
+  return response.data;
+};
+
+/** Runs a graph-only impact traversal for an existing, exact delivery plan. */
+export const analyzeSessionDeliveryImpact = async (
+  slugId: string,
+  planId: string,
+): Promise<ChangeImpactAnalysis> => {
+  const response = await API.post<ChangeImpactAnalysis>(
+    `/session/${slugId}/delivery-plan/${planId}/impact`,
+  );
+  return response.data;
+};
+
+export const getSessionCodeFile = async (
+  slugId: string,
+  path: string,
+): Promise<{
+  path: string;
+  headSha?: string;
+  contentHash: string;
+  content: string;
+  truncated: boolean;
+  containsRedactions: boolean;
+  editable: boolean;
+}> => {
+  const response = await API.get(`/session/${slugId}/code/file`, {
+    params: { path },
+  });
+  // A redacted representation is safe to inspect but must be locked in the
+  // browser as well as enforced by the server-side proposal endpoint.
+  return {
+    ...response.data,
+    truncated: Boolean(response.data.truncated || !response.data.editable),
+  };
+};
+
+export const getSessionGitStatus = async (
+  slugId: string,
+): Promise<{
+  headSha?: string;
+  branch?: string;
+  output: string;
+  success: boolean;
 }> => {
   const response = await API.get(`/session/${slugId}/code/git-status`);
   return response.data;
 };
 
-export const getSessionGitDiff = async (slugId: string): Promise<{
-  headSha?: string; branch?: string; diff: string; truncated: boolean; success: boolean;
+export const getSessionGitDiff = async (
+  slugId: string,
+): Promise<{
+  headSha?: string;
+  branch?: string;
+  diff: string;
+  truncated: boolean;
+  success: boolean;
 }> => {
   const response = await API.get(`/session/${slugId}/code/git-diff`);
   return response.data;
@@ -180,10 +345,18 @@ export const getSessionGitDiff = async (slugId: string): Promise<{
 
 export const proposeSessionCodeEdit = async (
   slugId: string,
-  payload: { path: string; expectedOriginalHash: string; proposedContent: string; commitMessage?: string },
+  payload: {
+    path: string;
+    expectedOriginalHash: string;
+    proposedContent: string;
+    commitMessage?: string;
+  },
 ) => {
   const response = await API.post(`/session/${slugId}/code/propose`, payload);
-  return response.data as { approval: { id: string; riskLevel: string }; deliveryPlan: { id: string } };
+  return response.data as {
+    approval: { id: string; riskLevel: string };
+    deliveryPlan: { id: string };
+  };
 };
 
 export const updateSessionDeliveryCommitMessage = async (
@@ -191,8 +364,25 @@ export const updateSessionDeliveryCommitMessage = async (
   planId: string,
   commitMessage: string,
 ) => {
-  const response = await API.patch(`/session/${slugId}/delivery-plan/${planId}/commit-message`, { commitMessage });
-  return response.data as { deliveryPlan: { id: string; title: string }; approval: { id: string } | null };
+  const response = await API.patch(
+    `/session/${slugId}/delivery-plan/${planId}/commit-message`,
+    { commitMessage },
+  );
+  return response.data as {
+    deliveryPlan: { id: string; title: string };
+    approval: { id: string } | null;
+  };
+};
+
+/** Requests an exact approval record only; it cannot apply or push code. */
+export const requestSessionDeliveryApproval = async (
+  slugId: string,
+  planId: string,
+) => {
+  const response = await API.post(
+    `/session/${slugId}/delivery-plan/${planId}/approval`,
+  );
+  return response.data as { approval: ApprovalRequest; reused: boolean };
 };
 
 export const getUserSessionsWithSearch = async (params?: {
@@ -217,7 +407,10 @@ export const askProductAssistant = async (
   return response.data;
 };
 
-export const applyApprovedPatch = async (slugId: string, approvalId: string) => {
+export const applyApprovedPatch = async (
+  slugId: string,
+  approvalId: string,
+) => {
   const response = await API.post("/apply-patch", { slugId, approvalId });
   return response.data as { result?: { pull_request_url?: string } };
 };
@@ -235,20 +428,27 @@ export const streamDiagnostic = async (
   onEvent: (event: string, data: Record<string, unknown>) => void,
 ) => {
   const request = async (refreshToken = false) => {
-    const token = await getAccessToken(refreshToken ? { skipCache: true } : undefined);
+    const token = await getAccessToken(
+      refreshToken ? { skipCache: true } : undefined,
+    );
     return fetch(`${BASE_API_URL}stream-diagnostic`, {
       method: "POST",
       // Diagnostic input is idempotency-bound on the server. A single retry
       // after a Clerk 401 is therefore safe: the first request did not enter
       // the authenticated agent pipeline.
-      headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
       body: JSON.stringify(payload),
     });
   };
   let response = await request();
   if (response.status === 401) response = await request(true);
   if (response.status === 401) {
-    throw new Error("Your Base64 sign-in session could not be refreshed. Reload the page and sign in again.");
+    throw new Error(
+      "Your Base64 sign-in session could not be refreshed. Reload the page and sign in again.",
+    );
   }
   if (!response.ok || !response.body) {
     // FastAPI returns structured details for an idempotency collision.  This

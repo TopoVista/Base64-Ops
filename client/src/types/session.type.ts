@@ -39,11 +39,21 @@ export type SingleSessionResponse = {
   commandCenter?: CommandCenterSnapshot | null;
 };
 
-export type CreatePullRequestResponse = {
-    success: boolean;
-    url: string;
-    title: string;
-    body: string;
-    branch: string | null;
-    timestamp: string;
+export type HistoricalRun = {
+  run_id: string;
+  trace_id?: string | null;
+  created_at?: string | null;
+  status: string;
+  title: string;
+  kind: "ci" | "delivery" | "investigation";
+  evidence_count: number;
+  has_trace: boolean;
+  ci_run_id?: number | null;
+  delivery_status?: string | null;
+  has_change_impact: boolean;
+};
+
+export type SessionRunHistoryResponse = {
+  runs: HistoricalRun[];
+  limit: number;
 };

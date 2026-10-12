@@ -887,12 +887,13 @@ function RepairProgress({ ci }: { ci: CIInvestigationSummary }) {
 
 // ─── Review panel ─────────────────────────────────────────────────────────────
 
-function ReviewPanel({ file, draft, deliveryPlan, ci, stagedForCommit, commitMessage, onCommitMessageChange, pendingApproval, onStage, onDeliver, delivering, deliveryResult }: {
+function ReviewPanel({ file, draft, deliveryPlan, ci, stagedForCommit, reviewedFilePaths, commitMessage, onCommitMessageChange, pendingApproval, onStage, onOpenAffectedFile, onSelectPlanFile, onDeliver, delivering, onRequestDeliveryApproval, requestApprovalPending, deliveryResult }: {
   file?: CodeFile; draft: string; deliveryPlan: DeliveryPlanSummary;
   ci?: CIInvestigationSummary | null;
-  stagedForCommit: boolean; commitMessage: string;
+  stagedForCommit: boolean; reviewedFilePaths: string[]; commitMessage: string;
   onCommitMessageChange: (v: string) => void; pendingApproval?: ApprovalRequest;
-  onStage: () => void; onDeliver: () => void; delivering: boolean;
+  onStage: () => void; onOpenAffectedFile: () => void; onSelectPlanFile: (path: string) => void; onDeliver: () => void; delivering: boolean;
+  onRequestDeliveryApproval: () => void; requestApprovalPending: boolean;
   deliveryResult?: { status: string; pull_request_url?: string; ciVerification?: { status: string; message?: string } } | null;
 }) {
   const ideTheme = useIDETheme();
@@ -901,6 +902,14 @@ function ReviewPanel({ file, draft, deliveryPlan, ci, stagedForCommit, commitMes
     ? deliveryPlan.files.find((planFile) => pathsReferToSameFile(planFile.path, file.path))
     : undefined;
   const targetPath = deliveryPlan.files[0]?.path;
+  const selectedPlanIndex = selectedPlanFile
+    ? deliveryPlan.files.findIndex((planFile) => planFile.path === selectedPlanFile.path)
+    : -1;
+  const selectedPlanFileReviewed = selectedPlanFile
+    ? reviewedFilePaths.includes(selectedPlanFile.path)
+    : false;
+  const multiFilePlan = deliveryPlan.files.length > 1;
+  const commitMessageChanged = commitMessage.trim() !== deliveryPlan.title;
   const passedValidation = (pendingApproval?.validation ?? []).filter((v) => v.status === "passed");
   const failedJob = ci?.failed_jobs[0];
   return (
@@ -938,7 +947,7 @@ function ReviewPanel({ file, draft, deliveryPlan, ci, stagedForCommit, commitMes
         <div className="flex min-h-0 flex-col overflow-hidden border-r" style={{ borderColor: "var(--ide-border)" }}>
           <div className="flex shrink-0 items-center gap-2 px-4 py-2 text-[10px] font-semibold uppercase tracking-wider" style={{ background: "var(--ide-bg2)", color: "var(--ide-blue)" }}>
             <FileCode2 className="size-3.5" />
-            {stagedForCommit ? "Staged exact source" : "Current affected source"}
+            {stagedForCommit ? "Staged exact source" : reviewedFilePaths.length ? "Locally staged source" : "Current affected source"}
           </div>
           <div className="min-h-0 flex-1 overflow-hidden p-3">
             {file ? <VSCodeEditor value={draft} onChange={() => {}} path={file.path} sha={file.headSha} editable={false} truncated={false} ideTheme={ideTheme} />
@@ -948,10 +957,37 @@ function ReviewPanel({ file, draft, deliveryPlan, ci, stagedForCommit, commitMes
         <div className="flex min-h-0 flex-col overflow-hidden">
           <div className="flex shrink-0 items-center justify-between gap-2 px-4 py-2 text-[10px] font-semibold uppercase tracking-wider" style={{ background: "var(--ide-success-bg)", color: "var(--ide-teal)" }}>
             <span className="flex items-center gap-2"><ShieldCheck className="size-3.5" /> Suggested exact change</span>
-            <span style={{ color: "var(--ide-fg2)" }}>green = add · red = remove</span>
+            <span style={{ color: "var(--ide-fg2)" }}>
+              {selectedPlanIndex >= 0 && multiFilePlan ? `file ${selectedPlanIndex + 1} of ${deliveryPlan.files.length} · ` : ""}
+              green = add · red = remove
+            </span>
           </div>
+          {multiFilePlan && (
+            <div className="flex shrink-0 flex-wrap gap-1 border-b px-3 py-2" style={{ borderColor: "var(--ide-border2)", background: "var(--ide-bg2)" }} aria-label="Files in exact change plan">
+              {deliveryPlan.files.map((planFile) => {
+                const active = planFile.path === selectedPlanFile?.path;
+                const reviewed = reviewedFilePaths.includes(planFile.path);
+                return (
+                  <button
+                    key={planFile.path}
+                    type="button"
+                    onClick={() => onSelectPlanFile(planFile.path)}
+                    className="max-w-full truncate rounded border px-2 py-1 font-mono text-[10px] transition-colors"
+                    style={active
+                      ? { borderColor: "var(--ide-accent)", background: "var(--ide-accent-bg)", color: "var(--ide-blue)" }
+                      : reviewed
+                        ? { borderColor: "var(--ide-success-border)", background: "var(--ide-success-bg)", color: "var(--ide-success-fg)" }
+                        : { borderColor: "var(--ide-border2)", background: "var(--ide-bg)", color: "var(--ide-fg2)" }}
+                    title={`Review ${planFile.path}`}
+                  >
+                    {reviewed ? "✓ " : ""}{planFile.path.split("/").at(-1)}
+                  </button>
+                );
+              })}
+            </div>
+          )}
           <div className="min-h-0 flex-1 overflow-auto">
-            <DiffViewer patch={exactDiff} viewMode="unified" className="text-[11px] leading-5" />
+            <DiffViewer patch={selectedPlanFile?.unified_diff ?? exactDiff} viewMode="unified" className="text-[11px] leading-5" />
           </div>
         </div>
       </div>
@@ -976,12 +1012,22 @@ function ReviewPanel({ file, draft, deliveryPlan, ci, stagedForCommit, commitMes
           <>
           <div className="flex flex-wrap items-center justify-between gap-4 rounded border p-4" style={{ borderColor: "var(--ide-info-border)", background: "var(--ide-info-bg)" }}>
             <div>
-              <p className="text-[12px] font-semibold" style={{ color: "var(--ide-info-fg)" }}>Step 1 — Apply the reviewed change</p>
-              <p className="mt-1 max-w-2xl text-[11px] leading-[1.6]" style={{ color: "var(--ide-fg2)" }}>Stages the exact approved diff. Nothing is written to GitHub yet.</p>
+              <p className="text-[12px] font-semibold" style={{ color: "var(--ide-info-fg)" }}>Step 1 — Apply the reviewed {multiFilePlan ? "changes" : "change"}</p>
+              <p className="mt-1 max-w-2xl text-[11px] leading-[1.6]" style={{ color: "var(--ide-fg2)" }}>
+                {multiFilePlan
+                  ? `${reviewedFilePaths.length} of ${deliveryPlan.files.length} exact file changes are staged in this local review preview.`
+                  : "Stages the exact approved diff in this local review preview."}
+                {" Nothing is written to GitHub yet."}
+              </p>
             </div>
-            <button type="button" onClick={onStage} disabled={!selectedPlanFile}
-              className="rounded px-4 py-2 text-[12px] font-semibold text-white disabled:opacity-50" style={{ background: "var(--ide-accent)" }}>
-              {selectedPlanFile ? "Apply changes" : "Open affected file"}
+            <button type="button" onClick={selectedPlanFile ? onStage : onOpenAffectedFile}
+              disabled={Boolean(selectedPlanFile && selectedPlanFileReviewed)}
+              className="rounded px-4 py-2 text-[12px] font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50" style={{ background: "var(--ide-accent)" }}>
+              {selectedPlanFileReviewed
+                ? "Applied locally"
+                : selectedPlanFile
+                  ? multiFilePlan ? "Apply & review next" : "Apply changes"
+                  : "Open affected file"}
             </button>
           </div>
           {!selectedPlanFile && targetPath ? (
@@ -1012,13 +1058,27 @@ function ReviewPanel({ file, draft, deliveryPlan, ci, stagedForCommit, commitMes
                     <button type="button" onClick={onDeliver} disabled={delivering}
                       className="flex items-center gap-2 rounded px-4 py-2 text-[12px] font-semibold text-white disabled:opacity-50" style={{ background: "var(--ide-success-strong)" }}>
                       {delivering
-                        ? <><LoaderCircle className="size-4 animate-spin" /> Pushing…</>
-                        : <><GitPullRequest className="size-4" />{commitMessage.trim() !== deliveryPlan.title ? "Update & push to GitHub" : "Step 3 — Push to GitHub"}</>}
+                        ? <><LoaderCircle className="size-4 animate-spin" />{commitMessageChanged ? " Updating approval…" : " Pushing…"}</>
+                        : <><GitPullRequest className="size-4" />{commitMessageChanged ? "Update exact approval" : "Step 3 — Approve & push"}</>}
                     </button>
-                    <p className="text-center text-[10px]" style={{ color: "var(--ide-fg-dimmer)" }}>Creates a branch &amp; draft PR</p>
+                    <p className="text-center text-[10px]" style={{ color: "var(--ide-fg-dimmer)" }}>
+                      {commitMessageChanged
+                        ? "Rebinds approval only — no push yet"
+                        : "Creates a branch & draft PR"}
+                    </p>
                   </>
                 ) : (
-                  <p className="text-[11px]" style={{ color: "var(--ide-fg-dim)" }}>Plan no longer pending. Regenerate from current source.</p>
+                  <>
+                    <button type="button" onClick={onRequestDeliveryApproval} disabled={requestApprovalPending}
+                      className="flex items-center gap-2 rounded px-4 py-2 text-[12px] font-semibold text-white disabled:opacity-50" style={{ background: "var(--ide-teal)" }}>
+                      {requestApprovalPending
+                        ? <><LoaderCircle className="size-4 animate-spin" /> Preparing approval…</>
+                        : <><ShieldCheck className="size-4" /> Step 3 — Prepare push approval</>}
+                    </button>
+                    <p className="max-w-48 text-center text-[10px] leading-4" style={{ color: "var(--ide-fg-dimmer)" }}>
+                      Rechecks the exact branch and commit. It does not apply or push anything.
+                    </p>
+                  </>
                 )}
               </div>
             </div>
@@ -1059,6 +1119,8 @@ export interface IDEWorkspaceProps {
   pendingApproval?: ApprovalRequest;
   onDeliver: () => void;
   deliveryPending: boolean;
+  onRequestDeliveryApproval: () => void;
+  requestApprovalPending: boolean;
 }
 
 export function IDEWorkspace({
@@ -1067,15 +1129,18 @@ export function IDEWorkspace({
   commitMessage, onCommitMessageChange, changed,
   onPropose, proposalPending, commits, commitsPending,
   ci, onStartCiRepair, ciRefreshPending, onGenerateCiProposal, ciProposalPending, ciProposalAvailable, ciRepairBlockedReason,
-  deliveryPlan, pendingApproval, onDeliver, deliveryPending,
+  deliveryPlan, pendingApproval, onDeliver, deliveryPending, onRequestDeliveryApproval, requestApprovalPending,
 }: IDEWorkspaceProps) {
   const [fullscreen, setFullscreen] = useState(false);
   const [explorerOpen, setExplorerOpen] = useState(true);
   const [commitsOpen, setCommitsOpen] = useState(true);
   const [bottomPanel, setBottomPanel] = useState<BottomPanel>(null);
   const [stagedForCommit, setStagedForCommit] = useState(false);
+  const [stagedDrafts, setStagedDrafts] = useState<Record<string, string>>({});
+  const [reviewedPlanPaths, setReviewedPlanPaths] = useState<string[]>([]);
   const [openTabs, setOpenTabs] = useState<string[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
+  const openedProposalRef = useRef<string | null>(null);
 
   // Resolve the page theme into "dark" | "light" for the IDE palette.
   const { theme: rawTheme } = useTheme();
@@ -1086,12 +1151,35 @@ export function IDEWorkspace({
     return rawTheme === "light" ? "light" : "dark";
   }, [rawTheme]);
 
-  useEffect(() => { setStagedForCommit(false); }, [deliveryPlan?.id]);
+  useEffect(() => {
+    setStagedForCommit(false);
+    setStagedDrafts({});
+    setReviewedPlanPaths([]);
+  }, [deliveryPlan?.id]);
 
   useEffect(() => {
     if (!selectedPath) return;
     setOpenTabs((prev) => prev.includes(selectedPath) ? prev : [...prev, selectedPath]);
   }, [selectedPath]);
+
+  // A proposal is bound to an exact repository file.  Leaving the previous
+  // explorer selection open makes the two-pane review misleading and used to
+  // make the primary action look disabled.  Open the affected file exactly
+  // once per new plan; users can still navigate away afterwards.
+  useEffect(() => {
+    if (!deliveryPlan || openedProposalRef.current === deliveryPlan.id) return;
+
+    const requestedPath = deliveryPlan.files[0]?.path;
+    if (!requestedPath) return;
+    const resolvedPath = files.find((candidate) => pathsReferToSameFile(candidate.path, requestedPath))?.path;
+    if (!resolvedPath) return;
+
+    // Wait for an asynchronous repository tree rather than consuming this
+    // one-shot transition before its target can be resolved.
+    openedProposalRef.current = deliveryPlan.id;
+    onSelectPath(resolvedPath);
+    setOpenTabs((prev) => prev.includes(resolvedPath) ? prev : [...prev, resolvedPath]);
+  }, [deliveryPlan, files, onSelectPath]);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -1120,19 +1208,63 @@ export function IDEWorkspace({
   }, [selectedPath, onSelectPath]);
 
   const stageExactChange = useCallback(() => {
-    const diff = file
-      ? deliveryPlan?.files.find((planFile) => pathsReferToSameFile(planFile.path, file.path))?.unified_diff
+    const selectedPlanFile = file
+      ? deliveryPlan?.files.find((planFile) => pathsReferToSameFile(planFile.path, file.path))
       : undefined;
-    if (!file || !diff) {
+    if (!file || !selectedPlanFile) {
       toast.error(`Open ${deliveryPlan?.files[0]?.path ?? "the affected source"} before applying its exact diff.`);
       return;
     }
-    const result = applyPatch(draft, diff);
+    if (reviewedPlanPaths.includes(selectedPlanFile.path)) return;
+
+    const source = stagedDrafts[file.path] ?? draft;
+    const result = applyPatch(source, selectedPlanFile.unified_diff);
     if (result === false) { toast.error("The exact diff no longer applies. Regenerate the proposal."); return; }
+    const nextReviewedPaths = [...reviewedPlanPaths, selectedPlanFile.path];
+    const nextPlanFile = deliveryPlan?.files.find((planFile) => !nextReviewedPaths.includes(planFile.path));
+
+    setStagedDrafts((previous) => ({ ...previous, [file.path]: result }));
+    setReviewedPlanPaths(nextReviewedPaths);
     onDraftChange(result);
+    if (nextPlanFile) {
+      const nextPath = files.find((candidate) => pathsReferToSameFile(candidate.path, nextPlanFile.path))?.path;
+      if (!nextPath) {
+        toast.error(`Applied ${file.path}, but ${nextPlanFile.path} is unavailable in this repository index.`);
+        return;
+      }
+      onSelectPath(nextPath);
+      setOpenTabs((previous) => previous.includes(nextPath) ? previous : [...previous, nextPath]);
+      toast.success(`Applied ${file.path}. Review ${nextPlanFile.path} next.`);
+      return;
+    }
+
     setStagedForCommit(true);
-    toast.success("Exact change applied to the editor.");
-  }, [deliveryPlan, file, draft, onDraftChange]);
+    toast.success("All exact plan changes are staged in the local review preview.");
+  }, [deliveryPlan, draft, file, files, onDraftChange, onSelectPath, reviewedPlanPaths, stagedDrafts]);
+
+  const openAffectedProposalFile = useCallback(() => {
+    const requestedPath = deliveryPlan?.files.find(
+      (planFile) => !reviewedPlanPaths.includes(planFile.path),
+    )?.path ?? deliveryPlan?.files[0]?.path;
+    if (!requestedPath) return;
+    const resolvedPath = files.find((candidate) => pathsReferToSameFile(candidate.path, requestedPath))?.path;
+    if (!resolvedPath) {
+      toast.error("The affected file is not available in this repository index.");
+      return;
+    }
+    onSelectPath(resolvedPath);
+    setOpenTabs((prev) => prev.includes(resolvedPath) ? prev : [...prev, resolvedPath]);
+  }, [deliveryPlan, files, onSelectPath, reviewedPlanPaths]);
+
+  const openPlanFile = useCallback((requestedPath: string) => {
+    const resolvedPath = files.find((candidate) => pathsReferToSameFile(candidate.path, requestedPath))?.path;
+    if (!resolvedPath) {
+      toast.error("The selected plan file is not available in this repository index.");
+      return;
+    }
+    onSelectPath(resolvedPath);
+    setOpenTabs((previous) => previous.includes(resolvedPath) ? previous : [...previous, resolvedPath]);
+  }, [files, onSelectPath]);
 
   const slugId = data.session.slugId;
   const deliveredSha = data.commandCenter?.deliveryResult?.commit_sha;
@@ -1141,6 +1273,8 @@ export function IDEWorkspace({
   const branch = session.branchName ?? session.defaultBranch ?? "main";
   const headSha = data.commandCenter?.repository?.commit_sha;
   const latestCiConclusion = commits[0]?.ci?.conclusion;
+  const visibleDraft = file ? stagedDrafts[file.path] ?? draft : draft;
+  const visibleFileIsStaged = Boolean(file && stagedDrafts[file.path] !== undefined);
 
   const outerCls = cn(
     // ide-workspace + data-ide-theme picks up --ide-* CSS tokens defined in index.css.
@@ -1214,16 +1348,20 @@ export function IDEWorkspace({
               repairBlockedReason={ciRepairBlockedReason} />
           )}
           {ci && ciProposalPending && !deliveryPlan && <RepairProgress ci={ci} />}
-          <TabBar tabs={openTabs} active={selectedPath} dirty={changed} onActivate={onSelectPath} onClose={closeTab} />
-          {selectedPath && <Breadcrumb path={selectedPath} changed={changed} sha={file?.headSha} />}
+          <TabBar tabs={openTabs} active={selectedPath} dirty={changed || visibleFileIsStaged} onActivate={onSelectPath} onClose={closeTab} />
+          {selectedPath && <Breadcrumb path={selectedPath} changed={changed || visibleFileIsStaged} sha={file?.headSha} />}
 
           {/* Editor area — shrinks when bottom panel is open */}
           <div className={cn("flex min-h-0 flex-col overflow-hidden", bottomPanel ? "flex-[3]" : "flex-1")}>
             {deliveryPlan ? (
-              <ReviewPanel file={file} draft={draft} deliveryPlan={deliveryPlan} ci={ci}
-                stagedForCommit={stagedForCommit} commitMessage={commitMessage}
+              <ReviewPanel file={file} draft={visibleDraft} deliveryPlan={deliveryPlan} ci={ci}
+                stagedForCommit={stagedForCommit} reviewedFilePaths={reviewedPlanPaths} commitMessage={commitMessage}
                 onCommitMessageChange={onCommitMessageChange} pendingApproval={pendingApproval}
-                onStage={stageExactChange} onDeliver={onDeliver} delivering={deliveryPending}
+                onStage={stageExactChange} onOpenAffectedFile={openAffectedProposalFile}
+                onSelectPlanFile={openPlanFile}
+                onDeliver={onDeliver} delivering={deliveryPending}
+                onRequestDeliveryApproval={onRequestDeliveryApproval}
+                requestApprovalPending={requestApprovalPending}
                 deliveryResult={data.commandCenter?.deliveryResult} />
             ) : (
               <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
