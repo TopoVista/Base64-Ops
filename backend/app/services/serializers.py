@@ -1,23 +1,28 @@
+from datetime import date, datetime
 from typing import Any
 
 
 def serialize_doc(doc: dict[str, Any] | None) -> dict[str, Any] | None:
     if not doc:
         return None
-    serialized = dict(doc)
+
+    def _json_safe(value: Any) -> Any:
+        """Normalize persisted Mongo values without losing the replay record shape."""
+
+        if isinstance(value, (datetime, date)):
+            return value.isoformat()
+        if isinstance(value, dict):
+            return {str(key): _json_safe(item) for key, item in value.items()}
+        if isinstance(value, list):
+            return [_json_safe(item) for item in value]
+        if isinstance(value, tuple):
+            return [_json_safe(item) for item in value]
+        return value
+
+    serialized = _json_safe(dict(doc))
     if "_id" in serialized:
         serialized["_id"] = str(serialized["_id"])
         serialized.setdefault("id", serialized["_id"])
-    for key in (
-        "createdAt",
-        "updatedAt",
-        "repoInitializedAt",
-        "tokenExpiresAt",
-        "retrievedAt",
-        "sourceTimestamp",
-    ):
-        if key in serialized and serialized[key] is not None:
-            serialized[key] = serialized[key].isoformat()
     return serialized
 
 

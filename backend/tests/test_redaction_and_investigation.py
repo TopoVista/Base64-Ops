@@ -150,6 +150,134 @@ def test_session_hydration_returns_only_the_users_latest_command_center(monkeypa
     assert refresh_calls == []
 
 
+def test_session_hydration_uses_the_canonical_pending_delivery_approval(monkeypatch) -> None:
+    """A stale nested snapshot must not hide the current safe push action."""
+
+    class Cursor:
+        def __init__(self, rows: list[dict]) -> None:
+            self.rows = rows
+
+        def sort(self, *_args):
+            return self
+
+        async def to_list(self, _limit: int) -> list[dict]:
+            return self.rows
+
+    class Collection:
+        def __init__(self, documents: list[dict]) -> None:
+            self.documents = documents
+
+        async def find_one(self, query: dict, **_kwargs):
+            for document in self.documents:
+                if all(document.get(key) == value for key, value in query.items()):
+                    return document
+            return None
+
+        def find(self, query: dict) -> Cursor:
+            return Cursor(
+                [
+                    document
+                    for document in self.documents
+                    if all(document.get(key) == value for key, value in query.items())
+                ]
+            )
+
+    class Database:
+        sessions = Collection(
+            [{"_id": "ses_a", "userId": "user_a", "slugId": "diagnose", "repoUrl": "https://example/repo"}]
+        )
+        messages = Collection([])
+        investigations = Collection(
+            [
+                {
+                    "userId": "user_a",
+                    "sessionId": "ses_a",
+                    "runId": "run_latest",
+                    "deliveryPlan": {"id": "dlp_current", "title": "Fix CI"},
+                    "approvals": [{"id": "apr_old", "status": "invalidated", "deliveryPlanId": "dlp_current"}],
+                }
+            ]
+        )
+        delivery_results = Collection([])
+        approvals = Collection(
+            [
+                {
+                    "id": "apr_current",
+                    "userId": "user_a",
+                    "sessionId": "ses_a",
+                    "deliveryPlanId": "dlp_current",
+                    "status": "pending",
+                }
+            ]
+        )
+
+    monkeypatch.setattr(session_service, "get_db", lambda: Database())
+    monkeypatch.setattr(
+        session_service, "get_settings", lambda: SimpleNamespace(ci_auto_refresh_seconds=0)
+    )
+
+    result = asyncio.run(session_service.get_session_by_slug("user_a", "diagnose"))
+
+    assert result["commandCenter"]["approvals"] == [
+        {
+            "id": "apr_current",
+            "userId": "user_a",
+            "sessionId": "ses_a",
+            "deliveryPlanId": "dlp_current",
+            "status": "pending",
+        }
+    ]
+
+
+def test_request_delivery_approval_reuses_a_plan_bound_pending_record(monkeypatch) -> None:
+    """The recovery action must never create duplicate authorization records."""
+
+    class Collection:
+        def __init__(self, documents: list[dict]) -> None:
+            self.documents = documents
+
+        async def find_one(self, query: dict, **_kwargs):
+            for document in self.documents:
+                if all(document.get(key) == value for key, value in query.items()):
+                    return document
+            return None
+
+    class Database:
+        sessions = Collection(
+            [
+                {
+                    "_id": "ses_a",
+                    "userId": "user_a",
+                    "slugId": "diagnose",
+                    "repoUrl": "https://example/repo",
+                    "defaultBranch": "main",
+                }
+            ]
+        )
+        delivery_plans = Collection(
+            [{"id": "dlp_current", "userId": "user_a", "sessionId": "ses_a"}]
+        )
+        approvals = Collection(
+            [
+                {
+                    "id": "apr_current",
+                    "userId": "user_a",
+                    "sessionId": "ses_a",
+                    "deliveryPlanId": "dlp_current",
+                    "status": "pending",
+                }
+            ]
+        )
+
+    monkeypatch.setattr(session_service, "get_db", lambda: Database())
+    result = asyncio.run(
+        session_service.request_delivery_approval("user_a", "diagnose", "dlp_current")
+    )
+
+    assert result["reused"] is True
+    assert result["approval"]["id"] == "apr_current"
+
+
 def test_safe_tool_result_is_bounded_and_redacted() -> None:
     safe = session_service.safe_tool_result(
         {"success": True, "output": "Authorization: Bearer secret-value\n" + "x" * 5_000}

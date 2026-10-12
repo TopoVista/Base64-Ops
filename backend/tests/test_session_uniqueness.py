@@ -43,7 +43,17 @@ async def test_session_index_setup_contains_tenant_unique_constraint(monkeypatch
             self.indexes.append((args, kwargs))
 
     sessions = Collection()
-    database = SimpleNamespace(sessions=sessions, messages=Collection(), investigations=Collection())
+    investigations = Collection()
+    database = SimpleNamespace(
+        sessions=sessions,
+        messages=Collection(),
+        investigations=investigations,
+        evidence=Collection(),
+        run_traces=Collection(),
+        trace_spans=Collection(),
+        delivery_plans=Collection(),
+        approvals=Collection(),
+    )
     monkeypatch.setattr(session_service, "get_db", lambda: database)
 
     await session_service.ensure_session_indexes()
@@ -53,3 +63,7 @@ async def test_session_index_setup_contains_tenant_unique_constraint(monkeypatch
         {"unique": True, "name": "sessions_one_slug_per_tenant"},
     )
     assert tenant_index in sessions.indexes
+    assert (
+        ([("userId", 1), ("sessionId", 1), ("runId", 1)],),
+        {"unique": True, "name": "investigations_one_run_per_tenant_session"},
+    ) in investigations.indexes

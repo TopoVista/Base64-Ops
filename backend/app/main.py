@@ -17,6 +17,8 @@ from app.core.access_logging import configure_access_log_redaction
 from app.core.config import get_settings
 from app.core.rate_limit import InMemoryRateLimitStore, RedisRateLimitStore
 from app.db.mongo import MongoUnavailableError, close_mongo, connect_mongo, mongo_is_connected
+from app.intelligence.graph.store import EngineeringGraphStore
+from app.intelligence.impact.store import ChangeImpactStore
 from app.services.background_job_service import BackgroundJobService
 from app.services.github_service import ensure_github_indexes
 from app.services.session_service import ensure_session_indexes
@@ -42,6 +44,8 @@ async def _ensure_database_indexes() -> None:
     await BackgroundJobService().ensure_indexes()
     await ensure_github_indexes()
     await ensure_session_indexes()
+    await EngineeringGraphStore().ensure_indexes()
+    await ChangeImpactStore().ensure_indexes()
     await ensure_user_indexes()
 
 

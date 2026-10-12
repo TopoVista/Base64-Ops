@@ -7,6 +7,8 @@ from datetime import timedelta
 from app.core.config import get_settings
 from app.db.mongo import close_mongo, connect_mongo, get_db
 from app.git.actions import GitHubActionsAdapter
+from app.intelligence.graph.service import EngineeringGraphService
+from app.intelligence.graph.store import EngineeringGraphStore
 from app.services.background_job_service import BackgroundJobService
 from app.services.delivery_ci_service import evaluate_delivery_ci
 from app.services.rag_service import RagService
@@ -24,9 +26,7 @@ class DeferredJob(Exception):
         self.delay_seconds = delay_seconds
 
 
-async def renew_job_lease(
-    jobs: BackgroundJobService, job_id: str, lease_token: str, stopped: asyncio.Event
-) -> None:
+async def renew_job_lease(jobs: BackgroundJobService, job_id: str, lease_token: str, stopped: asyncio.Event) -> None:
     """Keep a durable claim alive without allowing the job to execute more work."""
     lease_seconds = get_settings().background_job_lease_seconds
     interval = max(5, min(60, lease_seconds // 3))
@@ -58,6 +58,20 @@ async def run_job(job: dict) -> None:
         result = await RagService().index_workspace(session, repo_path)
         index_status = "ready" if result.get("indexed") else "empty"
         index_error = None if result.get("indexed") else "Repository contains no supported indexable files."
+        graph_status = "not_built"
+        graph_error = None
+        try:
+            snapshot = await EngineeringGraphService(workspace=workspace).build_and_store(
+                session=session, repo_path=repo_path
+            )
+            graph_status = "ready"
+        except Exception as exc:
+            # Indexing and the graph are complementary evidence products. A
+            # parser/storage failure must not discard an otherwise usable RAG
+            # index or expose an implementation detail to the browser.
+            snapshot = None
+            graph_status = "failed"
+            graph_error = redactor.redact(f"{type(exc).__name__}: {exc}")[:300]
         await get_db().sessions.update_one(
             {"_id": session_id, "userId": job["userId"]},
             {
@@ -69,6 +83,9 @@ async def run_job(job: dict) -> None:
                     "indexTruncated": bool(result.get("truncated")),
                     "indexedAt": utc_now(),
                     "indexJobId": job["_id"],
+                    "graphStatus": graph_status,
+                    "graphError": graph_error,
+                    "graphSnapshotId": snapshot.id if snapshot else None,
                 }
             },
         )
@@ -125,6 +142,10 @@ async def run(role: str, once: bool, stopped: asyncio.Event | None = None) -> No
     try:
         jobs = BackgroundJobService()
         await jobs.ensure_indexes()
+        # Workers can be deployed before an API replica during a Render
+        # rollout, so establish the same immutable graph-snapshot indexes at
+        # their own durable write boundary.
+        await EngineeringGraphStore().ensure_indexes()
         while not stopped.is_set():
             job = await jobs.claim(role)
             if not job:
@@ -149,9 +170,7 @@ async def run(role: str, once: bool, stopped: asyncio.Event | None = None) -> No
                 )
                 continue
             lease_stopped = asyncio.Event()
-            lease_heartbeat = asyncio.create_task(
-                renew_job_lease(jobs, job["_id"], lease_token, lease_stopped)
-            )
+            lease_heartbeat = asyncio.create_task(renew_job_lease(jobs, job["_id"], lease_token, lease_stopped))
             try:
                 await run_job(job)
                 await get_db().background_jobs.update_one(
@@ -208,6 +227,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Base64 Ops internal worker")
     parser.add_argument("--once", action="store_true", help="Process available work once and exit")
     args = parser.parse_args()
+
     async def run_with_signal_drain() -> None:
         stopped = asyncio.Event()
         loop = asyncio.get_running_loop()
