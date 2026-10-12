@@ -74,7 +74,10 @@ services:
       - key: TRUSTED_CLIENT_IP_HEADER
         value: CF-Connecting-IP
       - key: BASE_URL
-        sync: false
+        # Public, deterministic service URL used for GitHub OAuth callbacks.
+        # Keeping this explicit prevents the development localhost fallback
+        # from being used by a newly created Render service.
+        value: https://base64-ops-api.onrender.com
       - key: CLERK_JWKS_URL
         sync: false
       - key: CLERK_ISSUER
