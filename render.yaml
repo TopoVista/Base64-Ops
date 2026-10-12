@@ -7,7 +7,7 @@ services:
   # Render private-network connection string below.
   - type: keyvalue
     name: base64-ops-rate-limits
-    region: singapore
+    region: oregon
     plan: 256mb
     maxmemoryPolicy: allkeys-lru
     persistenceMode: off
@@ -16,7 +16,7 @@ services:
   - type: web
     name: base64-ops-api
     runtime: python
-    region: singapore
+    region: oregon
     # The reference profile stays within the requested 512 MB service tier.
     # Keep one bounded public control plane and add capacity only after an
     # observed staging limit justifies revising this reviewed profile.
@@ -132,7 +132,7 @@ services:
   - type: cron
     name: base64-maintenance
     runtime: python
-    region: singapore
+    region: oregon
     plan: 0.5c-512mb
     rootDir: backend
     buildCommand: pip install -r requirements.txt
@@ -158,7 +158,7 @@ services:
   - type: worker
     name: base64-indexer
     runtime: python
-    region: singapore
+    region: oregon
     # A separate 512 MB worker keeps bounded clone/index/graph work off the
     # public API without overstating the initial production capacity.
     plan: 0.5c-512mb
@@ -203,7 +203,7 @@ services:
   - type: worker
     name: base64-ci-observer
     runtime: python
-    region: singapore
+    region: oregon
     # This read-only observer remains a 512 MB, one-at-a-time consumer. It
     # cannot rerun, cancel, or dispatch GitHub Actions workflows.
     plan: 0.5c-512mb

@@ -10,7 +10,7 @@ services:
   # rate limiting. No external Redis endpoint is exposed.
   - type: keyvalue
     name: base64-ops-rate-limits
-    region: singapore
+    region: oregon
     plan: 256mb
     maxmemoryPolicy: allkeys-lru
     persistenceMode: off
@@ -19,7 +19,7 @@ services:
   - type: web
     name: base64-ops-api
     runtime: python
-    region: singapore
+    region: oregon
     plan: 0.5c-512mb
     rootDir: backend
     buildCommand: pip install -r requirements.txt
