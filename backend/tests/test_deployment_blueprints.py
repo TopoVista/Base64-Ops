@@ -66,6 +66,9 @@ def test_render_blueprints_use_a_strict_ready_check_and_validate_each_role() -> 
         assert isinstance(services, list) and services
 
         for service in services:
+            if service["type"] == "keyvalue":
+                assert service["ipAllowList"] == []
+                continue
             environment = _resolved_service_environment(service)
             assert environment["ENVIRONMENT"] == "production"
             Settings(**environment)
@@ -74,7 +77,8 @@ def test_render_blueprints_use_a_strict_ready_check_and_validate_each_role() -> 
         assert api["healthCheckPath"] == "/ready"
         assert _resolved_service_environment(api)["EXECUTION_MODE"] == "disabled"
 
-    assert _blueprint("render.mvp.yaml")["services"][0]["plan"] == "0.5c-512mb"
+    mvp_services = _blueprint("render.mvp.yaml")["services"]
+    assert next(service for service in mvp_services if service["type"] == "web")["plan"] == "0.5c-512mb"
 
 
 def test_scaled_render_blueprint_keeps_long_running_work_off_the_public_api() -> None:
@@ -82,6 +86,7 @@ def test_scaled_render_blueprint_keeps_long_running_work_off_the_public_api() ->
     by_name = {service["name"]: service for service in services}
 
     assert set(by_name) == {
+        "base64-ops-rate-limits",
         "base64-ops-api",
         "base64-maintenance",
         "base64-indexer",
@@ -92,6 +97,8 @@ def test_scaled_render_blueprint_keeps_long_running_work_off_the_public_api() ->
     assert by_name["base64-maintenance"]["plan"] == "0.5c-512mb"
     assert by_name["base64-indexer"]["plan"] == "0.5c-512mb"
     assert by_name["base64-ci-observer"]["plan"] == "0.5c-512mb"
+    assert by_name["base64-ops-rate-limits"]["type"] == "keyvalue"
+    assert by_name["base64-ops-rate-limits"]["ipAllowList"] == []
     assert all("scaling" not in service for service in services)
     assert by_name["base64-indexer"]["envVars"]
     assert by_name["base64-ci-observer"]["envVars"]

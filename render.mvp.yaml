@@ -6,6 +6,16 @@
 # Upgrade to render.yaml only when measured queue latency or CI follow-up load
 # justifies the separate always-on worker roles.
 services:
+  # The MVP remains one public API service, with private shared state for
+  # rate limiting. No external Redis endpoint is exposed.
+  - type: keyvalue
+    name: base64-ops-rate-limits
+    region: singapore
+    plan: 256mb
+    maxmemoryPolicy: allkeys-lru
+    persistenceMode: off
+    ipAllowList: []
+
   - type: web
     name: base64-ops-api
     runtime: python
@@ -59,7 +69,10 @@ services:
       - key: TRUSTED_HOSTS
         sync: false
       - key: REDIS_URL
-        sync: false
+        fromService:
+          name: base64-ops-rate-limits
+          type: keyvalue
+          property: connectionString
       - key: RATE_LIMIT_FAIL_CLOSED
         value: "true"
       - key: TRUSTED_CLIENT_IP_HEADER

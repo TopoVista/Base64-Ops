@@ -1,6 +1,18 @@
 # Render Blueprint: API, bounded maintenance cron, indexer, and read-only CI observer workers.
 # Secrets use sync: false so Render prompts for them during initial Blueprint setup.
 services:
+  # Shared, private rate-limit state. This is deliberately separate from
+  # request-local memory so all API instances enforce the same tenant/user
+  # ceilings. It accepts no public connections; application services use the
+  # Render private-network connection string below.
+  - type: keyvalue
+    name: base64-ops-rate-limits
+    region: singapore
+    plan: 256mb
+    maxmemoryPolicy: allkeys-lru
+    persistenceMode: off
+    ipAllowList: []
+
   - type: web
     name: base64-ops-api
     runtime: python
@@ -64,9 +76,13 @@ services:
       - key: TRUSTED_HOSTS
         sync: false
       # Shared Redis is required for production-wide rate limits across API
-      # instances. The API fails closed for non-health requests if it is down.
+      # instances. Render resolves this private-network URL during Blueprint
+      # sync; the API fails closed for non-health requests if it is down.
       - key: REDIS_URL
-        sync: false
+        fromService:
+          name: base64-ops-rate-limits
+          type: keyvalue
+          property: connectionString
       - key: RATE_LIMIT_FAIL_CLOSED
         value: "true"
       # Render routes public traffic through Cloudflare, which overwrites this

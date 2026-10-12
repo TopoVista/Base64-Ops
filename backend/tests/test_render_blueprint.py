@@ -19,7 +19,15 @@ def test_render_workers_stay_on_the_bounded_512_mb_tier_and_keep_oauth_secrets_o
     observer = services["base64-ci-observer"]
     assert indexer["plan"] == "0.5c-512mb"
     assert observer["plan"] == "0.5c-512mb"
-    assert all(service["plan"] == "0.5c-512mb" for service in services.values())
+    rate_limits = services["base64-ops-rate-limits"]
+    assert rate_limits["type"] == "keyvalue"
+    assert rate_limits["plan"] == "256mb"
+    assert rate_limits["ipAllowList"] == []
+    assert _environment(services["base64-ops-api"])["REDIS_URL"]["fromService"] == {
+        "name": "base64-ops-rate-limits",
+        "type": "keyvalue",
+        "property": "connectionString",
+    }
     assert all("scaling" not in service for service in services.values())
 
     for worker in (indexer, observer):
@@ -35,13 +43,15 @@ def test_mvp_blueprint_keeps_the_100_to_500_user_default_to_one_api_service() ->
     root = Path(__file__).resolve().parents[2]
     manifest = yaml.safe_load((root / "render.mvp.yaml").read_text(encoding="utf-8"))
 
-    assert len(manifest["services"]) == 1
-    api = manifest["services"][0]
+    assert len(manifest["services"]) == 2
+    services = {service["name"]: service for service in manifest["services"]}
+    api = services["base64-ops-api"]
     env = _environment(api)
     assert api["type"] == "web"
     assert api["plan"] == "0.5c-512mb"
     assert api["autoDeployTrigger"] == "checksPass"
     assert env["INDEXING_MODE"]["value"] == "inline"
     assert env["CI_VERIFICATION_MODE"]["value"] == "on_read"
-    assert env["REDIS_URL"]["sync"] is False
+    assert services["base64-ops-rate-limits"]["ipAllowList"] == []
+    assert env["REDIS_URL"]["fromService"]["name"] == "base64-ops-rate-limits"
     assert env["GITHUB_TOKEN_ENCRYPTION_KEY"]["sync"] is False
