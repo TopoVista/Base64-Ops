@@ -214,6 +214,44 @@ class CIInvestigationService:
                 applicability = str(result.status)
                 applicability_reason = result.reason
                 applicability_result = result.model_dump(mode="json")
+                if (
+                    history
+                    and history.last_successful_head_sha
+                    and history.last_successful_head_sha != run.head_sha
+                ):
+                    prior_workflow = self.workspace.read_file_at_ref(
+                        repo_path, run.workflow_path, history.last_successful_head_sha
+                    )
+                    workflow_comparison = compare_workflow_versions(
+                        failed_workflow=failed_workflow, prior_successful_workflow=prior_workflow
+                    )
+                    history = history.model_copy(update=workflow_comparison)
+                    if prior_workflow is None:
+                        limitations.append(
+                            "The workflow file at the last comparable successful run was unavailable."
+                        )
+                    else:
+                        prior_records = await self.evidence.record_sources(
+                            user_id=user_id,
+                            session=session,
+                            run_id=graph_run_id,
+                            sources=[
+                                {
+                                    "kind": "repo",
+                                    "source": run.workflow_path,
+                                    "excerpt": prior_workflow,
+                                    "metadata": {
+                                        "state": "last_successful_run",
+                                        "untrusted": True,
+                                        "workflow_run_id": history.last_successful_run_id,
+                                        "head_sha": history.last_successful_head_sha,
+                                        "comparison": "workflow_prior_success",
+                                    },
+                                }
+                            ],
+                            commit_sha=history.last_successful_head_sha,
+                        )
+                        workflow_evidence_ids.extend(record["id"] for record in prior_records)
         elif run.workflow_path:
             limitations.append("No repository workspace was available to inspect the workflow at the failed commit.")
 
@@ -419,6 +457,30 @@ def compare_workflow_history(
     )
 
 
+def compare_workflow_versions(
+    *, failed_workflow: str, prior_successful_workflow: str | None
+) -> dict[str, bool | str | None]:
+    """Describe an exact workflow-file comparison without asserting cause."""
+
+    if prior_successful_workflow is None:
+        return {
+            "workflow_changed_since_last_success": None,
+            "workflow_comparison_note": "The last successful workflow file was unavailable for comparison.",
+        }
+    if prior_successful_workflow == failed_workflow:
+        return {
+            "workflow_changed_since_last_success": False,
+            "workflow_comparison_note": "The workflow file matched the last comparable successful run.",
+        }
+    return {
+        "workflow_changed_since_last_success": True,
+        "workflow_comparison_note": (
+            "The workflow file differs from the last comparable successful run; "
+            "this is correlation evidence, not proof of cause."
+        ),
+    }
+
+
 def _same_workflow(expected: WorkflowRunSummary, candidate: WorkflowRunSummary) -> bool:
     if expected.workflow_id is not None and candidate.workflow_id is not None:
         return expected.workflow_id == candidate.workflow_id
@@ -438,6 +500,8 @@ def _history_excerpt(history: CIWorkflowHistory) -> str:
     ]
     if history.last_successful_run_id is not None:
         pieces.append(f"Last prior successful run: #{history.last_successful_run_id}.")
+    if history.workflow_comparison_note:
+        pieces.append(history.workflow_comparison_note)
     if history.first_observed_failure_run_id is not None:
         pieces.append(f"First observed failed run in the bounded window: #{history.first_observed_failure_run_id}.")
     if history.limitation:

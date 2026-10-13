@@ -79,6 +79,10 @@ class CIWorkflowHistory(BaseModel):
     first_observed_failure_run_id: int | None = None
     same_sha_failure_count: int = 0
     same_sha_success_count: int = 0
+    # A workflow file change between the last comparable success and the
+    # failed run is a useful deterministic signal, not causal proof.
+    workflow_changed_since_last_success: bool | None = None
+    workflow_comparison_note: str | None = None
     assessment: str = "insufficient_history"
     limitation: str | None = None
 

@@ -36,6 +36,8 @@ export type IncidentRecord = {
     first_observed_failure_run_id?: number | null;
     same_sha_failure_count: number;
     same_sha_success_count: number;
+    workflow_changed_since_last_success?: boolean | null;
+    workflow_comparison_note?: string | null;
     assessment: string;
     limitation?: string | null;
   } | null;

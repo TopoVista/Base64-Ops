@@ -10,6 +10,7 @@ from app.services.ci_investigation_service import (
     CIInvestigationService,
     _extract_safe_path_hints,
     compare_workflow_history,
+    compare_workflow_versions,
 )
 
 
@@ -340,6 +341,21 @@ def test_workflow_history_marks_mixed_same_sha_outcomes_as_signal_not_flakiness(
     assert history.assessment == "mixed_outcomes_same_sha"
     assert history.same_sha_failure_count == 2
     assert history.same_sha_success_count == 1
+
+
+def test_workflow_version_comparison_is_explicitly_non_causal() -> None:
+    changed = compare_workflow_versions(
+        failed_workflow="jobs: { test: { runs-on: ubuntu-latest } }\n",
+        prior_successful_workflow="jobs: { test: { runs-on: ubuntu-22.04 } }\n",
+    )
+    unchanged = compare_workflow_versions(
+        failed_workflow="jobs: { test: { runs-on: ubuntu-latest } }\n",
+        prior_successful_workflow="jobs: { test: { runs-on: ubuntu-latest } }\n",
+    )
+
+    assert changed["workflow_changed_since_last_success"] is True
+    assert "not proof of cause" in str(changed["workflow_comparison_note"])
+    assert unchanged["workflow_changed_since_last_success"] is False
 
 
 @pytest.mark.asyncio
