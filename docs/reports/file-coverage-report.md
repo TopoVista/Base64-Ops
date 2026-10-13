@@ -1,13 +1,13 @@
 # Source-file coverage report
 
-- Analyzed Git commit: `1a385e9b94835469140a54a509f635e349d5bc3b`
-- Total tracked files considered: **373**
-- Included source/documentation/test/configuration files: **358**
-- Excluded files: **15**
-- Dedicated source-file reference pages: **358**
+- Analyzed Git commit: `465873407e4b33280d379d672568765c2ff6a40a`
+- Total tracked files considered: **381**
+- Included source/documentation/test/configuration files: **361**
+- Excluded files: **20**
+- Dedicated source-file reference pages: **361**
 - Source reference start page: **37**
 - Source index pages: **8**
-- Total PDF pages: **414**
+- Total PDF pages: **417**
 - Documented source-file pages equal included files: **True**
 - Missing file pages: **0**
 - Duplicate file pages: **0**
@@ -36,6 +36,11 @@ Included files are all Git-tracked implementation modules, tests, deterministic 
 - `client/src/assets/logo.png` - Decorative asset, lockfile, runtime-version pin, or routine ignore configuration; it has no dedicated architecture behavior.
 - `client/src/assets/react.svg` - Decorative asset, lockfile, runtime-version pin, or routine ignore configuration; it has no dedicated architecture behavior.
 - `client/src/assets/vite.svg` - Decorative asset, lockfile, runtime-version pin, or routine ignore configuration; it has no dedicated architecture behavior.
+- `docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md` - Generated report output is excluded from the snapshot to avoid self-documenting recursive artifacts.
+- `docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf` - Generated report output is excluded from the snapshot to avoid self-documenting recursive artifacts.
+- `docs/reports/document-generation-report.md` - Generated report output is excluded from the snapshot to avoid self-documenting recursive artifacts.
+- `docs/reports/file-coverage-report.md` - Generated report output is excluded from the snapshot to avoid self-documenting recursive artifacts.
+- `docs/reports/source-file-inventory.json` - Generated report output is excluded from the snapshot to avoid self-documenting recursive artifacts.
 
 ## Validation result
 

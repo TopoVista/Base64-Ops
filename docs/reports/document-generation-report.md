@@ -1,16 +1,19 @@
 # Document generation report
 
-- Generated at: 2026-10-13T20:31:36.570543+00:00
-- Repository commit: `1a385e9b94835469140a54a509f635e349d5bc3b`
+- Generated at: 2026-10-13T23:46:24.390190+00:00
+- Repository commit: `465873407e4b33280d379d672568765c2ff6a40a`
 - Repository state at generation: `M backend/.gitignore
-?? docs/reports/`
+ M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md
+ M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf
+ M docs/reports/file-coverage-report.md
+ M docs/reports/source-file-inventory.json`
 - Generator: `scripts/generate_engineering_book.py`
 - PDF renderer: ReportLab core fonts with Pypdf structural validation.
 - Source discovery: `git ls-files`; ignored `.env` files were never read.
 - PDF readability check: True
-- PDF page count: 414
+- PDF page count: 417
 - Outline entries observed by Pypdf: 37
-- Rendered sample pages: C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-1.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-3.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-6.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-12.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-37.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-57.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-157.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-394.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-400.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-414.png
+- Rendered sample pages: C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-1.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-3.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-6.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-12.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-37.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-57.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-157.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-397.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-403.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-417.png
 - Manual visual inspection recorded: True
 
 ## Validation limitations

@@ -1,6 +1,27 @@
 # Implementation Status
 
-> Engineering-book update (2026-10-14): `DONE`. The reproducible `scripts/generate_engineering_book.py` generator produced `docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf` and its Markdown source, source inventory, coverage report, and generation report. The edition is bound to commit `1a385e9b94835469140a54a509f635e349d5bc3b`, considers 373 tracked files, includes 358 relevant source/documentation/test/configuration files, and gives each included file exactly one dedicated reference page. Structural validation found zero missing or duplicate file pages; representative rendered pages were manually inspected. Backend tests (349 passed), deterministic evaluations (28/28), Ruff, LangGraph initialization, frontend TypeScript, and frontend production build passed locally. Live GitHub, Atlas, Clerk, OpenAI, Render, Vercel, Redis, and GitHub App verification remains `BLOCKED` because no authorized live-provider exercise was performed.
+> CI recovery and candidate-verification update (2026-10-14): `PARTIAL`.
+> The repository now has an explicit GitHub App candidate-verification boundary
+> for immutable exact delivery plans: an owner binds one reviewed workflow to
+> one verified installation/repository, requests a separate exact approval,
+> and only then can Base64 create a non-forced candidate ref and dispatch that
+> workflow. The observer records targeted completion separately from full CI or
+> delivery. Plans that alter `.github/workflows/` are rejected. Repository
+> automation also offers an explicit GitHub Check preference; if enabled
+> globally and granted `Checks: write`, it publishes only a redacted `neutral`
+> investigation Check after durable evidence collection. Missing App/Check
+> permissions become visible limitations and do not retry analysis. CI
+> causality now compares exact prior-success workflow revisions, conventional
+> dependency manifests/locks, and declared runner targets as bounded
+> correlation—not causal proof. The Code workspace preserves simultaneous
+> pending delivery and candidate-verification approvals instead of hiding one.
+> Local verification passed: **356 backend tests**, **28/28 deterministic
+> evals**, Ruff, LangGraph initialization, frontend TypeScript, and Vite
+> production build. Live webhook, GitHub App, Check, worker, and provider
+> verification is `BLOCKED` until an authorized non-production environment is
+> configured.
+
+> Engineering-book update (2026-10-14): `DONE`. The reproducible `scripts/generate_engineering_book.py` generator produced `docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf` and its Markdown source, source inventory, coverage report, and generation report. The edition is bound to commit `465873407e4b33280d379d672568765c2ff6a40a`, includes 361 relevant tracked source/documentation/test/configuration files, and gives each included file exactly one dedicated reference page. Structural validation found zero missing or duplicate file pages; representative rendered pages were manually inspected. Live GitHub, Atlas, Clerk, OpenAI, Render, Vercel, Redis, and GitHub App verification remains `BLOCKED` because no authorized live-provider exercise was performed.
 
 > Production-readiness hardening update (2026-10-12): `PARTIAL`. The full Render Blueprint is now a fixed four-role profile—API, maintenance, indexer, and read-only CI observer—with **every** role on the requested `0.5c-512mb` tier (2 vCPUs total), rather than an understated profile whose API/workers could provision 2–8 GB plans. The compact MVP remains a separate one-service 512 MB profile. Active repository-code validation fails closed whenever the requested Docker isolation is unavailable and is never redirected to the Render/API host; the capability response reports that state as unavailable. The API declares PyJWT, production validates an operator-supplied Fernet key instead of trusting generic host secret generation, and direct Docker sandbox callers now default to the same Python 3.13.5 image as CI and production. `PRODUCTION_READINESS.md` and `PRODUCTION_READINESS_AUDIT.md` record the verified boundaries and manual release gates. Python 3.13 backend tests (**314 passed**), deterministic evals (28/28), Ruff, Docker Compose static validation, and a clean Node 22 lockfile install with frontend auth-route verification, TypeScript production build, bundle budget, and high-severity audit gate passed. Browser Use attempted the local demo but its isolated runtime could not reach this machine's loopback server; direct local `/demo` and `/ready` checks returned 200. Render/Vercel/Atlas/Redis/Clerk/GitHub/OpenAI live verification remains `BLOCKED`.
 
@@ -70,6 +91,8 @@ Status reflects executable code in this repository as of 2026-10-14. `BLOCKED` m
 | 35. Operational Memory API | DONE | `GET /api/memory/{repository_id}`, `GET /api/memory/{repository_id}/staleness`, `POST /api/memory/{repository_id}/check-staleness`, `DELETE /api/memory/entry/{entry_id}` — all user-scoped. |
 
 | 36. Temporal Engineering Graph | PARTIAL | Immutable tenant/session/revision snapshots are constructed during reindexing with Python AST, bounded local JS/TS import, safe Actions YAML, and manifest extraction. Focused typed graph APIs preserve provenance, bounds, workflow-command non-execution, and exact-plan/base-SHA change-impact traversal. Incremental updates, broader extractors, graph-aware retrieval, commit-to-commit graph diffs, and the Intelligence canvas remain not started. |
+| 37. Automated incident intake and causality | PARTIAL | Signed workflow-run intake, durable ledger/jobs, grouping, bounded redacted evidence, history, prior-workflow, dependency/lockfile, and declared-runner comparisons are implemented. Actual runner-environment metadata and authorized live webhook/worker verification remain blocked. |
+| 38. Candidate verification and GitHub Check reporting | PARTIAL | Candidate App workflow binding, exact approval, non-forced candidate ref, bounded targeted observer, neutral Check reporting preference, UI state, and mocked security tests are implemented. Live App installation, Actions dispatch, Checks: write, and an authorized repository remain blocked. |
 
 ## External requirements
 

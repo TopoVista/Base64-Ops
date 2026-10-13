@@ -4,8 +4,8 @@
 *An Evidence First AI DevOps Engineering System From Product Problem to Individual Source Files*
 
 - Repository: https://github.com/TopoVista/Base64-Ops
-- Generated: 2026-10-13 20:31 UTC
-- Analyzed commit: `1a385e9b94835469140a54a509f635e349d5bc3b`
+- Generated: 2026-10-13 23:46 UTC
+- Analyzed commit: `465873407e4b33280d379d672568765c2ff6a40a`
 - Scope: Git-tracked source at the recorded commit. Generated outputs, secrets, ignored environment files, decorative assets, and lockfiles are excluded by the accompanying inventory.
 - Verification statement: architecture claims are derived from checked-in code and local deterministic tests. External providers and deployed environments are called out as unverified when no live evidence was available.
 
@@ -177,7 +177,7 @@ A signed completed workflow_run webhook is verified against an exact raw-body HM
 
 ## Source file reference
 
-The PDF source reference begins on page 37. It contains 358 dedicated file pages. The PDF index spans 8 page(s).
+The PDF source reference begins on page 37. It contains 361 dedicated file pages. The PDF index spans 8 page(s).
 
 ### File reference: `.github/workflows/ci.yml`
 
@@ -236,7 +236,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Continuous integration configuration.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Continuous integration configuration.
 
 #### Simplified pseudocode
 
@@ -277,7 +277,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md, docs/LIVE_EVALUATION.md. The containing category is Continuous integration configuration.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md, docs/LIVE_EVALUATION.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Continuous integration configuration.
 
 #### Simplified pseudocode
 
@@ -310,7 +310,7 @@ This documentation file records the repository's current guidance for Readme. It
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Readme. Its extracted size is 83 lines and 525 lexical tokens; the source digest begins 75f47836d842.
+It exists to provide a coherent documentation boundary for Readme. Its extracted size is 89 lines and 611 lexical tokens; the source digest begins 0cab31b281e6.
 
 #### Important symbols
 
@@ -350,7 +350,7 @@ This configuration is part of the project configuration layer. It supplies the r
 
 #### Key responsibilities
 
-It exists to provide a coherent configuration boundary for .Env. Its extracted size is 146 lines and 854 lexical tokens; the source digest begins 63b77f686a84.
+It exists to provide a coherent configuration boundary for .Env. Its extracted size is 161 lines and 962 lexical tokens; the source digest begins e4f672829ffd.
 
 #### Important symbols
 
@@ -1046,15 +1046,15 @@ This router exposes a tenant-aware FastAPI boundary for Incidents. It validates 
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Incidents. Its extracted size is 265 lines and 816 lexical tokens; the source digest begins 194277a35c7d.
+It exists to provide a coherent Python module boundary for Incidents. Its extracted size is 363 lines and 1161 lexical tokens; the source digest begins 8dffa2b3cb4e.
 
 #### Important symbols
 
-Important exported or declared symbols/sections identified by static inspection: _settings_response, _incident_response, _flaky_observation_response, configure_automation, automation_settings, list_incidents, list_flaky_test_observations. These names are a navigation aid, not a claim that every symbol is externally public.
+Important exported or declared symbols/sections identified by static inspection: _settings_response, _candidate_verification_settings_response, _incident_response, _flaky_observation_response, configure_automation, automation_settings, configure_candidate_verification. These names are a navigation aid, not a claim that every symbol is externally public.
 
 #### Connections
 
-Static in-repository dependencies: backend/app/api/deps.py, backend/app/db/mongo.py, backend/app/schemas/incident.py, backend/app/services/incident_export_service.py, backend/app/services/incident_service.py. Potential consumers found through bounded textual/import analysis: README.md, backend/app/main.py, backend/app/schemas/incident.py, backend/app/services/incident_service.py. The containing category is Backend API routes.
+Static in-repository dependencies: backend/app/api/deps.py, backend/app/db/mongo.py, backend/app/schemas/incident.py, backend/app/services/candidate_verification_service.py, backend/app/services/github_service.py. Potential consumers found through bounded textual/import analysis: README.md, backend/app/main.py, backend/app/schemas/incident.py, backend/app/services/incident_reporting_service.py. The containing category is Backend API routes.
 
 #### Simplified pseudocode
 
@@ -1077,7 +1077,7 @@ The implementation is reviewed in the context of tenant isolation, bounded input
 
 #### Brief summary
 
-In one sentence: backend/app/api/routes/incidents.py is a Python module that owns a focused part of backend api routes. Related files: backend/app/api/deps.py, backend/app/db/mongo.py, backend/app/schemas/incident.py, backend/app/services/incident_export_service.py, backend/app/services/incident_service.py. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: backend/app/api/routes/incidents.py is a Python module that owns a focused part of backend api routes. Related files: backend/app/api/deps.py, backend/app/db/mongo.py, backend/app/schemas/incident.py, backend/app/services/candidate_verification_service.py, backend/app/services/github_service.py. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `backend/app/api/routes/memory.py`
 
@@ -1128,7 +1128,7 @@ This router exposes a tenant-aware FastAPI boundary for Session. It validates th
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Session. Its extracted size is 263 lines and 884 lexical tokens; the source digest begins d955976036b0.
+It exists to provide a coherent Python module boundary for Session. Its extracted size is 275 lines and 925 lexical tokens; the source digest begins 87a675edf9d2.
 
 #### Important symbols
 
@@ -1169,7 +1169,7 @@ This router exposes a tenant-aware FastAPI boundary for System. It validates the
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for System. Its extracted size is 66 lines and 158 lexical tokens; the source digest begins eb4ae5f1c573.
+It exists to provide a coherent Python module boundary for System. Its extracted size is 84 lines and 248 lexical tokens; the source digest begins 9712801d989a.
 
 #### Important symbols
 
@@ -1177,7 +1177,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py, backend/app/execution/docker_runtime.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/execution/__init__.py, backend/app/intelligence/graph/models.py, backend/app/main.py. The containing category is Backend API routes.
+Static in-repository dependencies: backend/app/core/config.py, backend/app/execution/docker_runtime.py, backend/app/services/github_service.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/execution/__init__.py, backend/app/intelligence/graph/models.py, backend/app/main.py. The containing category is Backend API routes.
 
 #### Simplified pseudocode
 
@@ -1200,7 +1200,7 @@ The implementation is reviewed in the context of tenant isolation, bounded input
 
 #### Brief summary
 
-In one sentence: backend/app/api/routes/system.py is a Python module that owns a focused part of backend api routes. Related files: backend/app/core/config.py, backend/app/execution/docker_runtime.py. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: backend/app/api/routes/system.py is a Python module that owns a focused part of backend api routes. Related files: backend/app/core/config.py, backend/app/execution/docker_runtime.py, backend/app/services/github_service.py. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `backend/app/billing/__init__.py`
 
@@ -1259,7 +1259,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/billing/models.py, backend/app/billing/razorpay.py, backend/app/billing/usage_service.py, backend/app/core/config.py, backend/app/db/mongo.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/billing.py, backend/app/main.py, backend/tests/test_billing_lifecycle.py. The containing category is Backend platform.
+Static in-repository dependencies: backend/app/billing/models.py, backend/app/billing/razorpay.py, backend/app/billing/usage_service.py, backend/app/core/config.py, backend/app/db/mongo.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/billing.py, backend/app/main.py, backend/tests/test_billing_lifecycle.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Backend platform.
 
 #### Simplified pseudocode
 
@@ -1423,7 +1423,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/main.py, backend/tests/test_http_protection.py. The containing category is Backend platform.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/main.py, backend/tests/test_http_protection.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Backend platform.
 
 #### Simplified pseudocode
 
@@ -1497,7 +1497,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Config. Its extracted size is 307 lines and 1967 lexical tokens; the source digest begins a5203583f1e0.
+It exists to provide a coherent Python module boundary for Config. Its extracted size is 338 lines and 2151 lexical tokens; the source digest begins f579cba08eaf.
 
 #### Important symbols
 
@@ -1792,7 +1792,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/execution/models.py, backend/app/execution/policy.py, backend/app/services/redaction_service.py. Potential consumers found through bounded textual/import analysis: backend/app/execution/runtime.py. The containing category is Execution safety.
+Static in-repository dependencies: backend/app/execution/models.py, backend/app/execution/policy.py, backend/app/services/redaction_service.py. Potential consumers found through bounded textual/import analysis: backend/app/execution/runtime.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Execution safety.
 
 #### Simplified pseudocode
 
@@ -2030,7 +2030,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Actions. Its extracted size is 353 lines and 1475 lexical tokens; the source digest begins 6421d22b88cd.
+It exists to provide a coherent Python module boundary for Actions. Its extracted size is 360 lines and 1512 lexical tokens; the source digest begins dc3243b7ce9b.
 
 #### Important symbols
 
@@ -2120,7 +2120,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/services/github_service.py. Potential consumers found through bounded textual/import analysis: backend/app/memory/memory_service.py, backend/tests/test_memory_freshness.py. The containing category is Backend platform.
+Static in-repository dependencies: backend/app/services/github_service.py. Potential consumers found through bounded textual/import analysis: backend/app/memory/memory_service.py, backend/tests/test_memory_freshness.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Backend platform.
 
 #### Simplified pseudocode
 
@@ -2563,7 +2563,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Main. Its extracted size is 239 lines and 1078 lexical tokens; the source digest begins 583768453abc.
+It exists to provide a coherent Python module boundary for Main. Its extracted size is 241 lines and 1087 lexical tokens; the source digest begins 965d5610bfb4.
 
 #### Important symbols
 
@@ -2940,7 +2940,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/policy/registry.py. Potential consumers found through bounded textual/import analysis: backend/app/policy/__init__.py. The containing category is Backend platform.
+Static in-repository dependencies: backend/app/policy/registry.py. Potential consumers found through bounded textual/import analysis: backend/app/policy/__init__.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend platform.
 
 #### Simplified pseudocode
 
@@ -3219,15 +3219,15 @@ This Python module contributes to the backend domain contracts subsystem. It def
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Incident. Its extracted size is 106 lines and 325 lexical tokens; the source digest begins d58c3318cff2.
+It exists to provide a coherent Python module boundary for Incident. Its extracted size is 131 lines and 421 lexical tokens; the source digest begins 3430c5c78875.
 
 #### Important symbols
 
-Important exported or declared symbols/sections identified by static inspection: IncidentStatus, EvidenceStrength, IncidentDiagnosis, RepositoryAutomationSettingsRequest, RepositoryAutomationSettingsResponse, IncidentFeedbackRequest, FlakyTestObservationSummary. These names are a navigation aid, not a claim that every symbol is externally public.
+Important exported or declared symbols/sections identified by static inspection: IncidentStatus, EvidenceStrength, IncidentDiagnosis, RepositoryAutomationSettingsRequest, RepositoryAutomationSettingsResponse, CandidateVerificationSettingsRequest, CandidateVerificationSettingsResponse. These names are a navigation aid, not a claim that every symbol is externally public.
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: README.md, backend/app/agent/graph.py, backend/app/api/routes/github.py, backend/app/api/routes/incidents.py. The containing category is Backend domain contracts.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: README.md, backend/.env.example, backend/app/agent/graph.py, backend/app/api/routes/github.py. The containing category is Backend domain contracts.
 
 #### Simplified pseudocode
 
@@ -3350,7 +3350,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .github/workflows/live-evals.yml, README.md, backend/app/agent/graph.py, backend/app/agent/policy.py. The containing category is Backend domain contracts.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .github/workflows/live-evals.yml, README.md, backend/.env.example, backend/app/agent/graph.py. The containing category is Backend domain contracts.
 
 #### Simplified pseudocode
 
@@ -3473,7 +3473,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/security.py, backend/app/db/mongo.py, backend/app/schemas/auth.py, backend/app/services/serializers.py, backend/app/utils/datetime.py. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_AUDIT.md, docs/IMPLEMENTATION_GAP_ANALYSIS.md, scripts/generate_engineering_book.py. The containing category is Backend services.
+Static in-repository dependencies: backend/app/core/security.py, backend/app/db/mongo.py, backend/app/schemas/auth.py, backend/app/services/serializers.py, backend/app/utils/datetime.py. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_AUDIT.md, docs/IMPLEMENTATION_GAP_ANALYSIS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Backend services.
 
 #### Simplified pseudocode
 
@@ -3506,7 +3506,7 @@ This service coordinates the Background Job Service domain boundary. It combines
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Background Job Service. Its extracted size is 204 lines and 745 lexical tokens; the source digest begins a833973e27d8.
+It exists to provide a coherent Python module boundary for Background Job Service. Its extracted size is 248 lines and 904 lexical tokens; the source digest begins d51a781efdf1.
 
 #### Important symbols
 
@@ -3547,15 +3547,15 @@ This service coordinates the Candidate Verification Service domain boundary. It 
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Candidate Verification Service. Its extracted size is 62 lines and 259 lexical tokens; the source digest begins 5f0313f20d61.
+It exists to provide a coherent Python module boundary for Candidate Verification Service. Its extracted size is 704 lines and 2813 lexical tokens; the source digest begins db78df20ed51.
 
 #### Important symbols
 
-Important exported or declared symbols/sections identified by static inspection: initial_candidate_verification. These names are a navigation aid, not a claim that every symbol is externally public.
+Important exported or declared symbols/sections identified by static inspection: _WORKFLOW_PATH, _INSTALLATION_ID, _BRANCH, _SENSITIVE_CANDIDATE_PATH, _canonical_json, _diff_hash, candidate_branch_name. These names are a navigation aid, not a claim that every symbol is externally public.
 
 #### Connections
 
-Static in-repository dependencies: backend/app/schemas/delivery.py, backend/app/utils/datetime.py. Potential consumers found through bounded textual/import analysis: backend/app/services/delivery_service.py, backend/tests/test_candidate_verification.py, scripts/generate_engineering_book.py. The containing category is Backend services.
+Static in-repository dependencies: backend/app/db/mongo.py, backend/app/schemas/delivery.py, backend/app/services/github_service.py, backend/app/services/redaction_service.py, backend/app/utils/datetime.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/incidents.py, backend/app/main.py, backend/app/services/delivery_service.py, backend/app/services/session_service.py. The containing category is Backend services.
 
 #### Simplified pseudocode
 
@@ -3578,7 +3578,7 @@ The implementation is reviewed in the context of tenant isolation, bounded input
 
 #### Brief summary
 
-In one sentence: backend/app/services/candidate_verification_service.py is a Python module that owns a focused part of backend services. Related files: backend/app/schemas/delivery.py, backend/app/utils/datetime.py. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: backend/app/services/candidate_verification_service.py is a Python module that owns a focused part of backend services. Related files: backend/app/db/mongo.py, backend/app/schemas/delivery.py, backend/app/services/github_service.py, backend/app/services/redaction_service.py, backend/app/utils/datetime.py. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `backend/app/services/ci_applicability.py`
 
@@ -3629,11 +3629,11 @@ This service coordinates the Ci Investigation Service domain boundary. It combin
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Ci Investigation Service. Its extracted size is 676 lines and 2428 lexical tokens; the source digest begins b721700254d1.
+It exists to provide a coherent Python module boundary for Ci Investigation Service. Its extracted size is 821 lines and 2925 lexical tokens; the source digest begins ee0621f87c78.
 
 #### Important symbols
 
-Important exported or declared symbols/sections identified by static inspection: _PATH_HINT, _FAILED_CONCLUSIONS, CIInvestigationService, compare_workflow_history, compare_workflow_versions, _same_workflow, _history_excerpt. These names are a navigation aid, not a claim that every symbol is externally public.
+Important exported or declared symbols/sections identified by static inspection: _PATH_HINT, _FAILED_CONCLUSIONS, _RUNS_ON, CIInvestigationService, compare_workflow_history, compare_workflow_versions, _same_workflow. These names are a navigation aid, not a claim that every symbol is externally public.
 
 #### Connections
 
@@ -3719,7 +3719,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/git/actions.py, backend/app/services/ci_request_intent.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/services/session_service.py, backend/tests/test_ci_run_resolution.py. The containing category is Backend services.
+Static in-repository dependencies: backend/app/git/actions.py, backend/app/services/ci_request_intent.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/services/session_service.py, backend/tests/test_ci_run_resolution.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Backend services.
 
 #### Simplified pseudocode
 
@@ -3760,7 +3760,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/tests/test_context_budget.py. The containing category is Backend services.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/tests/test_context_budget.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Backend services.
 
 #### Simplified pseudocode
 
@@ -3801,7 +3801,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/git/actions.py. Potential consumers found through bounded textual/import analysis: backend/app/workers/worker.py, backend/tests/test_delivery_ci_service.py, docs/IMPLEMENTATION_GAP_ANALYSIS.md, scripts/generate_engineering_book.py. The containing category is Backend services.
+Static in-repository dependencies: backend/app/git/actions.py. Potential consumers found through bounded textual/import analysis: backend/app/workers/worker.py, backend/tests/test_delivery_ci_service.py, docs/IMPLEMENTATION_GAP_ANALYSIS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Backend services.
 
 #### Simplified pseudocode
 
@@ -3834,7 +3834,7 @@ This service coordinates the Delivery Service domain boundary. It combines typed
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Delivery Service. Its extracted size is 412 lines and 1749 lexical tokens; the source digest begins 327183680735.
+It exists to provide a coherent Python module boundary for Delivery Service. Its extracted size is 419 lines and 1770 lexical tokens; the source digest begins 2b475aab724c.
 
 #### Important symbols
 
@@ -3842,7 +3842,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/db/mongo.py, backend/app/schemas/delivery.py, backend/app/services/github_service.py, backend/app/services/redaction_service.py, backend/app/services/workspace_service.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/execution/policy.py, backend/app/services/patch_engine.py, backend/app/services/session_service.py. The containing category is Backend services.
+Static in-repository dependencies: backend/app/db/mongo.py, backend/app/schemas/delivery.py, backend/app/services/github_service.py, backend/app/services/redaction_service.py, backend/app/services/workspace_service.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/execution/policy.py, backend/app/services/candidate_verification_service.py, backend/app/services/patch_engine.py. The containing category is Backend services.
 
 #### Simplified pseudocode
 
@@ -3883,7 +3883,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/db/mongo.py, backend/app/git/actions.py, backend/app/schemas/session.py, backend/app/services/redaction_service.py, backend/app/services/session_service.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/diagnostic.py, backend/devops/agent.py, backend/tests/test_diagnostic_stream.py. The containing category is Backend services.
+Static in-repository dependencies: backend/app/db/mongo.py, backend/app/git/actions.py, backend/app/schemas/session.py, backend/app/services/redaction_service.py, backend/app/services/session_service.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/diagnostic.py, backend/devops/agent.py, backend/tests/test_diagnostic_stream.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Backend services.
 
 #### Simplified pseudocode
 
@@ -3965,7 +3965,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/db/mongo.py, backend/app/utils/datetime.py, backend/app/utils/ids.py. Potential consumers found through bounded textual/import analysis: backend/app/services/incident_service.py, backend/tests/test_flaky_test_service.py, scripts/generate_engineering_book.py. The containing category is Backend services.
+Static in-repository dependencies: backend/app/db/mongo.py, backend/app/utils/datetime.py, backend/app/utils/ids.py. Potential consumers found through bounded textual/import analysis: backend/app/services/incident_service.py, backend/tests/test_flaky_test_service.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Backend services.
 
 #### Simplified pseudocode
 
@@ -3998,15 +3998,15 @@ This service coordinates the Github Service domain boundary. It combines typed i
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Github Service. Its extracted size is 419 lines and 1694 lexical tokens; the source digest begins 213c8e7121e3.
+It exists to provide a coherent Python module boundary for Github Service. Its extracted size is 568 lines and 2337 lexical tokens; the source digest begins d29c54b850b9.
 
 #### Important symbols
 
-Important exported or declared symbols/sections identified by static inspection: _GITHUB_REPOSITORY_PART, _ACTIONS_LOG_DOWNLOAD_HOST_SUFFIX, _ACTIONS_LOG_AZURE_HOST, is_safe_actions_log_download_url, external_log_download_headers, normalize_github_repository_url, safe_frontend_redirect. These names are a navigation aid, not a claim that every symbol is externally public.
+Important exported or declared symbols/sections identified by static inspection: _GITHUB_REPOSITORY_PART, _ACTIONS_LOG_DOWNLOAD_HOST_SUFFIX, _ACTIONS_LOG_AZURE_HOST, _GITHUB_APP_ID, _GITHUB_INSTALLATION_ID, is_safe_actions_log_download_url, external_log_download_headers. These names are a navigation aid, not a claim that every symbol is externally public.
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py, backend/app/core/security.py, backend/app/db/mongo.py, backend/app/utils/datetime.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/github.py, backend/app/git/actions.py, backend/app/git/change_provider.py, backend/app/git/pr_status.py. The containing category is Backend services.
+Static in-repository dependencies: backend/app/core/config.py, backend/app/core/security.py, backend/app/db/mongo.py, backend/app/utils/datetime.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/github.py, backend/app/api/routes/incidents.py, backend/app/api/routes/system.py, backend/app/git/actions.py. The containing category is Backend services.
 
 #### Simplified pseudocode
 
@@ -4047,7 +4047,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/services/redaction_service.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/incidents.py, backend/tests/test_incident_models.py, docs/IMPLEMENTATION_GAP_ANALYSIS.md, scripts/generate_engineering_book.py. The containing category is Backend services.
+Static in-repository dependencies: backend/app/services/redaction_service.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/incidents.py, backend/tests/test_incident_models.py, docs/IMPLEMENTATION_GAP_ANALYSIS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Backend services.
 
 #### Simplified pseudocode
 
@@ -4072,6 +4072,47 @@ The implementation is reviewed in the context of tenant isolation, bounded input
 
 In one sentence: backend/app/services/incident_export_service.py is a Python module that owns a focused part of backend services. Related files: backend/app/services/redaction_service.py. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
+### File reference: `backend/app/services/incident_reporting_service.py`
+
+#### Purpose
+
+This service coordinates the Incident Reporting Service domain boundary. It combines typed inputs, persistence or provider access, and safety checks while leaving API authentication and UI presentation to adjacent layers.
+
+#### Key responsibilities
+
+It exists to provide a coherent Python module boundary for Incident Reporting Service. Its extracted size is 133 lines and 586 lexical tokens; the source digest begins c78865592e9d.
+
+#### Important symbols
+
+Important exported or declared symbols/sections identified by static inspection: IncidentReportingService. These names are a navigation aid, not a claim that every symbol is externally public.
+
+#### Connections
+
+Static in-repository dependencies: backend/app/core/config.py, backend/app/services/github_service.py, backend/app/services/redaction_service.py, backend/app/utils/datetime.py. Potential consumers found through bounded textual/import analysis: backend/app/services/incident_service.py, backend/tests/test_incident_reporting.py. The containing category is Backend services.
+
+#### Simplified pseudocode
+
+```text
+READ backend/app/services/incident_reporting_service.py from its owning layer
+ACCEPT typed inputs or declared configuration
+APPLY the file's focused responsibility
+USE only its declared collaborators and boundaries
+RETURN typed data, rendered UI, a test assertion, or an operational contract
+SURFACE limitations rather than granting new authority
+```
+
+#### Workflow role
+
+It participates as a focused building block in the larger investigation, delivery, deployment, or verification flow described by its containing subsystem.
+
+#### Engineering details
+
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+
+#### Brief summary
+
+In one sentence: backend/app/services/incident_reporting_service.py is a Python module that owns a focused part of backend services. Related files: backend/app/core/config.py, backend/app/services/github_service.py, backend/app/services/redaction_service.py, backend/app/utils/datetime.py. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+
 ### File reference: `backend/app/services/incident_service.py`
 
 #### Purpose
@@ -4080,7 +4121,7 @@ This service coordinates the Incident Service domain boundary. It combines typed
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Incident Service. Its extracted size is 896 lines and 3137 lexical tokens; the source digest begins b51859c7d0e2.
+It exists to provide a coherent Python module boundary for Incident Service. Its extracted size is 952 lines and 3324 lexical tokens; the source digest begins 2b648b56debc.
 
 #### Important symbols
 
@@ -4170,7 +4211,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py, backend/app/db/mongo.py, backend/app/services/redaction_service.py, backend/app/utils/datetime.py, backend/app/utils/ids.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/assistant.py, backend/tests/test_product_assistant.py. The containing category is Backend services.
+Static in-repository dependencies: backend/app/core/config.py, backend/app/db/mongo.py, backend/app/services/redaction_service.py, backend/app/utils/datetime.py, backend/app/utils/ids.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/assistant.py, backend/tests/test_product_assistant.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Backend services.
 
 #### Simplified pseudocode
 
@@ -4326,7 +4367,7 @@ This service coordinates the Session Service domain boundary. It combines typed 
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Session Service. Its extracted size is 2255 lines and 9314 lexical tokens; the source digest begins 1de9d810a8a6.
+It exists to provide a coherent Python module boundary for Session Service. Its extracted size is 2385 lines and 9901 lexical tokens; the source digest begins 2b0cd56eccfc.
 
 #### Important symbols
 
@@ -4416,7 +4457,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/services/rag_service.py, backend/tests/test_rag_chunking.py, docs/IMPLEMENTATION_AUDIT.md. The containing category is Backend platform.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/services/rag_service.py, backend/tests/test_rag_chunking.py, docs/IMPLEMENTATION_AUDIT.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Backend platform.
 
 #### Simplified pseudocode
 
@@ -4613,7 +4654,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Worker. Its extracted size is 262 lines and 1026 lexical tokens; the source digest begins 454804451e0a.
+It exists to provide a coherent Python module boundary for Worker. Its extracted size is 290 lines and 1118 lexical tokens; the source digest begins f574d3bb1654.
 
 #### Important symbols
 
@@ -4785,7 +4826,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -4825,7 +4866,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -4865,7 +4906,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -4987,7 +5028,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -5028,7 +5069,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -5069,7 +5110,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/DEMO_SCRIPT.md. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/DEMO_SCRIPT.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -5110,7 +5151,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -5151,7 +5192,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -5192,7 +5233,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -5233,7 +5274,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -5274,7 +5315,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -5315,7 +5356,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -5356,7 +5397,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/DEMO_SCRIPT.md, docs/FEATURE_PARITY_MATRIX.md. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/DEMO_SCRIPT.md, docs/FEATURE_PARITY_MATRIX.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -5397,7 +5438,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -5438,7 +5479,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -5479,7 +5520,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -5520,7 +5561,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -5561,7 +5602,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -5602,7 +5643,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/EVALUATION.md. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/EVALUATION.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -5684,7 +5725,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -5725,7 +5766,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -5766,7 +5807,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -5807,7 +5848,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -5848,7 +5889,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/evals/runner.py. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/evals/runner.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -5889,7 +5930,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/tests/test_evals_and_tracing.py, docs/LIVE_EVALUATION.md. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/tests/test_evals_and_tracing.py, docs/LIVE_EVALUATION.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -5930,7 +5971,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -5971,7 +6012,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -6012,7 +6053,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -6053,7 +6094,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -6176,7 +6217,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/Dockerfile. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -6299,7 +6340,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/Dockerfile. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -6340,7 +6381,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/Dockerfile. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -6586,7 +6627,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/Dockerfile. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -6668,7 +6709,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/Dockerfile. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -6709,7 +6750,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/Dockerfile. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -6750,7 +6791,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/Dockerfile. The containing category is Deterministic evaluations.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -6914,7 +6955,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/schemas/investigation.py. Potential consumers found through bounded textual/import analysis: backend/evals/runner.py, backend/tests/test_evals_and_tracing.py. The containing category is Deterministic evaluations.
+Static in-repository dependencies: backend/app/schemas/investigation.py. Potential consumers found through bounded textual/import analysis: backend/evals/runner.py, backend/tests/test_evals_and_tracing.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Deterministic evaluations.
 
 #### Simplified pseudocode
 
@@ -7119,7 +7160,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/agent/policy.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/agent/policy.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -7160,7 +7201,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/agent_run_guard.py, backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/core/agent_run_guard.py, backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -7201,7 +7242,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/agent_run_guard.py, backend/app/schemas/assistant.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/core/agent_run_guard.py, backend/app/schemas/assistant.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -7242,7 +7283,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -7283,7 +7324,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py, backend/app/services/background_job_service.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/core/config.py, backend/app/services/background_job_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -7324,7 +7365,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/billing/billing_service.py, backend/app/billing/models.py, backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/billing/billing_service.py, backend/app/billing/models.py, backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -7353,19 +7394,19 @@ In one sentence: backend/tests/test_billing_lifecycle.py is a test that owns a f
 
 #### Purpose
 
-This test module protects the behavior of the backend tests area by arranging controlled inputs, exercising the public or service boundary, and asserting its safety or correctness contract. Its visible symbols include test_candidate_verification_is_immutable_and_never_claims_remote_execution, test_static_validation_is_not_presented_as_remote_verification, test_public_candidate_verification_is_allowlisted.
+This test module protects the behavior of the backend tests area by arranging controlled inputs, exercising the public or service boundary, and asserting its safety or correctness contract. Its visible symbols include _plan, test_candidate_verification_is_immutable_and_never_claims_remote_execution, test_static_validation_is_not_presented_as_remote_verification.
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Candidate Verification. Its extracted size is 87 lines and 249 lexical tokens; the source digest begins b3b51de2b6c5.
+It exists to provide a coherent test boundary for Test Candidate Verification. Its extracted size is 270 lines and 875 lexical tokens; the source digest begins 0cf87af1863a.
 
 #### Important symbols
 
-Important exported or declared symbols/sections identified by static inspection: test_candidate_verification_is_immutable_and_never_claims_remote_execution, test_static_validation_is_not_presented_as_remote_verification, test_public_candidate_verification_is_allowlisted. These names are a navigation aid, not a claim that every symbol is externally public.
+Important exported or declared symbols/sections identified by static inspection: _plan, test_candidate_verification_is_immutable_and_never_claims_remote_execution, test_static_validation_is_not_presented_as_remote_verification, test_candidate_branch_and_verification_approval_are_exact_plan_bound, test_candidate_verification_refuses_workflow_modification, test_dispatch_creates_exact_candidate_ref_then_dispatches_reviewed_workflow, test_observer_records_targeted_success_without_claiming_full_ci. These names are a navigation aid, not a claim that every symbol is externally public.
 
 #### Connections
 
-Static in-repository dependencies: backend/app/schemas/delivery.py, backend/app/services/candidate_verification_service.py, backend/app/services/delivery_service.py, backend/app/services/session_service.py. Potential consumers found through bounded textual/import analysis: backend/tests/test_system_capabilities.py. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/schemas/delivery.py, backend/app/services/candidate_verification_service.py, backend/app/services/delivery_service.py, backend/app/services/session_service.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/incidents.py, backend/tests/test_system_capabilities.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -7406,7 +7447,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/intelligence/graph/builder.py, backend/app/intelligence/impact/models.py, backend/app/intelligence/impact/service.py, backend/app/intelligence/impact/store.py, backend/app/schemas/delivery.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/intelligence/graph/builder.py, backend/app/intelligence/impact/models.py, backend/app/intelligence/impact/service.py, backend/app/intelligence/impact/store.py, backend/app/schemas/delivery.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -7447,7 +7488,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/services/ci_applicability.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/services/ci_applicability.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -7480,7 +7521,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Ci Investigation Service. Its extracted size is 385 lines and 1160 lexical tokens; the source digest begins bb9c0f17b77a.
+It exists to provide a coherent test boundary for Test Ci Investigation Service. Its extracted size is 414 lines and 1272 lexical tokens; the source digest begins 2fae4b866721.
 
 #### Important symbols
 
@@ -7488,7 +7529,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/agent/graph.py, backend/app/git/actions.py, backend/app/git/change_provider.py, backend/app/services/ci_investigation_service.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/agent/graph.py, backend/app/git/actions.py, backend/app/git/change_provider.py, backend/app/services/ci_investigation_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -7529,7 +7570,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/services/ci_request_intent.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/services/ci_request_intent.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -7570,7 +7611,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/agent/graph.py, backend/app/git/actions.py, backend/app/services/ci_request_intent.py, backend/app/services/ci_run_resolution_service.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/agent/graph.py, backend/app/git/actions.py, backend/app/services/ci_request_intent.py, backend/app/services/ci_run_resolution_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -7611,7 +7652,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/services/context_budget.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/services/context_budget.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -7652,7 +7693,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/git/actions.py, backend/app/services/delivery_ci_service.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/git/actions.py, backend/app/services/delivery_ci_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -7693,7 +7734,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/schemas/delivery.py, backend/app/schemas/patch.py, backend/app/schemas/session.py, backend/app/services/delivery_service.py, backend/app/services/patch_engine.py. Potential consumers found through bounded textual/import analysis: docs/PRODUCTION_READINESS_AUDIT.md. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/schemas/delivery.py, backend/app/schemas/patch.py, backend/app/schemas/session.py, backend/app/services/delivery_service.py, backend/app/services/patch_engine.py. Potential consumers found through bounded textual/import analysis: docs/PRODUCTION_READINESS_AUDIT.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -7734,7 +7775,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -7775,7 +7816,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/schemas/session.py, backend/app/services/diagnostic_stream_service.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/schemas/session.py, backend/app/services/diagnostic_stream_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -7816,7 +7857,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/intelligence/graph/builder.py, backend/app/intelligence/graph/models.py, backend/app/intelligence/graph/service.py, backend/app/intelligence/graph/store.py, backend/app/schemas/intelligence.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/intelligence/graph/builder.py, backend/app/intelligence/graph/models.py, backend/app/intelligence/graph/service.py, backend/app/intelligence/graph/store.py, backend/app/schemas/intelligence.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -7857,7 +7898,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/failures.py, backend/app/observability/recorder.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/core/failures.py, backend/app/observability/recorder.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -7898,7 +7939,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/execution/docker_runtime.py, backend/app/execution/policy.py, backend/app/execution/runtime.py, backend/app/services/delivery_service.py. Potential consumers found through bounded textual/import analysis: docs/PRODUCTION_READINESS_AUDIT.md. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/execution/docker_runtime.py, backend/app/execution/policy.py, backend/app/execution/runtime.py, backend/app/services/delivery_service.py. Potential consumers found through bounded textual/import analysis: docs/PRODUCTION_READINESS_AUDIT.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -7939,7 +7980,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/services/flaky_test_service.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/services/flaky_test_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -7980,7 +8021,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -8021,7 +8062,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/git/actions.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/git/actions.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -8062,7 +8103,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -8103,7 +8144,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py, backend/app/services/incident_service.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/core/config.py, backend/app/services/incident_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -8144,7 +8185,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/agent/graph.py, backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/agent/graph.py, backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -8185,7 +8226,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/api/middleware.py, backend/app/core/access_logging.py, backend/app/core/config.py, backend/app/core/rate_limit.py, backend/app/schemas/session.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/api/middleware.py, backend/app/core/access_logging.py, backend/app/core/config.py, backend/app/core/rate_limit.py, backend/app/schemas/session.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -8226,7 +8267,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/api/routes/incidents.py, backend/app/git/actions.py, backend/app/schemas/incident.py, backend/app/services/incident_export_service.py, backend/app/services/incident_service.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/api/routes/incidents.py, backend/app/git/actions.py, backend/app/schemas/incident.py, backend/app/services/incident_export_service.py, backend/app/services/incident_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -8251,6 +8292,47 @@ The file is a deterministic regression guard. Its result is evidence about check
 
 In one sentence: backend/tests/test_incident_models.py is a test that owns a focused part of backend tests. Related files: backend/app/api/routes/incidents.py, backend/app/git/actions.py, backend/app/schemas/incident.py, backend/app/services/incident_export_service.py, backend/app/services/incident_service.py. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
+### File reference: `backend/tests/test_incident_reporting.py`
+
+#### Purpose
+
+This test module protects the behavior of the backend tests area by arranging controlled inputs, exercising the public or service boundary, and asserting its safety or correctness contract. Its visible symbols include _incident, test_native_incident_report_is_a_neutral_redacted_check, test_native_incident_report_requires_existing_verified_app_binding.
+
+#### Key responsibilities
+
+It exists to provide a coherent test boundary for Test Incident Reporting. Its extracted size is 71 lines and 247 lexical tokens; the source digest begins 808f95f8ddc5.
+
+#### Important symbols
+
+Important exported or declared symbols/sections identified by static inspection: _incident, test_native_incident_report_is_a_neutral_redacted_check, test_native_incident_report_requires_existing_verified_app_binding. These names are a navigation aid, not a claim that every symbol is externally public.
+
+#### Connections
+
+Static in-repository dependencies: backend/app/services/incident_reporting_service.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+
+#### Simplified pseudocode
+
+```text
+READ backend/tests/test_incident_reporting.py from its owning layer
+ACCEPT typed inputs or declared configuration
+APPLY the file's focused responsibility
+USE only its declared collaborators and boundaries
+RETURN typed data, rendered UI, a test assertion, or an operational contract
+SURFACE limitations rather than granting new authority
+```
+
+#### Workflow role
+
+It participates when the verification suite exercises this subsystem. The file protects a behavior contract rather than serving an end-user request directly.
+
+#### Engineering details
+
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+
+#### Brief summary
+
+In one sentence: backend/tests/test_incident_reporting.py is a test that owns a focused part of backend tests. Related files: backend/app/services/incident_reporting_service.py. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+
 ### File reference: `backend/tests/test_live_eval_truthfulness.py`
 
 #### Purpose
@@ -8267,7 +8349,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -8308,7 +8390,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -8349,7 +8431,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/db/mongo.py, backend/app/services/session_service.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/db/mongo.py, backend/app/services/session_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -8390,7 +8472,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/git/pr_status.py, backend/app/memory/freshness.py, backend/app/memory/memory_service.py, backend/app/memory/models.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/git/pr_status.py, backend/app/memory/freshness.py, backend/app/memory/memory_service.py, backend/app/memory/models.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -8431,7 +8513,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -8472,7 +8554,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/agent/graph.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/agent/graph.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -8513,7 +8595,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -8554,7 +8636,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -8595,7 +8677,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/memory/memory_service.py, backend/app/memory/models.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/memory/memory_service.py, backend/app/memory/models.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -8636,7 +8718,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/memory/memory_service.py, backend/app/memory/models.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/memory/memory_service.py, backend/app/memory/models.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -8677,7 +8759,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/schemas/patch.py, backend/app/services/delivery_service.py, backend/app/services/patch_engine.py. Potential consumers found through bounded textual/import analysis: backend/tests/test_delivery_policy.py. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/schemas/patch.py, backend/app/services/delivery_service.py, backend/app/services/patch_engine.py. Potential consumers found through bounded textual/import analysis: backend/tests/test_delivery_policy.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -8718,7 +8800,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py, backend/app/schemas/assistant.py, backend/app/services/product_assistant_service.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/core/config.py, backend/app/schemas/assistant.py, backend/app/services/product_assistant_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -8759,7 +8841,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/services/rag_service.py, backend/app/services/workspace_service.py, backend/app/utils/chunking.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/services/rag_service.py, backend/app/services/workspace_service.py, backend/app/utils/chunking.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -8800,7 +8882,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/billing/models.py, backend/app/billing/razorpay.py, backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/billing/models.py, backend/app/billing/razorpay.py, backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -8833,7 +8915,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Redaction And Investigation. Its extracted size is 338 lines and 1047 lexical tokens; the source digest begins 7242fe149338.
+It exists to provide a coherent test boundary for Test Redaction And Investigation. Its extracted size is 342 lines and 1071 lexical tokens; the source digest begins fb4e3be71106.
 
 #### Important symbols
 
@@ -8841,7 +8923,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/agent/graph.py, backend/app/schemas/investigation.py, backend/app/services/redaction_service.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/agent/graph.py, backend/app/schemas/investigation.py, backend/app/services/redaction_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -8882,7 +8964,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/tests/test_deployment_blueprints.py. The containing category is Backend tests.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/tests/test_deployment_blueprints.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -8923,7 +9005,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/api/deps.py, backend/app/schemas/replay.py, backend/app/services/serializers.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/api/deps.py, backend/app/schemas/replay.py, backend/app/services/serializers.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -8964,7 +9046,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/PRODUCTION_READINESS_AUDIT.md. The containing category is Backend tests.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/PRODUCTION_READINESS_AUDIT.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -9005,7 +9087,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/schemas/session.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/schemas/session.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -9046,7 +9128,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -9079,7 +9161,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test System Capabilities. Its extracted size is 53 lines and 186 lexical tokens; the source digest begins e867d6fa85a2.
+It exists to provide a coherent test boundary for Test System Capabilities. Its extracted size is 58 lines and 205 lexical tokens; the source digest begins e5edcda212cf.
 
 #### Important symbols
 
@@ -9087,7 +9169,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -9128,7 +9210,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/billing/models.py, backend/app/billing/usage_service.py, backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/billing/models.py, backend/app/billing/usage_service.py, backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -9169,7 +9251,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -9373,7 +9455,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/README.md. The containing category is Repository reference.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/README.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Repository reference.
 
 #### Simplified pseudocode
 
@@ -9455,7 +9537,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/Dockerfile. The containing category is Repository reference.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/Dockerfile, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Repository reference.
 
 #### Simplified pseudocode
 
@@ -9537,7 +9619,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/package.json. The containing category is Repository reference.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/package.json, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Repository reference.
 
 #### Simplified pseudocode
 
@@ -9578,7 +9660,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/package.json. The containing category is Repository reference.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/package.json, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Repository reference.
 
 #### Simplified pseudocode
 
@@ -9619,7 +9701,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/app/agent/graph.py, backend/app/agent/tools.py. The containing category is Frontend application.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Frontend application.
 
 #### Simplified pseudocode
 
@@ -9660,7 +9742,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/ui/badge.tsx, client/src/components/ui/collapsible.tsx, client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/chat/tool-parts.tsx, docs/OBSERVABILITY.md, docs/SYSTEM_DESIGN.md, scripts/generate_engineering_book.py. The containing category is Frontend components.
+Static in-repository dependencies: client/src/components/ui/badge.tsx, client/src/components/ui/collapsible.tsx, client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/chat/tool-parts.tsx, docs/OBSERVABILITY.md, docs/SYSTEM_DESIGN.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -9701,7 +9783,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/ui/avatar.tsx, client/src/components/ui/button-group.tsx, client/src/components/ui/collapsible.tsx, client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: backend/.env.example, backend/app/agent/graph.py, backend/app/agent/policy.py, backend/app/agent/state.py. The containing category is Frontend components.
+Static in-repository dependencies: client/src/components/ui/avatar.tsx, client/src/components/ui/button.tsx, client/src/components/ui/collapsible.tsx, client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: backend/.env.example, backend/app/agent/graph.py, backend/app/agent/policy.py, backend/app/agent/state.py. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -9724,7 +9806,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/components/ai-elements/commit.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/components/ui/avatar.tsx, client/src/components/ui/button-group.tsx, client/src/components/ui/collapsible.tsx, client/src/lib/utils.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/components/ai-elements/commit.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/components/ui/avatar.tsx, client/src/components/ui/button.tsx, client/src/components/ui/collapsible.tsx, client/src/lib/utils.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/components/ai-elements/conversation.tsx`
 
@@ -9742,7 +9824,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/ui/button-group.tsx, client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: backend/app/agent/state.py, backend/app/api/routes/assistant.py, backend/app/schemas/assistant.py, backend/app/services/product_assistant_service.py. The containing category is Frontend components.
+Static in-repository dependencies: client/src/components/ui/button.tsx, client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: backend/app/agent/state.py, backend/app/api/routes/assistant.py, backend/app/schemas/assistant.py, backend/app/services/product_assistant_service.py. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -9765,7 +9847,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/components/ai-elements/conversation.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/components/ui/button-group.tsx, client/src/lib/utils.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/components/ai-elements/conversation.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/components/ui/button.tsx, client/src/lib/utils.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/components/ai-elements/message.tsx`
 
@@ -9783,7 +9865,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/ui/button-group.tsx, client/src/components/ui/tooltip.tsx, client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, backend/app/agent/graph.py, backend/app/agent/state.py, backend/app/agent/tools.py. The containing category is Frontend components.
+Static in-repository dependencies: client/src/components/ui/button.tsx, client/src/components/ui/button-group.tsx, client/src/components/ui/tooltip.tsx, client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, backend/app/agent/graph.py, backend/app/agent/state.py, backend/app/agent/tools.py. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -9806,7 +9888,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/components/ai-elements/message.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/components/ui/button-group.tsx, client/src/components/ui/tooltip.tsx, client/src/lib/utils.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/components/ai-elements/message.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/components/ui/button.tsx, client/src/components/ui/button-group.tsx, client/src/components/ui/tooltip.tsx, client/src/lib/utils.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/components/ai-elements/prompt-input.tsx`
 
@@ -9824,7 +9906,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/ui/command.tsx, client/src/components/ui/dropdown-menu.tsx, client/src/components/ui/hover-card.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/select.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/chat/chat-input.tsx. The containing category is Frontend components.
+Static in-repository dependencies: client/src/components/ui/command.tsx, client/src/components/ui/dropdown-menu.tsx, client/src/components/ui/hover-card.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/select.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/chat/chat-input.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -9906,7 +9988,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/reasoning.tsx. The containing category is Frontend components.
+Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/reasoning.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -9947,7 +10029,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/types/agent.type.ts, client/src/lib/api.ts, client/src/assets/github.svg, client/src/components/clerk-token-provider.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/chat/index.tsx. The containing category is Frontend components.
+Static in-repository dependencies: client/src/types/agent.type.ts, client/src/lib/api.ts, client/src/assets/github.svg, client/src/components/clerk-token-provider.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/chat/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -10029,7 +10111,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/diff-viewer.tsx, client/src/components/ai-elements/commit.tsx, client/src/components/ai-elements/chain-of-thought.tsx, client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Frontend components.
+Static in-repository dependencies: client/src/components/diff-viewer.tsx, client/src/components/ai-elements/commit.tsx, client/src/components/ai-elements/chain-of-thought.tsx, client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -10111,7 +10193,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/diff-viewer.tsx, client/src/components/ui/button-group.tsx, client/src/components/ui/textarea.tsx, client/src/lib/api.ts. Potential consumers found through bounded textual/import analysis: client/src/devops/ui/diagnostic-dashboard.tsx. The containing category is Frontend components.
+Static in-repository dependencies: client/src/components/diff-viewer.tsx, client/src/components/ui/button.tsx, client/src/components/ui/textarea.tsx, client/src/lib/api.ts. Potential consumers found through bounded textual/import analysis: client/src/devops/ui/diagnostic-dashboard.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -10134,7 +10216,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/components/diagnostic-dashboard.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/components/diff-viewer.tsx, client/src/components/ui/button-group.tsx, client/src/components/ui/textarea.tsx, client/src/lib/api.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/components/diagnostic-dashboard.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/components/diff-viewer.tsx, client/src/components/ui/button.tsx, client/src/components/ui/textarea.tsx, client/src/lib/api.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/components/diff-viewer.tsx`
 
@@ -10185,7 +10267,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Ide Workspace. Its extracted size is 1465 lines and 10074 lexical tokens; the source digest begins 7d22d7adb200.
+It exists to provide a coherent TypeScript module boundary for Ide Workspace. Its extracted size is 1521 lines and 10417 lexical tokens; the source digest begins ddeea2c14244.
 
 #### Important symbols
 
@@ -10193,7 +10275,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/diff-viewer.tsx, client/src/components/vscode-editor.tsx, client/src/lib/api.ts, client/src/lib/utils.ts, client/src/components/theme-provider.tsx. Potential consumers found through bounded textual/import analysis: client/src/index.css, client/src/pages/session/index.tsx, docs/IMPLEMENTATION_GAP_ANALYSIS.md, scripts/generate_engineering_book.py. The containing category is Frontend components.
+Static in-repository dependencies: client/src/components/diff-viewer.tsx, client/src/components/vscode-editor.tsx, client/src/lib/api.ts, client/src/lib/utils.ts, client/src/components/theme-provider.tsx. Potential consumers found through bounded textual/import analysis: client/src/index.css, client/src/pages/session/index.tsx, docs/IMPLEMENTATION_GAP_ANALYSIS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -10234,7 +10316,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/pages/dev/DevRunInspector.tsx, docs/IMPLEMENTATION_AUDIT.md. The containing category is Frontend components.
+Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/pages/dev/DevRunInspector.tsx, docs/IMPLEMENTATION_AUDIT.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -10316,7 +10398,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/ui/button-group.tsx, client/src/components/ui/dropdown-menu.tsx, client/src/components/theme-provider.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/sidebar/index.tsx, client/src/pages/guide/index.tsx. The containing category is Frontend components.
+Static in-repository dependencies: client/src/components/ui/button.tsx, client/src/components/ui/dropdown-menu.tsx, client/src/components/theme-provider.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/sidebar/index.tsx, client/src/pages/guide/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -10339,7 +10421,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/components/mode-toggle.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/components/ui/button-group.tsx, client/src/components/ui/dropdown-menu.tsx, client/src/components/theme-provider.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/components/mode-toggle.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/components/ui/button.tsx, client/src/components/ui/dropdown-menu.tsx, client/src/components/theme-provider.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/components/product-guide.tsx`
 
@@ -10357,7 +10439,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/api.ts, client/src/components/ui/button-group.tsx, client/src/components/ui/scroll-area.tsx, client/src/components/ui/textarea.tsx. Potential consumers found through bounded textual/import analysis: client/src/layouts/app-layout.tsx, docs/IMPLEMENTATION_AUDIT.md, docs/IMPLEMENTATION_STATUS.md, docs/SAAS_SECURITY_AND_SCALE.md. The containing category is Frontend components.
+Static in-repository dependencies: client/src/lib/api.ts, client/src/components/ui/button.tsx, client/src/components/ui/scroll-area.tsx, client/src/components/ui/textarea.tsx. Potential consumers found through bounded textual/import analysis: client/src/layouts/app-layout.tsx, docs/IMPLEMENTATION_AUDIT.md, docs/IMPLEMENTATION_STATUS.md, docs/SAAS_SECURITY_AND_SCALE.md. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -10380,7 +10462,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/components/product-guide.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/lib/api.ts, client/src/components/ui/button-group.tsx, client/src/components/ui/scroll-area.tsx, client/src/components/ui/textarea.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/components/product-guide.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/lib/api.ts, client/src/components/ui/button.tsx, client/src/components/ui/scroll-area.tsx, client/src/components/ui/textarea.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/components/sidebar/chat-sessions.tsx`
 
@@ -10398,7 +10480,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/api.ts, client/src/components/clerk-token-provider.tsx, client/src/types/session.type.ts, client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/sidebar/index.tsx. The containing category is Frontend components.
+Static in-repository dependencies: client/src/lib/api.ts, client/src/components/clerk-token-provider.tsx, client/src/types/session.type.ts, client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/sidebar/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -10480,7 +10562,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/routes/route-guard.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/sidebar/index.tsx. The containing category is Frontend components.
+Static in-repository dependencies: client/src/routes/route-guard.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/sidebar/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -10521,7 +10603,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/ui/command.tsx, client/src/lib/api.ts, client/src/components/clerk-token-provider.tsx, client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/sidebar/index.tsx. The containing category is Frontend components.
+Static in-repository dependencies: client/src/components/ui/command.tsx, client/src/lib/api.ts, client/src/components/clerk-token-provider.tsx, client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/sidebar/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -10562,7 +10644,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/src/components/ide-workspace.tsx, client/src/components/mode-toggle.tsx, client/src/main.tsx. The containing category is Frontend components.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/src/components/ide-workspace.tsx, client/src/components/mode-toggle.tsx, client/src/main.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -10603,7 +10685,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/chat/chat-input.tsx, client/src/components/sidebar/chat-sessions.tsx, docs/SAAS_SECURITY_AND_SCALE.md, load/k6/README.md. The containing category is Frontend components.
+Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/chat/chat-input.tsx, client/src/components/sidebar/chat-sessions.tsx, docs/SAAS_SECURITY_AND_SCALE.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -10726,7 +10808,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts, client/src/components/ui/separator.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/message.tsx, client/src/components/ui/button.tsx. The containing category is Frontend components.
+Static in-repository dependencies: client/src/lib/utils.ts, client/src/components/ui/separator.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/message.tsx, client/src/components/ui/button.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -10890,7 +10972,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts, client/src/components/ui/button-group.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/prompt-input.tsx, client/src/components/sidebar/index.tsx, client/src/components/ui/command.tsx. The containing category is Frontend components.
+Static in-repository dependencies: client/src/lib/utils.ts, client/src/components/ui/button.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/prompt-input.tsx, client/src/components/sidebar/index.tsx, client/src/components/ui/command.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -10913,7 +10995,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/components/ui/dialog.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/lib/utils.ts, client/src/components/ui/button-group.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/components/ui/dialog.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/lib/utils.ts, client/src/components/ui/button.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/components/ui/dropdown-menu.tsx`
 
@@ -10931,7 +11013,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/prompt-input.tsx, client/src/components/mode-toggle.tsx. The containing category is Frontend components.
+Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/prompt-input.tsx, client/src/components/mode-toggle.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -11013,7 +11095,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/prompt-input.tsx. The containing category is Frontend components.
+Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/prompt-input.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -11054,7 +11136,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts, client/src/components/ui/button-group.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/textarea.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/prompt-input.tsx, client/src/components/ui/command.tsx. The containing category is Frontend components.
+Static in-repository dependencies: client/src/lib/utils.ts, client/src/components/ui/button.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/textarea.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/prompt-input.tsx, client/src/components/ui/command.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -11077,7 +11159,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/components/ui/input-group.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/lib/utils.ts, client/src/components/ui/button-group.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/textarea.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/components/ui/input-group.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/lib/utils.ts, client/src/components/ui/button.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/textarea.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/components/ui/input.tsx`
 
@@ -11218,7 +11300,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/chat/index.tsx, client/src/components/product-guide.tsx. The containing category is Frontend components.
+Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/chat/index.tsx, client/src/components/product-guide.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -11300,7 +11382,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: backend/app/core/access_logging.py, backend/app/core/security.py, backend/app/services/context_budget.py, backend/app/services/delivery_service.py. The containing category is Frontend components.
+Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: backend/app/core/access_logging.py, backend/app/core/security.py, backend/app/services/candidate_verification_service.py, backend/app/services/context_budget.py. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -11341,7 +11423,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts, client/src/components/ui/button-group.tsx. Potential consumers found through bounded textual/import analysis: client/index.html, client/src/components/ui/sidebar.tsx, scripts/generate_engineering_book.py. The containing category is Frontend components.
+Static in-repository dependencies: client/src/lib/utils.ts, client/src/components/ui/button.tsx. Potential consumers found through bounded textual/import analysis: client/index.html, client/src/components/ui/sidebar.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -11364,7 +11446,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/components/ui/sheet.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/lib/utils.ts, client/src/components/ui/button-group.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/components/ui/sheet.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/lib/utils.ts, client/src/components/ui/button.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/components/ui/sidebar.tsx`
 
@@ -11382,7 +11464,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/hooks/use-mobile.ts, client/src/lib/utils.ts, client/src/components/ui/button-group.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/separator.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/sidebar/chat-sessions.tsx, client/src/components/sidebar/index.tsx, client/src/components/sidebar/navitems.tsx, client/src/index.css. The containing category is Frontend components.
+Static in-repository dependencies: client/src/hooks/use-mobile.ts, client/src/lib/utils.ts, client/src/components/ui/button.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/separator.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/sidebar/chat-sessions.tsx, client/src/components/sidebar/index.tsx, client/src/components/sidebar/navitems.tsx, client/src/index.css. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -11405,7 +11487,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/components/ui/sidebar.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/hooks/use-mobile.ts, client/src/lib/utils.ts, client/src/components/ui/button-group.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/separator.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/components/ui/sidebar.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/hooks/use-mobile.ts, client/src/lib/utils.ts, client/src/components/ui/button.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/separator.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/components/ui/skeleton.tsx`
 
@@ -11423,7 +11505,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: backend/app/git/change_provider.py, client/src/components/ui/sidebar.tsx, client/src/pages/incidents/index.tsx. The containing category is Frontend components.
+Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: backend/app/git/change_provider.py, client/src/components/ui/sidebar.tsx, client/src/pages/incidents/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -11505,7 +11587,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/prompt-input.tsx, client/src/components/chat/chat-input.tsx, client/src/routes/route-guard.tsx. The containing category is Frontend components.
+Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/prompt-input.tsx, client/src/components/chat/chat-input.tsx, client/src/routes/route-guard.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -11546,7 +11628,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/policy.py, backend/app/agent/prompts.py, backend/app/core/access_logging.py. The containing category is Frontend components.
+Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: README.md, backend/app/agent/graph.py, backend/app/agent/policy.py, backend/app/agent/prompts.py. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -11669,7 +11751,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/src/components/ide-workspace.tsx, docs/IMPLEMENTATION_GAP_ANALYSIS.md. The containing category is Frontend components.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/src/components/ide-workspace.tsx, docs/IMPLEMENTATION_GAP_ANALYSIS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -11710,7 +11792,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/diagnostic-dashboard.tsx. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Frontend application.
+Static in-repository dependencies: client/src/components/diagnostic-dashboard.tsx. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend application.
 
 #### Simplified pseudocode
 
@@ -11751,7 +11833,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/env.ts, client/src/lib/axios-client.ts, client/src/lib/api.ts, client/src/types/agent.type.ts. Potential consumers found through bounded textual/import analysis: client/src/components/chat/index.tsx, docs/IMPLEMENTATION_AUDIT.md. The containing category is Frontend hooks.
+Static in-repository dependencies: client/src/lib/env.ts, client/src/lib/axios-client.ts, client/src/lib/api.ts, client/src/types/agent.type.ts. Potential consumers found through bounded textual/import analysis: client/src/components/chat/index.tsx, docs/IMPLEMENTATION_AUDIT.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend hooks.
 
 #### Simplified pseudocode
 
@@ -11792,7 +11874,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/src/components/ui/sidebar.tsx. The containing category is Frontend hooks.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/src/components/ui/sidebar.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend hooks.
 
 #### Simplified pseudocode
 
@@ -11833,7 +11915,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/api.ts, client/src/components/clerk-token-provider.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/chat/index.tsx. The containing category is Frontend hooks.
+Static in-repository dependencies: client/src/lib/api.ts, client/src/components/clerk-token-provider.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/chat/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend hooks.
 
 #### Simplified pseudocode
 
@@ -11915,7 +11997,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/sidebar/navitems.tsx, client/src/components/ui/sidebar.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, client/src/routes/index.tsx. The containing category is Frontend application.
+Static in-repository dependencies: client/src/components/sidebar/session-search-dialog.tsx, client/src/components/ui/sidebar.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, client/src/routes/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend application.
 
 #### Simplified pseudocode
 
@@ -11938,7 +12020,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/layouts/app-layout.tsx is a TypeScript module that owns a focused part of frontend application. Related files: client/src/components/sidebar/navitems.tsx, client/src/components/ui/sidebar.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/layouts/app-layout.tsx is a TypeScript module that owns a focused part of frontend application. Related files: client/src/components/sidebar/session-search-dialog.tsx, client/src/components/ui/sidebar.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/layouts/base-layout.tsx`
 
@@ -11956,7 +12038,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, client/src/routes/index.tsx. The containing category is Frontend application.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, client/src/routes/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend application.
 
 #### Simplified pseudocode
 
@@ -11989,7 +12071,7 @@ This frontend module implements part of the frontend api and utilities surface. 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Api. Its extracted size is 585 lines and 1645 lexical tokens; the source digest begins ecfcd7470d5e.
+It exists to provide a coherent TypeScript module boundary for Api. Its extracted size is 647 lines and 1830 lexical tokens; the source digest begins f4bd6aff1473.
 
 #### Important symbols
 
@@ -12325,7 +12407,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/ui/button-group.tsx, client/src/components/ui/badge.tsx, client/src/lib/api.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
+Static in-repository dependencies: client/src/components/ui/button.tsx, client/src/components/ui/badge.tsx, client/src/lib/api.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
 
 #### Simplified pseudocode
 
@@ -12348,7 +12430,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/pages/billing/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/ui/button-group.tsx, client/src/components/ui/badge.tsx, client/src/lib/api.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/pages/billing/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/ui/button.tsx, client/src/components/ui/badge.tsx, client/src/lib/api.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/pages/demo/index.tsx`
 
@@ -12407,7 +12489,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/diff-viewer.tsx, client/src/components/loader.tsx, client/src/lib/api.ts. Potential consumers found through bounded textual/import analysis: client/src/routes/route.ts, docs/FEATURE_PARITY_MATRIX.md. The containing category is Frontend pages.
+Static in-repository dependencies: client/src/components/diff-viewer.tsx, client/src/components/loader.tsx, client/src/lib/api.ts. Potential consumers found through bounded textual/import analysis: client/src/routes/route.ts, docs/FEATURE_PARITY_MATRIX.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend pages.
 
 #### Simplified pseudocode
 
@@ -12489,7 +12571,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/logo.tsx, client/src/components/mode-toggle.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/button-group.tsx, client/src/routes/route-guard.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
+Static in-repository dependencies: client/src/components/logo.tsx, client/src/components/mode-toggle.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/button.tsx, client/src/routes/route-guard.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
 
 #### Simplified pseudocode
 
@@ -12512,7 +12594,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/pages/guide/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/logo.tsx, client/src/components/mode-toggle.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/button-group.tsx, client/src/routes/route-guard.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/pages/guide/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/logo.tsx, client/src/components/mode-toggle.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/button.tsx, client/src/routes/route-guard.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/pages/home/index.tsx`
 
@@ -12563,7 +12645,7 @@ This frontend module implements part of the frontend pages surface. It composes 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Index. Its extracted size is 363 lines and 3423 lexical tokens; the source digest begins cbebfde1512f.
+It exists to provide a coherent TypeScript module boundary for Index. Its extracted size is 500 lines and 4325 lexical tokens; the source digest begins 1ad487d6a7dc.
 
 #### Important symbols
 
@@ -12571,7 +12653,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/ui/badge.tsx, client/src/components/ui/button-group.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/textarea.tsx, client/src/components/ui/skeleton.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
+Static in-repository dependencies: client/src/components/ui/badge.tsx, client/src/components/ui/button.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/textarea.tsx, client/src/components/ui/skeleton.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
 
 #### Simplified pseudocode
 
@@ -12594,7 +12676,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/pages/incidents/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/ui/badge.tsx, client/src/components/ui/button-group.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/textarea.tsx, client/src/components/ui/skeleton.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/pages/incidents/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/ui/badge.tsx, client/src/components/ui/button.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/textarea.tsx, client/src/components/ui/skeleton.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/pages/not-found/index.tsx`
 
@@ -12645,7 +12727,7 @@ This frontend module implements part of the frontend pages surface. It composes 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Index. Its extracted size is 2120 lines and 8071 lexical tokens; the source digest begins 70e97a9e50ad.
+It exists to provide a coherent TypeScript module boundary for Index. Its extracted size is 2203 lines and 8379 lexical tokens; the source digest begins e198cf18b151.
 
 #### Important symbols
 
@@ -12735,7 +12817,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/logo.tsx, client/src/components/ui/spinner.tsx, client/src/lib/auth-redirect.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, client/src/routes/index.tsx, scripts/generate_engineering_book.py. The containing category is Frontend routing.
+Static in-repository dependencies: client/src/components/logo.tsx, client/src/components/ui/spinner.tsx, client/src/lib/auth-redirect.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, client/src/routes/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend routing.
 
 #### Simplified pseudocode
 
@@ -12809,7 +12891,7 @@ This frontend module implements part of the frontend contracts surface. It compo
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Agent.Type. Its extracted size is 208 lines and 550 lexical tokens; the source digest begins c7b541388128.
+It exists to provide a coherent TypeScript module boundary for Agent.Type. Its extracted size is 210 lines and 563 lexical tokens; the source digest begins 22584fa9bc0f.
 
 #### Important symbols
 
@@ -12858,7 +12940,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/src/lib/api.ts. The containing category is Frontend contracts.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/src/lib/api.ts, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend contracts.
 
 #### Simplified pseudocode
 
@@ -12899,7 +12981,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/src/components/chat/index.tsx, client/src/lib/api.ts. The containing category is Frontend contracts.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/src/components/chat/index.tsx, client/src/lib/api.ts, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend contracts.
 
 #### Simplified pseudocode
 
@@ -12932,15 +13014,15 @@ This frontend module implements part of the frontend contracts surface. It compo
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Incident.Type. Its extracted size is 110 lines and 227 lexical tokens; the source digest begins ef3067ba0cdc.
+It exists to provide a coherent TypeScript module boundary for Incident.Type. Its extracted size is 156 lines and 355 lexical tokens; the source digest begins 17980f63b3f3.
 
 #### Important symbols
 
-Important exported or declared symbols/sections identified by static inspection: IncidentRecord, IncidentsResponse, IncidentFeedbackInput, FlakyTestObservation, RepositoryAutomationSettings, RepositoryAutomationSettingsInput. These names are a navigation aid, not a claim that every symbol is externally public.
+Important exported or declared symbols/sections identified by static inspection: IncidentRecord, IncidentsResponse, IncidentFeedbackInput, FlakyTestObservation, RepositoryAutomationSettings, RepositoryAutomationSettingsInput, CandidateVerificationSettings. These names are a navigation aid, not a claim that every symbol is externally public.
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/src/lib/api.ts, client/src/pages/incidents/index.tsx. The containing category is Frontend contracts.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/src/components/ide-workspace.tsx, client/src/lib/api.ts, client/src/pages/incidents/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Frontend contracts.
 
 #### Simplified pseudocode
 
@@ -13022,7 +13104,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/README.md, client/tsconfig.json. The containing category is Project configuration.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/README.md, client/tsconfig.json, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Project configuration.
 
 #### Simplified pseudocode
 
@@ -13104,7 +13186,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/README.md, client/tsconfig.json. The containing category is Project configuration.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/README.md, client/tsconfig.json, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Project configuration.
 
 #### Simplified pseudocode
 
@@ -13186,7 +13268,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/tsconfig.node.json. The containing category is Repository reference.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/tsconfig.node.json, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Repository reference.
 
 #### Simplified pseudocode
 
@@ -13260,7 +13342,7 @@ This documentation file records the repository's current guidance for Agent Safe
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Agent Safety. Its extracted size is 10 lines and 157 lexical tokens; the source digest begins 45876007a414.
+It exists to provide a coherent documentation boundary for Agent Safety. Its extracted size is 21 lines and 270 lexical tokens; the source digest begins 4db7ad00613a.
 
 #### Important symbols
 
@@ -13268,7 +13350,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -13300,15 +13382,15 @@ This documentation file records the repository's current guidance for Approval M
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Approval Model. Its extracted size is 23 lines and 146 lexical tokens; the source digest begins 96a4ea35e44b.
+It exists to provide a coherent documentation boundary for Approval Model. Its extracted size is 35 lines and 239 lexical tokens; the source digest begins 37b7be499866.
 
 #### Important symbols
 
-Important exported or declared symbols/sections identified by static inspection: Exact-diff approval model, Approval hash. These names are a navigation aid, not a claim that every symbol is externally public.
+Important exported or declared symbols/sections identified by static inspection: Exact-diff approval model, Approval hash, Optional candidate-verification approval. These names are a navigation aid, not a claim that every symbol is externally public.
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -13340,15 +13422,15 @@ This documentation file records the repository's current guidance for Architectu
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Architecture. Its extracted size is 60 lines and 461 lexical tokens; the source digest begins f0ffaa6f6fec.
+It exists to provide a coherent documentation boundary for Architecture. Its extracted size is 88 lines and 710 lexical tokens; the source digest begins 43ebae548798.
 
 #### Important symbols
 
-Important exported or declared symbols/sections identified by static inspection: Architecture, Engineering Intelligence graph, Session workspace, Safety boundary. These names are a navigation aid, not a claim that every symbol is externally public.
+Important exported or declared symbols/sections identified by static inspection: Architecture, Engineering Intelligence graph, Session workspace, Safety boundary, Optional GitHub-native incident reporting, Optional candidate-verification boundary. These names are a navigation aid, not a claim that every symbol is externally public.
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -13372,6 +13454,46 @@ The file is part of the operational contract. Its details should be interpreted 
 
 In one sentence: docs/ARCHITECTURE.md is a documentation that owns a focused part of architecture documentation. Related files: no direct in-repository import was statically resolved. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
+### File reference: `docs/CANDIDATE_VERIFICATION.md`
+
+#### Purpose
+
+This documentation file records the repository's current guidance for Candidate Verification. It is a maintained explanation surface rather than executable behavior and is cross-checked against implementation where this book makes claims.
+
+#### Key responsibilities
+
+It exists to provide a coherent documentation boundary for Candidate Verification. Its extracted size is 139 lines and 1022 lexical tokens; the source digest begins c4a358522deb.
+
+#### Important symbols
+
+Important exported or declared symbols/sections identified by static inspection: Candidate verification, What it does, Setup, Required workflow hardening, Optional incident Check reporting, Authorization and lifecycle, Safety and known limitations. These names are a navigation aid, not a claim that every symbol is externally public.
+
+#### Connections
+
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: README.md, backend/.env.example, backend/app/core/config.py, client/src/pages/incidents/index.tsx. The containing category is Architecture documentation.
+
+#### Simplified pseudocode
+
+```text
+READ documented topic
+ORGANIZE implementation-grounded guidance
+LINK related source paths and constraints
+DISTINGUISH verified behavior from limitations
+GUIDE operator or contributor decisions
+```
+
+#### Workflow role
+
+It participates in developer onboarding and operator decision making. Executable pseudocode is not applicable; its document flow records the contract, limitation, or procedure it explains.
+
+#### Engineering details
+
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+
+#### Brief summary
+
+In one sentence: docs/CANDIDATE_VERIFICATION.md is a documentation that owns a focused part of architecture documentation. Related files: no direct in-repository import was statically resolved. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+
 ### File reference: `docs/DELIVERY_WORKFLOW.md`
 
 #### Purpose
@@ -13388,7 +13510,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -13428,7 +13550,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: README.md, scripts/demo.ps1, scripts/demo.sh. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: README.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -13460,15 +13582,15 @@ This documentation file records the repository's current guidance for Deployment
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Deployment. Its extracted size is 92 lines and 1325 lexical tokens; the source digest begins f357eb854236.
+It exists to provide a coherent documentation boundary for Deployment. Its extracted size is 110 lines and 1454 lexical tokens; the source digest begins aacdc2e7f8bc.
 
 #### Important symbols
 
-Important exported or declared symbols/sections identified by static inspection: Production deployment, Vercel frontend, Render backend, Render service count, Free-tier evaluation profile, Operating model, Manually created Render services. These names are a navigation aid, not a claim that every symbol is externally public.
+Important exported or declared symbols/sections identified by static inspection: Production deployment, Vercel frontend, Render backend, Render service count, Free-tier evaluation profile, Optional GitHub App candidate verification, Operating model. These names are a navigation aid, not a claim that every symbol is externally public.
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/git/actions.py, docs/IMPLEMENTATION_AUDIT.md, docs/PRODUCTION_READINESS.md. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/git/actions.py, docs/IMPLEMENTATION_AUDIT.md, docs/PRODUCTION_READINESS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -13508,7 +13630,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -13548,7 +13670,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/ARCHITECTURE.md. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/ARCHITECTURE.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -13580,7 +13702,7 @@ This documentation file records the repository's current guidance for Evaluation
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Evaluation. Its extracted size is 18 lines and 207 lexical tokens; the source digest begins 0d5d61cd60ad.
+It exists to provide a coherent documentation boundary for Evaluation. Its extracted size is 24 lines and 263 lexical tokens; the source digest begins 141596d9f817.
 
 #### Important symbols
 
@@ -13588,7 +13710,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: README.md, docs/FEATURE_PARITY_MATRIX.md, docs/IMPLEMENTATION_STATUS.md. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: README.md, docs/FEATURE_PARITY_MATRIX.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -13628,7 +13750,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -13668,7 +13790,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -13700,7 +13822,7 @@ This documentation file records the repository's current guidance for Feature Pa
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Feature Parity Matrix. Its extracted size is 73 lines and 1164 lexical tokens; the source digest begins d9af2042599e.
+It exists to provide a coherent documentation boundary for Feature Parity Matrix. Its extracted size is 75 lines and 1262 lexical tokens; the source digest begins 31f238732036.
 
 #### Important symbols
 
@@ -13708,7 +13830,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -13740,15 +13862,15 @@ This documentation file records the repository's current guidance for Github Act
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Github Actions Intelligence. Its extracted size is 84 lines and 838 lexical tokens; the source digest begins d64501135905.
+It exists to provide a coherent documentation boundary for Github Actions Intelligence. Its extracted size is 113 lines and 1088 lexical tokens; the source digest begins 5a9c35f1bc4d.
 
 #### Important symbols
 
-Important exported or declared symbols/sections identified by static inspection: GitHub Actions intelligence, Investigation flow, Safety boundaries, Bounds and replay, Automated incident intake and sharing, Verification status. These names are a navigation aid, not a claim that every symbol is externally public.
+Important exported or declared symbols/sections identified by static inspection: GitHub Actions intelligence, Investigation flow, Safety boundaries, Bounds and replay, Automated incident intake and sharing, Candidate verification (optional GitHub App authority), Verification status. These names are a navigation aid, not a claim that every symbol is externally public.
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -13788,7 +13910,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/FEATURE_PARITY_MATRIX.md, docs/IMPLEMENTATION_STATUS.md. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/FEATURE_PARITY_MATRIX.md, docs/IMPLEMENTATION_STATUS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -13820,15 +13942,15 @@ This documentation file records the repository's current guidance for Implementa
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Implementation Gap Analysis. Its extracted size is 103 lines and 1188 lexical tokens; the source digest begins 944fdc2ccd23.
+It exists to provide a coherent documentation boundary for Implementation Gap Analysis. Its extracted size is 103 lines and 1215 lexical tokens; the source digest begins ae6c14a869da.
 
 #### Important symbols
 
-Important exported or declared symbols/sections identified by static inspection: Base64 Ops implementation gap analysis, Reusable, implemented foundations, Partially implemented or incomplete, Missing P0 functionality, Existing public contracts and security boundaries, Proposed incremental implementation, P0.1 - intake and ledger. These names are a navigation aid, not a claim that every symbol is externally public.
+Important exported or declared symbols/sections identified by static inspection: Base64 Ops implementation gap analysis, Reusable, implemented foundations, Partially implemented or incomplete, Remaining P0 functionality, Existing public contracts and security boundaries, Proposed incremental implementation, P0.1 - intake and ledger. These names are a navigation aid, not a claim that every symbol is externally public.
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_PROGRESS.md. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_PROGRESS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -13860,7 +13982,7 @@ This documentation file records the repository's current guidance for Implementa
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Implementation Progress. Its extracted size is 152 lines and 1173 lexical tokens; the source digest begins 9999fa946759.
+It exists to provide a coherent documentation boundary for Implementation Progress. Its extracted size is 157 lines and 1228 lexical tokens; the source digest begins 9909f5c79f5f.
 
 #### Important symbols
 
@@ -13868,7 +13990,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -13900,7 +14022,7 @@ This documentation file records the repository's current guidance for Implementa
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Implementation Status. Its extracted size is 82 lines and 2944 lexical tokens; the source digest begins 5f102cebdd73.
+It exists to provide a coherent documentation boundary for Implementation Status. Its extracted size is 84 lines and 3080 lexical tokens; the source digest begins 0a15a603b08a.
 
 #### Important symbols
 
@@ -13908,7 +14030,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -13948,7 +14070,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: README.md. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: README.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -13988,7 +14110,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/FEATURE_PARITY_MATRIX.md, docs/IMPLEMENTATION_STATUS.md. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/FEATURE_PARITY_MATRIX.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -14020,7 +14142,7 @@ This documentation file records the repository's current guidance for Observabil
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Observability. Its extracted size is 27 lines and 635 lexical tokens; the source digest begins b9840b8145e3.
+It exists to provide a coherent documentation boundary for Observability. Its extracted size is 44 lines and 787 lexical tokens; the source digest begins 4c7005246e19.
 
 #### Important symbols
 
@@ -14028,7 +14150,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -14068,7 +14190,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -14108,7 +14230,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -14140,7 +14262,7 @@ This documentation file records the repository's current guidance for Production
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Production Readiness. Its extracted size is 84 lines and 612 lexical tokens; the source digest begins 3ec06a4e30b6.
+It exists to provide a coherent documentation boundary for Production Readiness. Its extracted size is 89 lines and 663 lexical tokens; the source digest begins fbca1c331c64.
 
 #### Important symbols
 
@@ -14148,7 +14270,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -14188,7 +14310,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md, docs/PRODUCTION_READINESS.md. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md, docs/PRODUCTION_READINESS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -14228,7 +14350,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -14268,7 +14390,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/SYSTEM_DESIGN.md. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/SYSTEM_DESIGN.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -14300,7 +14422,7 @@ This documentation file records the repository's current guidance for System Des
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for System Design. Its extracted size is 23 lines and 472 lexical tokens; the source digest begins b4fc480d0a02.
+It exists to provide a coherent documentation boundary for System Design. Its extracted size is 33 lines and 560 lexical tokens; the source digest begins 0f61fe276d43.
 
 #### Important symbols
 
@@ -14308,7 +14430,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: README.md. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: README.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -14348,7 +14470,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: README.md. The containing category is Architecture documentation.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: README.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
 
 #### Simplified pseudocode
 
@@ -14428,7 +14550,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/tests/test_load_harness_safety.py, load/k6/README.md. The containing category is Developer and operational tooling.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/tests/test_load_harness_safety.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Developer and operational tooling.
 
 #### Simplified pseudocode
 
@@ -14469,7 +14591,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/tests/test_load_harness_safety.py, load/k6/README.md. The containing category is Developer and operational tooling.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/tests/test_load_harness_safety.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Developer and operational tooling.
 
 #### Simplified pseudocode
 
@@ -14715,7 +14837,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Developer and operational tooling.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/document-generation-report.md. The containing category is Developer and operational tooling.
 
 #### Simplified pseudocode
 
