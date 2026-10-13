@@ -32,6 +32,11 @@ The dispatcher reuses the read-only investigation service; it does not add a
 GitHub mutation capability. Repository identity is derived from the connected
 user's GitHub repository view, never from a browser-supplied owner/name.
 
+For an opted-in workflow, a later successful run on the exact same SHA is
+attached as reconciliation context to the matching group root. It does not
+close the incident, label a test flaky, or authorize a repair: a same-SHA
+success is a useful transient-condition signal, not a root-cause verdict.
+
 The Incident Inbox lets a user select an owned repository session, opt in or
 out, restrict workflows/branches, and set a bounded daily investigation limit.
 The detail view can export a JSON or Markdown incident record. Export queries

@@ -156,9 +156,20 @@ class GitHubWebhookService:
 
         payload_action = payload.get("action")
         resolved_action = action or (payload_action if isinstance(payload_action, str) else None)
-        envelope = self._workflow_failure_envelope(payload, event_name=event_name, action=resolved_action)
+        envelope = self._workflow_run_envelope(payload, event_name=event_name, action=resolved_action)
         if envelope is None:
-            return {"accepted": False, "ignored": True, "reason": "Event is not a completed failed workflow run."}
+            return {"accepted": False, "ignored": True, "reason": "Event is not a completed workflow run."}
+        if envelope["conclusion"] == "success":
+            targets = await self._matching_automation_targets(envelope)
+            reconciled = await self._record_same_sha_success(envelope=envelope, targets=targets)
+            return {
+                "accepted": True,
+                "ignored": True,
+                "reason": "Successful workflow run recorded as read-only reconciliation context.",
+                "reconciledIncidents": reconciled,
+            }
+        if envelope["conclusion"] not in _FAILURE_CONCLUSIONS:
+            return {"accepted": False, "ignored": True, "reason": "Workflow conclusion is not investigated."}
         repository_id = envelope["repositoryId"]
         targets = await self._matching_automation_targets(envelope)
         now = utc_now()
@@ -213,7 +224,7 @@ class GitHubWebhookService:
         )
         return {"accepted": True, "eventId": event["_id"], "status": "queued", "targets": len(targets)}
 
-    def _workflow_failure_envelope(
+    def _workflow_run_envelope(
         self, payload: dict[str, Any], *, event_name: str, action: str | None
     ) -> dict[str, str | int | None] | None:
         if event_name != "workflow_run" or action != "completed":
@@ -226,8 +237,6 @@ class GitHubWebhookService:
                 detail="Missing workflow-run repository metadata.",
             )
         conclusion = str(workflow_run.get("conclusion") or "").lower()
-        if conclusion not in _FAILURE_CONCLUSIONS:
-            return None
         repository_id = repository.get("id")
         run_id = workflow_run.get("id")
         clone_url = repository.get("clone_url")
@@ -252,6 +261,50 @@ class GitHubWebhookService:
             "headSha": head_sha,
             "conclusion": conclusion,
         }
+
+    async def _record_same_sha_success(
+        self, *, envelope: dict[str, str | int | None], targets: list[dict[str, Any]]
+    ) -> int:
+        """Attach a read-only same-SHA success signal without closing an incident.
+
+        A later success can indicate a transient condition, but it does not
+        establish that the original failure was flaky or that a remediation is
+        unnecessary.  The original diagnosis and approval requirements remain
+        unchanged.
+        """
+
+        now = utc_now()
+        reconciled = 0
+        workflow_filter: dict[str, Any]
+        if envelope.get("workflowPath"):
+            workflow_filter = {"workflowPath": envelope["workflowPath"]}
+        else:
+            workflow_filter = {"workflowName": envelope.get("workflowName")}
+        for target in targets:
+            result = await get_db().incidents.update_many(
+                {
+                    "userId": target["userId"],
+                    "sessionId": target["sessionId"],
+                    "repositoryId": envelope["repositoryId"],
+                    "branch": envelope.get("branch"),
+                    "headSha": envelope["headSha"],
+                    "isGroupRoot": True,
+                    "status": IncidentStatus.EVIDENCE_COLLECTED.value,
+                    **workflow_filter,
+                },
+                {
+                    "$set": {
+                        "sameShaSuccess": {
+                            "workflowRunId": envelope["workflowRunId"],
+                            "headSha": envelope["headSha"],
+                            "observedAt": now,
+                        },
+                        "updatedAt": now,
+                    }
+                },
+            )
+            reconciled += int(result.modified_count)
+        return reconciled
 
     async def _matching_automation_targets(self, envelope: dict[str, str | int | None]) -> list[dict[str, Any]]:
         cursor = get_db().repository_automation_settings.find(

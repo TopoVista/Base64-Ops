@@ -62,6 +62,21 @@ class _Automation:
         return _Cursor(records)
 
 
+class _Incidents:
+    def __init__(self) -> None:
+        self.records: list[dict] = []
+        self.queries: list[dict] = []
+
+    async def update_many(self, query, update):  # noqa: ANN001, ANN201
+        self.queries.append(query)
+        updated = 0
+        for record in self.records:
+            if all(record.get(key) == value for key, value in query.items()):
+                record.update(update.get("$set", {}))
+                updated += 1
+        return SimpleNamespace(modified_count=updated)
+
+
 def _payload(*, conclusion: str = "failure", branch: str = "main") -> bytes:
     return json.dumps(
         {
@@ -104,7 +119,11 @@ def webhook_db(monkeypatch):  # noqa: ANN201
             }
         ]
     )
-    database = SimpleNamespace(github_webhook_events=events, repository_automation_settings=automation)
+    database = SimpleNamespace(
+        github_webhook_events=events,
+        repository_automation_settings=automation,
+        incidents=_Incidents(),
+    )
     monkeypatch.setattr(incident_service, "get_db", lambda: database)
     monkeypatch.setattr(incident_service, "get_settings", lambda: Settings(github_webhook_secret="webhook-secret"))
     return database
@@ -189,15 +208,15 @@ async def test_successful_or_branch_filtered_events_are_safely_ignored(monkeypat
     monkeypatch.setattr(incident_service.BackgroundJobService, "enqueue_incident_dispatch", enqueue)
     service = GitHubWebhookService()
     success = _payload(conclusion="success")
-    assert (
-        await service.accept_delivery(
-            body=success,
-            event_name="workflow_run",
-            action=None,
-            delivery_id="delivery-success",
-            signature=_signature(success),
-        )
-    )["ignored"]
+    success_result = await service.accept_delivery(
+        body=success,
+        event_name="workflow_run",
+        action=None,
+        delivery_id="delivery-success",
+        signature=_signature(success),
+    )
+    assert success_result["ignored"]
+    assert success_result["reconciledIncidents"] == 0
 
     branch = _payload(branch="release")
     result = await service.accept_delivery(
@@ -208,3 +227,37 @@ async def test_successful_or_branch_filtered_events_are_safely_ignored(monkeypat
         signature=_signature(branch),
     )
     assert result["status"] == "ignored"
+
+
+async def test_success_on_the_same_sha_is_recorded_without_resolving_the_incident(monkeypatch, webhook_db) -> None:
+    async def enqueue(self, *, event_id: str):  # noqa: ANN001, ANN202
+        raise AssertionError("successful runs must not enqueue a failure investigation")
+
+    monkeypatch.setattr(incident_service.BackgroundJobService, "enqueue_incident_dispatch", enqueue)
+    webhook_db.incidents.records.append(
+        {
+            "_id": "inc_1",
+            "userId": "user_a",
+            "sessionId": "ses_1",
+            "repositoryId": "42",
+            "workflowPath": ".github/workflows/ci.yml",
+            "branch": "main",
+            "headSha": "a" * 40,
+            "isGroupRoot": True,
+            "status": "evidence_collected",
+        }
+    )
+    body = _payload(conclusion="success")
+
+    result = await GitHubWebhookService().accept_delivery(
+        body=body,
+        event_name="workflow_run",
+        action=None,
+        delivery_id="delivery-same-sha-success",
+        signature=_signature(body),
+    )
+
+    assert result["reconciledIncidents"] == 1
+    incident = webhook_db.incidents.records[0]
+    assert incident["status"] == "evidence_collected"
+    assert incident["sameShaSuccess"]["workflowRunId"] == 99

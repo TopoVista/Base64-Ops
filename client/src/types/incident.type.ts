@@ -51,6 +51,11 @@ export type IncidentRecord = {
   }>;
   firstObservedAt?: string;
   lastObservedAt?: string;
+  sameShaSuccess?: {
+    workflowRunId: number;
+    headSha: string;
+    observedAt: string;
+  };
   createdAt: string;
   updatedAt: string;
 };

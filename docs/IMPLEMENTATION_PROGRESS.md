@@ -75,6 +75,10 @@ Implemented so far:
   (run ID, SHA, observed time, categories, and failed-job names). It excludes
   raw log content and explicitly remains a recurrence signal, not causality or
   a flaky-test verdict.
+- A later signed successful run is reconciled only with an opted-in incident
+  root for the same repository, workflow, branch, and SHA. It is shown as a
+  possible transient-condition signal and never closes the incident or grants
+  a repair authorization.
 - Incident grouping retries when evidence collection completed but the final
   grouping write was interrupted; a collected record becomes terminal only
   after it is a root or group member.

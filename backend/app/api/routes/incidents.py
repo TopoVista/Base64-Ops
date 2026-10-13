@@ -74,6 +74,7 @@ def _incident_response(document: dict) -> dict:
         "groupTimeline",
         "firstObservedAt",
         "lastObservedAt",
+        "sameShaSuccess",
         "createdAt",
         "updatedAt",
     }
