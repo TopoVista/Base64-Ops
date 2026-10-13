@@ -151,6 +151,25 @@ class Settings(BaseSettings):
     github_incident_event_retention_days: int = Field(
         default=90, ge=7, le=365, alias="GITHUB_INCIDENT_EVENT_RETENTION_DAYS"
     )
+    # Candidate verification is intentionally a separate GitHub App boundary.
+    # OAuth grants user-scoped read/delivery access; it must never be silently
+    # reused as permission to create a temporary verification ref or dispatch
+    # a repository-owned workflow. The private key stays server-side and is
+    # never serialized into a plan, trace, response, or worker payload.
+    github_app_id: str = Field(default="", alias="GITHUB_APP_ID")
+    github_app_private_key: str = Field(default="", alias="GITHUB_APP_PRIVATE_KEY")
+    github_candidate_verification_enabled: bool = Field(
+        default=False, alias="GITHUB_CANDIDATE_VERIFICATION_ENABLED"
+    )
+    # GitHub-native incident reporting is a separate, explicitly opt-in
+    # feature. It only ever publishes a neutral, redacted Check Run after an
+    # incident has been persisted; it cannot rerun, cancel, or alter Actions.
+    github_incident_reporting_enabled: bool = Field(
+        default=False, alias="GITHUB_INCIDENT_REPORTING_ENABLED"
+    )
+    github_candidate_verification_max_runs_per_day: int = Field(
+        default=5, ge=1, le=25, alias="GITHUB_CANDIDATE_VERIFICATION_MAX_RUNS_PER_DAY"
+    )
 
     # GitHub Actions read-only investigation limits.
     ci_log_max_download_bytes: int = Field(default=500_000, alias="CI_LOG_MAX_DOWNLOAD_BYTES")
@@ -256,6 +275,12 @@ class Settings(BaseSettings):
                 self.github_token_encryption_legacy_key.encode("utf-8")
             ) < 32:
                 raise ValueError("GITHUB_TOKEN_ENCRYPTION_LEGACY_KEY must be at least 32 bytes when configured")
+            if (self.github_candidate_verification_enabled or self.github_incident_reporting_enabled) and (
+                not self.github_app_id.isdigit() or not self.github_app_private_key.strip()
+            ):
+                raise ValueError(
+                    "GitHub App credentials are required by the enabled GitHub App feature"
+                )
             return self
         if role != "api":
             raise ValueError("SERVICE_ROLE must be api, maintenance, indexer, ci_observer, or incident_dispatcher")
@@ -287,6 +312,12 @@ class Settings(BaseSettings):
             raise ValueError("CLERK_ISSUER must use HTTPS in production")
         if not self.github_client_id or not self.github_client_secret:
             raise ValueError("GitHub OAuth credentials must be configured in production")
+        if self.github_candidate_verification_enabled or self.github_incident_reporting_enabled:
+            if not self.github_app_id.isdigit() or not self.github_app_private_key.strip():
+                raise ValueError(
+                    "GITHUB_APP_ID and GITHUB_APP_PRIVATE_KEY must be configured when "
+                    "a GitHub App feature is enabled"
+                )
         if self.github_oauth_state_secret in {"", "dev-only-github-state"} or len(
             self.github_oauth_state_secret.encode("utf-8")
         ) < 32:

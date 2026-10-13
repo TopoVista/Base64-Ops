@@ -28,6 +28,8 @@ Set these through the Render secret manager, never in Git or Vercel:
 - `MONGO_URI`, `REDIS_URL`
 - `CLERK_JWKS_URL`, `CLERK_ISSUER`, `CLERK_AUTHORIZED_PARTIES`
 - `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`
+- `GITHUB_APP_ID` and `GITHUB_APP_PRIVATE_KEY` only when candidate
+  verification or optional GitHub Check reporting is deliberately enabled
 - a generated `GITHUB_OAUTH_STATE_SECRET` and an operator-generated
   `GITHUB_TOKEN_ENCRYPTION_KEY`
 - `OPENAI_API_KEY` and any billing-provider secrets
@@ -60,6 +62,9 @@ Before enabling customer traffic:
    test account.
 6. Verify rejection leaves an approval/delivery plan unexecuted. Do not use a
    proposal or a draft PR as proof of merge, CI success, or production health.
+7. If GitHub Check reporting is enabled, verify it only in an authorized
+   non-production repository with a GitHub App restricted to that repository;
+   confirm it creates a `neutral` redacted Check and cannot report CI success.
 
 See [the detailed audit](PRODUCTION_READINESS_AUDIT.md) and
 [deployment guide](DEPLOYMENT.md) for current verification scope and the

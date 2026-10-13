@@ -25,22 +25,19 @@ does not treat mocked provider tests as live-provider verification.
 
 | Capability | Current state | Gap to close |
 | --- | --- | --- |
-| CI causality | Existing CI service gathers failed-run workflow, changed-file, and current/head evidence; it also retains a prior-success workflow revision when available and labels a content difference as correlation only. Incident dispatch persists deterministic evidence strength, bounded same-workflow history, and a conservative repeat-failure group/timeline. | No bounded dependency-lockfile or runner-image comparison against the last success, and no causal claim is made from a single diff. |
-| Automated CI follow-up | Signed workflow-run webhook intake, opt-in repository automation, durable event ledger, and incident-dispatch job type are implemented. | GitHub App installation validation and live webhook/worker verification remain outstanding. |
-| Repair verification | Static/candidate validation and later read-only delivery CI observation exist. | No opt-in immutable candidate verification dispatch or auditable `VerificationRun`; no workflow is installed automatically. |
+| CI causality | Existing CI service gathers failed-run workflow, changed-file, and current/head evidence; it retains a prior-success workflow revision, compares conventional dependency manifests/lockfiles, and compares declared `runs-on` targets when available. Every difference remains correlation only. Incident dispatch persists deterministic evidence strength, bounded same-workflow history, and a conservative repeat-failure group/timeline. | Actual runner image/environment metadata is not available from every Actions run and is not inferred from workflow YAML. No causal claim is made from a single diff. |
+| Automated CI follow-up | Signed workflow-run webhook intake, opt-in repository automation, durable event ledger, incident-dispatch job type, and a separate optional App installation validator are implemented. | Live webhook/App/worker verification remains outstanding. |
+| Repair verification | Static/candidate validation, later read-only delivery CI observation, and an optional GitHub App candidate-dispatch boundary exist. | A repository owner must install/configure the App and reviewed workflow; candidate log/artifact ingestion, automatic cleanup, and live App verification remain outstanding. |
 | Historical intelligence | Operational memory includes validity and freshness controls. Correlated/supported automated incidents now write `INCIDENT_OUTCOME` entries through existing policy. Extracted test IDs now persist tenant-scoped, bounded flaky-test observations that preserve same-SHA outcome counts and workflow-level limitations. | No prevention-rule promotion or PR advisory view tied to a new change; successful workflow metadata usually lacks test-level pass identities. |
 | Frontend CI experience | Code workbench, CI evidence cards, Inbox/detail, repository automation controls, evidence export, and conservative repeated-failure grouping exist. | The complete user-facing repair/verification state machine remains incomplete. |
 | Deployment | Render blueprints model API/worker roles and now a private Key Value dependency. | The deployed Docker service does not automatically consume Blueprint variables; its Render dashboard must be configured explicitly. The checked-in API plan is paid, not a complete free-tier profile. |
 
-## Missing P0 functionality
+## Remaining P0 functionality
 
-1. GitHub App installation identity validation, which is distinct from the
-   existing OAuth repository boundary.
-2. An incident data model that links a repair candidate, verification run, and
-   final outcome without duplicating the existing delivery state.
-3. User-controlled notification policy.
-4. GitHub-native checks or PR-comment publication, which requires an explicit
-   permission model beyond the current OAuth read path.
+1. Live GitHub App/webhook/worker verification against an explicitly authorized
+   non-production repository.
+2. GitHub PR comments are intentionally unsupported; only an opt-in neutral
+   GitHub Check path exists, with a separate App permission boundary.
 
 ## Existing public contracts and security boundaries
 
@@ -75,9 +72,11 @@ incident data and link to existing evidence/review screens.
 
 ### P0.4 — verification boundary
 
-Keep the existing approval pipeline authoritative. A future verification
-dispatcher must be opt-in, use a reviewed repository-owned workflow, pin the
-candidate SHA/diff hash, and never convert CI YAML or LLM text into commands.
+Implemented: the existing approval pipeline remains authoritative while an
+opt-in GitHub App boundary validates one installation/repository/workflow
+binding, pins the candidate SHA/diff hash, creates a non-forced candidate ref,
+and records a tenant-scoped `verification-run-v1`. It never converts CI YAML
+or LLM text into commands. Candidate log/artifact ingestion remains deferred.
 
 ## Migration and compatibility risks
 
@@ -85,8 +84,9 @@ candidate SHA/diff hash, and never convert CI YAML or LLM text into commands.
   IDs. The event ledger must store both and only associate a webhook with a
   previously authorized, opt-in session.
 - A single OAuth token cannot safely be treated as a GitHub App installation
-  token. Check/PR publication and verification dispatch remain unavailable
-  until explicit permissions and an authorization boundary are added.
+  token. Candidate verification and optional neutral Check reporting share the
+  separate installation-token boundary; PR-comment publication remains
+  intentionally unavailable.
 - Free Render web services cannot guarantee a continuously running worker.
   Intake must remain durable; automatic processing can be configured only when
   an approved worker/scheduler is present, with clear deferred status otherwise.

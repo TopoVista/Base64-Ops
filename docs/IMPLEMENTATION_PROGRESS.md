@@ -109,12 +109,12 @@ Implemented so far:
 
 Still required in this stage:
 
-- GitHub App installation identity support (current OAuth-based integration
-  has no installation-token boundary).
 - Live GitHub webhook verification, a deployed dispatcher/scheduler profile,
-  GitHub-native reporting, full causality comparison (environment, dependency,
-  and successful-run diffs), prevention-rule promotion, notification
-  preferences, and the verification lifecycle.
+  actual runner-environment metadata where GitHub exposes it, prevention-rule
+  promotion, and live candidate/App verification. Dependency/lockfile and
+  declared-runner workflow comparisons are now bounded correlation signals;
+  optional neutral GitHub Check reporting has a separate opt-in and App
+  permission boundary.
 
 ## Verified-repair contract
 
@@ -126,10 +126,14 @@ Status: **PARTIALLY IMPLEMENTED AND TESTED**
   registry-backed checks pass) `static_validation_passed` /
   `static_validation` with a bounded command-free result summary. Neither
   state proves targeted candidate verification or full CI success.
-- Remote verification dispatch remains unavailable until a separately
-  configured GitHub App installation-token boundary and reviewed
-  repository-owned workflow are implemented. OAuth credentials do not gain
-  dispatch authority from this record.
+- An optional GitHub App installation-token boundary is implemented. It
+  requires a repository-scoped opt-in binding to an existing reviewed workflow,
+  creates a separate exact dispatch approval, creates a non-forced candidate
+  branch only after approval, and persists a `verification-run-v1` outcome.
+  OAuth credentials do not gain dispatch authority from this record. The
+  feature is disabled by default; mocked tests pass, while live GitHub App
+  installation, dispatch, and runner behavior remain explicitly unverified.
+  See `CANDIDATE_VERIFICATION.md`.
 
 ## Current external blockers
 
@@ -139,8 +143,9 @@ Status: **PARTIALLY IMPLEMENTED AND TESTED**
    The supplied deployment logs confirm that the image build completed before
    configuration validation stopped Uvicorn.
 2. Live GitHub webhook, GitHub App, and authorized test repositories are not
-   configured in this workspace. Local mocked tests can be added without those
-   credentials; live verification remains explicitly unverified.
+   configured in this workspace. Local mocked tests cover the GitHub App
+   boundary without credentials; live verification remains explicitly
+   unverified.
 
 ## Deployment profile update
 

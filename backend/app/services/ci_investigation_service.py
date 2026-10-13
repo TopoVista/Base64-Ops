@@ -21,6 +21,7 @@ from app.services.workspace_service import WorkspaceService
 
 _PATH_HINT = re.compile(r"(?<![\w.-])((?:\.?/?[\w.-]+/)+[\w.-]+(?:\:\d+)?)")
 _FAILED_CONCLUSIONS = frozenset({"failure", "timed_out", "startup_failure", "action_required"})
+_RUNS_ON = re.compile(r"(?m)^\s*runs-on:\s*(?P<value>[^#\n]+)")
 
 
 class CIInvestigationService:
@@ -255,6 +256,38 @@ class CIInvestigationService:
         elif run.workflow_path:
             limitations.append("No repository workspace was available to inspect the workflow at the failed commit.")
 
+        # Dependency manifests at the failed SHA and the prior comparable
+        # success are a bounded correlation signal for dependency failures.
+        # Keep the revisions distinct: an unchanged manifest is useful
+        # negative evidence, while a changed manifest is never causal proof.
+        if (
+            repo_path
+            and history
+            and history.last_successful_head_sha
+            and history.last_successful_head_sha != run.head_sha
+            and CIFailureCategory.DEPENDENCY_FAILURE in categories
+        ):
+            dependency_surface = _dependency_surface("\n".join(failure_text))
+            dependency_comparison, prior_dependency_sources = _compare_dependency_manifests(
+                workspace=self.workspace,
+                repo_path=repo_path,
+                failed_sha=run.head_sha,
+                prior_success_sha=history.last_successful_head_sha,
+                surface=dependency_surface,
+            )
+            history = history.model_copy(update=dependency_comparison)
+            if prior_dependency_sources:
+                prior_dependency_records = await self.evidence.record_sources(
+                    user_id=user_id,
+                    session=session,
+                    run_id=graph_run_id,
+                    sources=prior_dependency_sources,
+                    commit_sha=history.last_successful_head_sha,
+                )
+                history_evidence_ids.extend(record["id"] for record in prior_dependency_records)
+            elif dependency_comparison["dependency_files_changed_since_last_success"] is None:
+                limitations.append("Dependency manifests were unavailable at one or both comparable revisions.")
+
         # Compare the failed commit with its actual parent where it is locally
         # available. A missing parent is an explicit limitation, never a guess.
         # Path hints from bounded failure excerpts are still useful without a
@@ -466,11 +499,24 @@ def compare_workflow_versions(
         return {
             "workflow_changed_since_last_success": None,
             "workflow_comparison_note": "The last successful workflow file was unavailable for comparison.",
+            "declared_runner_changed_since_last_success": None,
+            "runner_comparison_note": "The declared runner could not be compared without the prior workflow file.",
         }
+    prior_runners = _declared_runner_targets(prior_successful_workflow)
+    failed_runners = _declared_runner_targets(failed_workflow)
+    runner_changed = prior_runners != failed_runners
+    runner_note = (
+        "The workflow's declared runner target differs from the last comparable successful run; "
+        "this is workflow correlation, not proof of an environment cause."
+        if runner_changed
+        else "The workflow's declared runner target matched the last comparable successful run."
+    )
     if prior_successful_workflow == failed_workflow:
         return {
             "workflow_changed_since_last_success": False,
             "workflow_comparison_note": "The workflow file matched the last comparable successful run.",
+            "declared_runner_changed_since_last_success": False,
+            "runner_comparison_note": runner_note,
         }
     return {
         "workflow_changed_since_last_success": True,
@@ -478,6 +524,8 @@ def compare_workflow_versions(
             "The workflow file differs from the last comparable successful run; "
             "this is correlation evidence, not proof of cause."
         ),
+        "declared_runner_changed_since_last_success": runner_changed,
+        "runner_comparison_note": runner_note,
     }
 
 
@@ -502,12 +550,109 @@ def _history_excerpt(history: CIWorkflowHistory) -> str:
         pieces.append(f"Last prior successful run: #{history.last_successful_run_id}.")
     if history.workflow_comparison_note:
         pieces.append(history.workflow_comparison_note)
+    if history.dependency_comparison_note:
+        pieces.append(history.dependency_comparison_note)
+    if history.runner_comparison_note:
+        pieces.append(history.runner_comparison_note)
     if history.first_observed_failure_run_id is not None:
         pieces.append(f"First observed failed run in the bounded window: #{history.first_observed_failure_run_id}.")
     if history.limitation:
         pieces.append(f"Limitation: {history.limitation}")
     pieces.append("This comparison is correlation evidence, not proof of causation or flakiness.")
     return " ".join(pieces)
+
+
+def _declared_runner_targets(workflow: str) -> tuple[str, ...]:
+    """Return bounded structural runner tokens, never workflow commands.
+
+    ``runs-on`` is configuration data and may itself be untrusted.  The
+    caller only compares normalized entries and exposes an existence/difference
+    statement, not the raw values, so it cannot become model instructions.
+    """
+
+    targets: list[str] = []
+    for match in _RUNS_ON.finditer(workflow):
+        value = " ".join(match.group("value").strip().split())[:120]
+        if value and value not in targets:
+            targets.append(value)
+        if len(targets) == 12:
+            break
+    return tuple(targets)
+
+
+def _compare_dependency_manifests(
+    *,
+    workspace: WorkspaceService,
+    repo_path: Path,
+    failed_sha: str,
+    prior_success_sha: str,
+    surface: str,
+) -> tuple[dict[str, bool | str | None], list[dict[str, Any]]]:
+    """Compare conventional manifests at two exact revisions without blame.
+
+    Only known package manifests/locks are considered and at most six source
+    excerpts from the prior success are returned.  The failed revision is
+    already selected as normal repository evidence by the main investigation.
+    """
+
+    candidates = list(
+        dict.fromkeys(
+            [
+                *_existing_dependency_manifests(workspace, repo_path, failed_sha, surface),
+                *_existing_dependency_manifests(workspace, repo_path, prior_success_sha, surface),
+            ]
+        )
+    )[:6]
+    if not candidates:
+        return (
+            {
+                "dependency_files_changed_since_last_success": None,
+                "dependency_comparison_note": "No conventional dependency manifests were available for comparison.",
+            },
+            [],
+        )
+    changed: list[str] = []
+    prior_sources: list[dict[str, Any]] = []
+    for path in candidates:
+        failed = workspace.read_file_at_ref(repo_path, path, failed_sha)
+        prior = workspace.read_file_at_ref(repo_path, path, prior_success_sha)
+        if failed is None or prior is None or failed == prior:
+            continue
+        changed.append(path)
+        prior_sources.append(
+            {
+                "kind": "repo",
+                "source": path,
+                "excerpt": prior,
+                "metadata": {
+                    "state": "last_successful_run",
+                    "untrusted": True,
+                    "comparison": "dependency_manifest_prior_success",
+                    "head_sha": prior_success_sha,
+                },
+            }
+        )
+    if changed:
+        return (
+            {
+                "dependency_files_changed_since_last_success": True,
+                "dependency_comparison_note": (
+                    f"{len(changed)} dependency manifest or lockfile(s) differ from the last comparable "
+                    "successful run; "
+                    "this is correlation evidence, not proof of cause."
+                ),
+            },
+            prior_sources,
+        )
+    return (
+        {
+            "dependency_files_changed_since_last_success": False,
+            "dependency_comparison_note": (
+                "Available dependency manifests and lockfiles matched the last comparable successful run."
+            ),
+        },
+        [],
+    )
 
 
 def _select_relevant_paths(

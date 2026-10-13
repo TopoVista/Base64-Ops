@@ -5,15 +5,22 @@ import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   downloadIncidentExport,
+  getCandidateVerificationSettings,
   getIncident,
   getIncidents,
   getRepositoryAutomationSettings,
+  getSystemCapabilities,
   getUserSessions,
   submitIncidentFeedback,
+  updateCandidateVerificationSettings,
   updateRepositoryAutomationSettings,
 } from "@/lib/api";
 import { cn } from "@/lib/utils";
-import type { IncidentRecord, RepositoryAutomationSettingsInput } from "@/types/incident.type";
+import type {
+  CandidateVerificationSettingsInput,
+  IncidentRecord,
+  RepositoryAutomationSettingsInput,
+} from "@/types/incident.type";
 import type { SessionRecord } from "@/types/session.type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -50,6 +57,12 @@ const DEFAULT_AUTOMATION: RepositoryAutomationSettingsInput = {
   include_branches: [],
   exclude_branches: [],
   daily_investigation_limit: 5,
+  github_check_reporting_enabled: false,
+};
+const DEFAULT_CANDIDATE_VERIFICATION: CandidateVerificationSettingsInput = {
+  enabled: false,
+  installation_id: "",
+  workflow_path: ".github/workflows/base64-candidate-verify.yml",
 };
 
 function StatusBadge({ incident }: { incident: IncidentRecord }) {
@@ -117,7 +130,32 @@ function AutomationSettingsPanel() {
     enabled: Boolean(selectedSlugId),
     staleTime: 20_000,
   });
+  const candidateVerificationQuery = useQuery({
+    queryKey: ["candidate-verification-settings", selectedSlugId],
+    queryFn: () => getCandidateVerificationSettings(selectedSlugId),
+    enabled: Boolean(selectedSlugId),
+    staleTime: 20_000,
+  });
+  const capabilitiesQuery = useQuery({
+    queryKey: ["system-capabilities"],
+    queryFn: () => getSystemCapabilities<{
+      github?: {
+        candidate_verification?: { configured?: boolean; unavailable_reason?: string | null };
+        incident_check_reporting?: { configured?: boolean; unavailable_reason?: string | null };
+      };
+    }>(),
+    staleTime: 60_000,
+  });
+  const candidateVerificationConfigured = Boolean(
+    capabilitiesQuery.data?.github?.candidate_verification?.configured,
+  );
+  const checkReportingConfigured = Boolean(
+    capabilitiesQuery.data?.github?.incident_check_reporting?.configured,
+  );
   const [draft, setDraft] = useState<RepositoryAutomationSettingsInput>(DEFAULT_AUTOMATION);
+  const [candidateDraft, setCandidateDraft] = useState<CandidateVerificationSettingsInput>(
+    DEFAULT_CANDIDATE_VERIFICATION,
+  );
 
   useEffect(() => {
     if (!selectedSlugId && sessions.length) setSelectedSlugId(sessions[0].slugId);
@@ -131,11 +169,29 @@ function AutomationSettingsPanel() {
       include_branches: saved.include_branches,
       exclude_branches: saved.exclude_branches,
       daily_investigation_limit: saved.daily_investigation_limit,
+      github_check_reporting_enabled: saved.github_check_reporting_enabled,
     } : DEFAULT_AUTOMATION);
   }, [automationQuery.data, selectedSlugId]);
 
+  useEffect(() => {
+    const saved = candidateVerificationQuery.data;
+    setCandidateDraft(saved
+      ? {
+        enabled: saved.enabled,
+        installation_id: "",
+        workflow_path: saved.workflow_path ?? "",
+      }
+      : DEFAULT_CANDIDATE_VERIFICATION);
+  }, [candidateVerificationQuery.data, selectedSlugId]);
+
   const save = useMutation({
     mutationFn: () => updateRepositoryAutomationSettings(selectedSlugId, draft),
+  });
+  const saveCandidateVerification = useMutation({
+    mutationFn: () => updateCandidateVerificationSettings(selectedSlugId, candidateDraft),
+    onSuccess: () => {
+      void candidateVerificationQuery.refetch();
+    },
   });
 
   if (sessionsPending) return <Skeleton className="mt-6 h-52 w-full rounded-xl" />;
@@ -194,6 +250,23 @@ function AutomationSettingsPanel() {
           Exclude branches <span className="font-normal text-muted-foreground">(optional)</span>
           <Input value={listText(draft.exclude_branches)} onChange={(event) => setDraft((current) => ({ ...current, exclude_branches: listValue(event.target.value) }))} placeholder="dependabot/*" />
         </label>
+        <label className="flex min-h-9 items-start gap-3 rounded-md border border-input bg-background px-3 py-2 text-sm lg:col-span-2">
+          <input
+            type="checkbox"
+            checked={draft.github_check_reporting_enabled}
+            disabled={!checkReportingConfigured}
+            onChange={(event) => setDraft((current) => ({ ...current, github_check_reporting_enabled: event.target.checked }))}
+            className="mt-0.5 size-4 accent-primary"
+          />
+          <span>
+            <span className="block font-medium">Publish a neutral GitHub Check after evidence collection</span>
+            <span className="mt-1 block text-xs leading-5 text-muted-foreground">
+              {checkReportingConfigured
+                ? "Requires this repository's verified App binding and Checks: write. The Check links to the incident and never claims a repair or CI pass."
+                : (capabilitiesQuery.data?.github?.incident_check_reporting?.unavailable_reason ?? "GitHub Check reporting is not configured on this deployment.")}
+            </span>
+          </span>
+        </label>
         <div className="flex flex-wrap items-center gap-3 lg:col-span-2">
           <Button type="submit" disabled={!selectedSlugId || save.isPending}>
             {save.isPending ? "Saving…" : "Save automation settings"}
@@ -203,6 +276,69 @@ function AutomationSettingsPanel() {
           {save.isSuccess ? <span className="text-sm text-emerald-700 dark:text-emerald-300">Automation settings saved.</span> : null}
         </div>
       </form>
+      <section className="mt-6 border-t border-border pt-5" aria-labelledby="candidate-verification-heading">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h3 id="candidate-verification-heading" className="font-semibold">Candidate verification</h3>
+            <p className="mt-1 max-w-3xl text-sm leading-6 text-muted-foreground">
+              Optionally bind a GitHub App installation and one repository-owned workflow for a reviewed candidate branch. This is disabled by default. Saving this setting does not dispatch a workflow, write a patch, or authorize delivery.
+            </p>
+          </div>
+          {candidateVerificationQuery.data?.enabled ? <Badge variant="outline" className="border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-300">Opted in</Badge> : <Badge variant="outline">Disabled</Badge>}
+        </div>
+        {!candidateVerificationConfigured ? (
+          <p className="mt-3 rounded-md border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-sm leading-6 text-amber-800 dark:text-amber-200">
+            {capabilitiesQuery.data?.github?.candidate_verification?.unavailable_reason ?? "A server-side GitHub App is not configured, so targeted candidate verification is unavailable."} Read-only CI investigation and normal exact-diff approval remain available.
+          </p>
+        ) : null}
+        <form
+          className="mt-4 grid gap-4 lg:grid-cols-2"
+          onSubmit={(event) => {
+            event.preventDefault();
+            if (selectedSlugId) saveCandidateVerification.mutate();
+          }}
+        >
+          <label className="flex min-h-9 items-center gap-3 rounded-md border border-input bg-background px-3 text-sm lg:col-span-2">
+            <input
+              type="checkbox"
+              checked={candidateDraft.enabled}
+              disabled={!candidateVerificationConfigured}
+              onChange={(event) => setCandidateDraft((current) => ({ ...current, enabled: event.target.checked }))}
+              className="size-4 accent-primary"
+            />
+            Enable separately approved candidate verification for this repository
+          </label>
+          <label className="grid gap-1.5 text-sm font-medium">
+            GitHub App installation ID
+            <Input
+              value={candidateDraft.installation_id ?? ""}
+              disabled={!candidateDraft.enabled || !candidateVerificationConfigured}
+              onChange={(event) => setCandidateDraft((current) => ({ ...current, installation_id: event.target.value.trim() }))}
+              placeholder={candidateVerificationQuery.data?.enabled ? "Saved installation remains server-side" : "For example: 12345678"}
+              inputMode="numeric"
+            />
+            <span className="text-xs font-normal leading-5 text-muted-foreground">The installation must already be authorized for this exact repository. It is verified server-side and is never returned to the browser after saving.</span>
+          </label>
+          <label className="grid gap-1.5 text-sm font-medium">
+            Reviewed workflow path
+            <Input
+              value={candidateDraft.workflow_path ?? ""}
+              disabled={!candidateDraft.enabled || !candidateVerificationConfigured}
+              onChange={(event) => setCandidateDraft((current) => ({ ...current, workflow_path: event.target.value.trim() }))}
+              placeholder=".github/workflows/base64-candidate-verify.yml"
+            />
+            <span className="text-xs font-normal leading-5 text-muted-foreground">Only a repository-owned <code>.github/workflows/*.yml</code> file is accepted. Its <code>run:</code> fields are never used as Base64 commands.</span>
+          </label>
+          <div className="flex flex-wrap items-center gap-3 lg:col-span-2">
+            <Button type="submit" disabled={!selectedSlugId || saveCandidateVerification.isPending || !candidateVerificationConfigured}>
+              {saveCandidateVerification.isPending ? "Saving…" : "Save candidate verification"}
+            </Button>
+            {candidateVerificationQuery.data?.enabled ? <span className="text-xs text-muted-foreground">Bound to {candidateVerificationQuery.data.repository_full_name ?? selectedSession?.repoName} · {candidateVerificationQuery.data.workflow_path}</span> : null}
+            {saveCandidateVerification.isError ? <span className="text-sm text-destructive">Candidate verification could not be saved. Check the App installation and workflow path.</span> : null}
+            {saveCandidateVerification.isSuccess ? <span className="text-sm text-emerald-700 dark:text-emerald-300">Candidate verification setting saved. Each run still requires a separate exact approval.</span> : null}
+          </div>
+        </form>
+      </section>
     </section>
   );
 }
@@ -348,11 +484,12 @@ function IncidentDetail() {
           <div className="mt-3 flex flex-wrap items-center gap-3"><Button size="sm" type="button" onClick={() => feedbackMutation.mutate()} disabled={feedbackMutation.isPending || (feedbackDisposition === "incorrect" && feedbackCorrection.trim().length < 3)}>{feedbackMutation.isPending ? "Savingâ€¦" : "Save feedback"}</Button>{feedbackMutation.isError ? <span className="text-sm text-destructive">Feedback could not be saved. Please retry.</span> : null}{incident.feedback ? <span className="text-xs text-muted-foreground">Last feedback: {prettify(incident.feedback.disposition)} {incident.feedback.updatedAt ? `â€” ${dateTime(incident.feedback.updatedAt)}` : ""}</span> : null}</div>
         </section>
         {incident.flakySignal === "suspected" ? <section className="mt-4 rounded-xl border border-violet-500/35 bg-violet-500/5 p-5"><h2 className="font-semibold">Suspected flaky-test signal</h2><p className="mt-2 text-sm leading-6 text-muted-foreground">The bounded workflow history includes both failed and successful executions on this same commit. {incident.failedTestIdentifiers?.length ? `The failed output identified ${incident.failedTestIdentifiers.join(", ")}. ` : "No stable test identifier was extracted. "}This is not a flaky-test verdict and Base64 Ops will not automatically rerun CI.</p></section> : null}
-        {incident.flakyObservations?.length ? <section className="mt-4 rounded-xl border border-violet-500/35 bg-violet-500/5 p-5"><h2 className="font-semibold">Observed test-history signals</h2><p className="mt-2 text-sm leading-6 text-muted-foreground">These are bounded observations from this failed log and comparable GitHub Actions runs. They never execute a retry, quarantine a test, or authorize a change.</p><div className="mt-4 space-y-3">{incident.flakyObservations.map((observation) => <div key={observation.id} className="rounded-lg border border-violet-500/20 bg-background/60 p-3 text-sm"><div className="flex flex-wrap items-center justify-between gap-2"><code className="break-all text-xs">{observation.testIdentifier}</code><Badge variant="outline" className="capitalize">{prettify(observation.assessment)}</Badge></div><p className="mt-2 text-muted-foreground">Same commit: {observation.sameShaFailureCount} failed run(s), {observation.sameShaSuccessCount} successful run(s).</p>{observation.limitations.map((limitation) => <p key={limitation} className="mt-1 text-xs leading-5 text-muted-foreground">Limitation: {limitation}</p>)}</div>)}</div></section> : null}
+        {incident.flakyObservations?.length ? <section className="mt-4 rounded-xl border border-violet-500/35 bg-violet-500/5 p-5"><h2 className="font-semibold">Observed test-history signals</h2><p className="mt-2 text-sm leading-6 text-muted-foreground">These are bounded observations from this failed log and comparable GitHub Actions runs. They never execute a retry, quarantine a test, or authorize a change.</p><div className="mt-4 space-y-3">{incident.flakyObservations.map((observation) => <div key={observation.id} className="rounded-lg border border-violet-500/20 bg-background/60 p-3 text-sm"><div className="flex flex-wrap items-center justify-between gap-2"><code className="break-all text-xs">{observation.test_identifier}</code><Badge variant="outline" className="capitalize">{prettify(observation.assessment)}</Badge></div><p className="mt-2 text-muted-foreground">Same commit: {observation.same_sha_failure_count} failed run(s), {observation.same_sha_success_count} successful run(s).</p>{observation.limitations.map((limitation) => <p key={limitation} className="mt-1 text-xs leading-5 text-muted-foreground">Limitation: {limitation}</p>)}</div>)}</div></section> : null}
         {incident.sameShaSuccess ? <section className="mt-4 rounded-xl border border-amber-500/35 bg-amber-500/5 p-5"><h2 className="font-semibold">Later success on the same commit</h2><p className="mt-2 text-sm leading-6 text-muted-foreground">Workflow run #{incident.sameShaSuccess.workflowRunId} succeeded on {shortSha(incident.sameShaSuccess.headSha)} at {dateTime(incident.sameShaSuccess.observedAt)}. This can indicate a transient condition, but it does not prove the earlier failure was flaky or close this incident automatically.</p></section> : null}
         <section className="mt-4 grid gap-4 md:grid-cols-2"><div className="rounded-xl border border-border bg-card p-5"><h2 className="font-semibold">Relevant files</h2>{incident.relevantPaths.length ? <ul className="mt-3 space-y-2 font-mono text-xs text-muted-foreground">{incident.relevantPaths.map((path) => <li key={path}>{path}</li>)}</ul> : <p className="mt-3 text-sm text-muted-foreground">No repository file was selected from the bounded evidence.</p>}</div><div className="rounded-xl border border-border bg-card p-5"><h2 className="font-semibold">Evidence and limitations</h2><p className="mt-3 text-sm text-muted-foreground">{incident.evidenceIds.length} CI evidence item(s) and {incident.workflowEvidenceIds.length} workflow item(s) are retained with source provenance.</p>{incident.limitations.length ? <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-muted-foreground">{incident.limitations.map((value) => <li key={value}>{value}</li>)}</ul> : <p className="mt-3 text-sm text-emerald-700 dark:text-emerald-300">No collection limitation was recorded.</p>}</div></section>
-        {incident.history ? <section className="mt-4 rounded-xl border border-border bg-card p-5"><h2 className="font-semibold">Comparable workflow history</h2><p className="mt-3 text-sm leading-6 text-muted-foreground">{prettify(incident.history.assessment)} across {incident.history.compared_run_ids.length} bounded comparable run(s). This is correlation evidence, not proof of causation or flakiness.</p><div className="mt-4 grid gap-3 text-sm sm:grid-cols-3"><p><span className="block text-xs uppercase tracking-wide text-muted-foreground">Prior success</span>{incident.history.last_successful_run_id ? `#${incident.history.last_successful_run_id}` : "Unavailable"}</p><p><span className="block text-xs uppercase tracking-wide text-muted-foreground">Same-SHA failures</span>{incident.history.same_sha_failure_count}</p><p><span className="block text-xs uppercase tracking-wide text-muted-foreground">Same-SHA successes</span>{incident.history.same_sha_success_count}</p></div>{incident.history.workflow_comparison_note ? <p className="mt-4 text-sm leading-6 text-muted-foreground">Workflow comparison: {incident.history.workflow_comparison_note}</p> : null}{incident.history.limitation ? <p className="mt-4 text-sm text-muted-foreground">Limitation: {incident.history.limitation}</p> : null}</section> : null}
+        {incident.history ? <section className="mt-4 rounded-xl border border-border bg-card p-5"><h2 className="font-semibold">Comparable workflow history</h2><p className="mt-3 text-sm leading-6 text-muted-foreground">{prettify(incident.history.assessment)} across {incident.history.compared_run_ids.length} bounded comparable run(s). This is correlation evidence, not proof of causation or flakiness.</p><div className="mt-4 grid gap-3 text-sm sm:grid-cols-3"><p><span className="block text-xs uppercase tracking-wide text-muted-foreground">Prior success</span>{incident.history.last_successful_run_id ? `#${incident.history.last_successful_run_id}` : "Unavailable"}</p><p><span className="block text-xs uppercase tracking-wide text-muted-foreground">Same-SHA failures</span>{incident.history.same_sha_failure_count}</p><p><span className="block text-xs uppercase tracking-wide text-muted-foreground">Same-SHA successes</span>{incident.history.same_sha_success_count}</p></div>{incident.history.workflow_comparison_note ? <p className="mt-4 text-sm leading-6 text-muted-foreground">Workflow comparison: {incident.history.workflow_comparison_note}</p> : null}{incident.history.dependency_comparison_note ? <p className="mt-2 text-sm leading-6 text-muted-foreground">Dependency comparison: {incident.history.dependency_comparison_note}</p> : null}{incident.history.runner_comparison_note ? <p className="mt-2 text-sm leading-6 text-muted-foreground">Runner configuration: {incident.history.runner_comparison_note}</p> : null}{incident.history.limitation ? <p className="mt-4 text-sm text-muted-foreground">Limitation: {incident.history.limitation}</p> : null}</section> : null}
         {incident.memoryEntryCount ? <section className="mt-4 rounded-xl border border-sky-500/30 bg-sky-500/5 p-5"><h2 className="font-semibold">Historical incident intelligence recorded</h2><p className="mt-2 text-sm leading-6 text-muted-foreground">This evidence-supported incident was added as partially verified historical context for future investigations. It cannot authorize a repair and remains lower priority than current repository and CI evidence.</p></section> : null}
+        {incident.githubCheckReport ? <section className="mt-4 rounded-xl border border-border bg-card p-5"><h2 className="font-semibold">GitHub Check reporting</h2><p className="mt-2 text-sm leading-6 text-muted-foreground">{incident.githubCheckReport.status === "published" ? "A neutral Check was published after the evidence-backed investigation. It reports analysis availability, not a repaired or passing workflow." : (incident.githubCheckReport.message ?? "GitHub Check reporting was unavailable; the incident remains available here.")}</p>{incident.githubCheckReport.url ? <a className="mt-3 inline-flex text-sm text-primary hover:underline" href={incident.githubCheckReport.url} target="_blank" rel="noreferrer">Open GitHub Check <ExternalLink className="ml-1 size-3.5" /></a> : null}</section> : null}
         {incident.groupTimeline?.length ? <section className="mt-4 rounded-xl border border-border bg-card p-5"><h2 className="font-semibold">Repeated-failure timeline</h2><p className="mt-2 text-sm leading-6 text-muted-foreground">This bounded timeline records equivalent failed runs. Repetition is a triage signal, not proof that one file or change caused the failure.</p><ol className="mt-4 space-y-3 border-l border-border pl-4">{incident.groupTimeline.map((entry) => <li key={`${entry.workflowRunId}-${entry.observedAt}`} className="relative text-sm"><span className="absolute -left-[1.32rem] top-1.5 size-2 rounded-full bg-primary" /><p className="font-medium">Run #{entry.workflowRunId} <span className="font-mono text-xs text-muted-foreground">{shortSha(entry.headSha)}</span></p><p className="mt-1 text-xs text-muted-foreground">{dateTime(entry.observedAt)} · {entry.failedJobNames.length ? entry.failedJobNames.join(", ") : "failed job unavailable"}</p></li>)}</ol></section> : null}
         <section className="mt-4 rounded-xl border border-primary/30 bg-primary/5 p-5"><h2 className="font-semibold">Next safe action</h2><p className="mt-2 text-sm leading-6 text-muted-foreground">{incident.diagnosis?.recommended_next_action ?? "Open the related repository session to review the exact evidence and, if supported, create a constrained proposal."} An incident never authorizes a repository mutation by itself.</p><Button asChild className="mt-4" variant="outline"><Link to="/new">Open Base64 Ops <ExternalLink className="ml-2 size-4" /></Link></Button></section>
       </div>

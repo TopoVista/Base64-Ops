@@ -50,6 +50,24 @@ Register this GitHub OAuth callback:
 
 `https://<render-api-domain>/api/github/callback`
 
+### Optional GitHub App candidate verification
+
+Candidate verification is disabled unless
+`GITHUB_CANDIDATE_VERIFICATION_ENABLED=true`. When enabled, set
+`GITHUB_APP_ID` and `GITHUB_APP_PRIVATE_KEY` as server-only Render secrets on
+the API and `ci_observer` services. Do not set them in Vercel. The App needs
+only Contents read/write and Actions read/write on explicitly installed
+repositories. A repository owner must still bind an existing reviewed workflow
+inside Incident Inbox and approve each candidate dispatch separately. See
+[CANDIDATE_VERIFICATION.md](CANDIDATE_VERIFICATION.md); live App verification
+is not included in the deterministic deployment checks.
+
+Optional GitHub-native incident Check reporting additionally requires
+`GITHUB_INCIDENT_REPORTING_ENABLED=true`, the App's **Checks: write**
+permission, and an explicit per-repository Inbox preference. It publishes a
+neutral redacted investigation Check only; do not enable it as a substitute for
+candidate verification or delivery approval.
+
 ## Operating model
 
 ### Manually created Render services

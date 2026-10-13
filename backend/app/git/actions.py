@@ -83,6 +83,13 @@ class CIWorkflowHistory(BaseModel):
     # failed run is a useful deterministic signal, not causal proof.
     workflow_changed_since_last_success: bool | None = None
     workflow_comparison_note: str | None = None
+    # Dependency manifest and declared runner comparisons are bounded,
+    # run-specific correlation signals. Neither field establishes that a
+    # revision caused the failure.
+    dependency_files_changed_since_last_success: bool | None = None
+    dependency_comparison_note: str | None = None
+    declared_runner_changed_since_last_success: bool | None = None
+    runner_comparison_note: str | None = None
     assessment: str = "insufficient_history"
     limitation: str | None = None
 

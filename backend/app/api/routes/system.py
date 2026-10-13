@@ -4,6 +4,7 @@ from fastapi import APIRouter
 
 from app.core.config import get_settings
 from app.execution.docker_runtime import DockerSandboxRuntime
+from app.services.github_service import github_app_is_configured, github_incident_reporting_is_configured
 
 router = APIRouter(prefix="/system", tags=["system"])
 
@@ -30,6 +31,8 @@ async def get_system_capabilities() -> dict[str, Any]:
         active_validation = False
         unavailable_reason = "No authorized isolated execution provider is configured."
 
+    app_verification_configured = github_app_is_configured()
+    github_check_reporting_configured = github_incident_reporting_is_configured()
     return {
         "github": {
             "actions_metadata": {
@@ -44,13 +47,28 @@ async def get_system_capabilities() -> dict[str, Any]:
             },
             "candidate_verification": {
                 "implemented": True,
-                "mode": "static_only",
-                "configured": False,
-                "accessible": False,
-                "unavailable_reason": (
+                "mode": "github_app_dispatch" if app_verification_configured else "static_only",
+                "configured": app_verification_configured,
+                # Accessibility is repository/installation-specific and is
+                # only proven when a tenant saves its reviewed workflow binding.
+                "accessible": None if app_verification_configured else False,
+                "unavailable_reason": None
+                if app_verification_configured
+                else (
                     "Targeted candidate verification requires a configured GitHub App "
                     "and a reviewed repository-owned workflow."
                 ),
+            },
+            "incident_check_reporting": {
+                "implemented": True,
+                "mode": "github_check" if github_check_reporting_configured else "disabled",
+                "configured": github_check_reporting_configured,
+                # A particular repository is only accessible after its
+                # existing App installation binding is verified server-side.
+                "accessible": None if github_check_reporting_configured else False,
+                "unavailable_reason": None
+                if github_check_reporting_configured
+                else "GitHub Check reporting requires an enabled GitHub App and Checks: write permission.",
             },
         },
         "execution": {

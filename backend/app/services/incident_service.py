@@ -26,6 +26,7 @@ from app.services.background_job_service import BackgroundJobService
 from app.services.ci_investigation_service import CIInvestigationService
 from app.services.flaky_test_service import FlakyTestObservationService
 from app.services.github_service import list_repositories, normalize_github_repository_url
+from app.services.incident_reporting_service import IncidentReportingService
 from app.services.workspace_service import WorkspaceService
 from app.utils.datetime import utc_now
 from app.utils.ids import new_id
@@ -82,6 +83,7 @@ class GitHubWebhookService:
         include_branches: list[str],
         exclude_branches: list[str],
         daily_investigation_limit: int,
+        github_check_reporting_enabled: bool = False,
     ) -> dict[str, Any]:
         """Derive the GitHub numeric repository ID from the user's own OAuth view."""
 
@@ -112,6 +114,7 @@ class GitHubWebhookService:
             "includeBranches": sorted({name.strip() for name in include_branches if name.strip()})[:30],
             "excludeBranches": sorted({name.strip() for name in exclude_branches if name.strip()})[:30],
             "dailyInvestigationLimit": daily_investigation_limit,
+            "githubCheckReportingEnabled": bool(github_check_reporting_enabled),
             "updatedAt": now,
         }
         await get_db().repository_automation_settings.update_one(
@@ -718,6 +721,59 @@ class IncidentDispatchService:
             event=event,
             automation=automation,
             context=context,
+        )
+        await self._publish_github_check(
+            incident={
+                **incident,
+                "status": IncidentStatus.EVIDENCE_COLLECTED.value,
+                "failureCategories": [str(category) for category in context.failure_categories],
+                "evidenceStrength": diagnosis.evidence_strength.value,
+                "diagnosisSummary": diagnosis.summary,
+                "diagnosis": diagnosis.model_dump(mode="json"),
+            },
+            automation=automation,
+        )
+
+    async def _publish_github_check(self, *, incident: dict[str, Any], automation: dict[str, Any]) -> None:
+        """Best-effort native reporting after durable evidence/grouping writes.
+
+        Reporting cannot determine whether an incident exists or whether it is
+        grouped. A permissions or provider failure becomes a bounded
+        limitation, never a worker retry that repeats investigation work.
+        """
+
+        if not automation.get("githubCheckReportingEnabled"):
+            return
+        db = get_db()
+        candidate_settings = await db.candidate_verification_settings.find_one(
+            {
+                "userId": automation["userId"],
+                "sessionId": automation["sessionId"],
+                "repositoryId": incident["repositoryId"],
+                "enabled": True,
+            }
+        )
+        result = await IncidentReportingService().publish_check(
+            incident=incident,
+            automation=automation,
+            candidate_settings=candidate_settings,
+        )
+        if result.get("status") == "published":
+            await db.incidents.update_one(
+                {"_id": incident["_id"], "userId": automation["userId"]},
+                {"$set": {"githubCheckReport": result, "updatedAt": utc_now()}},
+            )
+            return
+        message = str(result.get("message") or "GitHub Check reporting was unavailable.")[:300]
+        await db.incidents.update_one(
+            {"_id": incident["_id"], "userId": automation["userId"]},
+            {
+                "$set": {
+                    "githubCheckReport": {"status": str(result.get("status") or "unavailable"), "message": message},
+                    "updatedAt": utc_now(),
+                },
+                "$addToSet": {"limitations": message},
+            },
         )
 
     async def _record_flaky_observations(

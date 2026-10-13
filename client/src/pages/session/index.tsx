@@ -5,6 +5,8 @@ import { IDEWorkspace } from "@/components/ide-workspace";
 import {
   decideSessionApproval,
   analyzeSessionDeliveryImpact,
+  getCandidateVerificationSettings,
+  getLatestCandidateVerificationRun,
   getSessionBySlug,
   getSessionCodeFile,
   getSessionCodeFiles,
@@ -16,8 +18,10 @@ import {
   getBackendHealth,
   proposeSessionCodeEdit,
   refreshLatestSessionCi,
+  refreshCandidateVerificationRun,
   reindexSessionRag,
   requestSessionDeliveryApproval,
+  requestSessionCandidateVerificationApproval,
   streamDiagnostic,
   updateSessionDeliveryCommitMessage,
 } from "@/lib/api";
@@ -1258,8 +1262,28 @@ function ReadOnlyCode({ data }: { data: SingleSessionResponse }) {
   const pendingApproval = data.commandCenter?.approvals?.find(
     (approval) =>
       approval.status === "pending" &&
-      approval.deliveryPlanId === deliveryPlan?.id,
+      approval.deliveryPlanId === deliveryPlan?.id &&
+      approval.action_type !== "dispatch_candidate_verification",
   );
+  const candidateVerificationPendingApproval = data.commandCenter?.approvals?.find(
+    (approval) =>
+      approval.status === "pending" &&
+      approval.deliveryPlanId === deliveryPlan?.id &&
+      approval.action_type === "dispatch_candidate_verification",
+  );
+  const candidateVerificationSettings = useQuery({
+    queryKey: ["candidate-verification-settings", slugId],
+    queryFn: () => getCandidateVerificationSettings(slugId),
+    staleTime: 20_000,
+  });
+  const candidateVerificationEnabled = Boolean(candidateVerificationSettings.data?.enabled);
+  const candidateVerificationRun = useQuery({
+    queryKey: ["candidate-verification-run", slugId],
+    queryFn: () => getLatestCandidateVerificationRun(slugId),
+    // A past run remains auditable even if the repository later opts out.
+    enabled: Boolean(deliveryPlan),
+    staleTime: 15_000,
+  });
   const {
     data: tree,
     isPending: treePending,
@@ -1522,6 +1546,56 @@ function ReadOnlyCode({ data }: { data: SingleSessionResponse }) {
           : "Unable to prepare the exact push approval.",
       ),
   });
+  const requestCandidateVerification = useMutation({
+    mutationFn: async () => {
+      if (!deliveryPlan) throw new Error("No exact delivery plan is available.");
+      return requestSessionCandidateVerificationApproval(slugId, deliveryPlan.id);
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["session", slugId] });
+      toast.success("Candidate verification approval is ready. It is separate from delivery approval.");
+    },
+    onError: (error) => toast.error(
+      error instanceof Error ? error.message : "Unable to prepare candidate verification approval.",
+    ),
+  });
+  const dispatchCandidateVerification = useMutation({
+    mutationFn: async () => {
+      if (!candidateVerificationPendingApproval) {
+        throw new Error("No candidate verification approval is available.");
+      }
+      return decideSessionApproval(slugId, candidateVerificationPendingApproval.id, {
+        decision: "approve",
+        note: "Approved candidate verification from the Code workspace",
+      });
+    },
+    onSuccess: (result) => {
+      void queryClient.invalidateQueries({ queryKey: ["session", slugId] });
+      const execution = result.result as { status?: string; verificationRunId?: string } | undefined;
+      toast.success(
+        execution?.status === "dispatched"
+          ? `Candidate verification dispatched${execution.verificationRunId ? ` (${execution.verificationRunId})` : ""}. This is not proof that full CI passed.`
+          : "Candidate verification was not dispatched. Review the safe status in the session timeline.",
+      );
+    },
+    onError: (error) => toast.error(
+      error instanceof Error ? error.message : "Candidate verification could not be dispatched.",
+    ),
+  });
+  const refreshCandidateVerification = useMutation({
+    mutationFn: async () => {
+      const verificationRunId = candidateVerificationRun.data?.verificationRunId;
+      if (!verificationRunId) throw new Error("No candidate verification run is available yet.");
+      return refreshCandidateVerificationRun(verificationRunId);
+    },
+    onSuccess: (result) => {
+      void queryClient.invalidateQueries({ queryKey: ["candidate-verification-run", slugId] });
+      toast.success(`Candidate verification: ${result.status.replaceAll("_", " ")}.`);
+    },
+    onError: (error) => toast.error(
+      error instanceof Error ? error.message : "Candidate verification status could not be refreshed.",
+    ),
+  });
   const startCiRepair = useMutation({
     mutationFn: () => refreshLatestSessionCi(slugId),
     onSuccess: async (result) => {
@@ -1624,10 +1698,19 @@ function ReadOnlyCode({ data }: { data: SingleSessionResponse }) {
           ciRepairBlockedReason={ciRepairBlockedReason}
           deliveryPlan={deliveryPlan}
           pendingApproval={pendingApproval}
+          candidateVerificationEnabled={candidateVerificationEnabled}
+          candidateVerificationPendingApproval={candidateVerificationPendingApproval}
+          candidateVerificationRun={candidateVerificationRun.data}
           onDeliver={() => deliver.mutate()}
           deliveryPending={deliver.isPending}
           onRequestDeliveryApproval={() => requestPushApproval.mutate()}
           requestApprovalPending={requestPushApproval.isPending}
+          onRequestCandidateVerification={() => requestCandidateVerification.mutate()}
+          candidateVerificationRequestPending={requestCandidateVerification.isPending}
+          onDispatchCandidateVerification={() => dispatchCandidateVerification.mutate()}
+          candidateVerificationDispatchPending={dispatchCandidateVerification.isPending}
+          onRefreshCandidateVerification={() => refreshCandidateVerification.mutate()}
+          candidateVerificationRefreshPending={refreshCandidateVerification.isPending}
         />
       </div>
     );

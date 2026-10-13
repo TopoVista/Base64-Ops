@@ -24,6 +24,7 @@ when its backend representation reaches an authenticated frontend surface.
 | Execution sandbox | capabilities endpoint + validation results | Inspector + Command Center Delivery Plan / approval banner | Usable: validator plan and status are exposed before approval; sandbox detail remains in the inspector. |
 | Operational Memory API | `/api/memory/*`, `AgentState.operational_memory`, `memory.related` SSE | Command Center `RelatedHistoryPanel` | Usable: history is separate from evidence and labelled by freshness. |
 | GitHub Actions CI Intelligence | `ci.summary`, CI Evidence, replay context | CI evidence card / inspector | Usable: the command center shows failed/current SHA, applicability, failed jobs, limitations, redacted excerpts, and the replay link. |
+| Incident automation and native reporting | signed webhook ledger, tenant-scoped incident records, optional neutral Check state | Incident Inbox settings and incident-detail reporting card | Usable locally: users configure read-only intake and a separately opt-in neutral Check. It remains disabled until an operator supplies a GitHub App with Checks: write and a verified installation binding. |
 
 ## Supporting DONE capabilities
 
@@ -49,6 +50,7 @@ so a backend-only capability cannot be mistaken for a missing product surface.
 | Execution runtime sandbox | `GET /api/system/capabilities`, sandbox validation result | `Delivery Plan` validators and `DevRunInspector` | Usable: a user sees plan/result summaries; raw sandbox controls are intentionally not exposed. |
 | Live evaluation framework | `python -m evals.runner --mode live`, allowlist/budget guards | [LIVE_EVALUATION.md](LIVE_EVALUATION.md) and manual Actions workflow | Explicit operator-only capability; intentionally absent from normal UI. |
 | Operational Memory API | `/api/memory/*`, `memory.related` SSE | `Related History` panel | Usable: relevant verified history is separate from current evidence. |
+| Candidate verification / neutral Checks | `verification_runs`, exact dispatch approval, GitHub App reporting service | Code review verification control and Incident Inbox preference | Usable only after explicit owner/App setup; no browser can supply App tokens or convert a workflow command into an executable validator. |
 
 ## Completion evidence
 

@@ -15,4 +15,10 @@ Metrics are deterministic: fixture evidence recall, fixture citation precision, 
 
 GitHub Actions integration tests use deterministic adapter/service fakes. They verify redaction, bounded excerpts, repository-scoped run selection, failed-run/current-SHA separation, historical-failure applicability, changed-file correlation, and log-permission degradation. A live authenticated Actions run is deliberately not part of the deterministic suite.
 
+Candidate-verification and optional native Check tests remain separate focused
+backend tests because they exercise exact approval binding, App-installation
+scope, non-forced candidate refs, redacted neutral Check payloads, and the
+rule that neither targeted verification nor reporting claims full CI or repair
+success. They use no GitHub token and do not constitute live App verification.
+
 Use `python -m evals.runner --mode deterministic --output ../artifacts/eval-summary.json --format json` from `backend` to generate a machine-readable report containing only measured case results and summary metrics.

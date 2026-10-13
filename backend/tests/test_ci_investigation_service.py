@@ -8,6 +8,7 @@ from app.git.actions import CIFailureCategory, CILogExcerpt, WorkflowJobSummary,
 from app.git.change_provider import ChangedPathsResult
 from app.services.ci_investigation_service import (
     CIInvestigationService,
+    _compare_dependency_manifests,
     _extract_safe_path_hints,
     compare_workflow_history,
     compare_workflow_versions,
@@ -356,6 +357,34 @@ def test_workflow_version_comparison_is_explicitly_non_causal() -> None:
     assert changed["workflow_changed_since_last_success"] is True
     assert "not proof of cause" in str(changed["workflow_comparison_note"])
     assert unchanged["workflow_changed_since_last_success"] is False
+
+
+def test_runner_and_dependency_comparisons_are_bounded_correlation_only() -> None:
+    workflow_comparison = compare_workflow_versions(
+        failed_workflow="jobs:\n  test:\n    runs-on: ubuntu-latest\n",
+        prior_successful_workflow="jobs:\n  test:\n    runs-on: ubuntu-22.04\n",
+    )
+    assert workflow_comparison["declared_runner_changed_since_last_success"] is True
+    assert "not proof" in str(workflow_comparison["runner_comparison_note"])
+
+    class DependencyWorkspace(FakeWorkspace):
+        def read_file_at_ref(self, _repo_path: Path, path: str, ref: str):
+            versions = {
+                ("backend/requirements.txt", "failed"): "fastapi==1.0\nhttpx==0.28\n",
+                ("backend/requirements.txt", "prior"): "fastapi==1.0\n",
+            }
+            return versions.get((path, ref))
+
+    comparison, prior_sources = _compare_dependency_manifests(
+        workspace=DependencyWorkspace(),
+        repo_path=Path("/fixture"),
+        failed_sha="failed",
+        prior_success_sha="prior",
+        surface="python",
+    )
+    assert comparison["dependency_files_changed_since_last_success"] is True
+    assert "not proof" in str(comparison["dependency_comparison_note"])
+    assert [source["source"] for source in prior_sources] == ["backend/requirements.txt"]
 
 
 @pytest.mark.asyncio

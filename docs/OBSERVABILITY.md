@@ -25,3 +25,20 @@ owning tenant/session. Historical replay resolves that report only through the
 same tenant, session, and delivery-plan binding, then projects a small
 allowlist that excludes graph node IDs, relationship endpoint IDs, ownership
 fields, and raw source content.
+
+Candidate-verification dispatch adds a `candidate_verification.dispatch` span
+when the originating DeliveryPlan has a trace. Its allowlisted summary contains
+only the plan ID, changed-file count, configured workflow path, verification
+run ID, lifecycle status, and verification level. App private keys,
+installation tokens, source bytes, workflow commands, and raw job logs never
+enter trace data. The persisted `verification-run-v1` record is exposed only
+through a tenant-scoped status projection and can be refreshed without
+re-dispatching the workflow.
+
+GitHub-native incident Check reporting is intentionally outside the user-agent
+trace path: it runs only after the incident, evidence references, and grouping
+write complete. The persisted incident contains a narrow report state (status,
+Check Run ID, safe URL, and bounded availability message), not provider errors,
+App credentials, OAuth tokens, log bodies, or Check request payloads. A
+reporting failure becomes an incident limitation and does not replay the
+investigation or create a retry loop.

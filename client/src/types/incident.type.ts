@@ -39,6 +39,10 @@ export type IncidentRecord = {
     same_sha_success_count: number;
     workflow_changed_since_last_success?: boolean | null;
     workflow_comparison_note?: string | null;
+    dependency_files_changed_since_last_success?: boolean | null;
+    dependency_comparison_note?: string | null;
+    declared_runner_changed_since_last_success?: boolean | null;
+    runner_comparison_note?: string | null;
     assessment: string;
     limitation?: string | null;
   } | null;
@@ -63,6 +67,13 @@ export type IncidentRecord = {
   };
   memoryEntryCount?: number;
   memoryRecordedAt?: string;
+  githubCheckReport?: {
+    status: "published" | "unavailable" | "disabled" | string;
+    checkRunId?: number;
+    url?: string | null;
+    message?: string;
+    publishedAt?: string;
+  };
   feedback?: {
     disposition: "helpful" | "incorrect" | "needs_more_evidence";
     correction?: string;
@@ -101,6 +112,7 @@ export type RepositoryAutomationSettings = {
   include_branches: string[];
   exclude_branches: string[];
   daily_investigation_limit: number;
+  github_check_reporting_enabled: boolean;
   updated_at: string;
 };
 
@@ -108,3 +120,37 @@ export type RepositoryAutomationSettingsInput = Omit<
   RepositoryAutomationSettings,
   "id" | "session_id" | "repository_id" | "updated_at"
 >;
+
+/**
+ * A repository-scoped GitHub App binding for the optional candidate workflow.
+ * It is deliberately separate from read-only incident automation: enabling it
+ * only allows a user to request a separately approved verification dispatch.
+ */
+export type CandidateVerificationSettings = {
+  id: string;
+  session_id: string;
+  repository_id: string;
+  repository_full_name?: string | null;
+  enabled: boolean;
+  workflow_path?: string | null;
+  configured: boolean;
+  updated_at: string;
+};
+
+export type CandidateVerificationSettingsInput = {
+  enabled: boolean;
+  installation_id?: string | null;
+  workflow_path?: string | null;
+};
+
+export type CandidateVerificationRun = {
+  verificationRunId: string;
+  status: "dispatching" | "dispatched" | "pending" | "running" | "succeeded" | "failed" | "stale" | "inconclusive" | string;
+  verificationLevel: string;
+  githubRunId?: number | null;
+  githubUrl?: string | null;
+  message?: string | null;
+  limitations: string[];
+  createdAt?: string | null;
+  updatedAt?: string | null;
+};

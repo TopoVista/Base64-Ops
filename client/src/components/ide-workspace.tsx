@@ -21,6 +21,7 @@ import type {
   DeliveryPlanSummary,
 } from "@/types/agent.type";
 import type { SingleSessionResponse } from "@/types/session.type";
+import type { CandidateVerificationRun } from "@/types/incident.type";
 import { useQuery } from "@tanstack/react-query";
 import { applyPatch } from "diff";
 import {
@@ -887,11 +888,16 @@ function RepairProgress({ ci }: { ci: CIInvestigationSummary }) {
 
 // ─── Review panel ─────────────────────────────────────────────────────────────
 
-function ReviewPanel({ file, draft, deliveryPlan, ci, stagedForCommit, reviewedFilePaths, commitMessage, onCommitMessageChange, pendingApproval, onStage, onOpenAffectedFile, onSelectPlanFile, onDeliver, delivering, onRequestDeliveryApproval, requestApprovalPending, deliveryResult }: {
+function ReviewPanel({ file, draft, deliveryPlan, ci, stagedForCommit, reviewedFilePaths, commitMessage, onCommitMessageChange, pendingApproval, candidateVerificationEnabled, candidateVerificationPendingApproval, candidateVerificationRun, onRefreshCandidateVerification, candidateVerificationRefreshPending, onRequestCandidateVerification, candidateVerificationRequestPending, onDispatchCandidateVerification, candidateVerificationDispatchPending, onStage, onOpenAffectedFile, onSelectPlanFile, onDeliver, delivering, onRequestDeliveryApproval, requestApprovalPending, deliveryResult }: {
   file?: CodeFile; draft: string; deliveryPlan: DeliveryPlanSummary;
   ci?: CIInvestigationSummary | null;
   stagedForCommit: boolean; reviewedFilePaths: string[]; commitMessage: string;
   onCommitMessageChange: (v: string) => void; pendingApproval?: ApprovalRequest;
+  candidateVerificationEnabled: boolean; candidateVerificationPendingApproval?: ApprovalRequest;
+  candidateVerificationRun?: CandidateVerificationRun | null;
+  onRefreshCandidateVerification: () => void; candidateVerificationRefreshPending: boolean;
+  onRequestCandidateVerification: () => void; candidateVerificationRequestPending: boolean;
+  onDispatchCandidateVerification: () => void; candidateVerificationDispatchPending: boolean;
   onStage: () => void; onOpenAffectedFile: () => void; onSelectPlanFile: (path: string) => void; onDeliver: () => void; delivering: boolean;
   onRequestDeliveryApproval: () => void; requestApprovalPending: boolean;
   deliveryResult?: { status: string; pull_request_url?: string; ciVerification?: { status: string; message?: string } } | null;
@@ -944,12 +950,39 @@ function ReviewPanel({ file, draft, deliveryPlan, ci, stagedForCommit, reviewedF
             : "Validation results will be recorded before delivery."} GitHub Actions remains the final verifier after push.
         </p>
         {candidateVerification ? (
-          <p className="mt-1 text-[10px] leading-4" style={{ color: "var(--ide-fg2)" }}>
+          <div className="mt-2 flex flex-wrap items-center gap-2 text-[10px] leading-4" style={{ color: "var(--ide-fg2)" }}>
             Candidate verification: <strong>{candidateVerification.status ?? "proposed"}</strong>
             {candidateVerification.verificationLevel === "not_independently_tested"
               ? " — static validation is recorded separately; no targeted remote verification has run."
               : candidateVerification.verificationLevel ? ` — ${candidateVerification.verificationLevel.replaceAll("_", " ")}.` : "."}
-          </p>
+            {candidateVerificationEnabled ? (
+              candidateVerificationPendingApproval ? (
+                <button type="button" onClick={onDispatchCandidateVerification} disabled={candidateVerificationDispatchPending}
+                  className="rounded border px-2 py-1 font-semibold disabled:opacity-50" style={{ borderColor: "var(--ide-warning-border)", background: "var(--ide-warning-bg)", color: "var(--ide-warning-fg)" }}>
+                  {candidateVerificationDispatchPending ? "Dispatching candidate..." : "Approve & dispatch candidate"}
+                </button>
+              ) : (
+                <button type="button" onClick={onRequestCandidateVerification} disabled={candidateVerificationRequestPending}
+                  className="rounded border px-2 py-1 font-semibold disabled:opacity-50" style={{ borderColor: "var(--ide-info-border)", background: "var(--ide-info-bg)", color: "var(--ide-info-fg)" }}>
+                  {candidateVerificationRequestPending ? "Preparing verification approval..." : "Prepare candidate verification"}
+                </button>
+              )
+            ) : null}
+          </div>
+        ) : null}
+        {candidateVerificationEnabled ? <p className="mt-1 text-[10px] leading-4" style={{ color: "var(--ide-fg-dim)" }}>Candidate verification creates a separately approved disposable branch only. It does not create a pull request, deliver this plan, or prove full CI.</p> : null}
+        {candidateVerificationRun ? (
+          <div className="mt-2 flex flex-wrap items-center gap-2 rounded border px-2.5 py-2 text-[10px]" style={{ borderColor: "var(--ide-border2)", background: "var(--ide-bg2)", color: "var(--ide-fg2)" }}>
+            <strong style={{ color: "var(--ide-fg)" }}>Latest candidate:</strong>
+            <span>{candidateVerificationRun.status.replaceAll("_", " ")}</span>
+            <span>· {candidateVerificationRun.verificationLevel.replaceAll("_", " ")}</span>
+            <button type="button" onClick={onRefreshCandidateVerification} disabled={candidateVerificationRefreshPending}
+              className="ml-auto rounded border px-2 py-1 disabled:opacity-50" style={{ borderColor: "var(--ide-border2)", color: "var(--ide-blue)" }}>
+              {candidateVerificationRefreshPending ? "Refreshing..." : "Refresh status"}
+            </button>
+            {candidateVerificationRun.githubUrl ? <a href={candidateVerificationRun.githubUrl} target="_blank" rel="noreferrer" className="underline" style={{ color: "var(--ide-blue)" }}>Open GitHub ↗</a> : null}
+            {candidateVerificationRun.message ? <span className="basis-full" style={{ color: "var(--ide-fg-dim)" }}>{candidateVerificationRun.message}</span> : null}
+          </div>
         ) : null}
       </div>
       <div className="grid min-h-0 flex-1 grid-cols-1 overflow-hidden xl:grid-cols-2">
@@ -1126,10 +1159,19 @@ export interface IDEWorkspaceProps {
   ciRepairBlockedReason?: string;
   deliveryPlan?: DeliveryPlanSummary | null;
   pendingApproval?: ApprovalRequest;
+  candidateVerificationEnabled: boolean;
+  candidateVerificationPendingApproval?: ApprovalRequest;
+  candidateVerificationRun?: CandidateVerificationRun | null;
   onDeliver: () => void;
   deliveryPending: boolean;
   onRequestDeliveryApproval: () => void;
   requestApprovalPending: boolean;
+  onRequestCandidateVerification: () => void;
+  candidateVerificationRequestPending: boolean;
+  onDispatchCandidateVerification: () => void;
+  candidateVerificationDispatchPending: boolean;
+  onRefreshCandidateVerification: () => void;
+  candidateVerificationRefreshPending: boolean;
 }
 
 export function IDEWorkspace({
@@ -1138,7 +1180,12 @@ export function IDEWorkspace({
   commitMessage, onCommitMessageChange, changed,
   onPropose, proposalPending, commits, commitsPending,
   ci, onStartCiRepair, ciRefreshPending, onGenerateCiProposal, ciProposalPending, ciProposalAvailable, ciRepairBlockedReason,
-  deliveryPlan, pendingApproval, onDeliver, deliveryPending, onRequestDeliveryApproval, requestApprovalPending,
+  deliveryPlan, pendingApproval, candidateVerificationEnabled, candidateVerificationPendingApproval,
+  candidateVerificationRun,
+  onDeliver, deliveryPending, onRequestDeliveryApproval, requestApprovalPending,
+  onRequestCandidateVerification, candidateVerificationRequestPending,
+  onDispatchCandidateVerification, candidateVerificationDispatchPending,
+  onRefreshCandidateVerification, candidateVerificationRefreshPending,
 }: IDEWorkspaceProps) {
   const [fullscreen, setFullscreen] = useState(false);
   const [explorerOpen, setExplorerOpen] = useState(true);
@@ -1366,6 +1413,15 @@ export function IDEWorkspace({
               <ReviewPanel file={file} draft={visibleDraft} deliveryPlan={deliveryPlan} ci={ci}
                 stagedForCommit={stagedForCommit} reviewedFilePaths={reviewedPlanPaths} commitMessage={commitMessage}
                 onCommitMessageChange={onCommitMessageChange} pendingApproval={pendingApproval}
+                candidateVerificationEnabled={candidateVerificationEnabled}
+                candidateVerificationPendingApproval={candidateVerificationPendingApproval}
+                candidateVerificationRun={candidateVerificationRun}
+                onRefreshCandidateVerification={onRefreshCandidateVerification}
+                candidateVerificationRefreshPending={candidateVerificationRefreshPending}
+                onRequestCandidateVerification={onRequestCandidateVerification}
+                candidateVerificationRequestPending={candidateVerificationRequestPending}
+                onDispatchCandidateVerification={onDispatchCandidateVerification}
+                candidateVerificationDispatchPending={candidateVerificationDispatchPending}
                 onStage={stageExactChange} onOpenAffectedFile={openAffectedProposalFile}
                 onSelectPlanFile={openPlanFile}
                 onDeliver={onDeliver} delivering={deliveryPending}

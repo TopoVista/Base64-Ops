@@ -107,6 +107,50 @@ class BackgroundJobService:
             raise
         return {"id": job["_id"], "status": job["status"], "deduplicated": False}
 
+    async def enqueue_candidate_verification_observation(
+        self, *, user_id: str, verification_run_id: str
+    ) -> dict[str, Any]:
+        """Queue a bounded observer for a server-created verification run.
+
+        The payload has only an opaque persisted ID. Installation, repository,
+        workflow, and branch values are reloaded tenant-scoped by the observer
+        and cannot be supplied by a browser or a workflow file.
+        """
+
+        db = get_db()
+        dedupe_key = f"candidate-verification:{user_id}:{verification_run_id}"
+        existing = await db.background_jobs.find_one(
+            {"dedupeKey": dedupe_key, "status": {"$in": ["queued", "running"]}},
+            projection={"_id": 1, "status": 1},
+        )
+        if existing:
+            return {"id": existing["_id"], "status": existing["status"], "deduplicated": True}
+        now = utc_now()
+        job = {
+            "_id": new_id("job_"),
+            "role": "ci_observer",
+            "type": "observe_candidate_verification",
+            "status": "queued",
+            "dedupeKey": dedupe_key,
+            "userId": user_id,
+            "payload": {"verificationRunId": verification_run_id},
+            "attempts": 0,
+            "availableAt": now,
+            "createdAt": now,
+            "updatedAt": now,
+        }
+        job["activeDedupeKey"] = dedupe_key
+        try:
+            await db.background_jobs.insert_one(job)
+        except DuplicateKeyError:
+            existing = await db.background_jobs.find_one(
+                {"activeDedupeKey": dedupe_key}, projection={"_id": 1, "status": 1}
+            )
+            if existing:
+                return {"id": existing["_id"], "status": existing["status"], "deduplicated": True}
+            raise
+        return {"id": job["_id"], "status": job["status"], "deduplicated": False}
+
     async def enqueue_incident_dispatch(self, *, event_id: str) -> dict[str, Any]:
         """Queue a server-created webhook event for the opt-in incident worker.
 

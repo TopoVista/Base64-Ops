@@ -11,6 +11,8 @@ Base64 Ops is designed to demonstrate a safer workflow than “LLM + terminal”
 - Compares failed-run SHA state with current HEAD to avoid patching already-fixed incidents.
 - Produces constrained unified diffs in an isolated candidate workspace.
 - Runs deterministic validation, applies risk policy, and requires approval before creating a draft PR.
+- Optionally verifies an immutable candidate branch with a separately configured GitHub App and a second exact approval; targeted workflow success is never presented as full CI success.
+- Optionally publishes one neutral, redacted GitHub Check after a persisted CI investigation when the repository owner opts in; it reports analysis availability, never a successful repair or passing CI.
 - Replays investigations without re-running historical actions.
 - Records verified operational memory without allowing historical memory to override current evidence.
 
@@ -67,6 +69,10 @@ cd ../client; npm install
 ```
 
 For a guided local demo setup, run `./scripts/demo.ps1`. It does not create GitHub data, bypass approval, or claim a real PR. Live GitHub Actions verification remains **not exercised** unless explicitly run with authorized credentials.
+
+Candidate verification is disabled by default and requires a repository owner
+to configure a dedicated GitHub App, reviewed workflow, and explicit exact
+dispatch approval. See [CANDIDATE_VERIFICATION.md](docs/CANDIDATE_VERIFICATION.md).
 
 ## Evaluation and verification
 

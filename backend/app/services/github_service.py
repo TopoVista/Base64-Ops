@@ -6,6 +6,7 @@ from typing import Any
 from urllib.parse import quote, urljoin, urlparse, urlunparse
 
 import httpx
+import jwt as pyjwt
 from fastapi import HTTPException, status
 
 from app.core.config import get_settings
@@ -26,6 +27,8 @@ _ACTIONS_LOG_DOWNLOAD_HOST_SUFFIX = ".actions.githubusercontent.com"
 # deliberately narrow: accepting arbitrary blob storage would turn the API
 # into an outbound-request primitive.
 _ACTIONS_LOG_AZURE_HOST = re.compile(r"^productionresultssa\d+\.blob\.core\.windows\.net$")
+_GITHUB_APP_ID = re.compile(r"^[1-9][0-9]{0,18}$")
+_GITHUB_INSTALLATION_ID = re.compile(r"^[1-9][0-9]{0,18}$")
 
 
 def is_safe_actions_log_download_url(url: str) -> bool:
@@ -350,6 +353,152 @@ async def disconnect_github(user_id: str) -> dict[str, bool]:
     await db.github_accounts.delete_one({"userId": user_id})
     await db.github_repository_cache.delete_one({"_id": user_id})
     return {"connected": False}
+
+
+def github_app_credentials_configured() -> bool:
+    """Return whether server-side GitHub App credentials are available.
+
+    This only establishes that an App JWT can be minted. It does not advertise
+    repository access, installation permissions, or any enabled feature.
+    """
+
+    settings = get_settings()
+    return bool(
+        _GITHUB_APP_ID.fullmatch(settings.github_app_id.strip())
+        and settings.github_app_private_key.strip()
+    )
+
+
+def github_app_is_configured() -> bool:
+    """Return whether the distinct candidate-verification App boundary is configured."""
+
+    return bool(get_settings().github_candidate_verification_enabled and github_app_credentials_configured())
+
+
+def github_incident_reporting_is_configured() -> bool:
+    """Return whether opt-in GitHub Check reporting may be attempted."""
+
+    return bool(get_settings().github_incident_reporting_enabled and github_app_credentials_configured())
+
+
+def _github_app_jwt() -> str:
+    """Create the short-lived JWT accepted by GitHub's App endpoints.
+
+    The key is only consumed at the server boundary. Callers receive generic
+    availability failures rather than malformed-key/provider details.
+    """
+
+    settings = get_settings()
+    app_id = settings.github_app_id.strip()
+    private_key = settings.github_app_private_key.replace("\\n", "\n").strip()
+    if not (_GITHUB_APP_ID.fullmatch(app_id) and private_key):
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="GitHub App credentials are not configured.",
+        )
+    now = int(utc_now().timestamp())
+    try:
+        token = pyjwt.encode(
+            {"iat": now - 30, "exp": now + 540, "iss": app_id},
+            private_key,
+            algorithm="RS256",
+        )
+    except Exception as exc:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="GitHub App authentication is unavailable.",
+        ) from exc
+    return token.decode("utf-8") if isinstance(token, bytes) else token
+
+
+async def _github_app_api(method: str, path: str, **kwargs: Any) -> Any:
+    """Call a GitHub App endpoint with a newly minted short-lived JWT."""
+
+    headers = {
+        "Authorization": f"Bearer {_github_app_jwt()}",
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+    }
+    headers.update(kwargs.pop("headers", {}))
+    async with httpx.AsyncClient(timeout=30) as client:
+        response = await client.request(method, f"https://api.github.com{path}", headers=headers, **kwargs)
+    response.raise_for_status()
+    return response.json() if response.content else None
+
+
+async def validate_github_app_installation_repository(
+    *, installation_id: str, repository_id: str
+) -> dict[str, str]:
+    """Prove that a configured App installation can access one known repo.
+
+    ``repository_id`` is supplied only from a user-owned persisted session or
+    previously server-validated automation setting. A browser-provided owner
+    or repository name is never used as the App API target.
+    """
+
+    if not _GITHUB_INSTALLATION_ID.fullmatch(installation_id) or not repository_id.isdigit():
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Invalid GitHub App installation.")
+    for page in range(1, 6):
+        data = await _github_app_api(
+            "GET",
+            f"/app/installations/{installation_id}/repositories",
+            params={"per_page": 100, "page": page},
+        )
+        repositories = data.get("repositories", []) if isinstance(data, dict) else []
+        if not isinstance(repositories, list):
+            break
+        for repository in repositories:
+            if isinstance(repository, dict) and str(repository.get("id")) == repository_id:
+                full_name = repository.get("full_name")
+                clone_url = repository.get("clone_url")
+                if isinstance(full_name, str) and isinstance(clone_url, str):
+                    return {
+                        "id": repository_id,
+                        "fullName": full_name,
+                        "cloneUrl": clone_url,
+                        "defaultBranch": str(repository.get("default_branch") or "main"),
+                    }
+        if len(repositories) < 100:
+            break
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail="The configured GitHub App installation cannot access this repository.",
+    )
+
+
+async def create_github_installation_token(installation_id: str) -> str:
+    """Mint an ephemeral installation token; never persist or return it."""
+
+    if not _GITHUB_INSTALLATION_ID.fullmatch(installation_id):
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Invalid GitHub App installation.")
+    data = await _github_app_api("POST", f"/app/installations/{installation_id}/access_tokens", json={})
+    token = data.get("token") if isinstance(data, dict) else None
+    if not isinstance(token, str) or not token:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="GitHub App did not issue a verification token.",
+        )
+    return token
+
+
+async def github_installation_api(installation_id: str, method: str, path: str, **kwargs: Any) -> Any:
+    """Call a repository endpoint with an ephemeral installation token.
+
+    This intentionally has a distinct entry point from :func:`github_api` so
+    OAuth access cannot be accidentally promoted into App verification scope.
+    """
+
+    token = await create_github_installation_token(installation_id)
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+    }
+    headers.update(kwargs.pop("headers", {}))
+    async with httpx.AsyncClient(timeout=45) as client:
+        response = await client.request(method, f"https://api.github.com{path}", headers=headers, **kwargs)
+    response.raise_for_status()
+    return response.json() if response.content else None
 
 
 async def github_api(user_id: str, method: str, path: str, **kwargs: Any) -> Any:

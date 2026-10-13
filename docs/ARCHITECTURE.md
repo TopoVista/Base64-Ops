@@ -58,3 +58,31 @@ flowchart LR
 ```
 
 No edge in this diagram lets content from the left register a validator, change policy, disclose credentials, or authorize execution.
+
+## Optional GitHub-native incident reporting
+
+After the signed webhook intake has durably stored and grouped an incident,
+the dispatch worker may make one additional best-effort call through the
+existing GitHub App installation-token boundary. It is available only when the
+deployment enables it, the repository owner selects the Inbox preference, and
+that exact session already has a verified App installation binding. The call
+creates or updates a `neutral` GitHub Check containing only a centrally
+redacted, bounded investigation summary and authenticated incident link.
+
+This reporting path is deliberately downstream of persistence: permission or
+network failure adds a visible incident limitation but never discards evidence,
+retries the investigation, creates a PR comment, dispatches/reruns Actions, or
+turns analysis completion into a CI-success claim. It uses no browser-supplied
+repository target and never promotes OAuth read credentials into write scope.
+## Optional candidate-verification boundary
+
+The GitHub OAuth integration remains the normal read-only investigation and
+draft-PR delivery boundary. Candidate verification uses a separately
+configured GitHub App and is disabled by default. Its `CandidateVerificationService`
+validates an App installation against the server-authorized session repository,
+creates only a non-forced exact candidate ref after a dedicated approval, and
+dispatches one repository-owner-selected workflow. A tenant-scoped
+`verification_runs` record and the existing `ci_observer` worker persist and
+observe the result. The branch/workflow/patch hash/base SHA are all bound to
+the approval; YAML commands are not parsed or run by Base64. Refer to
+[CANDIDATE_VERIFICATION.md](CANDIDATE_VERIFICATION.md) for setup and limits.

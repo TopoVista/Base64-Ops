@@ -10,6 +10,7 @@ from app.git.actions import GitHubActionsAdapter
 from app.intelligence.graph.service import EngineeringGraphService
 from app.intelligence.graph.store import EngineeringGraphStore
 from app.services.background_job_service import BackgroundJobService
+from app.services.candidate_verification_service import CandidateVerificationService
 from app.services.delivery_ci_service import evaluate_delivery_ci
 from app.services.incident_service import IncidentDispatchService
 from app.services.rag_service import RagService
@@ -123,6 +124,33 @@ async def run_job(job: dict) -> None:
             },
         )
         if verdict.status in {"pending", "running"}:
+            raise DeferredJob(get_settings().ci_verification_poll_seconds)
+        return
+    if job.get("type") == "observe_candidate_verification":
+        verification_run_id = str((job.get("payload") or {}).get("verificationRunId", ""))
+        if not verification_run_id:
+            raise ValueError("Missing candidate verification run ID")
+        outcome = await CandidateVerificationService().observe_run(
+            user_id=str(job["userId"]), verification_run_id=verification_run_id
+        )
+        attempts = int(job.get("attempts", 1))
+        if outcome.get("status") in {"pending", "running"}:
+            if attempts >= get_settings().ci_verification_max_polls:
+                await get_db().verification_runs.update_one(
+                    {"_id": verification_run_id, "userId": job["userId"]},
+                    {
+                        "$set": {
+                            "status": "inconclusive",
+                            "verificationLevel": "inconclusive",
+                            "message": (
+                                "Candidate verification did not reach a terminal state before "
+                                "the observation window expired."
+                            ),
+                            "updatedAt": utc_now(),
+                        }
+                    },
+                )
+                return
             raise DeferredJob(get_settings().ci_verification_poll_seconds)
         return
     if job.get("type") == "investigate_workflow_failure":

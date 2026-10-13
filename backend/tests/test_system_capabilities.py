@@ -51,3 +51,8 @@ async def test_candidate_verification_never_advertises_unconfigured_remote_ci(mo
     assert verification["configured"] is False
     assert verification["accessible"] is False
     assert verification["unavailable_reason"]
+
+    reporting = result["github"]["incident_check_reporting"]
+    assert reporting["implemented"] is True
+    assert reporting["configured"] is False
+    assert reporting["accessible"] is False

@@ -74,11 +74,40 @@ merged, or verified. Users can add redacted feedback to an incident detail;
 feedback is an untrusted review annotation and cannot alter evidence, approval,
 or repository authorization.
 
+## Candidate verification (optional GitHub App authority)
+
+Candidate verification is an additional, opt-in GitHub App boundary; it is not
+part of the OAuth-backed read-only Actions adapter. A repository owner may bind
+one existing `.github/workflows/*.yml` workflow to one owned session from
+Incident Inbox. The server validates the App installation against the
+OAuth-authorized repository, confirms only that the reviewed workflow file
+exists, and stores the binding without retaining App tokens or private-key
+material.
+
+For a separately approved immutable DeliveryPlan, Base64 creates a non-forced
+`base64-verify/...` candidate branch from the exact base SHA, writes only the
+exact reviewed blobs/tree/commit, and dispatches that existing workflow.
+Workflow YAML and `run:` commands remain untrusted data: they never become
+Base64 validator commands. Plans touching `.github/workflows/` are refused for
+candidate verification. Dispatch is not a PR delivery and does not authorize a
+normal push.
+
+The `verification_runs` collection stores a tenant-scoped, bounded
+`verification-run-v1` audit record. The `ci_observer` worker or an explicit
+status refresh observes only the configured workflow's metadata for the exact
+candidate branch/SHA. `targeted_verification_passed` is intentionally not
+presented as full CI success. See [CANDIDATE_VERIFICATION.md](CANDIDATE_VERIFICATION.md)
+for App permissions, workflow hardening, lifecycle, and limitations.
+
 ## Verification status
 
 The deterministic adapter, CI investigation service, provenance separation, redaction, partial-permission behavior, and UI rendering are covered by mocked tests. A live authenticated GitHub Actions API call has not been exercised in this workspace.
 
-Candidate verification dispatch and GitHub-native checks/comments remain
-unsupported until an explicit GitHub App installation-token boundary and a
-reviewed repository-owned workflow are configured. OAuth read access is never
-silently promoted into verification or reporting authority.
+The GitHub App candidate-verification boundary is implemented and mock-tested,
+but disabled by default. A live App installation and authenticated Actions
+dispatch have not been exercised in this workspace. Optional GitHub Check
+reporting is also implemented and mock-tested: it requires a separate
+repository opt-in, the already verified App binding, and explicit
+`Checks: write`; it creates or updates only a neutral redacted Check after a
+durable incident exists. PR comments remain unsupported. OAuth read access is
+never silently promoted into verification or reporting authority.

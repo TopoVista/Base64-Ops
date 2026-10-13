@@ -51,6 +51,11 @@ class RepositoryAutomationSettingsRequest(BaseModel):
     include_branches: list[str] = Field(default_factory=list, max_length=30)
     exclude_branches: list[str] = Field(default_factory=list, max_length=30)
     daily_investigation_limit: int = Field(default=5, ge=1, le=25)
+    # This preference only permits a neutral, redacted GitHub Check after
+    # evidence collection. It is inert unless the deployment has enabled a
+    # GitHub App with Checks: write and the repository has a verified App
+    # installation binding.
+    github_check_reporting_enabled: bool = False
 
 
 class RepositoryAutomationSettingsResponse(BaseModel):
@@ -62,6 +67,26 @@ class RepositoryAutomationSettingsResponse(BaseModel):
     include_branches: list[str] = Field(default_factory=list)
     exclude_branches: list[str] = Field(default_factory=list)
     daily_investigation_limit: int
+    github_check_reporting_enabled: bool = False
+    updated_at: datetime
+
+
+class CandidateVerificationSettingsRequest(BaseModel):
+    """Opt-in binding for a reviewed repository-owned verification workflow."""
+
+    enabled: bool = False
+    installation_id: str | None = Field(default=None, max_length=19)
+    workflow_path: str | None = Field(default=None, max_length=220)
+
+
+class CandidateVerificationSettingsResponse(BaseModel):
+    id: str
+    session_id: str
+    repository_id: str
+    repository_full_name: str | None = None
+    enabled: bool
+    workflow_path: str | None = None
+    configured: bool
     updated_at: datetime
 
 

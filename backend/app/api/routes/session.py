@@ -40,6 +40,7 @@ from app.services.session_service import (
     read_session_code_file,
     refresh_latest_ci,
     reindex_session,
+    request_candidate_verification_approval,
     request_delivery_approval,
     update_delivery_commit_message,
 )
@@ -237,6 +238,17 @@ async def request_plan_approval(
     """Create a new exact approval record; it never executes a delivery."""
 
     return await request_delivery_approval(user["_id"], slug_id, plan_id)
+
+
+@router.post("/{slug_id}/delivery-plan/{plan_id}/candidate-verification/approval")
+async def request_candidate_verification(
+    slug_id: str,
+    plan_id: str,
+    user: dict = Depends(get_current_user),
+) -> dict:
+    """Create a separate, exact approval for an opt-in App verification run."""
+
+    return await request_candidate_verification_approval(user["_id"], slug_id, plan_id)
 
 
 @router.post("/runbooks")

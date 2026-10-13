@@ -169,6 +169,8 @@ export type CommandCenterSnapshot = {
 
 export type ApprovalRequest = {
   id: string;
+  /** Server-selected action discriminator; never trust browser supplied values. */
+  action_type?: "create_draft_pull_request" | "dispatch_candidate_verification" | string;
   action: string;
   summary: string;
   args: Record<string, unknown>;

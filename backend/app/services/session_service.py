@@ -31,6 +31,10 @@ from app.schemas.session import (
     SessionChatRequest,
 )
 from app.services.background_job_service import BackgroundJobService
+from app.services.candidate_verification_service import (
+    CandidateVerificationService,
+    verification_approval_is_bound,
+)
 from app.services.ci_investigation_service import CIInvestigationService
 from app.services.ci_request_intent import extract_ci_request_intent
 from app.services.ci_run_resolution_service import CIRunResolutionService
@@ -355,27 +359,35 @@ async def get_session_by_slug(user_id: str, slug_id: str) -> dict:
             # approval can be created later. The nested investigation copy is
             # display context only, so resolve the canonical plan-bound
             # pending record before presenting the Code workspace.
-            current_approval = await db.approvals.find_one(
+            current_approvals = await db.approvals.find(
                 {
                     "userId": user_id,
                     "sessionId": session["_id"],
                     "deliveryPlanId": plan_id,
                     "status": "pending",
-                },
-                sort=[("createdAt", -1)],
-            )
-            if current_approval:
-                snapshot = next(
-                    (
-                        item
-                        for item in approvals
-                        if isinstance(item, dict) and item.get("id") == current_approval.get("id")
-                    ),
-                    {},
-                )
-                # Preserve safe display metadata from the snapshot while the
-                # canonical record controls status and immutable binding.
-                approvals = [{**snapshot, **current_approval}]
+                }
+            ).sort("createdAt", -1).to_list(20)
+            if current_approvals:
+                # A plan can legitimately have more than one pending action:
+                # e.g. a normal draft-PR delivery approval and a separately
+                # bound, opt-in candidate-verification approval.  Returning
+                # only the newest record hid the other action in the Code
+                # workspace.  Canonical pending records control mutable
+                # status/binding; the immutable investigation snapshot only
+                # supplies safe display metadata.
+                snapshots = {
+                    str(item.get("id")): item
+                    for item in approvals
+                    if isinstance(item, dict) and item.get("id")
+                }
+                resolved_approvals = [
+                    {**snapshots.pop(str(current.get("id")), {}), **current}
+                    for current in current_approvals
+                ]
+                # Do not resurrect invalidated/rejected snapshot records from
+                # the original investigation. The canonical pending records
+                # are the only actions the reviewer may still take.
+                approvals = resolved_approvals
         command_center = {
             "runId": latest.get("runId"),
             "repository": latest.get("repository", {}),
@@ -1181,6 +1193,37 @@ async def request_delivery_approval(user_id: str, slug_id: str, plan_id: str) ->
     return {"approval": serialize_doc(approval), "reused": False}
 
 
+async def request_candidate_verification_approval(user_id: str, slug_id: str, plan_id: str) -> dict:
+    """Request a separate exact approval before an App dispatches verification.
+
+    This does not deliver a patch, create a pull request, or reuse the normal
+    draft-PR approval. It binds the configured installation/workflow, base SHA,
+    and exact candidate hash to a single user decision.
+    """
+
+    db = get_db()
+    session = await db.sessions.find_one({"userId": user_id, "slugId": slug_id})
+    if not session:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
+    plan = await db.delivery_plans.find_one(
+        {"id": plan_id, "userId": user_id, "sessionId": session["_id"]}
+    )
+    if not plan:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Delivery plan not found")
+    existing_delivery = await db.delivery_results.find_one(
+        {"user_id": user_id, "delivery_plan_id": plan_id, "status": "success"}
+    )
+    if existing_delivery:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="This exact plan has already been delivered. Generate a new proposal before verification.",
+        )
+    result = await CandidateVerificationService().request_approval(
+        user_id=user_id, session=session, plan=DeliveryPlan.model_validate(plan)
+    )
+    return {"approval": serialize_doc(result["approval"]), "reused": result["reused"]}
+
+
 async def decide_approval(user_id: str, slug_id: str, approval_id: str, payload: ApprovalDecisionRequest) -> dict:
     db = get_db()
     session = await db.sessions.find_one({"userId": user_id, "slugId": slug_id})
@@ -1209,7 +1252,7 @@ async def decide_approval(user_id: str, slug_id: str, approval_id: str, payload:
             {"$set": {"approvals": [{**approval, "status": "reject"}], "deliveryResult": {"status": "rejected"}}},
         )
         return {"approval": {**approval, "status": "reject"}, "message": serialize_doc(message)}
-    if approval.get("deliveryPlanId"):
+    if approval.get("deliveryPlanId") and approval.get("action_type") == "create_draft_pull_request":
         approved = await db.approvals.find_one_and_update(
             {"id": approval_id, "userId": user_id, "status": "pending"},
             {"$set": {"status": "approved", "approved_at": utc_now(), "decision": decision, "updatedAt": utc_now()}},
@@ -1260,6 +1303,93 @@ async def decide_approval(user_id: str, slug_id: str, approval_id: str, payload:
         )
         return {
             "approval": {**approved, "status": execution["status"]},
+            "message": serialize_doc(message),
+            "result": execution,
+        }
+    if approval.get("deliveryPlanId") and approval.get("action_type") == "dispatch_candidate_verification":
+        plan = await db.delivery_plans.find_one(
+            {"id": approval["deliveryPlanId"], "userId": user_id, "sessionId": session["_id"]}
+        )
+        if not plan:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Delivery plan not found")
+        typed_plan = DeliveryPlan.model_validate(plan)
+        if not verification_approval_is_bound(approval, typed_plan):
+            await db.approvals.update_one(
+                {"id": approval_id, "userId": user_id, "status": "pending"},
+                {"$set": {"status": "invalidated", "updatedAt": utc_now()}},
+            )
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Candidate verification approval was invalidated because its exact binding changed.",
+            )
+        approved = await db.approvals.find_one_and_update(
+            {"id": approval_id, "userId": user_id, "status": "pending"},
+            {"$set": {"status": "approved", "approved_at": utc_now(), "decision": decision, "updatedAt": utc_now()}},
+            return_document=ReturnDocument.AFTER,
+        )
+        if not approved:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Approval was already processed")
+        traces = getattr(db, "run_traces", None)
+        trace = (
+            await traces.find_one(
+                {"user_id": user_id, "session_id": session["_id"], "run_id": typed_plan.run_id}
+            )
+            if traces is not None
+            else None
+        )
+        trace_id = trace.get("id") if isinstance(trace, dict) else None
+        if trace_id:
+            async with TraceRecorder(MongoTraceExporter()).span(
+                str(trace_id),
+                "candidate_verification.dispatch",
+                {
+                    "delivery_plan_id": typed_plan.id,
+                    "changed_file_count": len(typed_plan.files),
+                    "workflow_path": str((approved.get("canonical_arguments") or {}).get("workflow_path") or ""),
+                },
+            ) as span:
+                execution = await CandidateVerificationService().dispatch_approved(
+                    user_id=user_id, approval=approved, plan=typed_plan
+                )
+                span.safe_output_summary = {
+                    "status": execution.get("status", "unknown"),
+                    "verification_run_id": execution.get("verificationRunId", ""),
+                    "verification_level": execution.get("verificationLevel", ""),
+                }
+        else:
+            execution = await CandidateVerificationService().dispatch_approved(
+                user_id=user_id, approval=approved, plan=typed_plan
+            )
+        if execution.get("status") == "dispatched" and execution.get("verificationRunId"):
+            if get_settings().ci_verification_mode.lower() == "queued":
+                job = await BackgroundJobService().enqueue_candidate_verification_observation(
+                    user_id=user_id, verification_run_id=str(execution["verificationRunId"])
+                )
+                execution["observation"] = {"status": "queued", "jobId": job["id"]}
+            else:
+                execution["observation"] = {
+                    "status": "pending",
+                    "message": "Candidate verification status can be refreshed from the verification run.",
+                }
+        final_status = "executed" if execution.get("status") == "dispatched" else "failed"
+        if execution.get("status") == "stale":
+            final_status = "invalidated"
+        await db.approvals.update_one(
+            {"id": approval_id, "userId": user_id},
+            {"$set": {"status": final_status, "executed_at": utc_now(), "updatedAt": utc_now()}},
+        )
+        content = (
+            "Candidate verification was dispatched to the configured repository workflow. "
+            "Dispatch is not proof that targeted checks or full CI passed."
+            if execution.get("status") == "dispatched"
+            else (
+                "Candidate verification was not dispatched: "
+                f"{execution.get('reason', 'Unknown verification failure.')}"
+            )
+        )
+        message = await append_message(session["_id"], "assistant", content)
+        return {
+            "approval": {**approved, "status": final_status},
             "message": serialize_doc(message),
             "result": execution,
         }

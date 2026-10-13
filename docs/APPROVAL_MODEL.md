@@ -20,4 +20,16 @@ The service canonicalizes this JSON with sorted keys and compact separators, the
 
 No secret is included in this payload. Before execution, Base64 recomputes the diff and approval hashes and checks the repository HEAD. A changed plan, action, arguments, repository, branch, or HEAD invalidates the approval and prevents mutation.
 
+## Optional candidate-verification approval
+
+Candidate verification has its own action type,
+`dispatch_candidate_verification`, and its own exact approval hash. It binds
+the same plan/base/diff fields plus the server-verified GitHub App installation,
+reviewed workflow path, candidate branch, and candidate patch hash. Approving
+it can create only an auditable disposable candidate branch and dispatch the
+configured workflow; it cannot create a PR, push the delivery branch, merge,
+or change the normal delivery approval. Any changed settings, candidate hash,
+workflow path, plan, branch, or base SHA invalidates the request. See
+[CANDIDATE_VERIFICATION.md](CANDIDATE_VERIFICATION.md).
+
 Execution uses an atomic `approved → executing` Mongo transition. Only the request that wins this transition can create a branch, commit, push, or draft PR. Supported delivery is limited to the exact network-binding remediation plan; deployment, rollback, workflow dispatch, and arbitrary shell execution remain unsupported.

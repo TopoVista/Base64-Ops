@@ -20,6 +20,7 @@ from app.db.mongo import MongoUnavailableError, close_mongo, connect_mongo, mong
 from app.intelligence.graph.store import EngineeringGraphStore
 from app.intelligence.impact.store import ChangeImpactStore
 from app.services.background_job_service import BackgroundJobService
+from app.services.candidate_verification_service import CandidateVerificationService
 from app.services.github_service import ensure_github_indexes
 from app.services.incident_service import GitHubWebhookService
 from app.services.session_service import ensure_session_indexes
@@ -45,6 +46,7 @@ async def _ensure_database_indexes() -> None:
     await BackgroundJobService().ensure_indexes()
     await ensure_github_indexes()
     await GitHubWebhookService().ensure_indexes()
+    await CandidateVerificationService().ensure_indexes()
     await ensure_session_indexes()
     await EngineeringGraphStore().ensure_indexes()
     await ChangeImpactStore().ensure_indexes()

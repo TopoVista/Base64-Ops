@@ -207,7 +207,15 @@ def test_session_hydration_uses_the_canonical_pending_delivery_approval(monkeypa
                     "sessionId": "ses_a",
                     "deliveryPlanId": "dlp_current",
                     "status": "pending",
-                }
+                },
+                {
+                    "id": "apr_candidate",
+                    "userId": "user_a",
+                    "sessionId": "ses_a",
+                    "deliveryPlanId": "dlp_current",
+                    "status": "pending",
+                    "action_type": "dispatch_candidate_verification",
+                },
             ]
         )
 
@@ -218,15 +226,11 @@ def test_session_hydration_uses_the_canonical_pending_delivery_approval(monkeypa
 
     result = asyncio.run(session_service.get_session_by_slug("user_a", "diagnose"))
 
-    assert result["commandCenter"]["approvals"] == [
-        {
-            "id": "apr_current",
-            "userId": "user_a",
-            "sessionId": "ses_a",
-            "deliveryPlanId": "dlp_current",
-            "status": "pending",
-        }
-    ]
+    approvals = result["commandCenter"]["approvals"]
+    assert {approval["id"] for approval in approvals} == {"apr_current", "apr_candidate"}
+    assert next(approval for approval in approvals if approval["id"] == "apr_candidate")["action_type"] == (
+        "dispatch_candidate_verification"
+    )
 
 
 def test_request_delivery_approval_reuses_a_plan_bound_pending_record(monkeypatch) -> None:

@@ -21,6 +21,9 @@ import type {
   IncidentFeedbackInput,
   IncidentsResponse,
   FlakyTestObservation,
+  CandidateVerificationRun,
+  CandidateVerificationSettings,
+  CandidateVerificationSettingsInput,
   RepositoryAutomationSettings,
   RepositoryAutomationSettingsInput,
 } from "@/types/incident.type";
@@ -113,6 +116,65 @@ export const updateRepositoryAutomationSettings = async (
   const response = await API.put<RepositoryAutomationSettings>(
     `/incidents/sessions/${encodeURIComponent(slugId)}/automation`,
     settings,
+  );
+  return response.data;
+};
+
+export const getCandidateVerificationSettings = async (
+  slugId: string,
+): Promise<CandidateVerificationSettings | null> => {
+  const response = await API.get<CandidateVerificationSettings | null>(
+    `/incidents/sessions/${encodeURIComponent(slugId)}/candidate-verification`,
+  );
+  return response.data;
+};
+
+/** Saves a reviewed GitHub App installation/workflow binding; it does not run it. */
+export const updateCandidateVerificationSettings = async (
+  slugId: string,
+  settings: CandidateVerificationSettingsInput,
+): Promise<CandidateVerificationSettings> => {
+  const response = await API.put<CandidateVerificationSettings>(
+    `/incidents/sessions/${encodeURIComponent(slugId)}/candidate-verification`,
+    settings,
+  );
+  return response.data;
+};
+
+/** Creates an immutable approval only; dispatch occurs only after approval. */
+export const requestSessionCandidateVerificationApproval = async (
+  slugId: string,
+  planId: string,
+): Promise<{ approval: ApprovalRequest; reused: boolean }> => {
+  const response = await API.post(
+    `/session/${encodeURIComponent(slugId)}/delivery-plan/${encodeURIComponent(planId)}/candidate-verification/approval`,
+  );
+  return response.data as { approval: ApprovalRequest; reused: boolean };
+};
+
+export const getCandidateVerificationRun = async (
+  verificationRunId: string,
+): Promise<CandidateVerificationRun> => {
+  const response = await API.get<CandidateVerificationRun>(
+    `/incidents/verification-runs/${encodeURIComponent(verificationRunId)}`,
+  );
+  return response.data;
+};
+
+export const getLatestCandidateVerificationRun = async (
+  slugId: string,
+): Promise<CandidateVerificationRun | null> => {
+  const response = await API.get<CandidateVerificationRun | null>(
+    `/incidents/sessions/${encodeURIComponent(slugId)}/candidate-verification/latest-run`,
+  );
+  return response.data;
+};
+
+export const refreshCandidateVerificationRun = async (
+  verificationRunId: string,
+): Promise<CandidateVerificationRun> => {
+  const response = await API.post<CandidateVerificationRun>(
+    `/incidents/verification-runs/${encodeURIComponent(verificationRunId)}/refresh`,
   );
   return response.data;
 };

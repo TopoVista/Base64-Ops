@@ -11,11 +11,15 @@ from fastapi.responses import JSONResponse, PlainTextResponse
 from app.api.deps import get_current_user
 from app.db.mongo import get_db
 from app.schemas.incident import (
+    CandidateVerificationSettingsRequest,
+    CandidateVerificationSettingsResponse,
     FlakyTestObservationSummary,
     IncidentFeedbackRequest,
     RepositoryAutomationSettingsRequest,
     RepositoryAutomationSettingsResponse,
 )
+from app.services.candidate_verification_service import CandidateVerificationService
+from app.services.github_service import github_app_is_configured
 from app.services.incident_export_service import (
     build_incident_export,
     incident_evidence_ids,
@@ -38,6 +42,22 @@ def _settings_response(document: dict) -> RepositoryAutomationSettingsResponse:
         include_branches=list(document.get("includeBranches") or []),
         exclude_branches=list(document.get("excludeBranches") or []),
         daily_investigation_limit=int(document["dailyInvestigationLimit"]),
+        github_check_reporting_enabled=bool(document.get("githubCheckReportingEnabled")),
+        updated_at=document["updatedAt"],
+    )
+
+
+def _candidate_verification_settings_response(document: dict) -> CandidateVerificationSettingsResponse:
+    return CandidateVerificationSettingsResponse(
+        id=str(document.get("id") or document.get("_id")),
+        session_id=str(document["sessionId"]),
+        repository_id=str(document.get("repositoryId") or ""),
+        repository_full_name=(
+            str(document["repositoryFullName"]) if document.get("repositoryFullName") else None
+        ),
+        enabled=bool(document.get("enabled")),
+        workflow_path=str(document["workflowPath"]) if document.get("workflowPath") else None,
+        configured=github_app_is_configured(),
         updated_at=document["updatedAt"],
     )
 
@@ -84,6 +104,7 @@ def _incident_response(document: dict) -> dict:
         "sameShaSuccess",
         "memoryEntryCount",
         "memoryRecordedAt",
+        "githubCheckReport",
         "feedback",
         "createdAt",
         "updatedAt",
@@ -131,6 +152,7 @@ async def configure_automation(
         include_branches=payload.include_branches,
         exclude_branches=payload.exclude_branches,
         daily_investigation_limit=payload.daily_investigation_limit,
+        github_check_reporting_enabled=payload.github_check_reporting_enabled,
     )
     return _settings_response(result)
 
@@ -150,6 +172,62 @@ async def automation_settings(
         user_id=str(user["_id"]), session_id=str(session["_id"])
     )
     return _settings_response(document) if document else None
+
+
+@router.put(
+    "/sessions/{slug_id}/candidate-verification",
+    response_model=CandidateVerificationSettingsResponse,
+    response_model_exclude_none=True,
+)
+async def configure_candidate_verification(
+    slug_id: str,
+    payload: CandidateVerificationSettingsRequest,
+    user: dict = Depends(get_current_user),
+) -> CandidateVerificationSettingsResponse:
+    """Bind an explicitly reviewed GitHub App workflow to one owned session."""
+
+    session = await get_db().sessions.find_one({"userId": user["_id"], "slugId": slug_id})
+    if not session:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
+    document = await CandidateVerificationService().configure_repository(
+        user_id=str(user["_id"]),
+        session=session,
+        enabled=payload.enabled,
+        installation_id=payload.installation_id,
+        workflow_path=payload.workflow_path,
+    )
+    return _candidate_verification_settings_response(document)
+
+
+@router.get(
+    "/sessions/{slug_id}/candidate-verification",
+    response_model=CandidateVerificationSettingsResponse | None,
+    response_model_exclude_none=True,
+)
+async def candidate_verification_settings(
+    slug_id: str, user: dict = Depends(get_current_user)
+) -> CandidateVerificationSettingsResponse | None:
+    session = await get_db().sessions.find_one({"userId": user["_id"], "slugId": slug_id})
+    if not session:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
+    document = await CandidateVerificationService().get_repository_settings(
+        user_id=str(user["_id"]), session_id=str(session["_id"])
+    )
+    return _candidate_verification_settings_response(document) if document else None
+
+
+@router.get("/sessions/{slug_id}/candidate-verification/latest-run")
+async def latest_candidate_verification_run(
+    slug_id: str, user: dict = Depends(get_current_user)
+) -> dict | None:
+    """Return only the latest safe verification status for this owned session."""
+
+    session = await get_db().sessions.find_one({"userId": user["_id"], "slugId": slug_id})
+    if not session:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
+    return await CandidateVerificationService().get_latest_run(
+        user_id=str(user["_id"]), session_id=str(session["_id"])
+    )
 
 
 @router.get("")
@@ -179,6 +257,26 @@ async def list_flaky_test_observations(
         .limit(limit)
     )
     return [_flaky_observation_response(record) async for record in cursor]
+
+
+@router.get("/verification-runs/{verification_run_id}")
+async def get_candidate_verification_run(
+    verification_run_id: str, user: dict = Depends(get_current_user)
+) -> dict:
+    return await CandidateVerificationService().get_run(
+        user_id=str(user["_id"]), verification_run_id=verification_run_id
+    )
+
+
+@router.post("/verification-runs/{verification_run_id}/refresh")
+async def refresh_candidate_verification_run(
+    verification_run_id: str, user: dict = Depends(get_current_user)
+) -> dict:
+    """Perform a bounded App-scoped metadata refresh for an existing run."""
+
+    return await CandidateVerificationService().observe_run(
+        user_id=str(user["_id"]), verification_run_id=verification_run_id
+    )
 
 
 @router.get("/{incident_id}")
