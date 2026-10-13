@@ -343,3 +343,41 @@ async def test_automation_settings_update_preserves_the_existing_mongo_id(monkey
 
     assert result["id"] == "aut_existing"
     assert settings.record["_id"] == "aut_existing"
+
+
+async def test_incident_feedback_is_tenant_scoped_redacted_and_not_a_diagnosis_mutation(monkeypatch) -> None:  # noqa: ANN001
+    from app.schemas.incident import IncidentFeedbackRequest
+
+    class _Incidents:
+        def __init__(self) -> None:
+            self.record = {
+                "_id": "inc_1", "userId": "user_a", "repositoryId": "repo_a",
+                "repositoryName": "acme/base64", "workflowRunId": 1, "headSha": "a" * 40,
+                "status": "evidence_collected", "failureCategories": [], "evidenceStrength": "observed",
+                "evidenceIds": [], "workflowEvidenceIds": [], "changedFileEvidenceIds": [],
+                "relevantPaths": [], "incomplete": False, "limitations": [],
+                "diagnosisSummary": "Original immutable diagnosis", "createdAt": None, "updatedAt": None,
+            }
+
+        async def update_one(self, query, update):  # noqa: ANN001, ANN201
+            if query.get("_id") != self.record["_id"] or query.get("userId") != self.record["userId"]:
+                return SimpleNamespace(matched_count=0)
+            self.record.update(update["$set"])
+            return SimpleNamespace(matched_count=1)
+
+        async def find_one(self, query):  # noqa: ANN001, ANN201
+            return self.record if query.get("userId") == self.record["userId"] else None
+
+    records = _Incidents()
+    monkeypatch.setattr(incident_routes, "get_db", lambda: SimpleNamespace(incidents=records))
+
+    response = await incident_routes.submit_incident_feedback(
+        "inc_1",
+        IncidentFeedbackRequest(disposition="incorrect", correction="Authorization: Bearer feedback-secret"),
+        {"_id": "user_a"},
+    )
+
+    assert response["diagnosisSummary"] == "Original immutable diagnosis"
+    assert response["feedback"]["disposition"] == "incorrect"
+    assert "feedback-secret" not in response["feedback"]["correction"]
+    assert response["feedback"]["untrusted"] is True

@@ -65,6 +65,13 @@ class RepositoryAutomationSettingsResponse(BaseModel):
     updated_at: datetime
 
 
+class IncidentFeedbackRequest(BaseModel):
+    """A user correction is an annotation, never evidence replacement."""
+
+    disposition: Literal["helpful", "incorrect", "needs_more_evidence"]
+    correction: str = Field(default="", max_length=2_000)
+
+
 class IncidentSummary(BaseModel):
     id: str
     repository_id: str

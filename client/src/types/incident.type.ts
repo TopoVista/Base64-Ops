@@ -60,11 +60,21 @@ export type IncidentRecord = {
     headSha: string;
     observedAt: string;
   };
+  feedback?: {
+    disposition: "helpful" | "incorrect" | "needs_more_evidence";
+    correction?: string;
+    updatedAt: string;
+  };
   createdAt: string;
   updatedAt: string;
 };
 
 export type IncidentsResponse = { incidents: IncidentRecord[] };
+
+export type IncidentFeedbackInput = {
+  disposition: "helpful" | "incorrect" | "needs_more_evidence";
+  correction?: string;
+};
 
 export type RepositoryAutomationSettings = {
   id: string;

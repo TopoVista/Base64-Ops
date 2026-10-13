@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   downloadIncidentExport,
@@ -8,12 +9,13 @@ import {
   getIncidents,
   getRepositoryAutomationSettings,
   getUserSessions,
+  submitIncidentFeedback,
   updateRepositoryAutomationSettings,
 } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import type { IncidentRecord, RepositoryAutomationSettingsInput } from "@/types/incident.type";
 import type { SessionRecord } from "@/types/session.type";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   AlertCircle,
   ArrowLeft,
@@ -292,6 +294,9 @@ function IncidentInbox() {
 
 function IncidentDetail() {
   const { incidentId = "" } = useParams();
+  const queryClient = useQueryClient();
+  const [feedbackDisposition, setFeedbackDisposition] = useState<"helpful" | "incorrect" | "needs_more_evidence">("helpful");
+  const [feedbackCorrection, setFeedbackCorrection] = useState("");
   const { data: incident, isPending, isError } = useQuery({
     queryKey: ["incident", incidentId],
     queryFn: () => getIncident(incidentId),
@@ -300,6 +305,17 @@ function IncidentDetail() {
   });
   const exportMutation = useMutation({
     mutationFn: (format: "json" | "markdown") => downloadIncidentExport(incidentId, format),
+  });
+  const feedbackMutation = useMutation({
+    mutationFn: () => submitIncidentFeedback(incidentId, {
+      disposition: feedbackDisposition,
+      correction: feedbackCorrection,
+    }),
+    onSuccess: (updated) => {
+      queryClient.setQueryData(["incident", incidentId], updated);
+      void queryClient.invalidateQueries({ queryKey: ["incidents"] });
+      setFeedbackCorrection("");
+    },
   });
   if (isPending) return <main className="h-full overflow-y-auto p-8"><Skeleton className="mx-auto h-96 max-w-5xl rounded-xl" /></main>;
   if (isError || !incident) return <main className="h-full overflow-y-auto p-8"><div className="mx-auto max-w-5xl rounded-xl border border-destructive/40 bg-destructive/5 p-6"><AlertCircle className="size-5 text-destructive" /><h1 className="mt-3 font-semibold">Incident unavailable</h1><p className="mt-2 text-sm text-muted-foreground">It may have expired or you may not have access to it.</p><Button asChild variant="outline" className="mt-4"><Link to="/incidents"><ArrowLeft className="mr-2 size-4" />Back to inbox</Link></Button></div></main>;
@@ -322,6 +338,15 @@ function IncidentDetail() {
         {exportMutation.isError ? <p className="mt-3 text-sm text-destructive">The redacted incident export could not be downloaded. Please retry.</p> : null}
         <section className="mt-7 grid gap-4 md:grid-cols-3"><div className="rounded-xl border border-border bg-card p-4"><p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Run commit</p><p className="mt-2 font-mono text-sm">{shortSha(incident.headSha)}</p></div><div className="rounded-xl border border-border bg-card p-4"><p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Evidence strength</p><p className="mt-2 capitalize">{incident.evidenceStrength}</p></div><div className="rounded-xl border border-border bg-card p-4"><p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Current state</p><p className="mt-2 text-sm">{incident.runIsHistorical ? "Historical run compared separately" : "Same run/current context"}</p></div></section>
         <section className="mt-4 rounded-xl border border-border bg-card p-5"><h2 className="font-semibold">Evidence-backed assessment</h2><p className="mt-3 text-sm leading-6 text-muted-foreground">{incident.diagnosisSummary ?? "Diagnosis is pending evidence collection."}</p>{incident.failureCategories.length ? <div className="mt-4 flex flex-wrap gap-2">{incident.failureCategories.map((category) => <Badge key={category} variant="secondary">{prettify(category)}</Badge>)}</div> : null}</section>
+        <section className="mt-4 rounded-xl border border-border bg-card p-5">
+          <h2 className="font-semibold">Was this assessment useful?</h2>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">Your note is redacted and saved as an untrusted review annotation. It cannot change evidence, approve a patch, or alter repository access.</p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {(["helpful", "incorrect", "needs_more_evidence"] as const).map((disposition) => <Button key={disposition} type="button" size="sm" variant={feedbackDisposition === disposition ? "default" : "outline"} onClick={() => setFeedbackDisposition(disposition)}>{prettify(disposition)}</Button>)}
+          </div>
+          <Textarea className="mt-3 min-h-20" value={feedbackCorrection} maxLength={2000} onChange={(event) => setFeedbackCorrection(event.target.value)} placeholder={feedbackDisposition === "incorrect" ? "What evidence or conclusion appears incorrect?" : "Optional note for a later review"} aria-label="Incident feedback note" />
+          <div className="mt-3 flex flex-wrap items-center gap-3"><Button size="sm" type="button" onClick={() => feedbackMutation.mutate()} disabled={feedbackMutation.isPending || (feedbackDisposition === "incorrect" && feedbackCorrection.trim().length < 3)}>{feedbackMutation.isPending ? "Savingâ€¦" : "Save feedback"}</Button>{feedbackMutation.isError ? <span className="text-sm text-destructive">Feedback could not be saved. Please retry.</span> : null}{incident.feedback ? <span className="text-xs text-muted-foreground">Last feedback: {prettify(incident.feedback.disposition)} {incident.feedback.updatedAt ? `â€” ${dateTime(incident.feedback.updatedAt)}` : ""}</span> : null}</div>
+        </section>
         {incident.flakySignal === "suspected" ? <section className="mt-4 rounded-xl border border-violet-500/35 bg-violet-500/5 p-5"><h2 className="font-semibold">Suspected flaky-test signal</h2><p className="mt-2 text-sm leading-6 text-muted-foreground">The bounded workflow history includes both failed and successful executions on this same commit. {incident.failedTestIdentifiers?.length ? `The failed output identified ${incident.failedTestIdentifiers.join(", ")}. ` : "No stable test identifier was extracted. "}This is not a flaky-test verdict and Base64 Ops will not automatically rerun CI.</p></section> : null}
         {incident.sameShaSuccess ? <section className="mt-4 rounded-xl border border-amber-500/35 bg-amber-500/5 p-5"><h2 className="font-semibold">Later success on the same commit</h2><p className="mt-2 text-sm leading-6 text-muted-foreground">Workflow run #{incident.sameShaSuccess.workflowRunId} succeeded on {shortSha(incident.sameShaSuccess.headSha)} at {dateTime(incident.sameShaSuccess.observedAt)}. This can indicate a transient condition, but it does not prove the earlier failure was flaky or close this incident automatically.</p></section> : null}
         <section className="mt-4 grid gap-4 md:grid-cols-2"><div className="rounded-xl border border-border bg-card p-5"><h2 className="font-semibold">Relevant files</h2>{incident.relevantPaths.length ? <ul className="mt-3 space-y-2 font-mono text-xs text-muted-foreground">{incident.relevantPaths.map((path) => <li key={path}>{path}</li>)}</ul> : <p className="mt-3 text-sm text-muted-foreground">No repository file was selected from the bounded evidence.</p>}</div><div className="rounded-xl border border-border bg-card p-5"><h2 className="font-semibold">Evidence and limitations</h2><p className="mt-3 text-sm text-muted-foreground">{incident.evidenceIds.length} CI evidence item(s) and {incident.workflowEvidenceIds.length} workflow item(s) are retained with source provenance.</p>{incident.limitations.length ? <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-muted-foreground">{incident.limitations.map((value) => <li key={value}>{value}</li>)}</ul> : <p className="mt-3 text-sm text-emerald-700 dark:text-emerald-300">No collection limitation was recorded.</p>}</div></section>

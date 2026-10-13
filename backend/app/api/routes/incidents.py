@@ -11,6 +11,7 @@ from fastapi.responses import JSONResponse, PlainTextResponse
 from app.api.deps import get_current_user
 from app.db.mongo import get_db
 from app.schemas.incident import (
+    IncidentFeedbackRequest,
     RepositoryAutomationSettingsRequest,
     RepositoryAutomationSettingsResponse,
 )
@@ -20,6 +21,8 @@ from app.services.incident_export_service import (
     incident_export_markdown,
 )
 from app.services.incident_service import GitHubWebhookService
+from app.services.redaction_service import RedactionService
+from app.utils.datetime import utc_now
 
 router = APIRouter()
 
@@ -77,6 +80,7 @@ def _incident_response(document: dict) -> dict:
         "firstObservedAt",
         "lastObservedAt",
         "sameShaSuccess",
+        "feedback",
         "createdAt",
         "updatedAt",
     }
@@ -143,6 +147,43 @@ async def list_incidents(
 
 @router.get("/{incident_id}")
 async def get_incident(incident_id: str, user: dict = Depends(get_current_user)) -> dict:
+    incident = await get_db().incidents.find_one({"_id": incident_id, "userId": user["_id"]})
+    if not incident:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Incident not found")
+    return _incident_response(incident)
+
+
+@router.put("/{incident_id}/feedback")
+async def submit_incident_feedback(
+    incident_id: str,
+    payload: IncidentFeedbackRequest,
+    user: dict = Depends(get_current_user),
+) -> dict:
+    """Persist a redacted user annotation without altering diagnosis evidence.
+
+    Feedback remains untrusted product input. It can guide a later human
+    review, but cannot upgrade evidence strength, authorize a patch, or
+    modify an existing approval binding.
+    """
+
+    correction = RedactionService().redact(payload.correction.strip())
+    if payload.disposition == "incorrect" and len(correction) < 3:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Describe what appears incorrect so the diagnosis can be reviewed.",
+        )
+    feedback = {
+        "disposition": payload.disposition,
+        "correction": correction,
+        "updatedAt": utc_now(),
+        "untrusted": True,
+    }
+    result = await get_db().incidents.update_one(
+        {"_id": incident_id, "userId": user["_id"]},
+        {"$set": {"feedback": feedback, "updatedAt": utc_now()}},
+    )
+    if not result.matched_count:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Incident not found")
     incident = await get_db().incidents.find_one({"_id": incident_id, "userId": user["_id"]})
     if not incident:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Incident not found")

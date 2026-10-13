@@ -18,6 +18,7 @@ import type {
 } from "@/types/github.type";
 import type {
   IncidentRecord,
+  IncidentFeedbackInput,
   IncidentsResponse,
   RepositoryAutomationSettings,
   RepositoryAutomationSettingsInput,
@@ -74,6 +75,17 @@ export const getIncidents = async (): Promise<IncidentsResponse> => {
 
 export const getIncident = async (incidentId: string): Promise<IncidentRecord> => {
   const response = await API.get<IncidentRecord>(`/incidents/${encodeURIComponent(incidentId)}`);
+  return response.data;
+};
+
+export const submitIncidentFeedback = async (
+  incidentId: string,
+  feedback: IncidentFeedbackInput,
+): Promise<IncidentRecord> => {
+  const response = await API.put<IncidentRecord>(
+    `/incidents/${encodeURIComponent(incidentId)}/feedback`,
+    feedback,
+  );
   return response.data;
 };
 
