@@ -1,0 +1,103 @@
+# Free-tier evaluation profile for Base64 Ops.
+#
+# This is intentionally separate from render.yaml and render.mvp.yaml. Its
+# distinct service names prevent a Blueprint sync from changing an existing
+# paid deployment. It is suitable for a hobby/demo control plane only: Render
+# can suspend a free service and Free Key Value is non-persistent.
+#
+# There is no always-on worker in this profile. Do not configure an automatic
+# GitHub webhook secret unless a separately reviewed, durable dispatcher is
+# operating; otherwise signed events would only remain queued in MongoDB.
+services:
+  - type: keyvalue
+    name: base64-ops-rate-limits-free
+    region: oregon
+    plan: free
+    maxmemoryPolicy: allkeys-lru
+    persistenceMode: "off"
+    ipAllowList: []
+
+  - type: web
+    name: base64-ops-api-free
+    runtime: python
+    region: oregon
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /ready
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.5
+      - key: ENVIRONMENT
+        value: production
+      - key: MONGO_URI
+        sync: false
+      - key: MONGO_DB_NAME
+        value: langgraph_devops_agent
+      - key: MONGO_MAX_POOL_SIZE
+        value: "6"
+      - key: MONGO_WAIT_QUEUE_TIMEOUT_MS
+        value: "5000"
+      - key: EXECUTION_MODE
+        value: disabled
+      # Free Render cannot provide a reliable always-on queue worker. Keep
+      # local indexing bounded and make CI observation read-only on demand.
+      - key: INDEXING_MODE
+        value: inline
+      - key: RAG_INDEX_MAX_FILES
+        value: "150"
+      - key: RAG_INDEX_MAX_TOTAL_BYTES
+        value: "4000000"
+      - key: RAG_INDEX_MAX_CHUNKS
+        value: "2500"
+      - key: CI_AUTO_REFRESH_SECONDS
+        value: "0"
+      - key: CI_VERIFICATION_MODE
+        value: on_read
+      - key: FREE_MONTHLY_MODEL_TOKENS
+        value: "100000"
+      - key: PRO_MONTHLY_MODEL_TOKENS
+        value: "5000000"
+      - key: TEAM_MONTHLY_MODEL_TOKENS
+        value: "25000000"
+      - key: USE_DOCKER_WORKSPACES
+        value: "false"
+      - key: FRONTEND_ORIGIN
+        sync: false
+      - key: TRUSTED_HOSTS
+        sync: false
+      - key: REDIS_URL
+        fromService:
+          name: base64-ops-rate-limits-free
+          type: keyvalue
+          property: connectionString
+      - key: RATE_LIMIT_FAIL_CLOSED
+        value: "true"
+      - key: TRUSTED_CLIENT_IP_HEADER
+        value: CF-Connecting-IP
+      # Enter the actual free service URL in Render's secret/config screen.
+      # Never leave the development localhost callback as the production URL.
+      - key: BASE_URL
+        sync: false
+      - key: CLERK_JWKS_URL
+        sync: false
+      - key: CLERK_ISSUER
+        sync: false
+      - key: CLERK_AUTHORIZED_PARTIES
+        sync: false
+      - key: GITHUB_CLIENT_ID
+        sync: false
+      - key: GITHUB_CLIENT_SECRET
+        sync: false
+      - key: GITHUB_OAUTH_STATE_SECRET
+        generateValue: true
+      - key: GITHUB_TOKEN_ENCRYPTION_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: CHAT_MODEL
+        value: gpt-5.6-terra
+      - key: SUPPORT_MODEL
+        value: gpt-5.6-luna

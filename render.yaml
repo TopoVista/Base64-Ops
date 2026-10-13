@@ -12,7 +12,7 @@ services:
     # relying on uninterrupted production-wide rate-limit availability.
     plan: free
     maxmemoryPolicy: allkeys-lru
-    persistenceMode: off
+    persistenceMode: "off"
     ipAllowList: []
 
   - type: web

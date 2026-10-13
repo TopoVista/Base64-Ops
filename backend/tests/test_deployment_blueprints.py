@@ -60,7 +60,7 @@ def _resolved_service_environment(service: dict[str, Any]) -> dict[str, str]:
 
 
 def test_render_blueprints_use_a_strict_ready_check_and_validate_each_role() -> None:
-    for blueprint_name in ("render.yaml", "render.mvp.yaml"):
+    for blueprint_name in ("render.yaml", "render.mvp.yaml", "render.free.yaml"):
         blueprint = _blueprint(blueprint_name)
         services = blueprint["services"]
         assert isinstance(services, list) and services
@@ -68,6 +68,7 @@ def test_render_blueprints_use_a_strict_ready_check_and_validate_each_role() -> 
         for service in services:
             if service["type"] == "keyvalue":
                 assert service["ipAllowList"] == []
+                assert service["persistenceMode"] == "off"
                 continue
             environment = _resolved_service_environment(service)
             assert environment["ENVIRONMENT"] == "production"
@@ -79,6 +80,20 @@ def test_render_blueprints_use_a_strict_ready_check_and_validate_each_role() -> 
 
     mvp_services = _blueprint("render.mvp.yaml")["services"]
     assert next(service for service in mvp_services if service["type"] == "web")["plan"] == "0.5c-512mb"
+
+
+def test_free_blueprint_is_isolated_and_never_claims_an_always_on_worker() -> None:
+    services = _blueprint("render.free.yaml")["services"]
+    by_name = {service["name"]: service for service in services}
+
+    assert set(by_name) == {"base64-ops-api-free", "base64-ops-rate-limits-free"}
+    assert by_name["base64-ops-api-free"]["plan"] == "free"
+    assert by_name["base64-ops-rate-limits-free"]["plan"] == "free"
+    assert by_name["base64-ops-rate-limits-free"]["persistenceMode"] == "off"
+    env = {entry["key"]: entry for entry in by_name["base64-ops-api-free"]["envVars"]}
+    assert env["EXECUTION_MODE"]["value"] == "disabled"
+    assert env["CI_VERIFICATION_MODE"]["value"] == "on_read"
+    assert "GITHUB_WEBHOOK_SECRET" not in env
 
 
 def test_scaled_render_blueprint_keeps_long_running_work_off_the_public_api() -> None:

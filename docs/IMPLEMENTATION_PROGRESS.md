@@ -91,3 +91,12 @@ Still required in this stage:
 2. Live GitHub webhook, GitHub App, and authorized test repositories are not
    configured in this workspace. Local mocked tests can be added without those
    credentials; live verification remains explicitly unverified.
+
+## Deployment profile update
+
+- `render.free.yaml` is an additive, test-validated Free Render profile with
+  distinct resource names. It provides the API control plane plus volatile
+  private Key Value only; it deliberately has no persistent worker and does
+  not configure webhook intake by default.
+- The existing `render.yaml` and `render.mvp.yaml` remain paid `0.5c-512mb`
+  profiles. No existing deployment was silently downgraded.

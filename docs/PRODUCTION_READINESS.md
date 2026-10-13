@@ -5,6 +5,10 @@ evidence, tenant, approval, and execution boundaries enforced in code.
 
 ## Deployment profiles
 
+- **Free evaluation:** `render.free.yaml` provides one Free API service and one
+  Free private Key Value service with distinct names. It is for a personal demo
+  only: the API may suspend, Key Value is non-persistent, and no always-on
+  webhook dispatcher is configured.
 - **Compact MVP:** `render.mvp.yaml` provides one `0.5c-512mb` API service.
   Indexing is inline and active repository-code validation is disabled.
 - **Production intelligence:** `render.yaml` provisions four fixed roles—the
@@ -13,8 +17,9 @@ evidence, tenant, approval, and execution boundaries enforced in code.
   four single-instance, one-at-a-time roles; it is a bounded baseline, not a
   capacity claim.
 
-Both profiles use MongoDB Atlas and Redis as managed external dependencies.
-They do not make Render's local filesystem authoritative.
+All profiles use MongoDB Atlas as their durable external data store and a
+private Render Key Value service for rate limiting. They do not make Render's
+local filesystem authoritative.
 
 ## Non-negotiable production settings
 

@@ -15,9 +15,26 @@ The checked-in `client/vercel.json` rewrites all routes to `index.html`, so Reac
 
 ### Render service count
 
-- `render.mvp.yaml` is the default low-cost profile: **1** Render service, the `base64-ops-api` web service, on the 512 MB tier.
+- `render.free.yaml` is the hobby/demo profile: one Free `base64-ops-api-free` web service and one Free private Key Value instance. It is the only checked-in profile with `plan: free` for the API.
+- `render.mvp.yaml` is the default low-cost paid profile: one `base64-ops-api` web service and one private Key Value instance, both managed by Render.
 - `render.yaml` is the production-intelligence profile: **4** Render services, the API, maintenance cron, indexer, and read-only CI observer. Every role uses the `0.5c-512mb` tier, for a fixed **2 vCPU** baseline across four single-instance consumers.
-- MongoDB Atlas and Redis are external managed dependencies and are **not** included in either Render service count.
+- MongoDB Atlas remains an external managed dependency. Each checked-in Render profile provisions its own private Key Value service for rate limiting, so it is included in that profile's service count.
+
+### Free-tier evaluation profile
+
+Use `render.free.yaml` only for a personal demo or evaluation. It intentionally
+uses distinct service names, so syncing it cannot silently change the paid
+profiles. It has no always-on worker: repository indexing is bounded and inline,
+and CI observation is read-only when a user opens the relevant UI. Do not set
+`GITHUB_WEBHOOK_SECRET` for this profile unless a separately reviewed durable
+dispatcher is operating; otherwise accepted webhook events would remain queued
+without an eligible worker.
+
+Render currently supports the `free` plan for web services and Key Value, but
+free web services can be suspended and Free Key Value is in-memory only. Rate
+limit state can therefore be lost on a Key Value restart; durable sessions,
+evidence, approvals, and incident records remain in Atlas. Treat this profile
+as a low-traffic evaluation configuration, not a production availability claim.
 
 For the 100–500-user MVP, create the Render Blueprint from `render.mvp.yaml`. It provisions one `0.5c-512mb` FastAPI API role, performs bounded repository indexing inline, and lets the Code commits rail read the delivered branch's GitHub Actions status. This keeps the flagship Safe Repair workflow intact without paying for idle indexer and CI-observer workers.
 
@@ -27,13 +44,23 @@ Both blueprints keep `CI_AUTO_REFRESH_SECONDS=0`: normal browser session polling
 
 The indexer and CI observer reference the API service's `MONGO_URI` and `GITHUB_TOKEN_ENCRYPTION_KEY` through Render's service-to-service environment-variable references. Do not replace these with independently generated worker values: all replicas that read encrypted GitHub tokens must use the same encryption key. The workers intentionally do not receive the GitHub OAuth client secret, Razorpay secrets, Clerk configuration, or public API traffic settings.
 
-Provide every `sync: false` value during Blueprint setup. Set `FRONTEND_ORIGIN` to the exact Vercel production domain and `BASE_URL` to the exact Render API domain, both including `https://` and without a trailing slash. Set `CLERK_ISSUER` to the Clerk Frontend API URL and `CLERK_AUTHORIZED_PARTIES` to the exact browser origins allowed to use production API tokens (including any intentionally supported preview origins).
+Provide every `sync: false` value during Blueprint setup. Set `FRONTEND_ORIGIN` to the exact Vercel production domain and `BASE_URL` to the exact Render API domain, both including `https://` and without a trailing slash. Set `CLERK_ISSUER` to the Clerk Frontend API URL and `CLERK_AUTHORIZED_PARTIES` to the exact browser origins allowed to use production API tokens (including any intentionally supported preview origins). In every production profile, keep `TRUSTED_CLIENT_IP_HEADER=CF-Connecting-IP`; startup intentionally refuses production traffic without a single trusted edge-supplied identity header.
 
 Register this GitHub OAuth callback:
 
 `https://<render-api-domain>/api/github/callback`
 
 ## Operating model
+
+### Manually created Render services
+
+A service created manually in the Render dashboard does not automatically read
+this repository's Blueprint variables. Configure the same required environment
+values in that service's dashboard. The startup failure
+`TRUSTED_CLIENT_IP_HEADER must be configured in production` is resolved by
+adding `TRUSTED_CLIENT_IP_HEADER=CF-Connecting-IP`, then redeploying. This is a
+deliberate rate-limit safety check; do not replace it with `X-Forwarded-For` or
+disable it.
 
 - The API remains the only public backend service.
 - The maintenance cron accepts only allowlisted internal job types from `background_jobs`; it never executes user-provided shell commands.

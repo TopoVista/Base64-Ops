@@ -55,3 +55,17 @@ def test_mvp_blueprint_keeps_the_100_to_500_user_default_to_one_api_service() ->
     assert services["base64-ops-rate-limits"]["ipAllowList"] == []
     assert env["REDIS_URL"]["fromService"]["name"] == "base64-ops-rate-limits"
     assert env["GITHUB_TOKEN_ENCRYPTION_KEY"]["sync"] is False
+
+
+def test_free_blueprint_uses_distinct_free_service_names() -> None:
+    root = Path(__file__).resolve().parents[2]
+    manifest = yaml.safe_load((root / "render.free.yaml").read_text(encoding="utf-8"))
+    services = {service["name"]: service for service in manifest["services"]}
+
+    assert services["base64-ops-api-free"]["plan"] == "free"
+    assert services["base64-ops-rate-limits-free"]["plan"] == "free"
+    assert services["base64-ops-rate-limits-free"]["ipAllowList"] == []
+    env = _environment(services["base64-ops-api-free"])
+    assert env["REDIS_URL"]["fromService"]["name"] == "base64-ops-rate-limits-free"
+    assert env["TRUSTED_CLIENT_IP_HEADER"]["value"] == "CF-Connecting-IP"
+    assert "GITHUB_WEBHOOK_SECRET" not in env
