@@ -42,6 +42,15 @@ export type IncidentRecord = {
   groupKey?: string;
   groupRootId?: string;
   groupRunIds?: number[];
+  groupTimeline?: Array<{
+    workflowRunId: number;
+    headSha: string;
+    observedAt: string;
+    failureCategories: string[];
+    failedJobNames: string[];
+  }>;
+  firstObservedAt?: string;
+  lastObservedAt?: string;
   createdAt: string;
   updatedAt: string;
 };

@@ -30,6 +30,7 @@ from app.utils.ids import new_id
 _DELIVERY_ID = re.compile(r"^[A-Za-z0-9_-]{1,200}$")
 _BRANCH = re.compile(r"^[A-Za-z0-9._/-]{1,255}$")
 _FAILURE_CONCLUSIONS = frozenset({"failure", "timed_out", "startup_failure", "action_required"})
+_GROUP_TIMELINE_MAX_ENTRIES = 25
 
 
 class GitHubWebhookService:
@@ -359,6 +360,18 @@ def incident_group_key(*, event: dict[str, Any], context: Any) -> str:
     return "igr_" + hashlib.sha256(encoded).hexdigest()[:40]
 
 
+def incident_group_timeline_entry(*, event: dict[str, Any], context: Any) -> dict[str, Any]:
+    """Summarize one grouped delivery without retaining raw provider output."""
+
+    return {
+        "workflowRunId": int(event["workflowRunId"]),
+        "headSha": str(event["headSha"]),
+        "observedAt": utc_now(),
+        "failureCategories": sorted(str(category) for category in getattr(context, "failure_categories", [])),
+        "failedJobNames": sorted({str(job.name) for job in getattr(context, "failed_jobs", []) if job.name}),
+    }
+
+
 def incident_dispatch_is_complete(incident: dict[str, Any]) -> bool:
     """Return whether a duplicate event has reached an immutable terminal state.
 
@@ -572,6 +585,7 @@ class IncidentDispatchService:
 
         db = get_db()
         key = incident_group_key(event=event, context=context)
+        timeline_entry = incident_group_timeline_entry(event=event, context=context)
         existing = await db.incidents.find_one(
             {
                 "userId": automation["userId"],
@@ -587,6 +601,7 @@ class IncidentDispatchService:
                 event=event,
                 automation=automation,
                 key=key,
+                timeline_entry=timeline_entry,
             )
             return
         try:
@@ -599,6 +614,9 @@ class IncidentDispatchService:
                         "isGroupRoot": True,
                         "groupRootId": incident_id,
                         "groupRunIds": [event["workflowRunId"]],
+                        "groupTimeline": [timeline_entry],
+                        "firstObservedAt": timeline_entry["observedAt"],
+                        "lastObservedAt": timeline_entry["observedAt"],
                         "updatedAt": utc_now(),
                     }
                 },
@@ -615,6 +633,7 @@ class IncidentDispatchService:
                 event=event,
                 automation=automation,
                 key=key,
+                timeline_entry=timeline_entry,
             )
 
     async def _attach_to_existing_group(
@@ -625,6 +644,7 @@ class IncidentDispatchService:
         event: dict[str, Any],
         automation: dict[str, Any],
         key: str,
+        timeline_entry: dict[str, Any],
     ) -> None:
         db = get_db()
         now = utc_now()
@@ -635,7 +655,8 @@ class IncidentDispatchService:
                     "groupRunIds": event["workflowRunId"],
                     "groupMemberIncidentIds": incident_id,
                 },
-                "$set": {"updatedAt": now},
+                "$push": {"groupTimeline": {"$each": [timeline_entry], "$slice": -_GROUP_TIMELINE_MAX_ENTRIES}},
+                "$set": {"lastObservedAt": timeline_entry["observedAt"], "updatedAt": now},
             },
         )
         await db.incidents.update_one(

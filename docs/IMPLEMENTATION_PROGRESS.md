@@ -71,6 +71,10 @@ Implemented so far:
   traceable, while Inbox list queries show the group root and related run
   count. The grouping key does not use raw log text and therefore cannot merge
   failures solely on untrusted log similarity.
+- Group roots retain a bounded, presentation-safe repeated-failure timeline
+  (run ID, SHA, observed time, categories, and failed-job names). It excludes
+  raw log content and explicitly remains a recurrence signal, not causality or
+  a flaky-test verdict.
 - Incident grouping retries when evidence collection completed but the final
   grouping write was interrupted; a collected record becomes terminal only
   after it is a root or group member.

@@ -71,6 +71,9 @@ def _incident_response(document: dict) -> dict:
         "groupKey",
         "groupRootId",
         "groupRunIds",
+        "groupTimeline",
+        "firstObservedAt",
+        "lastObservedAt",
         "createdAt",
         "updatedAt",
     }

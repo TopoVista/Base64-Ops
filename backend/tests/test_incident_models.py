@@ -220,6 +220,12 @@ async def test_incident_grouping_keeps_one_root_and_preserves_related_runs(monke
                 record.setdefault(key, [])
                 if value not in record[key]:
                     record[key].append(value)
+            for key, value in update.get("$push", {}).items():
+                record.setdefault(key, [])
+                entries = value.get("$each", [value]) if isinstance(value, dict) else [value]
+                record[key].extend(entries)
+                if isinstance(value, dict) and "$slice" in value:
+                    record[key] = record[key][value["$slice"] :]
 
     incidents = _Incidents()
     monkeypatch.setattr(incident_service, "get_db", lambda: SimpleNamespace(incidents=incidents))
@@ -249,6 +255,8 @@ async def test_incident_grouping_keeps_one_root_and_preserves_related_runs(monke
     root, grouped = incidents.records
     assert root["isGroupRoot"] is True
     assert root["groupRunIds"] == [9, 10]
+    assert [entry["workflowRunId"] for entry in root["groupTimeline"]] == [9, 10]
+    assert root["firstObservedAt"] <= root["lastObservedAt"]
     assert grouped["status"] == "grouped"
     assert grouped["groupRootId"] == "inc_1"
 

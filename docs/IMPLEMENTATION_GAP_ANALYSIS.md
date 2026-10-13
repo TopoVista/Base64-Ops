@@ -25,7 +25,7 @@ does not treat mocked provider tests as live-provider verification.
 
 | Capability | Current state | Gap to close |
 | --- | --- | --- |
-| CI causality | Existing CI service gathers failed-run workflow, changed-file, and current/head evidence; incident dispatch persists a deterministic evidence-strength assessment, bounded same-workflow run comparison, and conservative repeat-failure group key. | No workflow/dependency diff comparison against the last success, recurrence aggregation, or incident timeline. |
+| CI causality | Existing CI service gathers failed-run workflow, changed-file, and current/head evidence; incident dispatch persists a deterministic evidence-strength assessment, bounded same-workflow run comparison, and conservative repeat-failure group key/timeline. | No workflow/dependency diff comparison against the last success or flaky-test-level causal analysis. |
 | Automated CI follow-up | Signed workflow-run webhook intake, opt-in repository automation, durable event ledger, and incident-dispatch job type are implemented. | GitHub App installation validation and live webhook/worker verification remain outstanding. |
 | Repair verification | Static/candidate validation and later read-only delivery CI observation exist. | No opt-in immutable candidate verification dispatch or auditable `VerificationRun`; no workflow is installed automatically. |
 | Historical intelligence | Operational memory includes validity and freshness controls. | No flaky-test observation model, prevention-rule promotion, or advisory view tied to a new incident. |
