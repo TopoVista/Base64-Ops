@@ -107,6 +107,48 @@ class BackgroundJobService:
             raise
         return {"id": job["_id"], "status": job["status"], "deduplicated": False}
 
+    async def enqueue_incident_dispatch(self, *, event_id: str) -> dict[str, Any]:
+        """Queue a server-created webhook event for the opt-in incident worker.
+
+        The payload deliberately contains only the durable event ID. Repository
+        identity, user ownership, and run details are reloaded from the event
+        ledger by the worker, so a webhook cannot smuggle executable values
+        into a job.
+        """
+
+        db = get_db()
+        dedupe_key = f"incident-dispatch:{event_id}"
+        existing = await db.background_jobs.find_one(
+            {"dedupeKey": dedupe_key, "status": {"$in": ["queued", "running"]}}, projection={"_id": 1, "status": 1}
+        )
+        if existing:
+            return {"id": existing["_id"], "status": existing["status"], "deduplicated": True}
+        now = utc_now()
+        job = {
+            "_id": new_id("job_"),
+            "role": "incident_dispatcher",
+            "type": "investigate_workflow_failure",
+            "status": "queued",
+            "dedupeKey": dedupe_key,
+            "userId": "system",
+            "payload": {"eventId": event_id},
+            "attempts": 0,
+            "availableAt": now,
+            "createdAt": now,
+            "updatedAt": now,
+        }
+        job["activeDedupeKey"] = dedupe_key
+        try:
+            await db.background_jobs.insert_one(job)
+        except DuplicateKeyError:
+            existing = await db.background_jobs.find_one(
+                {"activeDedupeKey": dedupe_key}, projection={"_id": 1, "status": 1}
+            )
+            if existing:
+                return {"id": existing["_id"], "status": existing["status"], "deduplicated": True}
+            raise
+        return {"id": job["_id"], "status": job["status"], "deduplicated": False}
+
     async def claim(self, role: str) -> dict[str, Any] | None:
         """Atomically claim one allowlisted job and give it a renewable lease.
 

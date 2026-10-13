@@ -141,6 +141,16 @@ class Settings(BaseSettings):
     github_repository_cache_ttl_seconds: int = Field(
         default=60, ge=0, le=600, alias="GITHUB_REPOSITORY_CACHE_TTL_SECONDS"
     )
+    # Webhook automation is opt-in per repository. The secret is intentionally
+    # independent from OAuth credentials because GitHub signs webhook bodies
+    # with a shared secret, not an access token.
+    github_webhook_secret: str = Field(default="", alias="GITHUB_WEBHOOK_SECRET")
+    github_webhook_max_body_bytes: int = Field(
+        default=250_000, ge=1_024, le=1_500_000, alias="GITHUB_WEBHOOK_MAX_BODY_BYTES"
+    )
+    github_incident_event_retention_days: int = Field(
+        default=90, ge=7, le=365, alias="GITHUB_INCIDENT_EVENT_RETENTION_DAYS"
+    )
 
     # GitHub Actions read-only investigation limits.
     ci_log_max_download_bytes: int = Field(default=500_000, alias="CI_LOG_MAX_DOWNLOAD_BYTES")
@@ -234,7 +244,7 @@ class Settings(BaseSettings):
             if not self.mongo_uri:
                 raise ValueError("MONGO_URI must be configured for production maintenance workers")
             return self
-        if role in {"indexer", "ci_observer"}:
+        if role in {"indexer", "ci_observer", "incident_dispatcher"}:
             if not self.mongo_uri:
                 raise ValueError("MONGO_URI must be configured for production workers")
             if not _is_fernet_key(self.github_token_encryption_key):
@@ -248,7 +258,7 @@ class Settings(BaseSettings):
                 raise ValueError("GITHUB_TOKEN_ENCRYPTION_LEGACY_KEY must be at least 32 bytes when configured")
             return self
         if role != "api":
-            raise ValueError("SERVICE_ROLE must be api, maintenance, indexer, or ci_observer")
+            raise ValueError("SERVICE_ROLE must be api, maintenance, indexer, ci_observer, or incident_dispatcher")
         if self.indexing_mode.lower() not in {"inline", "queued"}:
             raise ValueError("INDEXING_MODE must be inline or queued")
         if self.ci_verification_mode.lower() not in {"on_read", "queued"}:

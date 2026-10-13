@@ -11,6 +11,7 @@ from app.intelligence.graph.service import EngineeringGraphService
 from app.intelligence.graph.store import EngineeringGraphStore
 from app.services.background_job_service import BackgroundJobService
 from app.services.delivery_ci_service import evaluate_delivery_ci
+from app.services.incident_service import IncidentDispatchService
 from app.services.rag_service import RagService
 from app.services.redaction_service import RedactionService
 from app.services.workspace_service import WorkspaceService
@@ -124,6 +125,12 @@ async def run_job(job: dict) -> None:
         if verdict.status in {"pending", "running"}:
             raise DeferredJob(get_settings().ci_verification_poll_seconds)
         return
+    if job.get("type") == "investigate_workflow_failure":
+        event_id = str((job.get("payload") or {}).get("eventId", ""))
+        if not event_id:
+            raise ValueError("Missing incident event ID")
+        await IncidentDispatchService().dispatch(event_id=event_id)
+        return
     raise ValueError(f"Unsupported background job type: {job.get('type')}")
 
 
@@ -196,6 +203,14 @@ async def run(role: str, once: bool, stopped: asyncio.Event | None = None) -> No
                 attempts = int(job.get("attempts", 1))
                 retry = attempts < get_settings().background_job_max_attempts
                 safe_error = redactor.redact(f"{type(exc).__name__}: {exc}")[:500]
+                if job.get("type") == "investigate_workflow_failure":
+                    event_id = str((job.get("payload") or {}).get("eventId", ""))
+                    if event_id:
+                        await IncidentDispatchService().mark_dispatch_failure(
+                            event_id=event_id,
+                            error=safe_error,
+                            terminal=not retry,
+                        )
                 await get_db().background_jobs.update_one(
                     {"_id": job["_id"], "status": "running", "leaseToken": lease_token},
                     {

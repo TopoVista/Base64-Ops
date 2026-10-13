@@ -10,7 +10,7 @@ from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from app.api.deps import ensure_user_indexes
 from app.api.middleware import RateLimitMiddleware, RequestBodyLimitMiddleware, SecurityHeadersMiddleware
-from app.api.routes import assistant, auth, billing, dev, diagnostic, github, memory, session, system
+from app.api.routes import assistant, auth, billing, dev, diagnostic, github, incidents, memory, session, system
 from app.billing.billing_service import BillingService
 from app.billing.usage_service import UsageService
 from app.core.access_logging import configure_access_log_redaction
@@ -21,6 +21,7 @@ from app.intelligence.graph.store import EngineeringGraphStore
 from app.intelligence.impact.store import ChangeImpactStore
 from app.services.background_job_service import BackgroundJobService
 from app.services.github_service import ensure_github_indexes
+from app.services.incident_service import GitHubWebhookService
 from app.services.session_service import ensure_session_indexes
 
 logger = logging.getLogger(__name__)
@@ -43,6 +44,7 @@ async def _ensure_database_indexes() -> None:
     await BillingService().ensure_indexes()
     await BackgroundJobService().ensure_indexes()
     await ensure_github_indexes()
+    await GitHubWebhookService().ensure_indexes()
     await ensure_session_indexes()
     await EngineeringGraphStore().ensure_indexes()
     await ChangeImpactStore().ensure_indexes()
@@ -184,6 +186,11 @@ app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
 
 # GitHub OAuth (repo connection, not user auth)
 app.include_router(github.router, prefix="/api/github", tags=["github"])
+
+# Incident listing and opt-in automation configuration require Clerk auth.
+# The raw GitHub webhook itself stays under the GitHub router and is instead
+# authenticated by its HMAC signature.
+app.include_router(incidents.router, prefix="/api/incidents", tags=["incidents"])
 
 # Pasted CI output is streamed as redacted, untrusted diagnostic evidence.
 app.include_router(diagnostic.router, prefix="/api", tags=["diagnostic"])
