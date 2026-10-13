@@ -74,6 +74,7 @@ function IncidentListItem({ incident }: { incident: IncidentRecord }) {
         <span className="inline-flex items-center gap-1"><GitBranch className="size-3" />{incident.branch ?? "branch unavailable"}</span>
         <span className="font-mono">{shortSha(incident.headSha)}</span>
         <span>{incident.failureCategories.length ? incident.failureCategories.map(prettify).join(", ") : "classification pending"}</span>
+        {incident.groupRunIds && incident.groupRunIds.length > 1 ? <span>{incident.groupRunIds.length} related runs</span> : null}
         <span className="ml-auto inline-flex items-center gap-1 text-primary">View incident <ChevronRight className="size-3" /></span>
       </div>
     </Link>

@@ -59,6 +59,9 @@ def _incident_response(document: dict) -> dict:
         "history",
         "incomplete",
         "limitations",
+        "groupKey",
+        "groupRootId",
+        "groupRunIds",
         "createdAt",
         "updatedAt",
     }
@@ -113,7 +116,12 @@ async def automation_settings(
 async def list_incidents(
     limit: int = Query(default=30, ge=1, le=100), user: dict = Depends(get_current_user)
 ) -> dict:
-    cursor = get_db().incidents.find({"userId": user["_id"]}).sort("updatedAt", -1).limit(limit)
+    cursor = (
+        get_db()
+        .incidents.find({"userId": user["_id"], "isGroupRoot": {"$ne": False}})
+        .sort("updatedAt", -1)
+        .limit(limit)
+    )
     records = [_incident_response(record) async for record in cursor]
     return {"incidents": records}
 

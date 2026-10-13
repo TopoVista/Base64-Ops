@@ -39,6 +39,9 @@ export type IncidentRecord = {
   } | null;
   incomplete: boolean;
   limitations: string[];
+  groupKey?: string;
+  groupRootId?: string;
+  groupRunIds?: number[];
   createdAt: string;
   updatedAt: string;
 };

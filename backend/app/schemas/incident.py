@@ -17,6 +17,7 @@ class IncidentStatus(StrEnum):
     NEEDS_ATTENTION = "needs_attention"
     FAILED = "failed"
     IGNORED = "ignored"
+    GROUPED = "grouped"
 
 
 class EvidenceStrength(StrEnum):

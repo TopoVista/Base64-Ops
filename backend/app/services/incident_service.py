@@ -52,6 +52,12 @@ class GitHubWebhookService:
             [("eventId", 1), ("automationId", 1)], unique=True, name="incident_one_per_event_target"
         )
         await db.incidents.create_index([("userId", 1), ("updatedAt", -1)], name="incident_user_timeline")
+        await db.incidents.create_index(
+            [("userId", 1), ("activeGroupKey", 1)],
+            unique=True,
+            sparse=True,
+            name="incident_one_active_group_per_user",
+        )
 
     @staticmethod
     def verify_signature(*, body: bytes, signature: str, secret: str) -> bool:
@@ -334,6 +340,25 @@ def build_structured_incident_diagnosis(context: Any) -> IncidentDiagnosis:
     )
 
 
+def incident_group_key(*, event: dict[str, Any], context: Any) -> str:
+    """Return a conservative stable key for repeated evidence-equivalent failures."""
+
+    failed_jobs = [
+        {"name": job.name, "failed_step": job.failed_step or ""}
+        for job in getattr(context, "failed_jobs", [])
+    ]
+    signature = {
+        "repository_id": str(event["repositoryId"]),
+        "workflow": str(event.get("workflowPath") or event.get("workflowName") or ""),
+        "branch": str(event.get("branch") or ""),
+        "head_sha": str(event["headSha"]),
+        "failure_categories": sorted(str(category) for category in getattr(context, "failure_categories", [])),
+        "failed_jobs": sorted(failed_jobs, key=lambda job: (job["name"], job["failed_step"])),
+    }
+    encoded = json.dumps(signature, separators=(",", ":"), sort_keys=True).encode("utf-8")
+    return "igr_" + hashlib.sha256(encoded).hexdigest()[:40]
+
+
 class IncidentDispatchService:
     """Run bounded, read-only CI evidence collection outside webhook requests."""
 
@@ -421,9 +446,15 @@ class IncidentDispatchService:
             await db.incidents.insert_one(incident)
         except DuplicateKeyError:
             existing = await db.incidents.find_one({"eventId": event["_id"], "automationId": automation["_id"]})
-            if existing:
+            if not existing:
+                raise
+            if existing.get("status") in {
+                IncidentStatus.EVIDENCE_COLLECTED.value,
+                IncidentStatus.GROUPED.value,
+                IncidentStatus.IGNORED.value,
+            }:
                 return
-            raise
+            incident_id = str(existing["_id"])
 
         # Budget is checked inside the worker against durable records, not a
         # browser counter. The just-created record counts as one event; a
@@ -508,6 +539,103 @@ class IncidentDispatchService:
                     "incomplete": context.incomplete,
                     "limitations": context.limitations,
                     "updatedAt": utc_now(),
+                }
+            },
+        )
+        await self._assign_incident_group(
+            incident_id=incident_id,
+            event=event,
+            automation=automation,
+            context=context,
+        )
+
+    async def _assign_incident_group(
+        self,
+        *,
+        incident_id: str,
+        event: dict[str, Any],
+        automation: dict[str, Any],
+        context: Any,
+    ) -> None:
+        """Group only an evidence-equivalent failure while keeping every event traceable."""
+
+        db = get_db()
+        key = incident_group_key(event=event, context=context)
+        existing = await db.incidents.find_one(
+            {
+                "userId": automation["userId"],
+                "activeGroupKey": key,
+                "isGroupRoot": True,
+                "_id": {"$ne": incident_id},
+            }
+        )
+        if existing:
+            await self._attach_to_existing_group(
+                root_id=str(existing["_id"]),
+                incident_id=incident_id,
+                event=event,
+                automation=automation,
+                key=key,
+            )
+            return
+        try:
+            await db.incidents.update_one(
+                {"_id": incident_id, "userId": automation["userId"]},
+                {
+                    "$set": {
+                        "groupKey": key,
+                        "activeGroupKey": key,
+                        "isGroupRoot": True,
+                        "groupRootId": incident_id,
+                        "groupRunIds": [event["workflowRunId"]],
+                        "updatedAt": utc_now(),
+                    }
+                },
+            )
+        except DuplicateKeyError:
+            winner = await db.incidents.find_one(
+                {"userId": automation["userId"], "activeGroupKey": key, "isGroupRoot": True}
+            )
+            if not winner:
+                raise
+            await self._attach_to_existing_group(
+                root_id=str(winner["_id"]),
+                incident_id=incident_id,
+                event=event,
+                automation=automation,
+                key=key,
+            )
+
+    async def _attach_to_existing_group(
+        self,
+        *,
+        root_id: str,
+        incident_id: str,
+        event: dict[str, Any],
+        automation: dict[str, Any],
+        key: str,
+    ) -> None:
+        db = get_db()
+        now = utc_now()
+        await db.incidents.update_one(
+            {"_id": root_id, "userId": automation["userId"], "isGroupRoot": True},
+            {
+                "$addToSet": {
+                    "groupRunIds": event["workflowRunId"],
+                    "groupMemberIncidentIds": incident_id,
+                },
+                "$set": {"updatedAt": now},
+            },
+        )
+        await db.incidents.update_one(
+            {"_id": incident_id, "userId": automation["userId"]},
+            {
+                "$set": {
+                    "status": IncidentStatus.GROUPED.value,
+                    "groupKey": key,
+                    "groupRootId": root_id,
+                    "isGroupRoot": False,
+                    "updatedAt": now,
                 }
             },
         )

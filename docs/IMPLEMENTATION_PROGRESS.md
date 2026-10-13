@@ -11,7 +11,7 @@ Status: **IN PROGRESS**
 - Baseline backend command: `backend\\venv\\Scripts\\python.exe -m pytest backend\\tests -q`
   - Initial result: **315 passed**, one third-party deprecation warning.
   - After incident API, deterministic diagnosis, and Inbox/detail changes:
-    **327 passed**, one third-party deprecation warning.
+    **329 passed**, one third-party deprecation warning.
 - Frontend validation after the Incident Inbox slice:
   - `npm run lint`: passed.
   - `npx tsc --noEmit`: passed.
@@ -66,6 +66,11 @@ Implemented so far:
   supporting evidence IDs, relevant paths, historical comparison, applicability
   state, and a safe next action. The incident detail UI exposes the compact
   comparison and its limitations.
+- Evidence-equivalent incidents now receive a conservative SHA/workflow/job/
+  category group key after collection. Every event remains stored and
+  traceable, while Inbox list queries show the group root and related run
+  count. The grouping key does not use raw log text and therefore cannot merge
+  failures solely on untrusted log similarity.
 
 Still required in this stage:
 
@@ -73,7 +78,7 @@ Still required in this stage:
   has no installation-token boundary).
 - Live GitHub webhook verification, a deployed dispatcher/scheduler profile,
   GitHub-native reporting, full causality comparison (environment, dependency,
-  and successful-run diffs), grouping, notification preferences, and the
+  and successful-run diffs), reconciliation, notification preferences, and the
   verification lifecycle.
 
 ## Current external blockers
