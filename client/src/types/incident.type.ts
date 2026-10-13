@@ -14,12 +14,29 @@ export type IncidentRecord = {
   evidenceStrength: "insufficient" | "observed" | "correlated" | "supported";
   hypothesisStatus?: "insufficient" | "candidate" | "supported";
   diagnosisSummary?: string | null;
+  diagnosis?: {
+    schema_version: "incident-diagnosis-v1";
+    status: "insufficient" | "candidate" | "supported";
+    summary: string;
+    recommended_next_action: string;
+  } | null;
   evidenceIds: string[];
+  historyEvidenceIds?: string[];
   workflowEvidenceIds: string[];
   changedFileEvidenceIds: string[];
   relevantPaths: string[];
   applicability?: string | null;
   applicabilityReason?: string | null;
+  history?: {
+    compared_run_ids: number[];
+    last_successful_run_id?: number | null;
+    last_successful_head_sha?: string | null;
+    first_observed_failure_run_id?: number | null;
+    same_sha_failure_count: number;
+    same_sha_success_count: number;
+    assessment: string;
+    limitation?: string | null;
+  } | null;
   incomplete: boolean;
   limitations: string[];
   createdAt: string;

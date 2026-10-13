@@ -29,6 +29,8 @@ class EvidenceService:
             source_type = (
                 "ci_log"
                 if source.get("kind") == "ci_log"
+                else "tool_result"
+                if source.get("kind") == "tool_result"
                 else "runbook"
                 if source.get("kind") == "runbook"
                 else "repo_file"

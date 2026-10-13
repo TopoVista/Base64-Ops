@@ -11,7 +11,7 @@ Status: **IN PROGRESS**
 - Baseline backend command: `backend\\venv\\Scripts\\python.exe -m pytest backend\\tests -q`
   - Initial result: **315 passed**, one third-party deprecation warning.
   - After incident API, deterministic diagnosis, and Inbox/detail changes:
-    **323 passed**, one third-party deprecation warning.
+    **327 passed**, one third-party deprecation warning.
 - Frontend validation after the Incident Inbox slice:
   - `npm run lint`: passed.
   - `npx tsc --noEmit`: passed.
@@ -57,13 +57,23 @@ Implemented so far:
 - Repository daily investigation budgets are checked from durable incident
   records by the worker. An exhausted budget is recorded as an observable,
   ignored incident instead of silently spending work.
+- The CI investigation service now compares bounded, workflow/branch-matched
+  Actions metadata when timestamps are available. It records a prior success,
+  first observed failure, and same-SHA outcomes as redacted `tool_result`
+  evidence. These signals are intentionally labeled correlation, never proof
+  of causality or flakiness.
+- Automated incidents persist a versioned structured diagnosis with its
+  supporting evidence IDs, relevant paths, historical comparison, applicability
+  state, and a safe next action. The incident detail UI exposes the compact
+  comparison and its limitations.
 
 Still required in this stage:
 
 - GitHub App installation identity support (current OAuth-based integration
   has no installation-token boundary).
 - Live GitHub webhook verification, a deployed dispatcher/scheduler profile,
-  GitHub-native reporting, grouping, notification preferences, and the
+  GitHub-native reporting, full causality comparison (environment, dependency,
+  and successful-run diffs), grouping, notification preferences, and the
   verification lifecycle.
 
 ## Current external blockers

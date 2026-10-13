@@ -69,6 +69,19 @@ class CILogExcerpt(BaseModel):
     categories: list[CIFailureCategory] = Field(default_factory=list)
 
 
+class CIWorkflowHistory(BaseModel):
+    """Bounded comparable-run signals; none of these imply causation."""
+
+    compared_run_ids: list[int] = Field(default_factory=list)
+    last_successful_run_id: int | None = None
+    last_successful_head_sha: str | None = None
+    first_observed_failure_run_id: int | None = None
+    same_sha_failure_count: int = 0
+    same_sha_success_count: int = 0
+    assessment: str = "insufficient_history"
+    limitation: str | None = None
+
+
 class CIInvestigationContext(BaseModel):
     run_id: int
     workflow_name: str | None = None
@@ -81,6 +94,7 @@ class CIInvestigationContext(BaseModel):
     run_is_historical: bool = False
     failed_jobs: list[WorkflowJobSummary] = Field(default_factory=list)
     evidence_ids: list[str] = Field(default_factory=list)
+    history_evidence_ids: list[str] = Field(default_factory=list)
     workflow_evidence_ids: list[str] = Field(default_factory=list)
     changed_file_evidence_ids: list[str] = Field(default_factory=list)
     failure_categories: list[CIFailureCategory] = Field(default_factory=list)
@@ -88,6 +102,7 @@ class CIInvestigationContext(BaseModel):
     applicability: str | None = None
     applicability_reason: str | None = None
     applicability_result: dict[str, Any] | None = None
+    history: CIWorkflowHistory | None = None
     incomplete: bool = False
     limitations: list[str] = Field(default_factory=list)
 

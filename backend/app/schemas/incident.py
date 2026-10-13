@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from enum import StrEnum
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
@@ -23,6 +24,22 @@ class EvidenceStrength(StrEnum):
     OBSERVED = "observed"
     CORRELATED = "correlated"
     SUPPORTED = "supported"
+
+
+class IncidentDiagnosis(BaseModel):
+    """Evidence-scoped diagnosis stored with an automated CI incident."""
+
+    schema_version: Literal["incident-diagnosis-v1"] = "incident-diagnosis-v1"
+    status: Literal["insufficient", "candidate", "supported"]
+    summary: str
+    evidence_strength: EvidenceStrength
+    failure_categories: list[str] = Field(default_factory=list)
+    supporting_evidence_ids: list[str] = Field(default_factory=list)
+    contradictory_evidence_ids: list[str] = Field(default_factory=list)
+    relevant_paths: list[str] = Field(default_factory=list)
+    historical_context: dict[str, Any] | None = None
+    applicability: str | None = None
+    recommended_next_action: str
 
 
 class RepositoryAutomationSettingsRequest(BaseModel):

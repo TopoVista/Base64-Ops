@@ -1,3 +1,4 @@
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 import pytest
@@ -5,7 +6,11 @@ import pytest
 from app.agent.graph import AgentGraph
 from app.git.actions import CIFailureCategory, CILogExcerpt, WorkflowJobSummary, WorkflowRunSummary
 from app.git.change_provider import ChangedPathsResult
-from app.services.ci_investigation_service import CIInvestigationService, _extract_safe_path_hints
+from app.services.ci_investigation_service import (
+    CIInvestigationService,
+    _extract_safe_path_hints,
+    compare_workflow_history,
+)
 
 
 class FakeActions:
@@ -161,6 +166,62 @@ async def test_ci_service_continues_when_logs_are_not_permitted():
 
 
 @pytest.mark.asyncio
+async def test_ci_service_persists_bounded_comparable_run_history():
+    origin = datetime(2026, 10, 1, tzinfo=UTC)
+
+    class HistoricalActions(FakeActions):
+        async def get_workflow_run(self, **_kwargs):
+            return WorkflowRunSummary(
+                id=842,
+                repository_id="owner/repo",
+                workflow_id=9,
+                workflow_name="Frontend CI",
+                workflow_path=".github/workflows/ci.yml",
+                branch="main",
+                head_sha="failed-sha",
+                conclusion="failure",
+                created_at=origin + timedelta(minutes=10),
+            )
+
+        async def list_workflow_runs(self, **_kwargs):
+            return [
+                WorkflowRunSummary(
+                    id=840,
+                    repository_id="owner/repo",
+                    workflow_id=9,
+                    workflow_name="Frontend CI",
+                    workflow_path=".github/workflows/ci.yml",
+                    branch="main",
+                    head_sha="prior-sha",
+                    conclusion="success",
+                    created_at=origin,
+                ),
+                await self.get_workflow_run(),
+            ]
+
+    service = CIInvestigationService(
+        actions=HistoricalActions(), workspace=FakeWorkspace(), changes=FakeChanges()
+    )
+    evidence = FakeEvidence()
+    service.evidence = evidence
+
+    context = await service.investigate_actions_run(
+        user_id="user-a",
+        repository_id="owner/repo",
+        run_id=842,
+        session={"_id": "session-a"},
+        graph_run_id="run-a",
+        current_head_sha="failed-sha",
+        repo_path=Path("/fixture"),
+    )
+
+    assert context.history and context.history.assessment == "failure_after_prior_success"
+    assert context.history_evidence_ids
+    history_call = next(call for call in evidence.calls if call["sources"][0]["kind"] == "tool_result")
+    assert "not proof of causation" in history_call["sources"][0]["excerpt"]
+
+
+@pytest.mark.asyncio
 async def test_ci_service_marks_unknown_workflow_path_incomplete():
     class UnknownWorkflowActions(FakeActions):
         async def resolve_workflow_path(self, **_kwargs):
@@ -192,6 +253,59 @@ def test_ci_log_path_hints_use_repository_path_policy(tmp_path: Path):
     )
 
     assert hints == ["backend/auth.py"]
+
+
+def test_workflow_history_records_prior_success_without_claiming_causation():
+    origin = datetime(2026, 10, 1, tzinfo=UTC)
+    success = WorkflowRunSummary(
+        id=840,
+        repository_id="owner/repo",
+        workflow_id=9,
+        workflow_name="CI",
+        branch="main",
+        head_sha="before-sha",
+        conclusion="success",
+        created_at=origin,
+    )
+    failure = WorkflowRunSummary(
+        id=842,
+        repository_id="owner/repo",
+        workflow_id=9,
+        workflow_name="CI",
+        branch="main",
+        head_sha="failed-sha",
+        conclusion="failure",
+        created_at=origin + timedelta(minutes=10),
+    )
+
+    history = compare_workflow_history(failed_run=failure, runs=[failure, success])
+
+    assert history.assessment == "failure_after_prior_success"
+    assert history.last_successful_run_id == 840
+    assert history.last_successful_head_sha == "before-sha"
+    assert history.first_observed_failure_run_id == 842
+
+
+def test_workflow_history_marks_mixed_same_sha_outcomes_as_signal_not_flakiness():
+    origin = datetime(2026, 10, 1, tzinfo=UTC)
+    runs = [
+        WorkflowRunSummary(
+            id=840 + index,
+            repository_id="owner/repo",
+            workflow_name="CI",
+            branch="main",
+            head_sha="same-sha",
+            conclusion=conclusion,
+            created_at=origin + timedelta(minutes=index),
+        )
+        for index, conclusion in enumerate(["failure", "success", "failure"])
+    ]
+
+    history = compare_workflow_history(failed_run=runs[-1], runs=runs)
+
+    assert history.assessment == "mixed_outcomes_same_sha"
+    assert history.same_sha_failure_count == 2
+    assert history.same_sha_success_count == 1
 
 
 @pytest.mark.asyncio

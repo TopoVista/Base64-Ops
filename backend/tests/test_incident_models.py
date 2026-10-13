@@ -3,7 +3,11 @@ from types import SimpleNamespace
 from app.api.routes.incidents import _incident_response
 from app.schemas.incident import EvidenceStrength
 from app.services import incident_service
-from app.services.incident_service import GitHubWebhookService, build_incident_diagnosis
+from app.services.incident_service import (
+    GitHubWebhookService,
+    build_incident_diagnosis,
+    build_structured_incident_diagnosis,
+)
 
 
 def _context(**overrides):  # noqa: ANN202
@@ -34,6 +38,23 @@ def test_incident_diagnosis_is_limited_when_ci_logs_are_unavailable() -> None:
     assert strength is EvidenceStrength.INSUFFICIENT
     assert status == "insufficient"
     assert "No failed-job log excerpt" in summary
+
+
+def test_structured_incident_diagnosis_is_evidence_scoped() -> None:
+    diagnosis = build_structured_incident_diagnosis(
+        _context(
+            failure_categories=["test_failure"],
+            workflow_evidence_ids=["evd_workflow"],
+            changed_file_evidence_ids=["evd_source"],
+            relevant_paths=["backend/auth.py"],
+        )
+    )
+
+    assert diagnosis.schema_version == "incident-diagnosis-v1"
+    assert diagnosis.status == "supported"
+    assert diagnosis.supporting_evidence_ids == ["evd_log", "evd_workflow", "evd_source"]
+    assert diagnosis.relevant_paths == ["backend/auth.py"]
+    assert "constrained proposal" in diagnosis.recommended_next_action
 
 
 def test_incident_api_response_never_leaks_internal_tenant_or_queue_routing() -> None:

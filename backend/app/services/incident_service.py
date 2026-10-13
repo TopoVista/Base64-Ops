@@ -19,7 +19,7 @@ from pymongo.errors import DuplicateKeyError
 
 from app.core.config import get_settings
 from app.db.mongo import get_db
-from app.schemas.incident import EvidenceStrength, IncidentStatus
+from app.schemas.incident import EvidenceStrength, IncidentDiagnosis, IncidentStatus
 from app.services.background_job_service import BackgroundJobService
 from app.services.ci_investigation_service import CIInvestigationService
 from app.services.github_service import list_repositories, normalize_github_repository_url
@@ -303,6 +303,37 @@ def build_incident_diagnosis(context: Any) -> tuple[EvidenceStrength, str, str]:
     return EvidenceStrength.INSUFFICIENT, "insufficient", "Evidence collection did not produce a diagnosis basis."
 
 
+def build_structured_incident_diagnosis(context: Any) -> IncidentDiagnosis:
+    """Return a typed diagnosis whose scope is limited to collected evidence."""
+
+    strength, status, summary = build_incident_diagnosis(context)
+    history = getattr(context, "history", None)
+    history_context = history.model_dump(mode="json") if history else None
+    evidence_ids = [
+        *getattr(context, "evidence_ids", []),
+        *getattr(context, "history_evidence_ids", []),
+        *getattr(context, "workflow_evidence_ids", []),
+        *getattr(context, "changed_file_evidence_ids", []),
+    ]
+    recommended = (
+        "Review the existing evidence and create a constrained proposal only if the failure condition "
+        "remains applicable."
+        if strength is not EvidenceStrength.INSUFFICIENT
+        else "Collect additional bounded CI or repository evidence before proposing a change."
+    )
+    return IncidentDiagnosis(
+        status=status,
+        summary=summary,
+        evidence_strength=strength,
+        failure_categories=[str(category) for category in getattr(context, "failure_categories", [])],
+        supporting_evidence_ids=list(dict.fromkeys(evidence_ids)),
+        relevant_paths=list(getattr(context, "relevant_paths", [])),
+        historical_context=history_context,
+        applicability=getattr(context, "applicability", None),
+        recommended_next_action=recommended,
+    )
+
+
 class IncidentDispatchService:
     """Run bounded, read-only CI evidence collection outside webhook requests."""
 
@@ -453,17 +484,19 @@ class IncidentDispatchService:
             current_head_sha=current_head_sha,
             repo_path=repo_path,
         )
-        strength, hypothesis_status, summary = build_incident_diagnosis(context)
+        diagnosis = build_structured_incident_diagnosis(context)
         await db.incidents.update_one(
             {"_id": incident_id, "userId": automation["userId"]},
             {
                 "$set": {
                     "status": IncidentStatus.EVIDENCE_COLLECTED.value,
                     "failureCategories": [str(category) for category in context.failure_categories],
-                    "evidenceStrength": strength.value,
-                    "hypothesisStatus": hypothesis_status,
-                    "diagnosisSummary": summary,
+                    "evidenceStrength": diagnosis.evidence_strength.value,
+                    "hypothesisStatus": diagnosis.status,
+                    "diagnosisSummary": diagnosis.summary,
+                    "diagnosis": diagnosis.model_dump(mode="json"),
                     "evidenceIds": context.evidence_ids,
+                    "historyEvidenceIds": context.history_evidence_ids,
                     "workflowEvidenceIds": context.workflow_evidence_ids,
                     "changedFileEvidenceIds": context.changed_file_evidence_ids,
                     "relevantPaths": context.relevant_paths,
@@ -471,6 +504,7 @@ class IncidentDispatchService:
                     "runIsHistorical": context.run_is_historical,
                     "applicability": context.applicability,
                     "applicabilityReason": context.applicability_reason,
+                    "history": context.history.model_dump(mode="json") if context.history else None,
                     "incomplete": context.incomplete,
                     "limitations": context.limitations,
                     "updatedAt": utc_now(),

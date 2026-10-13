@@ -6,7 +6,13 @@ import re
 from pathlib import Path
 from typing import Any
 
-from app.git.actions import CIFailureCategory, CIInvestigationContext, GitHubActionsAdapter
+from app.git.actions import (
+    CIFailureCategory,
+    CIInvestigationContext,
+    CIWorkflowHistory,
+    GitHubActionsAdapter,
+    WorkflowRunSummary,
+)
 from app.git.change_provider import GitChangeProvider
 from app.services.ci_applicability import assess_workflow_path
 from app.services.evidence_service import EvidenceService
@@ -14,6 +20,7 @@ from app.services.patch_engine import PatchSafetyError, RepositoryPathPolicy
 from app.services.workspace_service import WorkspaceService
 
 _PATH_HINT = re.compile(r"(?<![\w.-])((?:\.?/?[\w.-]+/)+[\w.-]+(?:\:\d+)?)")
+_FAILED_CONCLUSIONS = frozenset({"failure", "timed_out", "startup_failure", "action_required"})
 
 
 class CIInvestigationService:
@@ -114,6 +121,14 @@ class CIInvestigationService:
             sources=sources,
             commit_sha=run.head_sha,
         )
+        history, history_evidence_ids, history_limitations = await self._collect_run_history(
+            user_id=user_id,
+            repository_id=repository_id,
+            run=run,
+            session=session,
+            graph_run_id=graph_run_id,
+        )
+        limitations.extend(history_limitations)
         workflow_evidence_ids: list[str] = []
         changed_file_evidence_ids: list[str] = []
         relevant_paths: list[str] = []
@@ -280,6 +295,7 @@ class CIInvestigationService:
             base_sha=base_sha,
             failed_jobs=jobs,
             evidence_ids=[record["id"] for record in records],
+            history_evidence_ids=history_evidence_ids,
             workflow_evidence_ids=workflow_evidence_ids,
             changed_file_evidence_ids=changed_file_evidence_ids,
             failure_categories=sorted(categories, key=str),
@@ -289,9 +305,139 @@ class CIInvestigationService:
             applicability=applicability,
             applicability_reason=applicability_reason,
             applicability_result=applicability_result,
+            history=history,
             incomplete=bool(limitations),
             limitations=limitations,
         )
+
+    async def _collect_run_history(
+        self,
+        *,
+        user_id: str,
+        repository_id: str,
+        run: WorkflowRunSummary,
+        session: dict[str, Any],
+        graph_run_id: str,
+    ) -> tuple[CIWorkflowHistory | None, list[str], list[str]]:
+        """Persist a compact, read-only comparison of bounded Actions metadata."""
+
+        try:
+            runs = await self.actions.list_workflow_runs(
+                user_id=user_id, repository_id=repository_id, branch=run.branch
+            )
+        except Exception:
+            return None, [], ["Unable to retrieve comparable workflow-run history."]
+        history = compare_workflow_history(failed_run=run, runs=runs)
+        if not history.compared_run_ids:
+            return history, [], []
+        excerpt = _history_excerpt(history)
+        records = await self.evidence.record_sources(
+            user_id=user_id,
+            session=session,
+            run_id=graph_run_id,
+            sources=[
+                {
+                    "kind": "tool_result",
+                    "source": f"github-actions/history/run/{run.id}",
+                    "excerpt": excerpt,
+                    "metadata": {
+                        "untrusted": True,
+                        "workflow_run_id": run.id,
+                        "head_sha": run.head_sha,
+                        "assessment": history.assessment,
+                        "compared_run_ids": history.compared_run_ids,
+                        "last_successful_run_id": history.last_successful_run_id,
+                        "first_observed_failure_run_id": history.first_observed_failure_run_id,
+                        "same_sha_failure_count": history.same_sha_failure_count,
+                        "same_sha_success_count": history.same_sha_success_count,
+                    },
+                }
+            ],
+            commit_sha=run.head_sha,
+        )
+        return history, [record["id"] for record in records], []
+
+
+def compare_workflow_history(
+    *, failed_run: WorkflowRunSummary, runs: list[WorkflowRunSummary]
+) -> CIWorkflowHistory:
+    """Describe a bounded set of comparable workflow runs without inferring cause.
+
+    GitHub run IDs alone do not establish time ordering, so missing timestamps
+    intentionally degrade to an explicit insufficient-history result.
+    """
+
+    comparable = [
+        run
+        for run in runs
+        if _same_workflow(failed_run, run)
+        and (not failed_run.branch or not run.branch or run.branch == failed_run.branch)
+        and run.created_at is not None
+    ]
+    if failed_run.created_at is None:
+        return CIWorkflowHistory(
+            assessment="insufficient_history",
+            limitation="The failed run did not include a creation timestamp for chronological comparison.",
+        )
+    ordered = sorted(comparable, key=lambda item: (item.created_at, item.id))
+    observed = [item for item in ordered if item.created_at <= failed_run.created_at]
+    compared_ids = [item.id for item in observed[:30]]
+    same_sha = [item for item in observed if item.head_sha == failed_run.head_sha]
+    same_sha_failures = sum(item.conclusion in _FAILED_CONCLUSIONS for item in same_sha)
+    same_sha_successes = sum(item.conclusion == "success" for item in same_sha)
+    prior_successes = [
+        item
+        for item in observed
+        if item.id != failed_run.id and item.created_at < failed_run.created_at and item.conclusion == "success"
+    ]
+    failures = [item for item in observed if item.conclusion in _FAILED_CONCLUSIONS]
+    last_success = prior_successes[-1] if prior_successes else None
+    first_failure = failures[0] if failures else None
+    if same_sha_failures >= 2 and same_sha_successes >= 1:
+        assessment = "mixed_outcomes_same_sha"
+    elif same_sha_failures >= 2:
+        assessment = "repeated_failure_same_sha"
+    elif last_success and last_success.head_sha != failed_run.head_sha:
+        assessment = "failure_after_prior_success"
+    else:
+        assessment = "insufficient_history"
+    return CIWorkflowHistory(
+        compared_run_ids=compared_ids,
+        last_successful_run_id=last_success.id if last_success else None,
+        last_successful_head_sha=last_success.head_sha if last_success else None,
+        first_observed_failure_run_id=first_failure.id if first_failure else None,
+        same_sha_failure_count=same_sha_failures,
+        same_sha_success_count=same_sha_successes,
+        assessment=assessment,
+        limitation=None if compared_ids else "No comparable workflow history was available in the bounded window.",
+    )
+
+
+def _same_workflow(expected: WorkflowRunSummary, candidate: WorkflowRunSummary) -> bool:
+    if expected.workflow_id is not None and candidate.workflow_id is not None:
+        return expected.workflow_id == candidate.workflow_id
+    if expected.workflow_path and candidate.workflow_path:
+        return expected.workflow_path == candidate.workflow_path
+    return bool(expected.workflow_name and expected.workflow_name == candidate.workflow_name)
+
+
+def _history_excerpt(history: CIWorkflowHistory) -> str:
+    """Create compact human-readable metadata evidence, never a diagnosis claim."""
+
+    pieces = [
+        f"Comparable workflow runs: {len(history.compared_run_ids)}.",
+        f"Assessment: {history.assessment.replace('_', ' ')}.",
+        f"Same-SHA outcomes: {history.same_sha_failure_count} failure(s), "
+        f"{history.same_sha_success_count} success(es).",
+    ]
+    if history.last_successful_run_id is not None:
+        pieces.append(f"Last prior successful run: #{history.last_successful_run_id}.")
+    if history.first_observed_failure_run_id is not None:
+        pieces.append(f"First observed failed run in the bounded window: #{history.first_observed_failure_run_id}.")
+    if history.limitation:
+        pieces.append(f"Limitation: {history.limitation}")
+    pieces.append("This comparison is correlation evidence, not proof of causation or flakiness.")
+    return " ".join(pieces)
 
 
 def _select_relevant_paths(
