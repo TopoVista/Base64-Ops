@@ -171,12 +171,15 @@ class DeliveryService:
         }
 
     async def persist_plan(self, plan: DeliveryPlan) -> dict[str, Any]:
+        from app.services.candidate_verification_service import initial_candidate_verification
+
         document = plan.model_dump()
         document["files"] = [
             {**change.model_dump(), "proposed_content": change.proposed_content} for change in plan.files
         ]
         document["_id"] = plan.id
         document.update({"userId": plan.user_id, "sessionId": plan.session_id, "runId": plan.run_id})
+        document["candidateVerification"] = initial_candidate_verification(plan)
         await get_db().delivery_plans.insert_one(document)
         return document
 

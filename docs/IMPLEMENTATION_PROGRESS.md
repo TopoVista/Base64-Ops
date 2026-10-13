@@ -99,6 +99,20 @@ Still required in this stage:
   and successful-run diffs), reconciliation, notification preferences, and the
   verification lifecycle.
 
+## Verified-repair contract
+
+Status: **PARTIALLY IMPLEMENTED AND TESTED**
+
+- Every newly persisted exact `DeliveryPlan` now contains an immutable
+  `candidate-verification-v1` record with its base SHA and candidate diff hash.
+- Its initial state is explicitly `proposed` / `not_independently_tested` and
+  records that static validation plus post-delivery CI observation do not prove
+  targeted candidate verification.
+- Remote verification dispatch remains unavailable until a separately
+  configured GitHub App installation-token boundary and reviewed
+  repository-owned workflow are implemented. OAuth credentials do not gain
+  dispatch authority from this record.
+
 ## Current external blockers
 
 1. The Render Docker service is currently refusing startup until
