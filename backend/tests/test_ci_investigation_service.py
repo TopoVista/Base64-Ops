@@ -106,6 +106,40 @@ async def test_ci_service_persists_separate_historical_current_and_changed_evide
 
 
 @pytest.mark.asyncio
+async def test_ci_service_preserves_failed_test_identity_as_untrusted_evidence():
+    class TestActions(FakeActions):
+        async def get_job_logs(self, **_kwargs):
+            return [
+                CILogExcerpt(
+                    run_id=842,
+                    job_id=17,
+                    job_name="backend-tests",
+                    excerpt="FAILED tests/test_login.py::test_login",
+                    categories=[CIFailureCategory.TEST_FAILURE],
+                    failed_test_identifiers=["tests/test_login.py::test_login"],
+                )
+            ]
+
+    service = CIInvestigationService(actions=TestActions(), workspace=FakeWorkspace(), changes=FakeChanges())
+    evidence = FakeEvidence()
+    service.evidence = evidence
+    context = await service.investigate_actions_run(
+        user_id="user-a",
+        repository_id="owner/repo",
+        run_id=842,
+        session={"_id": "session-a"},
+        graph_run_id="run-a",
+        current_head_sha="failed-sha",
+        repo_path=Path("/fixture"),
+    )
+
+    assert context.failed_test_identifiers == ["tests/test_login.py::test_login"]
+    assert evidence.calls[0]["sources"][0]["metadata"]["failed_test_identifiers"] == [
+        "tests/test_login.py::test_login"
+    ]
+
+
+@pytest.mark.asyncio
 async def test_ci_service_includes_existing_manifest_for_dependency_failures():
     class DependencyActions(FakeActions):
         async def get_job_logs(self, **_kwargs):

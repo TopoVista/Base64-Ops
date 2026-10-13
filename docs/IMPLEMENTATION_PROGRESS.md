@@ -79,6 +79,9 @@ Implemented so far:
   root for the same repository, workflow, branch, and SHA. It is shown as a
   possible transient-condition signal and never closes the incident or grants
   a repair authorization.
+- Failed pytest/Jest-style identifiers are now retained as bounded untrusted
+  evidence. A `suspected` flaky signal needs both an extracted identifier and
+  mixed same-SHA history; it has no auto-rerun or auto-resolution behavior.
 - Incident grouping retries when evidence collection completed but the final
   grouping write was interrupted; a collected record becomes terminal only
   after it is a root or group member.

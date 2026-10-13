@@ -76,6 +76,7 @@ class CIInvestigationService:
         categories = set()
         path_hints: list[str] = []
         failure_text: list[str] = []
+        failed_test_identifiers: list[str] = []
         for job in jobs:
             try:
                 excerpts = await self.actions.get_job_logs(
@@ -87,6 +88,9 @@ class CIInvestigationService:
             for excerpt in excerpts:
                 categories.update(excerpt.categories)
                 failure_text.append(excerpt.excerpt)
+                for identifier in excerpt.failed_test_identifiers:
+                    if identifier not in failed_test_identifiers:
+                        failed_test_identifiers.append(identifier)
                 if repo_path:
                     path_hints.extend(_extract_safe_path_hints(excerpt.excerpt, repo_path))
                 sources.append(
@@ -109,6 +113,7 @@ class CIInvestigationService:
                             "conclusion": job.conclusion,
                             "html_url": job.html_url,
                             "categories": [str(category) for category in excerpt.categories],
+                            "failed_test_identifiers": excerpt.failed_test_identifiers,
                             "truncated": excerpt.truncated,
                             "untrusted": True,
                         },
@@ -299,6 +304,7 @@ class CIInvestigationService:
             workflow_evidence_ids=workflow_evidence_ids,
             changed_file_evidence_ids=changed_file_evidence_ids,
             failure_categories=sorted(categories, key=str),
+            failed_test_identifiers=failed_test_identifiers,
             relevant_paths=relevant_paths,
             current_head_sha=current_head_sha,
             run_is_historical=bool(current_head_sha and current_head_sha != run.head_sha),

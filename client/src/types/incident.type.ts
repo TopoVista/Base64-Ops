@@ -11,6 +11,8 @@ export type IncidentRecord = {
   runIsHistorical?: boolean;
   status: string;
   failureCategories: string[];
+  failedTestIdentifiers?: string[];
+  flakySignal?: "suspected" | null;
   evidenceStrength: "insufficient" | "observed" | "correlated" | "supported";
   hypothesisStatus?: "insufficient" | "candidate" | "supported";
   diagnosisSummary?: string | null;

@@ -413,6 +413,18 @@ def incident_group_key(*, event: dict[str, Any], context: Any) -> str:
     return "igr_" + hashlib.sha256(encoded).hexdigest()[:40]
 
 
+def _flaky_signal(context: Any) -> str | None:
+    """Return a conservative label only after mixed same-SHA execution history."""
+
+    history = getattr(context, "history", None)
+    if (
+        getattr(history, "assessment", None) == "mixed_outcomes_same_sha"
+        and getattr(context, "failed_test_identifiers", [])
+    ):
+        return "suspected"
+    return None
+
+
 def incident_group_timeline_entry(*, event: dict[str, Any], context: Any) -> dict[str, Any]:
     """Summarize one grouped delivery without retaining raw provider output."""
 
@@ -513,6 +525,8 @@ class IncidentDispatchService:
             "headSha": event["headSha"],
             "status": IncidentStatus.INVESTIGATING.value,
             "failureCategories": [],
+            "failedTestIdentifiers": [],
+            "flakySignal": None,
             "evidenceStrength": EvidenceStrength.INSUFFICIENT.value,
             "evidenceIds": [],
             "workflowEvidenceIds": [],
@@ -599,6 +613,8 @@ class IncidentDispatchService:
                 "$set": {
                     "status": IncidentStatus.EVIDENCE_COLLECTED.value,
                     "failureCategories": [str(category) for category in context.failure_categories],
+                    "failedTestIdentifiers": context.failed_test_identifiers,
+                    "flakySignal": _flaky_signal(context),
                     "evidenceStrength": diagnosis.evidence_strength.value,
                     "hypothesisStatus": diagnosis.status,
                     "diagnosisSummary": diagnosis.summary,

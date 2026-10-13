@@ -10,6 +10,7 @@ from app.services.incident_export_service import build_incident_export, incident
 from app.services.incident_service import (
     GitHubWebhookService,
     IncidentDispatchService,
+    _flaky_signal,
     build_incident_diagnosis,
     build_structured_incident_diagnosis,
     incident_dispatch_is_complete,
@@ -99,6 +100,16 @@ def test_incident_dispatch_retries_an_ungrouped_collected_record() -> None:
     assert incident_dispatch_is_complete({"status": "grouped"})
     assert incident_dispatch_is_complete({"status": "ignored"})
     assert not incident_dispatch_is_complete({"status": "failed"})
+
+
+def test_flaky_signal_requires_a_test_identity_and_mixed_same_sha_history() -> None:
+    assert _flaky_signal(_context(history=SimpleNamespace(assessment="mixed_outcomes_same_sha"))) is None
+    assert _flaky_signal(
+        _context(
+            history=SimpleNamespace(assessment="mixed_outcomes_same_sha"),
+            failed_test_identifiers=["tests/test_login.py::test_login"],
+        )
+    ) == "suspected"
 
 
 def test_incident_export_re_redacts_and_omits_internal_routing_fields() -> None:

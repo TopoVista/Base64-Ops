@@ -49,3 +49,4 @@ def test_ci_log_prefers_the_specific_failed_test_window_over_generic_progress():
     assert "test_preview_dataset FAILED" in excerpts[0].excerpt
     assert "expected 200, got 500" in excerpts[0].excerpt
     assert CIFailureCategory.TEST_FAILURE in excerpts[0].categories
+    assert excerpts[0].failed_test_identifiers == ["tests/test_data.py::test_preview_dataset"]

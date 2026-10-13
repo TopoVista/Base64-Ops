@@ -67,6 +67,7 @@ class CILogExcerpt(BaseModel):
     source_timestamp: datetime | None = None
     truncated: bool = False
     categories: list[CIFailureCategory] = Field(default_factory=list)
+    failed_test_identifiers: list[str] = Field(default_factory=list)
 
 
 class CIWorkflowHistory(BaseModel):
@@ -98,6 +99,7 @@ class CIInvestigationContext(BaseModel):
     workflow_evidence_ids: list[str] = Field(default_factory=list)
     changed_file_evidence_ids: list[str] = Field(default_factory=list)
     failure_categories: list[CIFailureCategory] = Field(default_factory=list)
+    failed_test_identifiers: list[str] = Field(default_factory=list)
     relevant_paths: list[str] = Field(default_factory=list)
     applicability: str | None = None
     applicability_reason: str | None = None
@@ -115,6 +117,11 @@ _SIGNAL = re.compile(
             "No such file", "permission denied", "connection refused", "timeout",
         ]
     ),
+    re.I,
+)
+_TEST_IDENTIFIER_PATH = r"(?:[\w.-]+/)+[\w.-]*(?:test|spec)[\w.-]*\.(?:py|tsx?|jsx?)(?:::[\w.\[\]-]+)+"
+_FAILED_TEST_IDENTIFIER = re.compile(
+    rf"(?:FAILED\s+(?P<prefix>{_TEST_IDENTIFIER_PATH})|(?P<suffix>{_TEST_IDENTIFIER_PATH})\s+FAILED)",
     re.I,
 )
 _CATEGORY_RULES = (
@@ -163,9 +170,23 @@ def extract_failure_excerpts(*, text: str, run_id: int, job: WorkflowJobSummary,
                 line_end=end,
                 truncated=truncated or len(value.encode()) >= settings.ci_log_max_excerpt_bytes,
                 categories=categories or [CIFailureCategory.UNKNOWN],
+                failed_test_identifiers=_failed_test_identifiers(value),
             )
         )
     return excerpts
+
+
+def _failed_test_identifiers(value: str) -> list[str]:
+    """Extract bounded pytest/Jest-style identifiers; text remains untrusted."""
+
+    identifiers: list[str] = []
+    for match in _FAILED_TEST_IDENTIFIER.finditer(value):
+        identifier = str(match.group("prefix") or match.group("suffix")).replace("\\", "/")
+        if identifier not in identifiers:
+            identifiers.append(identifier)
+        if len(identifiers) == 10:
+            break
+    return identifiers
 
 
 def _failure_signal_score(line: str) -> int:

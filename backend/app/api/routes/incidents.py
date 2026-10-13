@@ -54,6 +54,8 @@ def _incident_response(document: dict) -> dict:
         "runIsHistorical",
         "status",
         "failureCategories",
+        "failedTestIdentifiers",
+        "flakySignal",
         "evidenceStrength",
         "hypothesisStatus",
         "diagnosisSummary",

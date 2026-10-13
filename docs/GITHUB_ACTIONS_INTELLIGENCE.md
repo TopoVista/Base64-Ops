@@ -37,6 +37,12 @@ attached as reconciliation context to the matching group root. It does not
 close the incident, label a test flaky, or authorize a repair: a same-SHA
 success is a useful transient-condition signal, not a root-cause verdict.
 
+Pytest/Jest-style failed-test identifiers are extracted from already-bounded,
+redacted failure windows and remain untrusted evidence. Base64 Ops marks a test
+as **suspected** only when that identifier is present and bounded history has
+mixed successful and failed runs at the same SHA. It neither reruns CI nor
+declares a test flaky automatically.
+
 The Incident Inbox lets a user select an owned repository session, opt in or
 out, restrict workflows/branches, and set a bounded daily investigation limit.
 The detail view can export a JSON or Markdown incident record. Export queries
