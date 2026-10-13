@@ -413,6 +413,26 @@ export type ChangeImpactAnalysis = {
   created_at: string;
 };
 
+/** Read-only historical CI context for the exact files in a DeliveryPlan. */
+export type RegressionPreventionReport = {
+  delivery_plan_id: string;
+  plan_base_sha: string;
+  status: "available" | "insufficient_history";
+  changed_paths: string[];
+  advisories: Array<{
+    path: string;
+    failure_category: string;
+    historical_incident_ids: string[];
+    historical_run_shas: string[];
+    occurrence_count: number;
+    message: string;
+    recommendation: string;
+  }>;
+  threshold_description: string;
+  limitations: string[];
+  analyzed_at: string;
+};
+
 export const getSessionEngineeringGraphStatus = async (
   slugId: string,
 ): Promise<EngineeringGraphStatus> => {
@@ -429,6 +449,20 @@ export const analyzeSessionDeliveryImpact = async (
 ): Promise<ChangeImpactAnalysis> => {
   const response = await API.post<ChangeImpactAnalysis>(
     `/session/${slugId}/delivery-plan/${planId}/impact`,
+  );
+  return response.data;
+};
+
+/**
+ * Checks only tenant-scoped, supported historical incident summaries. It
+ * creates no approval, patch, command, or GitHub mutation.
+ */
+export const analyzeSessionRegressionPrevention = async (
+  slugId: string,
+  planId: string,
+): Promise<RegressionPreventionReport> => {
+  const response = await API.post<RegressionPreventionReport>(
+    `/session/${slugId}/delivery-plan/${planId}/regression-prevention`,
   );
   return response.data;
 };

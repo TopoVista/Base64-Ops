@@ -17,6 +17,7 @@ from app.schemas.session import (
 )
 from app.services.session_service import (
     analyze_session_delivery_impact,
+    analyze_session_regression_prevention,
     chat_stream,
     create_pull_request,
     create_runbook,
@@ -184,6 +185,17 @@ async def analyze_delivery_impact(
     user: dict = Depends(get_current_user),
 ) -> ChangeImpactResponse:
     return await analyze_session_delivery_impact(user["_id"], slug_id, plan_id)
+
+
+@router.post("/{slug_id}/delivery-plan/{plan_id}/regression-prevention")
+async def analyze_regression_prevention(
+    slug_id: str,
+    plan_id: str,
+    user: dict = Depends(get_current_user),
+) -> dict:
+    """Read historical CI patterns for an exact proposal; never changes delivery state."""
+
+    return (await analyze_session_regression_prevention(user["_id"], slug_id, plan_id)).model_dump(mode="json")
 
 
 @router.get("/{slug_id}/intelligence/impact/{analysis_id}", response_model=ChangeImpactResponse)

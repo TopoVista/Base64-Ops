@@ -86,3 +86,19 @@ dispatches one repository-owner-selected workflow. A tenant-scoped
 observe the result. The branch/workflow/patch hash/base SHA are all bound to
 the approval; YAML commands are not parsed or run by Base64. Refer to
 [CANDIDATE_VERIFICATION.md](CANDIDATE_VERIFICATION.md) for setup and limits.
+
+## Historical regression-prevention advisory
+
+The Changes workspace can ask for a deterministic, read-only historical review
+of an exact `DeliveryPlan`. `RegressionPreventionService` receives the plan's
+already server-authorized repository/session identity and inspects only that
+tenant's supported, group-root CI incident summaries. It promotes a pattern to
+an advisory only when at least two distinct failed-run SHAs contain the same
+failure category and an exact path that the plan changes. The base SHA of the
+plan is excluded so an active incident is never mistaken for history.
+
+The response is deliberately informational: it says that repeated incidents
+are correlation, not proof that the new change will fail. It creates no patch,
+command, approval, background job, GitHub request, or durable policy rule.
+The ordinary evidence, validation, risk, exact-approval, and delivery paths
+remain the only routes to mutation.

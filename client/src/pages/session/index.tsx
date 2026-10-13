@@ -5,6 +5,7 @@ import { IDEWorkspace } from "@/components/ide-workspace";
 import {
   decideSessionApproval,
   analyzeSessionDeliveryImpact,
+  analyzeSessionRegressionPrevention,
   getCandidateVerificationSettings,
   getLatestCandidateVerificationRun,
   getSessionBySlug,
@@ -876,6 +877,16 @@ function Changes({ data }: { data: SingleSessionResponse }) {
       toast.error(message);
     },
   });
+  const prevention = useMutation({
+    mutationFn: () => {
+      if (!p?.id) throw new Error("No exact delivery plan is available.");
+      return analyzeSessionRegressionPrevention(data.session.slugId, p.id);
+    },
+    onError: (error: unknown) => {
+      const message = error instanceof Error ? error.message : "Historical CI review could not be completed.";
+      toast.error(message);
+    },
+  });
   const renderTargets = (targets: NonNullable<typeof impact.data>["directly_affected"], empty: string) =>
     targets.length ? (
       <ul className="mt-2 space-y-2">
@@ -978,6 +989,54 @@ function Changes({ data }: { data: SingleSessionResponse }) {
                     {impact.data.limitations.length ? (
                       <ul className="mt-4 list-disc space-y-1 pl-5 text-xs leading-5 text-amber-700 dark:text-amber-300">
                         {impact.data.limitations.map((limitation) => <li key={limitation}>{limitation}</li>)}
+                      </ul>
+                    ) : null}
+                  </div>
+                ) : null}
+              </section>
+              <section className="mt-5 rounded-lg border border-border bg-muted/25 p-4">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <h3 className="text-sm font-medium">Historical regression prevention</h3>
+                    <p className="mt-1 max-w-2xl text-xs leading-5 text-muted-foreground">
+                      Finds repeated, supported CI incidents for the exact files in this proposal. It is advisory only: it cannot predict failure, create commands, or change approval requirements.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => prevention.mutate()}
+                    disabled={prevention.isPending}
+                    className="inline-flex items-center gap-2 rounded-md border border-violet-500/40 bg-violet-500/10 px-3 py-2 text-sm font-medium text-violet-700 transition-colors hover:bg-violet-500/20 disabled:cursor-not-allowed disabled:opacity-60 dark:text-violet-200"
+                  >
+                    <ShieldCheck className={cn("size-4", prevention.isPending && "animate-pulse")} />
+                    {prevention.isPending ? "Checking history…" : "Check regression history"}
+                  </button>
+                </div>
+                {prevention.data ? (
+                  <div className="mt-4 border-t border-border pt-4">
+                    <p className="text-xs text-muted-foreground">{prevention.data.threshold_description}</p>
+                    {prevention.data.advisories.length ? (
+                      <div className="mt-3 space-y-3">
+                        {prevention.data.advisories.map((advisory) => (
+                          <article key={`${advisory.path}-${advisory.failure_category}`} className="rounded-md border border-amber-500/30 bg-amber-500/5 p-3">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <code className="text-xs font-medium text-foreground">{advisory.path}</code>
+                              <Badge variant="outline" className="text-[10px]">{label(advisory.failure_category)}</Badge>
+                              <span className="text-xs text-muted-foreground">{advisory.occurrence_count} independent run SHAs</span>
+                            </div>
+                            <p className="mt-2 text-xs leading-5 text-muted-foreground">{advisory.message}</p>
+                            <p className="mt-1 text-xs leading-5 text-muted-foreground">{advisory.recommendation}</p>
+                          </article>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="mt-3 text-xs leading-5 text-muted-foreground">
+                        No historical pattern cleared the promotion threshold for these exact paths. This is not evidence that the change is safe.
+                      </p>
+                    )}
+                    {prevention.data.limitations.length ? (
+                      <ul className="mt-3 list-disc space-y-1 pl-5 text-xs leading-5 text-muted-foreground">
+                        {prevention.data.limitations.map((limitation) => <li key={limitation}>{limitation}</li>)}
                       </ul>
                     ) : null}
                   </div>

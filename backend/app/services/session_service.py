@@ -22,6 +22,7 @@ from app.intelligence.impact.service import ChangeImpactService
 from app.observability.recorder import MongoTraceExporter, TraceRecorder
 from app.schemas.delivery import DeliveryPlan
 from app.schemas.patch import FileEditIntent, PatchProposal
+from app.schemas.regression_prevention import RegressionPreventionReport
 from app.schemas.replay import RunReplayResponse, SessionRunHistoryResponse
 from app.schemas.session import (
     ApprovalDecisionRequest,
@@ -44,6 +45,7 @@ from app.services.github_service import resolve_authorized_repository
 from app.services.patch_engine import PatchEngine, PatchSafetyError
 from app.services.rag_service import RagService
 from app.services.redaction_service import RedactionService
+from app.services.regression_prevention_service import RegressionPreventionService
 from app.services.serializers import serialize_doc
 from app.services.workspace_service import WorkspaceService, branch_name_from_prompt, repo_name_from_url
 from app.utils.datetime import utc_now
@@ -359,14 +361,18 @@ async def get_session_by_slug(user_id: str, slug_id: str) -> dict:
             # approval can be created later. The nested investigation copy is
             # display context only, so resolve the canonical plan-bound
             # pending record before presenting the Code workspace.
-            current_approvals = await db.approvals.find(
-                {
-                    "userId": user_id,
-                    "sessionId": session["_id"],
-                    "deliveryPlanId": plan_id,
-                    "status": "pending",
-                }
-            ).sort("createdAt", -1).to_list(20)
+            current_approvals = (
+                await db.approvals.find(
+                    {
+                        "userId": user_id,
+                        "sessionId": session["_id"],
+                        "deliveryPlanId": plan_id,
+                        "status": "pending",
+                    }
+                )
+                .sort("createdAt", -1)
+                .to_list(20)
+            )
             if current_approvals:
                 # A plan can legitimately have more than one pending action:
                 # e.g. a normal draft-PR delivery approval and a separately
@@ -376,13 +382,10 @@ async def get_session_by_slug(user_id: str, slug_id: str) -> dict:
                 # status/binding; the immutable investigation snapshot only
                 # supplies safe display metadata.
                 snapshots = {
-                    str(item.get("id")): item
-                    for item in approvals
-                    if isinstance(item, dict) and item.get("id")
+                    str(item.get("id")): item for item in approvals if isinstance(item, dict) and item.get("id")
                 }
                 resolved_approvals = [
-                    {**snapshots.pop(str(current.get("id")), {}), **current}
-                    for current in current_approvals
+                    {**snapshots.pop(str(current.get("id")), {}), **current} for current in current_approvals
                 ]
                 # Do not resurrect invalidated/rejected snapshot records from
                 # the original investigation. The canonical pending records
@@ -588,9 +591,7 @@ async def analyze_session_delivery_impact(
     session = await db.sessions.find_one({"userId": user_id, "slugId": slug_id})
     if not session:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
-    plan_document = await db.delivery_plans.find_one(
-        {"id": plan_id, "userId": user_id, "sessionId": session["_id"]}
-    )
+    plan_document = await db.delivery_plans.find_one({"id": plan_id, "userId": user_id, "sessionId": session["_id"]})
     if not plan_document:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Delivery plan not found")
     plan = DeliveryPlan.model_validate(plan_document)
@@ -646,6 +647,35 @@ async def analyze_session_delivery_impact(
             snapshot=snapshot,
         )
     return ChangeImpactResponse.from_analysis(analysis)
+
+
+async def analyze_session_regression_prevention(
+    user_id: str,
+    slug_id: str,
+    plan_id: str,
+) -> RegressionPreventionReport:
+    """Return read-only historical CI context for one exact DeliveryPlan.
+
+    The delivery plan/session lookup is duplicated deliberately rather than
+    accepting repository identifiers from the browser.  This preserves the
+    same tenant and repository boundary used by impact analysis.
+    """
+
+    db = get_db()
+    session = await db.sessions.find_one({"userId": user_id, "slugId": slug_id})
+    if not session:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
+    plan_document = await db.delivery_plans.find_one({"id": plan_id, "userId": user_id, "sessionId": session["_id"]})
+    if not plan_document:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Delivery plan not found")
+    plan = DeliveryPlan.model_validate(plan_document)
+    if plan.repository_id != session.get("repoUrl"):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Delivery plan not found")
+    return await RegressionPreventionService().analyze_for_plan(
+        user_id=user_id,
+        session_id=str(session["_id"]),
+        plan=plan,
+    )
 
 
 async def get_session_change_impact(
@@ -1139,9 +1169,7 @@ async def request_delivery_approval(user_id: str, slug_id: str, plan_id: str) ->
     session = await db.sessions.find_one({"userId": user_id, "slugId": slug_id})
     if not session:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
-    plan = await db.delivery_plans.find_one(
-        {"id": plan_id, "userId": user_id, "sessionId": session["_id"]}
-    )
+    plan = await db.delivery_plans.find_one({"id": plan_id, "userId": user_id, "sessionId": session["_id"]})
     if not plan:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Delivery plan not found")
 
@@ -1173,10 +1201,9 @@ async def request_delivery_approval(user_id: str, slug_id: str, plan_id: str) ->
         session["repoUrl"],
         session.get("defaultBranch") or "main",
     )
-    if (
-        workspace_service.current_branch(repo_path) != plan.get("base_branch")
-        or workspace_service.head_commit(repo_path) != plan.get("base_sha")
-    ):
+    if workspace_service.current_branch(repo_path) != plan.get("base_branch") or workspace_service.head_commit(
+        repo_path
+    ) != plan.get("base_sha"):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail=(
@@ -1205,9 +1232,7 @@ async def request_candidate_verification_approval(user_id: str, slug_id: str, pl
     session = await db.sessions.find_one({"userId": user_id, "slugId": slug_id})
     if not session:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
-    plan = await db.delivery_plans.find_one(
-        {"id": plan_id, "userId": user_id, "sessionId": session["_id"]}
-    )
+    plan = await db.delivery_plans.find_one({"id": plan_id, "userId": user_id, "sessionId": session["_id"]})
     if not plan:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Delivery plan not found")
     existing_delivery = await db.delivery_results.find_one(
@@ -1331,9 +1356,7 @@ async def decide_approval(user_id: str, slug_id: str, approval_id: str, payload:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Approval was already processed")
         traces = getattr(db, "run_traces", None)
         trace = (
-            await traces.find_one(
-                {"user_id": user_id, "session_id": session["_id"], "run_id": typed_plan.run_id}
-            )
+            await traces.find_one({"user_id": user_id, "session_id": session["_id"], "run_id": typed_plan.run_id})
             if traces is not None
             else None
         )
@@ -1383,8 +1406,7 @@ async def decide_approval(user_id: str, slug_id: str, approval_id: str, payload:
             "Dispatch is not proof that targeted checks or full CI passed."
             if execution.get("status") == "dispatched"
             else (
-                "Candidate verification was not dispatched: "
-                f"{execution.get('reason', 'Unknown verification failure.')}"
+                f"Candidate verification was not dispatched: {execution.get('reason', 'Unknown verification failure.')}"
             )
         )
         message = await append_message(session["_id"], "assistant", content)
@@ -1648,9 +1670,7 @@ def _public_delivery_plan(plan: dict[str, Any] | None) -> dict[str, Any] | None:
     public_plan = serialize_doc(plan) or {}
     public_files = []
     for item in _dict_items(public_plan.get("files")):
-        unified_diff, diff_truncated = _bounded_replay_text(
-            item.get("unified_diff"), _MAX_REPLAY_DIFF_BYTES
-        )
+        unified_diff, diff_truncated = _bounded_replay_text(item.get("unified_diff"), _MAX_REPLAY_DIFF_BYTES)
         public_files.append(
             {
                 "path": _safe_replay_text(item.get("path")),
@@ -1678,12 +1698,8 @@ def _public_delivery_plan(plan: dict[str, Any] | None) -> dict[str, Any] | None:
         # replay merely because a future verification implementation records it.
         public_candidate_verification = {
             "status": _safe_replay_text(candidate_verification.get("status")),
-            "verificationLevel": _safe_replay_text(
-                candidate_verification.get("verificationLevel")
-            ),
-            "candidatePatchHash": _safe_replay_text(
-                candidate_verification.get("candidatePatchHash")
-            ),
+            "verificationLevel": _safe_replay_text(candidate_verification.get("verificationLevel")),
+            "candidatePatchHash": _safe_replay_text(candidate_verification.get("candidatePatchHash")),
             "baseSha": _safe_replay_text(candidate_verification.get("baseSha")),
             "createdAt": _safe_replay_text(candidate_verification.get("createdAt")),
             "limitations": _string_items(candidate_verification.get("limitations")),
@@ -2087,9 +2103,7 @@ async def _rebuild_run_replay(
             "Trace telemetry was not recorded for this historical run; persisted investigation data is shown."
         )
     elif not trace_id:
-        limitations.append(
-            "Trace span telemetry was unavailable because this historical trace has no identifier."
-        )
+        limitations.append("Trace span telemetry was unavailable because this historical trace has no identifier.")
     if not snapshot:
         limitations.append(
             "A persisted investigation snapshot was not recorded for this run; only available trace telemetry is shown."
@@ -2217,31 +2231,26 @@ async def list_session_runs(user_id: str, slug_id: str, limit: int = 50) -> dict
         .to_list(bounded_limit)
     )
     snapshot_run_ids = [
-        run_id
-        for snapshot in snapshots
-        if (run_id := _safe_replay_text(snapshot.get("runId"))) is not None
+        run_id for snapshot in snapshots if (run_id := _safe_replay_text(snapshot.get("runId"))) is not None
     ]
     snapshot_traces: list[dict[str, Any]] = []
     if snapshot_run_ids:
-        snapshot_traces = await (
-            db.run_traces.find(
-                {
-                    "user_id": user_id,
-                    "session_id": session_id,
-                    "run_id": {"$in": snapshot_run_ids},
-                },
-                {
-                    "_id": 0,
-                    "id": 1,
-                    "run_id": 1,
-                    "status": 1,
-                    "started_at": 1,
-                    "total_duration_ms": 1,
-                    "error_count": 1,
-                },
-            )
-            .to_list(len(snapshot_run_ids))
-        )
+        snapshot_traces = await db.run_traces.find(
+            {
+                "user_id": user_id,
+                "session_id": session_id,
+                "run_id": {"$in": snapshot_run_ids},
+            },
+            {
+                "_id": 0,
+                "id": 1,
+                "run_id": 1,
+                "status": 1,
+                "started_at": 1,
+                "total_duration_ms": 1,
+                "error_count": 1,
+            },
+        ).to_list(len(snapshot_run_ids))
     plan_ids = [
         str(snapshot.get("deliveryPlan", {}).get("id"))
         for snapshot in snapshots
@@ -2264,17 +2273,14 @@ async def list_session_runs(user_id: str, slug_id: str, limit: int = 50) -> dict
     impact_plan_ids: set[str] = set()
     impact_collection = getattr(db, "change_impact_analyses", None)
     if plan_ids and impact_collection is not None:
-        impact_records = await (
-            impact_collection.find(
-                {
-                    "userId": user_id,
-                    "sessionId": session_id,
-                    "deliveryPlanId": {"$in": plan_ids},
-                },
-                {"_id": 0, "deliveryPlanId": 1},
-            )
-            .to_list(len(plan_ids))
-        )
+        impact_records = await impact_collection.find(
+            {
+                "userId": user_id,
+                "sessionId": session_id,
+                "deliveryPlanId": {"$in": plan_ids},
+            },
+            {"_id": 0, "deliveryPlanId": 1},
+        ).to_list(len(plan_ids))
         impact_plan_ids = {
             plan_id
             for record in impact_records

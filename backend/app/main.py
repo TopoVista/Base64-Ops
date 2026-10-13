@@ -16,7 +16,7 @@ from app.billing.usage_service import UsageService
 from app.core.access_logging import configure_access_log_redaction
 from app.core.config import get_settings
 from app.core.rate_limit import InMemoryRateLimitStore, RedisRateLimitStore
-from app.db.mongo import MongoUnavailableError, close_mongo, connect_mongo, mongo_is_connected
+from app.db.mongo import MongoUnavailableError, close_mongo, connect_mongo, get_db, mongo_is_connected
 from app.intelligence.graph.store import EngineeringGraphStore
 from app.intelligence.impact.store import ChangeImpactStore
 from app.services.background_job_service import BackgroundJobService
@@ -50,6 +50,10 @@ async def _ensure_database_indexes() -> None:
     await ensure_session_indexes()
     await EngineeringGraphStore().ensure_indexes()
     await ChangeImpactStore().ensure_indexes()
+    await get_db().incidents.create_index(
+        [("userId", 1), ("sessionId", 1), ("repositoryId", 1), ("evidenceStrength", 1), ("updatedAt", -1)],
+        name="incidents_prevention_history",
+    )
     await ensure_user_indexes()
 
 
