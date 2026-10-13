@@ -217,6 +217,11 @@ async def test_successful_or_branch_filtered_events_are_safely_ignored(monkeypat
     )
     assert success_result["ignored"]
     assert success_result["reconciledIncidents"] == 0
+    saved_success = next(
+        record for record in webhook_db.github_webhook_events.records if record["deliveryId"] == "delivery-success"
+    )
+    assert saved_success["status"] == "reconciled"
+    assert saved_success["conclusion"] == "success"
 
     branch = _payload(branch="release")
     result = await service.accept_delivery(
@@ -261,3 +266,4 @@ async def test_success_on_the_same_sha_is_recorded_without_resolving_the_inciden
     incident = webhook_db.incidents.records[0]
     assert incident["status"] == "evidence_collected"
     assert incident["sameShaSuccess"]["workflowRunId"] == 99
+    assert webhook_db.github_webhook_events.records[0]["reconciledIncidents"] == 1

@@ -159,26 +159,21 @@ class GitHubWebhookService:
         envelope = self._workflow_run_envelope(payload, event_name=event_name, action=resolved_action)
         if envelope is None:
             return {"accepted": False, "ignored": True, "reason": "Event is not a completed workflow run."}
-        if envelope["conclusion"] == "success":
-            targets = await self._matching_automation_targets(envelope)
-            reconciled = await self._record_same_sha_success(envelope=envelope, targets=targets)
-            return {
-                "accepted": True,
-                "ignored": True,
-                "reason": "Successful workflow run recorded as read-only reconciliation context.",
-                "reconciledIncidents": reconciled,
-            }
-        if envelope["conclusion"] not in _FAILURE_CONCLUSIONS:
-            return {"accepted": False, "ignored": True, "reason": "Workflow conclusion is not investigated."}
-        repository_id = envelope["repositoryId"]
         targets = await self._matching_automation_targets(envelope)
         now = utc_now()
+        conclusion = str(envelope["conclusion"])
+        if conclusion == "success":
+            event_status = "reconciling"
+        elif conclusion in _FAILURE_CONCLUSIONS:
+            event_status = "queued" if targets else "ignored"
+        else:
+            event_status = "ignored"
         event = {
             "_id": new_id("evt_"),
             "deliveryId": delivery_id,
             "eventName": event_name,
             "action": resolved_action or "",
-            "repositoryId": repository_id,
+            "repositoryId": envelope["repositoryId"],
             "repositoryName": envelope["repositoryName"],
             "repositoryUrl": envelope["repositoryUrl"],
             "workflowRunId": envelope["workflowRunId"],
@@ -189,7 +184,7 @@ class GitHubWebhookService:
             "conclusion": envelope["conclusion"],
             "payloadHash": hashlib.sha256(body).hexdigest(),
             "targetAutomationIds": [target["_id"] for target in targets],
-            "status": "queued" if targets else "ignored",
+            "status": event_status,
             "createdAt": now,
             "updatedAt": now,
             "expiresAt": now + timedelta(days=settings.github_incident_event_retention_days),
@@ -204,7 +199,34 @@ class GitHubWebhookService:
                 "accepted": True,
                 "duplicate": True,
                 "eventId": existing["_id"],
-                "status": existing.get("status", "queued"),
+                "status": existing.get("status", event_status),
+            }
+        if conclusion == "success":
+            reconciled = await self._record_same_sha_success(envelope=envelope, targets=targets)
+            await get_db().github_webhook_events.update_one(
+                {"_id": event["_id"]},
+                {
+                    "$set": {
+                        "status": "reconciled",
+                        "reconciledIncidents": reconciled,
+                        "updatedAt": utc_now(),
+                        "completedAt": utc_now(),
+                    }
+                },
+            )
+            return {
+                "accepted": True,
+                "ignored": True,
+                "eventId": event["_id"],
+                "reason": "Successful workflow run recorded as durable read-only reconciliation context.",
+                "reconciledIncidents": reconciled,
+            }
+        if conclusion not in _FAILURE_CONCLUSIONS:
+            return {
+                "accepted": False,
+                "ignored": True,
+                "eventId": event["_id"],
+                "reason": "Workflow conclusion is not investigated.",
             }
         if not targets:
             return {"accepted": True, "eventId": event["_id"], "status": "ignored", "targets": 0}
