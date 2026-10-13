@@ -25,10 +25,10 @@ does not treat mocked provider tests as live-provider verification.
 
 | Capability | Current state | Gap to close |
 | --- | --- | --- |
-| CI causality | Existing CI service gathers failed-run workflow, changed-file, and current/head evidence; incident dispatch persists a deterministic evidence-strength assessment, bounded same-workflow run comparison, and conservative repeat-failure group key/timeline. | No workflow/dependency diff comparison against the last success or flaky-test-level causal analysis. |
+| CI causality | Existing CI service gathers failed-run workflow, changed-file, and current/head evidence; it also retains a prior-success workflow revision when available and labels a content difference as correlation only. Incident dispatch persists deterministic evidence strength, bounded same-workflow history, and a conservative repeat-failure group/timeline. | No bounded dependency-lockfile or runner-image comparison against the last success, and no causal claim is made from a single diff. |
 | Automated CI follow-up | Signed workflow-run webhook intake, opt-in repository automation, durable event ledger, and incident-dispatch job type are implemented. | GitHub App installation validation and live webhook/worker verification remain outstanding. |
 | Repair verification | Static/candidate validation and later read-only delivery CI observation exist. | No opt-in immutable candidate verification dispatch or auditable `VerificationRun`; no workflow is installed automatically. |
-| Historical intelligence | Operational memory includes validity and freshness controls. | No flaky-test observation model, prevention-rule promotion, or advisory view tied to a new incident. |
+| Historical intelligence | Operational memory includes validity and freshness controls. Correlated/supported automated incidents now write `INCIDENT_OUTCOME` entries through existing policy, and a conservative same-SHA flaky signal is displayed. | No durable test-observation series, prevention-rule promotion, or PR advisory view tied to a new change. |
 | Frontend CI experience | Code workbench, CI evidence cards, Inbox/detail, repository automation controls, evidence export, and conservative repeated-failure grouping exist. | The complete user-facing repair/verification state machine remains incomplete. |
 | Deployment | Render blueprints model API/worker roles and now a private Key Value dependency. | The deployed Docker service does not automatically consume Blueprint variables; its Render dashboard must be configured explicitly. The checked-in API plan is paid, not a complete free-tier profile. |
 
@@ -36,12 +36,10 @@ does not treat mocked provider tests as live-provider verification.
 
 1. GitHub App installation identity validation, which is distinct from the
    existing OAuth repository boundary.
-2. Incident grouping, reconciliation, supersession, and successful-run
-   comparison.
-3. An incident data model that links a repair candidate, verification run, and
+2. An incident data model that links a repair candidate, verification run, and
    final outcome without duplicating the existing delivery state.
-4. User-controlled notification policy.
-5. GitHub-native checks or PR-comment publication, which requires an explicit
+3. User-controlled notification policy.
+4. GitHub-native checks or PR-comment publication, which requires an explicit
    permission model beyond the current OAuth read path.
 
 ## Existing public contracts and security boundaries

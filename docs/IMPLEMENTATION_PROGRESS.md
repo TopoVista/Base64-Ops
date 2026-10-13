@@ -36,8 +36,9 @@ Implemented so far:
 
 - `POST /api/github/webhooks` verifies `X-Hub-Signature-256` over the exact
   raw request body and rejects absent/invalid secrets and oversized payloads.
-- Completed failed/timed-out Actions runs are persisted in an additive Mongo
-  event ledger keyed by GitHub delivery ID before a dispatch job is queued.
+- Completed Actions runs, including successful same-SHA reconciliation
+  signals, are persisted in an additive Mongo event ledger keyed by GitHub
+  delivery ID before any dispatch or reconciliation occurs.
 - Duplicate deliveries are idempotent. Raw webhook payloads are not retained;
   the ledger stores only bounded normalized metadata and a SHA-256 hash.
 - Repository automation is opt-in and target-matched by a GitHub numeric
@@ -62,6 +63,9 @@ Implemented so far:
   first observed failure, and same-SHA outcomes as redacted `tool_result`
   evidence. These signals are intentionally labeled correlation, never proof
   of causality or flakiness.
+- When a prior comparable success uses a different commit, the workflow file
+  at that successful SHA is retained as separate evidence and compared with
+  the failed-run workflow. A difference remains correlation only.
 - Automated incidents persist a versioned structured diagnosis with its
   supporting evidence IDs, relevant paths, historical comparison, applicability
   state, and a safe next action. The incident detail UI exposes the compact
@@ -89,6 +93,13 @@ Implemented so far:
   controls (opt-in, workflow/branch filters, and daily budget) rather than a
   disconnected UI toggle. Incident detail supports portable JSON or Markdown
   exports that re-redact and allowlist evidence fields at export time.
+- Incident detail accepts a tenant-scoped, centrally redacted user annotation
+  (`helpful`, `incorrect`, or `needs_more_evidence`). It cannot rewrite
+  evidence, change an approval, or acquire repository authority.
+- Correlated or supported automated diagnoses write an `INCIDENT_OUTCOME`
+  through the existing MemoryWritePolicy. These entries are partially verified
+  historical context, never a delivered or merged fix; a write error is an
+  incident limitation rather than a reason to discard the incident.
 
 Still required in this stage:
 
@@ -105,9 +116,10 @@ Status: **PARTIALLY IMPLEMENTED AND TESTED**
 
 - Every newly persisted exact `DeliveryPlan` now contains an immutable
   `candidate-verification-v1` record with its base SHA and candidate diff hash.
-- Its initial state is explicitly `proposed` / `not_independently_tested` and
-  records that static validation plus post-delivery CI observation do not prove
-  targeted candidate verification.
+- It records either `proposed` / `not_independently_tested`, or (when existing
+  registry-backed checks pass) `static_validation_passed` /
+  `static_validation` with a bounded command-free result summary. Neither
+  state proves targeted candidate verification or full CI success.
 - Remote verification dispatch remains unavailable until a separately
   configured GitHub App installation-token boundary and reviewed
   repository-owned workflow are implemented. OAuth credentials do not gain

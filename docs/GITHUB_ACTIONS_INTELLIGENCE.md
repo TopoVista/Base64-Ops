@@ -13,6 +13,12 @@ For a CI-failure request, the graph classifies the request, resolves an explicit
 
 The historical and current revisions are distinct evidence records. A changed file is correlation only, never proof of causation. If the relevant workflow condition changed after the failure, patch generation is skipped for that historical incident.
 
+When bounded metadata identifies a prior comparable successful run at a
+different SHA, Base64 Ops also reads the workflow file at that successful SHA.
+The earlier workflow and failed workflow remain separate `repo_file` evidence.
+Their content comparison is a limited correlation signal: a workflow change can
+guide review but never proves it caused the failure.
+
 ## Safety boundaries
 
 CI logs and workflow YAML are untrusted evidence. They cannot modify policy, request credentials, create approval, or enter the validator command registry. Every stored log excerpt is redacted before model context, persistence, tracing, SSE, or UI rendering. Complete job logs are not stored.
@@ -51,6 +57,19 @@ incident, allowlist presentation fields, and apply centralized redaction again
 before bytes leave the API. Raw webhook payloads, OAuth data, queue IDs, and
 evidence metadata are never exported.
 
+An evidence-supported automated diagnosis can create an `INCIDENT_OUTCOME`
+through the existing tenant-scoped memory policy. It is stored as
+`partially_verified` historical context and is lower-precedence than current
+run/repository evidence. It does not imply a repair was proposed, delivered,
+merged, or verified. Users can add redacted feedback to an incident detail;
+feedback is an untrusted review annotation and cannot alter evidence, approval,
+or repository authorization.
+
 ## Verification status
 
 The deterministic adapter, CI investigation service, provenance separation, redaction, partial-permission behavior, and UI rendering are covered by mocked tests. A live authenticated GitHub Actions API call has not been exercised in this workspace.
+
+Candidate verification dispatch and GitHub-native checks/comments remain
+unsupported until an explicit GitHub App installation-token boundary and a
+reviewed repository-owned workflow are configured. OAuth read access is never
+silently promoted into verification or reporting authority.
