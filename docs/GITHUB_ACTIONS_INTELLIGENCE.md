@@ -23,6 +23,23 @@ All Actions access is repository-scoped and authenticated through the existing G
 
 The limits `CI_LOG_MAX_DOWNLOAD_BYTES`, `CI_LOG_MAX_EXCERPT_BYTES`, `CI_LOG_MAX_EXCERPTS_PER_JOB`, and `CI_LOG_MAX_JOBS_PER_RUN` bound log processing. Truncation is carried in the evidence metadata and UI. The run inspector shows the normal trace plus `github.actions.resolve_run` and `ci.build_evidence` spans, alongside a persisted compact CI context (workflow, run/SHA pair, applicability, jobs, evidence IDs, and limitations). Replay reads these records without re-running GitHub calls.
 
+## Automated incident intake and sharing
+
+An optional repository setting enables signed `workflow_run` failure intake.
+The webhook route verifies GitHub's exact-body HMAC, stores a compact,
+deduplicated event envelope, and queues only server-derived incident work.
+The dispatcher reuses the read-only investigation service; it does not add a
+GitHub mutation capability. Repository identity is derived from the connected
+user's GitHub repository view, never from a browser-supplied owner/name.
+
+The Incident Inbox lets a user select an owned repository session, opt in or
+out, restrict workflows/branches, and set a bounded daily investigation limit.
+The detail view can export a JSON or Markdown incident record. Export queries
+are tenant- and session-scoped, include only evidence IDs retained by that
+incident, allowlist presentation fields, and apply centralized redaction again
+before bytes leave the API. Raw webhook payloads, OAuth data, queue IDs, and
+evidence metadata are never exported.
+
 ## Verification status
 
 The deterministic adapter, CI investigation service, provenance separation, redaction, partial-permission behavior, and UI rendering are covered by mocked tests. A live authenticated GitHub Actions API call has not been exercised in this workspace.

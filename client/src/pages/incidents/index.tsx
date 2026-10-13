@@ -2,10 +2,18 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getIncident, getIncidents } from "@/lib/api";
+import {
+  downloadIncidentExport,
+  getIncident,
+  getIncidents,
+  getRepositoryAutomationSettings,
+  getUserSessions,
+  updateRepositoryAutomationSettings,
+} from "@/lib/api";
 import { cn } from "@/lib/utils";
-import type { IncidentRecord } from "@/types/incident.type";
-import { useQuery } from "@tanstack/react-query";
+import type { IncidentRecord, RepositoryAutomationSettingsInput } from "@/types/incident.type";
+import type { SessionRecord } from "@/types/session.type";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   AlertCircle,
   ArrowLeft,
@@ -13,6 +21,7 @@ import {
   ChevronRight,
   CircleAlert,
   Clock3,
+  Download,
   ExternalLink,
   FileWarning,
   Filter,
@@ -21,14 +30,24 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const prettify = (value: string) => value.replaceAll("_", " ");
 const shortSha = (sha: string) => sha.slice(0, 12);
 const EMPTY_INCIDENTS: IncidentRecord[] = [];
+const EMPTY_SESSIONS: SessionRecord[] = [];
 const dateTime = (value: string) => {
   const parsed = new Date(value);
   return Number.isNaN(parsed.getTime()) ? "Time unavailable" : parsed.toLocaleString();
+};
+const listValue = (value: string) => value.split(",").map((item) => item.trim()).filter(Boolean);
+const listText = (value: string[]) => value.join(", ");
+const DEFAULT_AUTOMATION: RepositoryAutomationSettingsInput = {
+  enabled: false,
+  workflow_names: [],
+  include_branches: [],
+  exclude_branches: [],
+  daily_investigation_limit: 5,
 };
 
 function StatusBadge({ incident }: { incident: IncidentRecord }) {
@@ -81,6 +100,111 @@ function IncidentListItem({ incident }: { incident: IncidentRecord }) {
   );
 }
 
+function AutomationSettingsPanel() {
+  const { data: sessionsData, isPending: sessionsPending } = useQuery({
+    queryKey: ["sessions", "incident-automation"],
+    queryFn: getUserSessions,
+    staleTime: 30_000,
+  });
+  const sessions = sessionsData?.sessions ?? EMPTY_SESSIONS;
+  const [selectedSlugId, setSelectedSlugId] = useState("");
+  const selectedSession = sessions.find((session) => session.slugId === selectedSlugId);
+  const automationQuery = useQuery({
+    queryKey: ["incident-automation", selectedSlugId],
+    queryFn: () => getRepositoryAutomationSettings(selectedSlugId),
+    enabled: Boolean(selectedSlugId),
+    staleTime: 20_000,
+  });
+  const [draft, setDraft] = useState<RepositoryAutomationSettingsInput>(DEFAULT_AUTOMATION);
+
+  useEffect(() => {
+    if (!selectedSlugId && sessions.length) setSelectedSlugId(sessions[0].slugId);
+  }, [selectedSlugId, sessions]);
+
+  useEffect(() => {
+    const saved = automationQuery.data;
+    setDraft(saved ? {
+      enabled: saved.enabled,
+      workflow_names: saved.workflow_names,
+      include_branches: saved.include_branches,
+      exclude_branches: saved.exclude_branches,
+      daily_investigation_limit: saved.daily_investigation_limit,
+    } : DEFAULT_AUTOMATION);
+  }, [automationQuery.data, selectedSlugId]);
+
+  const save = useMutation({
+    mutationFn: () => updateRepositoryAutomationSettings(selectedSlugId, draft),
+  });
+
+  if (sessionsPending) return <Skeleton className="mt-6 h-52 w-full rounded-xl" />;
+  if (!sessions.length) return null;
+
+  return (
+    <section className="mt-6 rounded-xl border border-border bg-card p-5 shadow-sm">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h2 className="font-semibold">Repository automation</h2>
+          <p className="mt-1 max-w-2xl text-sm leading-6 text-muted-foreground">
+            Opt in to signed failed-run intake for one connected repository. This gathers read-only evidence only; it never applies a repair or authorizes a push.
+          </p>
+        </div>
+        {automationQuery.data?.updated_at ? <span className="text-xs text-muted-foreground">Saved {dateTime(automationQuery.data.updated_at)}</span> : null}
+      </div>
+      <form
+        className="mt-5 grid gap-4 lg:grid-cols-2"
+        onSubmit={(event) => {
+          event.preventDefault();
+          if (selectedSlugId) save.mutate();
+        }}
+      >
+        <label className="grid gap-1.5 text-sm font-medium">
+          Repository session
+          <select
+            value={selectedSlugId}
+            onChange={(event) => setSelectedSlugId(event.target.value)}
+            className="h-9 rounded-md border border-input bg-background px-3 text-sm font-normal"
+          >
+            {sessions.map((session) => <option key={session.slugId} value={session.slugId}>{session.repoName} {session.branchName ? `(${session.branchName})` : ""}</option>)}
+          </select>
+        </label>
+        <label className="flex min-h-9 items-center gap-3 rounded-md border border-input bg-background px-3 text-sm">
+          <input
+            type="checkbox"
+            checked={draft.enabled}
+            onChange={(event) => setDraft((current) => ({ ...current, enabled: event.target.checked }))}
+            className="size-4 accent-primary"
+          />
+          Investigate future failed workflow runs
+        </label>
+        <label className="grid gap-1.5 text-sm font-medium">
+          Workflow names <span className="font-normal text-muted-foreground">(optional, comma-separated)</span>
+          <Input value={listText(draft.workflow_names)} onChange={(event) => setDraft((current) => ({ ...current, workflow_names: listValue(event.target.value) }))} placeholder="Backend CI, frontend-build" />
+        </label>
+        <label className="grid gap-1.5 text-sm font-medium">
+          Daily investigation limit
+          <Input type="number" min={1} max={25} value={draft.daily_investigation_limit} onChange={(event) => setDraft((current) => ({ ...current, daily_investigation_limit: Math.min(25, Math.max(1, Number(event.target.value) || 1)) }))} />
+        </label>
+        <label className="grid gap-1.5 text-sm font-medium">
+          Include branches <span className="font-normal text-muted-foreground">(optional)</span>
+          <Input value={listText(draft.include_branches)} onChange={(event) => setDraft((current) => ({ ...current, include_branches: listValue(event.target.value) }))} placeholder="main, release/*" />
+        </label>
+        <label className="grid gap-1.5 text-sm font-medium">
+          Exclude branches <span className="font-normal text-muted-foreground">(optional)</span>
+          <Input value={listText(draft.exclude_branches)} onChange={(event) => setDraft((current) => ({ ...current, exclude_branches: listValue(event.target.value) }))} placeholder="dependabot/*" />
+        </label>
+        <div className="flex flex-wrap items-center gap-3 lg:col-span-2">
+          <Button type="submit" disabled={!selectedSlugId || save.isPending}>
+            {save.isPending ? "Saving…" : "Save automation settings"}
+          </Button>
+          {selectedSession ? <span className="text-xs text-muted-foreground">Settings are bound to {selectedSession.repoName}; repository identity is verified server-side.</span> : null}
+          {save.isError ? <span className="text-sm text-destructive">Settings could not be saved. Reconnect GitHub if repository access changed.</span> : null}
+          {save.isSuccess ? <span className="text-sm text-emerald-700 dark:text-emerald-300">Automation settings saved.</span> : null}
+        </div>
+      </form>
+    </section>
+  );
+}
+
 function IncidentInbox() {
   const { data, isPending, isError, refetch, isFetching } = useQuery({
     queryKey: ["incidents"],
@@ -126,6 +250,7 @@ function IncidentInbox() {
         </div>
       </header>
       <div className="mx-auto max-w-6xl px-6 py-6 sm:px-8">
+        <AutomationSettingsPanel />
         <section className="rounded-xl border border-border bg-card p-4 shadow-sm">
           <div className="grid gap-3 md:grid-cols-[1fr_180px_200px_auto]">
             <Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Filter repository, workflow, branch, or SHA" aria-label="Filter incidents" />
@@ -173,6 +298,9 @@ function IncidentDetail() {
     enabled: Boolean(incidentId),
     staleTime: 20_000,
   });
+  const exportMutation = useMutation({
+    mutationFn: (format: "json" | "markdown") => downloadIncidentExport(incidentId, format),
+  });
   if (isPending) return <main className="h-full overflow-y-auto p-8"><Skeleton className="mx-auto h-96 max-w-5xl rounded-xl" /></main>;
   if (isError || !incident) return <main className="h-full overflow-y-auto p-8"><div className="mx-auto max-w-5xl rounded-xl border border-destructive/40 bg-destructive/5 p-6"><AlertCircle className="size-5 text-destructive" /><h1 className="mt-3 font-semibold">Incident unavailable</h1><p className="mt-2 text-sm text-muted-foreground">It may have expired or you may not have access to it.</p><Button asChild variant="outline" className="mt-4"><Link to="/incidents"><ArrowLeft className="mr-2 size-4" />Back to inbox</Link></Button></div></main>;
   return (
@@ -181,8 +309,17 @@ function IncidentDetail() {
         <Link to="/incidents" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="mr-2 size-4" />Incident Inbox</Link>
         <div className="mt-6 flex flex-wrap items-start justify-between gap-4">
           <div><p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">GitHub Actions failure</p><h1 className="mt-2 text-2xl font-semibold tracking-tight">{incident.workflowName ?? "Workflow run"}</h1><p className="mt-2 text-sm text-muted-foreground">{incident.repositoryName} · run #{incident.workflowRunId} · observed {dateTime(incident.createdAt)}</p></div>
-          <StatusBadge incident={incident} />
+          <div className="flex flex-wrap items-center gap-2">
+            <StatusBadge incident={incident} />
+            <Button size="sm" variant="outline" onClick={() => exportMutation.mutate("markdown")} disabled={exportMutation.isPending}>
+              <Download className="mr-2 size-3.5" /> Export Markdown
+            </Button>
+            <Button size="sm" variant="outline" onClick={() => exportMutation.mutate("json")} disabled={exportMutation.isPending}>
+              <Download className="mr-2 size-3.5" /> JSON
+            </Button>
+          </div>
         </div>
+        {exportMutation.isError ? <p className="mt-3 text-sm text-destructive">The redacted incident export could not be downloaded. Please retry.</p> : null}
         <section className="mt-7 grid gap-4 md:grid-cols-3"><div className="rounded-xl border border-border bg-card p-4"><p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Run commit</p><p className="mt-2 font-mono text-sm">{shortSha(incident.headSha)}</p></div><div className="rounded-xl border border-border bg-card p-4"><p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Evidence strength</p><p className="mt-2 capitalize">{incident.evidenceStrength}</p></div><div className="rounded-xl border border-border bg-card p-4"><p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Current state</p><p className="mt-2 text-sm">{incident.runIsHistorical ? "Historical run compared separately" : "Same run/current context"}</p></div></section>
         <section className="mt-4 rounded-xl border border-border bg-card p-5"><h2 className="font-semibold">Evidence-backed assessment</h2><p className="mt-3 text-sm leading-6 text-muted-foreground">{incident.diagnosisSummary ?? "Diagnosis is pending evidence collection."}</p>{incident.failureCategories.length ? <div className="mt-4 flex flex-wrap gap-2">{incident.failureCategories.map((category) => <Badge key={category} variant="secondary">{prettify(category)}</Badge>)}</div> : null}</section>
         <section className="mt-4 grid gap-4 md:grid-cols-2"><div className="rounded-xl border border-border bg-card p-5"><h2 className="font-semibold">Relevant files</h2>{incident.relevantPaths.length ? <ul className="mt-3 space-y-2 font-mono text-xs text-muted-foreground">{incident.relevantPaths.map((path) => <li key={path}>{path}</li>)}</ul> : <p className="mt-3 text-sm text-muted-foreground">No repository file was selected from the bounded evidence.</p>}</div><div className="rounded-xl border border-border bg-card p-5"><h2 className="font-semibold">Evidence and limitations</h2><p className="mt-3 text-sm text-muted-foreground">{incident.evidenceIds.length} CI evidence item(s) and {incident.workflowEvidenceIds.length} workflow item(s) are retained with source provenance.</p>{incident.limitations.length ? <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-muted-foreground">{incident.limitations.map((value) => <li key={value}>{value}</li>)}</ul> : <p className="mt-3 text-sm text-emerald-700 dark:text-emerald-300">No collection limitation was recorded.</p>}</div></section>

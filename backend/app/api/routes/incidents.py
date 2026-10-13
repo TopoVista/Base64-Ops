@@ -2,13 +2,22 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from typing import Literal
+
+from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse, PlainTextResponse
 
 from app.api.deps import get_current_user
 from app.db.mongo import get_db
 from app.schemas.incident import (
     RepositoryAutomationSettingsRequest,
     RepositoryAutomationSettingsResponse,
+)
+from app.services.incident_export_service import (
+    build_incident_export,
+    incident_evidence_ids,
+    incident_export_markdown,
 )
 from app.services.incident_service import GitHubWebhookService
 
@@ -132,3 +141,42 @@ async def get_incident(incident_id: str, user: dict = Depends(get_current_user))
     if not incident:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Incident not found")
     return _incident_response(incident)
+
+
+@router.get("/{incident_id}/export", response_model=None)
+async def export_incident(
+    incident_id: str,
+    format: Literal["json", "markdown"] = Query(default="json"),
+    user: dict = Depends(get_current_user),
+) -> Response:
+    """Export only redacted evidence that belongs to the requesting tenant."""
+
+    incident = await get_db().incidents.find_one({"_id": incident_id, "userId": user["_id"]})
+    if not incident:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Incident not found")
+    evidence_ids = incident_evidence_ids(incident)
+    evidence = []
+    if evidence_ids:
+        evidence = await (
+            get_db()
+            .evidence.find(
+                {
+                    "id": {"$in": evidence_ids},
+                    "userId": user["_id"],
+                    "sessionId": incident["sessionId"],
+                }
+            )
+            .to_list(len(evidence_ids))
+        )
+    export = build_incident_export(incident=incident, evidence=evidence)
+    filename = f"base64-incident-{incident_id}"
+    if format == "markdown":
+        return PlainTextResponse(
+            incident_export_markdown(export),
+            media_type="text/markdown; charset=utf-8",
+            headers={"Content-Disposition": f'attachment; filename="{filename}.md"'},
+        )
+    return JSONResponse(
+        jsonable_encoder(export),
+        headers={"Content-Disposition": f'attachment; filename="{filename}.json"'},
+    )

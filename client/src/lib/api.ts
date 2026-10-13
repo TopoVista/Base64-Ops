@@ -16,7 +16,12 @@ import type {
   GithubConnectResponse,
   GithubReposResponse,
 } from "@/types/github.type";
-import type { IncidentRecord, IncidentsResponse } from "@/types/incident.type";
+import type {
+  IncidentRecord,
+  IncidentsResponse,
+  RepositoryAutomationSettings,
+  RepositoryAutomationSettingsInput,
+} from "@/types/incident.type";
 
 export type ProductAssistantResponse = {
   conversationId: string;
@@ -70,6 +75,44 @@ export const getIncidents = async (): Promise<IncidentsResponse> => {
 export const getIncident = async (incidentId: string): Promise<IncidentRecord> => {
   const response = await API.get<IncidentRecord>(`/incidents/${encodeURIComponent(incidentId)}`);
   return response.data;
+};
+
+export const getRepositoryAutomationSettings = async (
+  slugId: string,
+): Promise<RepositoryAutomationSettings | null> => {
+  const response = await API.get<RepositoryAutomationSettings | null>(
+    `/incidents/sessions/${encodeURIComponent(slugId)}/automation`,
+  );
+  return response.data;
+};
+
+export const updateRepositoryAutomationSettings = async (
+  slugId: string,
+  settings: RepositoryAutomationSettingsInput,
+): Promise<RepositoryAutomationSettings> => {
+  const response = await API.put<RepositoryAutomationSettings>(
+    `/incidents/sessions/${encodeURIComponent(slugId)}/automation`,
+    settings,
+  );
+  return response.data;
+};
+
+export const downloadIncidentExport = async (
+  incidentId: string,
+  format: "json" | "markdown",
+): Promise<void> => {
+  const response = await API.get<Blob>(`/incidents/${encodeURIComponent(incidentId)}/export`, {
+    params: { format },
+    responseType: "blob",
+  });
+  const objectUrl = window.URL.createObjectURL(response.data);
+  const anchor = document.createElement("a");
+  anchor.href = objectUrl;
+  anchor.download = `base64-incident-${incidentId}.${format === "markdown" ? "md" : "json"}`;
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  window.URL.revokeObjectURL(objectUrl);
 };
 
 /** Historical run replay is read-only: the server never reruns agent tools or mutations. */

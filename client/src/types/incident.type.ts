@@ -47,3 +47,20 @@ export type IncidentRecord = {
 };
 
 export type IncidentsResponse = { incidents: IncidentRecord[] };
+
+export type RepositoryAutomationSettings = {
+  id: string;
+  session_id: string;
+  repository_id: string;
+  enabled: boolean;
+  workflow_names: string[];
+  include_branches: string[];
+  exclude_branches: string[];
+  daily_investigation_limit: number;
+  updated_at: string;
+};
+
+export type RepositoryAutomationSettingsInput = Omit<
+  RepositoryAutomationSettings,
+  "id" | "session_id" | "repository_id" | "updated_at"
+>;

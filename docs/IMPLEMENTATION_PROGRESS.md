@@ -71,6 +71,13 @@ Implemented so far:
   traceable, while Inbox list queries show the group root and related run
   count. The grouping key does not use raw log text and therefore cannot merge
   failures solely on untrusted log similarity.
+- Incident grouping retries when evidence collection completed but the final
+  grouping write was interrupted; a collected record becomes terminal only
+  after it is a root or group member.
+- The Inbox now exposes the existing server-verified repository automation
+  controls (opt-in, workflow/branch filters, and daily budget) rather than a
+  disconnected UI toggle. Incident detail supports portable JSON or Markdown
+  exports that re-redact and allowlist evidence fields at export time.
 
 Still required in this stage:
 

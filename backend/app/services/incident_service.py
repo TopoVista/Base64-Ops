@@ -359,6 +359,21 @@ def incident_group_key(*, event: dict[str, Any], context: Any) -> str:
     return "igr_" + hashlib.sha256(encoded).hexdigest()[:40]
 
 
+def incident_dispatch_is_complete(incident: dict[str, Any]) -> bool:
+    """Return whether a duplicate event has reached an immutable terminal state.
+
+    Evidence collection is not terminal until the record has either become a
+    group root or been attached to an existing group.  Retrying an interrupted
+    grouping step is safe and prevents a delivered webhook from disappearing
+    from the Inbox merely because the final grouping write briefly failed.
+    """
+
+    status_value = incident.get("status")
+    if status_value in {IncidentStatus.GROUPED.value, IncidentStatus.IGNORED.value}:
+        return True
+    return status_value == IncidentStatus.EVIDENCE_COLLECTED.value and bool(incident.get("groupKey"))
+
+
 class IncidentDispatchService:
     """Run bounded, read-only CI evidence collection outside webhook requests."""
 
@@ -448,11 +463,7 @@ class IncidentDispatchService:
             existing = await db.incidents.find_one({"eventId": event["_id"], "automationId": automation["_id"]})
             if not existing:
                 raise
-            if existing.get("status") in {
-                IncidentStatus.EVIDENCE_COLLECTED.value,
-                IncidentStatus.GROUPED.value,
-                IncidentStatus.IGNORED.value,
-            }:
+            if incident_dispatch_is_complete(existing):
                 return
             incident_id = str(existing["_id"])
 

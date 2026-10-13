@@ -1,14 +1,18 @@
+import json
 from types import SimpleNamespace
 
+from app.api.routes import incidents as incident_routes
 from app.api.routes.incidents import _incident_response
 from app.git.actions import WorkflowJobSummary
 from app.schemas.incident import EvidenceStrength
 from app.services import incident_service
+from app.services.incident_export_service import build_incident_export, incident_export_markdown
 from app.services.incident_service import (
     GitHubWebhookService,
     IncidentDispatchService,
     build_incident_diagnosis,
     build_structured_incident_diagnosis,
+    incident_dispatch_is_complete,
     incident_group_key,
 )
 
@@ -83,6 +87,101 @@ def test_incident_group_key_requires_matching_repository_workflow_commit_and_fai
             failed_jobs=[WorkflowJobSummary(id=1, run_id=9, name="test", failed_step="Run pytest")],
         ),
     )
+
+
+def test_incident_dispatch_retries_an_ungrouped_collected_record() -> None:
+    """A transient grouping failure must not turn a collected incident terminal."""
+
+    assert not incident_dispatch_is_complete({"status": "evidence_collected"})
+    assert incident_dispatch_is_complete(
+        {"status": "evidence_collected", "groupKey": "igr_123"}
+    )
+    assert incident_dispatch_is_complete({"status": "grouped"})
+    assert incident_dispatch_is_complete({"status": "ignored"})
+    assert not incident_dispatch_is_complete({"status": "failed"})
+
+
+def test_incident_export_re_redacts_and_omits_internal_routing_fields() -> None:
+    export = build_incident_export(
+        incident={
+            "_id": "inc_1",
+            "userId": "user_a",
+            "sessionId": "ses_1",
+            "eventId": "evt_1",
+            "repositoryName": "acme/base64",
+            "workflowRunId": 99,
+            "headSha": "a" * 40,
+            "status": "evidence_collected",
+            "evidenceIds": ["evd_1"],
+        },
+        evidence=[
+            {
+                "_id": "evd_1",
+                "id": "evd_1",
+                "userId": "user_a",
+                "sessionId": "ses_1",
+                "sourceType": "ci_log",
+                "path": ".github/workflows/ci.yml",
+                "excerpt": "Authorization: Bearer very-secret-token",
+                "metadata": {"token": "never export this"},
+            }
+        ],
+    )
+
+    assert export["incident"]["id"] == "inc_1"
+    assert "userId" not in export["incident"]
+    assert "eventId" not in export["incident"]
+    assert "very-secret-token" not in export["evidence"][0]["excerpt"]
+    assert "metadata" not in export["evidence"][0]
+    markdown = incident_export_markdown(export)
+    assert "very-secret-token" not in markdown
+    assert "Authorization: Bearer [REDACTED]" in markdown
+
+
+async def test_incident_export_scopes_evidence_to_the_incident_tenant_and_session(monkeypatch) -> None:  # noqa: ANN001
+    class _EvidenceCursor:
+        async def to_list(self, _limit):  # noqa: ANN001, ANN201
+            return [
+                {
+                    "_id": "evd_1",
+                    "id": "evd_1",
+                    "sourceType": "ci_log",
+                    "excerpt": "Bearer export-token-should-not-appear",
+                }
+            ]
+
+    class _Evidence:
+        query: dict | None = None
+
+        def find(self, query):  # noqa: ANN001, ANN201
+            self.query = query
+            return _EvidenceCursor()
+
+    class _Incidents:
+        async def find_one(self, query):  # noqa: ANN001, ANN201
+            assert query == {"_id": "inc_1", "userId": "user_a"}
+            return {
+                "_id": "inc_1",
+                "userId": "user_a",
+                "sessionId": "ses_1",
+                "repositoryName": "acme/base64",
+                "workflowRunId": 99,
+                "headSha": "a" * 40,
+                "evidenceIds": ["evd_1"],
+            }
+
+    evidence = _Evidence()
+    monkeypatch.setattr(
+        incident_routes,
+        "get_db",
+        lambda: SimpleNamespace(incidents=_Incidents(), evidence=evidence),
+    )
+
+    response = await incident_routes.export_incident("inc_1", format="json", user={"_id": "user_a"})
+    body = json.loads(response.body)
+    assert evidence.query == {"id": {"$in": ["evd_1"]}, "userId": "user_a", "sessionId": "ses_1"}
+    assert body["incident"]["id"] == "inc_1"
+    assert "export-token-should-not-appear" not in body["evidence"][0]["excerpt"]
 
 
 async def test_incident_grouping_keeps_one_root_and_preserves_related_runs(monkeypatch) -> None:  # noqa: ANN001

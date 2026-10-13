@@ -19,7 +19,7 @@ does not treat mocked provider tests as live-provider verification.
 | Durable internal jobs | Implemented and tested | `app/services/background_job_service.py`, `app/workers/worker.py` | Lease, dedupe, bounded retry, and terminal status semantics exist for reindexing and delivery CI observation. |
 | Observability and replay | Implemented and tested | `app/observability/*`, `app/schemas/replay.py`, `app/api/routes/dev.py` | Redacted trace/replay supports existing agent runs. |
 | Code workbench | Implemented and partially browser-verified | `client/src/components/ide-workspace.tsx`, `vscode-editor.tsx` | Supports evidence-scoped code review and proposal flow. |
-| Incident Inbox and detail | Implemented and locally build-verified | `client/src/pages/incidents/index.tsx`, `client/src/routes/route.ts` | Renders tenant-scoped persisted incident data with filters and explicit no-mutation guidance. Browser E2E and live data verification remain outstanding. |
+| Incident Inbox, controls, and export | Implemented and locally build-verified | `client/src/pages/incidents/index.tsx`, `app/api/routes/incidents.py`, `app/services/incident_export_service.py` | Renders tenant-scoped persisted incidents, enables server-verified repository automation opt-in, and exports only redacted evidence. Browser E2E and live data verification remain outstanding. |
 
 ## Partially implemented or incomplete
 
@@ -29,7 +29,7 @@ does not treat mocked provider tests as live-provider verification.
 | Automated CI follow-up | Signed workflow-run webhook intake, opt-in repository automation, durable event ledger, and incident-dispatch job type are implemented. | GitHub App installation validation and live webhook/worker verification remain outstanding. |
 | Repair verification | Static/candidate validation and later read-only delivery CI observation exist. | No opt-in immutable candidate verification dispatch or auditable `VerificationRun`; no workflow is installed automatically. |
 | Historical intelligence | Operational memory includes validity and freshness controls. | No flaky-test observation model, prevention-rule promotion, or advisory view tied to a new incident. |
-| Frontend CI experience | Code workbench, CI evidence cards, Incident Inbox, and incident detail route exist. | Automation settings, evidence export, grouping, and a complete user-facing repair/verification state machine remain incomplete. |
+| Frontend CI experience | Code workbench, CI evidence cards, Inbox/detail, repository automation controls, evidence export, and conservative repeated-failure grouping exist. | The complete user-facing repair/verification state machine remains incomplete. |
 | Deployment | Render blueprints model API/worker roles and now a private Key Value dependency. | The deployed Docker service does not automatically consume Blueprint variables; its Render dashboard must be configured explicitly. The checked-in API plan is paid, not a complete free-tier profile. |
 
 ## Missing P0 functionality
@@ -40,7 +40,7 @@ does not treat mocked provider tests as live-provider verification.
    comparison.
 3. An incident data model that links a repair candidate, verification run, and
    final outcome without duplicating the existing delivery state.
-4. Repository automation settings UI and user-controlled notification policy.
+4. User-controlled notification policy.
 5. GitHub-native checks or PR-comment publication, which requires an explicit
    permission model beyond the current OAuth read path.
 
