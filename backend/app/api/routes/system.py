@@ -42,6 +42,16 @@ async def get_system_capabilities() -> dict[str, Any]:
                 "configured": bool(settings.github_client_id and settings.github_client_secret),
                 "accessible": None,
             },
+            "candidate_verification": {
+                "implemented": True,
+                "mode": "static_only",
+                "configured": False,
+                "accessible": False,
+                "unavailable_reason": (
+                    "Targeted candidate verification requires a configured GitHub App "
+                    "and a reviewed repository-owned workflow."
+                ),
+            },
         },
         "execution": {
             "runtime": active_runtime,

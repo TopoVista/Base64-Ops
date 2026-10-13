@@ -36,3 +36,18 @@ async def test_restricted_local_execution_is_only_advertised_outside_production(
 
     assert result["execution"]["runtime"] == "restricted-local"
     assert result["execution"]["active_validation"] is True
+
+
+@pytest.mark.asyncio
+async def test_candidate_verification_never_advertises_unconfigured_remote_ci(monkeypatch) -> None:
+    monkeypatch.setattr(system, "get_settings", lambda: Settings())
+    monkeypatch.setattr(system.DockerSandboxRuntime, "is_available", lambda: False)
+
+    result = await system.get_system_capabilities()
+
+    verification = result["github"]["candidate_verification"]
+    assert verification["implemented"] is True
+    assert verification["mode"] == "static_only"
+    assert verification["configured"] is False
+    assert verification["accessible"] is False
+    assert verification["unavailable_reason"]
