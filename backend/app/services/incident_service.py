@@ -87,8 +87,10 @@ class GitHubWebhookService:
             if not _BRANCH.fullmatch(branch):
                 raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Invalid branch filter.")
         now = utc_now()
+        identity = {"userId": user_id, "sessionId": str(session["_id"])}
+        existing = await get_db().repository_automation_settings.find_one(identity, {"_id": 1})
+        automation_id = str(existing["_id"]) if existing else new_id("aut_")
         document = {
-            "_id": new_id("aut_"),
             "userId": user_id,
             "sessionId": str(session["_id"]),
             "repositoryId": str(repository["id"]),
@@ -102,11 +104,11 @@ class GitHubWebhookService:
             "updatedAt": now,
         }
         await get_db().repository_automation_settings.update_one(
-            {"userId": user_id, "sessionId": str(session["_id"])},
-            {"$set": document, "$setOnInsert": {"createdAt": now}},
+            identity,
+            {"$set": document, "$setOnInsert": {"_id": automation_id, "createdAt": now}},
             upsert=True,
         )
-        document["id"] = document.pop("_id")
+        document["id"] = automation_id
         return document
 
     async def get_repository_settings(self, *, user_id: str, session_id: str) -> dict[str, Any] | None:

@@ -29,6 +29,41 @@ def _settings_response(document: dict) -> RepositoryAutomationSettingsResponse:
     )
 
 
+def _incident_response(document: dict) -> dict:
+    """Return only user-safe incident fields; internal routing stays private."""
+
+    allowed = {
+        "_id",
+        "repositoryId",
+        "repositoryName",
+        "workflowRunId",
+        "workflowName",
+        "workflowPath",
+        "branch",
+        "headSha",
+        "currentHeadSha",
+        "runIsHistorical",
+        "status",
+        "failureCategories",
+        "evidenceStrength",
+        "hypothesisStatus",
+        "diagnosisSummary",
+        "evidenceIds",
+        "workflowEvidenceIds",
+        "changedFileEvidenceIds",
+        "relevantPaths",
+        "applicability",
+        "applicabilityReason",
+        "incomplete",
+        "limitations",
+        "createdAt",
+        "updatedAt",
+    }
+    response = {key: value for key, value in document.items() if key in allowed}
+    response["id"] = str(response.pop("_id"))
+    return response
+
+
 @router.put(
     "/sessions/{slug_id}/automation",
     response_model=RepositoryAutomationSettingsResponse,
@@ -76,7 +111,7 @@ async def list_incidents(
     limit: int = Query(default=30, ge=1, le=100), user: dict = Depends(get_current_user)
 ) -> dict:
     cursor = get_db().incidents.find({"userId": user["_id"]}).sort("updatedAt", -1).limit(limit)
-    records = [record async for record in cursor]
+    records = [_incident_response(record) async for record in cursor]
     return {"incidents": records}
 
 
@@ -85,4 +120,4 @@ async def get_incident(incident_id: str, user: dict = Depends(get_current_user))
     incident = await get_db().incidents.find_one({"_id": incident_id, "userId": user["_id"]})
     if not incident:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Incident not found")
-    return incident
+    return _incident_response(incident)

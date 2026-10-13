@@ -16,6 +16,7 @@ import type {
   GithubConnectResponse,
   GithubReposResponse,
 } from "@/types/github.type";
+import type { IncidentRecord, IncidentsResponse } from "@/types/incident.type";
 
 export type ProductAssistantResponse = {
   conversationId: string;
@@ -56,6 +57,18 @@ export const startSubscriptionCheckout = async (tier: "pro" | "team") => {
 
 export const getBackendHealth = async (): Promise<BackendHealth> => {
   const response = await API.get<BackendHealth>("/health");
+  return response.data;
+};
+
+export const getIncidents = async (): Promise<IncidentsResponse> => {
+  const response = await API.get<IncidentsResponse>("/incidents", {
+    params: { limit: 100 },
+  });
+  return response.data;
+};
+
+export const getIncident = async (incidentId: string): Promise<IncidentRecord> => {
+  const response = await API.get<IncidentRecord>(`/incidents/${encodeURIComponent(incidentId)}`);
   return response.data;
 };
 

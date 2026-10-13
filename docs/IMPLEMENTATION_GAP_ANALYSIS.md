@@ -18,28 +18,31 @@ does not treat mocked provider tests as live-provider verification.
 | Operational memory | Implemented and tested | `app/memory/*` | Tenant-scoped evidence-gated memory distinguishes incident outcomes, delivered fixes, and merged fixes. Live merge lookup remains unverified. |
 | Durable internal jobs | Implemented and tested | `app/services/background_job_service.py`, `app/workers/worker.py` | Lease, dedupe, bounded retry, and terminal status semantics exist for reindexing and delivery CI observation. |
 | Observability and replay | Implemented and tested | `app/observability/*`, `app/schemas/replay.py`, `app/api/routes/dev.py` | Redacted trace/replay supports existing agent runs. |
-| Code workbench | Implemented and partially browser-verified | `client/src/components/ide-workspace.tsx`, `vscode-editor.tsx` | Supports evidence-scoped code review and proposal flow; no incident inbox exists. |
+| Code workbench | Implemented and partially browser-verified | `client/src/components/ide-workspace.tsx`, `vscode-editor.tsx` | Supports evidence-scoped code review and proposal flow. |
+| Incident Inbox and detail | Implemented and locally build-verified | `client/src/pages/incidents/index.tsx`, `client/src/routes/route.ts` | Renders tenant-scoped persisted incident data with filters and explicit no-mutation guidance. Browser E2E and live data verification remain outstanding. |
 
 ## Partially implemented or incomplete
 
 | Capability | Current state | Gap to close |
 | --- | --- | --- |
-| CI causality | Existing CI service gathers failed-run workflow, changed-file, and current/head evidence. | No durable incident diagnosis object, successful-vs-failed comparison record, recurrence analysis, or incident timeline. |
-| Automated CI follow-up | Existing job worker can poll CI for a delivery result. | No GitHub webhook receiver, incident event ledger, repository automation opt-in, or job type for a failed third-party workflow. |
+| CI causality | Existing CI service gathers failed-run workflow, changed-file, and current/head evidence; incident dispatch persists a deterministic evidence-strength assessment. | No successful-vs-failed comparison record, recurrence analysis, or incident timeline. |
+| Automated CI follow-up | Signed workflow-run webhook intake, opt-in repository automation, durable event ledger, and incident-dispatch job type are implemented. | GitHub App installation validation and live webhook/worker verification remain outstanding. |
 | Repair verification | Static/candidate validation and later read-only delivery CI observation exist. | No opt-in immutable candidate verification dispatch or auditable `VerificationRun`; no workflow is installed automatically. |
 | Historical intelligence | Operational memory includes validity and freshness controls. | No flaky-test observation model, prevention-rule promotion, or advisory view tied to a new incident. |
-| Frontend CI experience | Code workbench and CI evidence cards exist. | No Incident Inbox, incident detail route, automation settings, evidence export, or user-facing state machine. |
+| Frontend CI experience | Code workbench, CI evidence cards, Incident Inbox, and incident detail route exist. | Automation settings, evidence export, grouping, and a complete user-facing repair/verification state machine remain incomplete. |
 | Deployment | Render blueprints model API/worker roles and now a private Key Value dependency. | The deployed Docker service does not automatically consume Blueprint variables; its Render dashboard must be configured explicitly. The checked-in API plan is paid, not a complete free-tier profile. |
 
 ## Missing P0 functionality
 
-1. A signature-verified GitHub webhook route for workflow-run completion.
-2. A durable, tenant-scoped webhook event ledger with GitHub delivery-ID deduplication.
-3. Explicit per-repository automation settings; automation is opt-in by default.
-4. A bounded incident-dispatch job type, state transitions, and durable failed-event record.
-5. An incident collection and typed API contracts that link Actions evidence, diagnosis, repair candidate, and outcome.
-6. A user-facing Incident Inbox and incident-detail experience.
-7. GitHub-native checks or PR-comment publication, which requires an explicit permission model beyond the current OAuth read path.
+1. GitHub App installation identity validation, which is distinct from the
+   existing OAuth repository boundary.
+2. Incident grouping, reconciliation, supersession, and successful-run
+   comparison.
+3. An incident data model that links a repair candidate, verification run, and
+   final outcome without duplicating the existing delivery state.
+4. Repository automation settings UI and user-controlled notification policy.
+5. GitHub-native checks or PR-comment publication, which requires an explicit
+   permission model beyond the current OAuth read path.
 
 ## Existing public contracts and security boundaries
 

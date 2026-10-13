@@ -11,6 +11,8 @@ const GuidePage = lazy(() => import("@/pages/guide"));
 const BillingPage = lazy(() => import("@/pages/billing"));
 const SessionPage = lazy(() => import("@/pages/session"));
 const DevRunInspector = lazy(() => import("@/pages/dev/DevRunInspector"));
+const IncidentInbox = lazy(() => import("@/pages/incidents").then((module) => ({ default: module.IncidentInbox })));
+const IncidentDetail = lazy(() => import("@/pages/incidents").then((module) => ({ default: module.IncidentDetail })));
 
 export const isAuthRoute = (pathname: string): boolean => {
   return Object.values(AUTH_ROUTES).includes(pathname);
@@ -29,6 +31,8 @@ export const PROTECTED_ROUTES = {
   SINGLE_SESSION: "/session/:slugid",
   SESSION_WORKSPACE: "/session/:slugid/:section",
   DEV_RUN_INSPECTOR: "/dev/runs/:runId",
+  INCIDENTS: "/incidents",
+  INCIDENT_DETAIL: "/incidents/:incidentId",
   BILLING: "/billing",
 };
 
@@ -73,6 +77,14 @@ export const protectedRoutesPaths = [
   {
     path: PROTECTED_ROUTES.DEV_RUN_INSPECTOR,
     element: DevRunInspector,
+  },
+  {
+    path: PROTECTED_ROUTES.INCIDENTS,
+    element: IncidentInbox,
+  },
+  {
+    path: PROTECTED_ROUTES.INCIDENT_DETAIL,
+    element: IncidentDetail,
   },
   {
     path: PROTECTED_ROUTES.BILLING,

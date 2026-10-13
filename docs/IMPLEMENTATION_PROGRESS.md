@@ -10,9 +10,13 @@ Status: **IN PROGRESS**
   [IMPLEMENTATION_GAP_ANALYSIS.md](IMPLEMENTATION_GAP_ANALYSIS.md).
 - Baseline backend command: `backend\\venv\\Scripts\\python.exe -m pytest backend\\tests -q`
   - Initial result: **315 passed**, one third-party deprecation warning.
-  - After P0.1 intake changes: **319 passed**, one third-party deprecation warning.
-- A production frontend build was started during the audit but requires a clean
-  rerun before it is recorded as passing.
+  - After incident API, deterministic diagnosis, and Inbox/detail changes:
+    **323 passed**, one third-party deprecation warning.
+- Frontend validation after the Incident Inbox slice:
+  - `npm run lint`: passed.
+  - `npx tsc --noEmit`: passed.
+  - `npm run build`: passed (Vite production output generated; existing large
+    bundle advisory remains non-fatal).
 - Existing uncommitted user change: `backend/.gitignore`. It is outside this
   work and will not be modified.
 
@@ -41,21 +45,34 @@ Implemented so far:
 - The optional `incident_dispatcher` worker role uses existing durable lease
   and bounded-retry infrastructure, then calls the existing read-only CI
   investigation service. It cannot perform a GitHub mutation.
-- A minimal authenticated `/api/incidents` read/configuration API now exists.
+- A minimal authenticated `/api/incidents` read/configuration API now exists;
+  list/detail responses omit tenant IDs, queue/event IDs, and automation IDs.
+- A compact Incident Inbox and incident-detail route now display persisted,
+  user-authorized incident summaries with loading, empty, error, filter, and
+  historical-run states. The views do not render raw CI logs or introduce a
+  mutation control.
+- Deterministic diagnosis labels distinguish insufficient, observed,
+  correlated, and supported evidence. Changed-file correlation is explicitly
+  described as non-causal unless further evidence supports it.
+- Repository daily investigation budgets are checked from durable incident
+  records by the worker. An exhausted budget is recorded as an observable,
+  ignored incident instead of silently spending work.
 
 Still required in this stage:
 
 - GitHub App installation identity support (current OAuth-based integration
   has no installation-token boundary).
-- Incident inbox/detail UI, live GitHub webhook verification, a deployed
-  dispatcher/scheduler profile, and GitHub-native reporting.
+- Live GitHub webhook verification, a deployed dispatcher/scheduler profile,
+  GitHub-native reporting, grouping, notification preferences, and the
+  verification lifecycle.
 
 ## Current external blockers
 
-1. The Render Docker service must have `TRUSTED_CLIENT_IP_HEADER=CF-Connecting-IP`
-   in its dashboard environment, in addition to the configured Redis URL and
-   fail-closed rate-limit setting. Until then startup validation correctly
-   refuses production traffic.
+1. The Render Docker service is currently refusing startup until
+   `TRUSTED_CLIENT_IP_HEADER=CF-Connecting-IP` is added in its dashboard
+   environment. This is a required production safeguard, not a code defect.
+   The supplied deployment logs confirm that the image build completed before
+   configuration validation stopped Uvicorn.
 2. Live GitHub webhook, GitHub App, and authorized test repositories are not
    configured in this workspace. Local mocked tests can be added without those
    credentials; live verification remains explicitly unverified.
