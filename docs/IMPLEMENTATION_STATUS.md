@@ -15,7 +15,7 @@
 > dependency manifests/locks, and declared runner targets as bounded
 > correlation—not causal proof. The Code workspace preserves simultaneous
 > pending delivery and candidate-verification approvals instead of hiding one.
-> Local verification passed: **356 backend tests**, **28/28 deterministic
+> Local verification passed: **357 backend tests**, **28/28 deterministic
 > evals**, Ruff, LangGraph initialization, frontend TypeScript, and Vite
 > production build. Live webhook, GitHub App, Check, worker, and provider
 > verification is `BLOCKED` until an authorized non-production environment is
