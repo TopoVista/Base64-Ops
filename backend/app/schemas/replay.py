@@ -87,6 +87,16 @@ class ReplayValidationStep(ReplayPublicModel):
     required: bool = True
 
 
+class ReplayCandidateVerification(ReplayPublicModel):
+    status: str | None = None
+    verificationLevel: str | None = None
+    candidatePatchHash: str | None = None
+    baseSha: str | None = None
+    createdAt: str | None = None
+    limitations: list[str] = Field(default_factory=list)
+    staticValidation: list[dict[str, Any]] = Field(default_factory=list)
+
+
 class ReplayDeliveryPlan(ReplayPublicModel):
     id: str | None = None
     title: str | None = None
@@ -96,6 +106,7 @@ class ReplayDeliveryPlan(ReplayPublicModel):
     evidence_ids: list[str] = Field(default_factory=list)
     files: list[ReplayFileChange] = Field(default_factory=list)
     validation_steps: list[ReplayValidationStep] = Field(default_factory=list)
+    candidateVerification: ReplayCandidateVerification | None = None
 
 
 class ReplayApproval(ReplayPublicModel):

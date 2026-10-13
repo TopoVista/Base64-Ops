@@ -120,6 +120,15 @@ export type DeliveryPlanSummary = {
   evidence_ids: string[];
   files: Array<{ path: string; change_type: string; unified_diff: string }>;
   validation_steps?: Array<{ id: string; kind: string; description: string }>;
+  candidateVerification?: {
+    status?: "proposed" | "static_validation_passed" | "verified" | "failed" | string;
+    verificationLevel?: string;
+    candidatePatchHash?: string;
+    baseSha?: string;
+    createdAt?: string;
+    limitations?: string[];
+    staticValidation?: Array<{ stepId?: string; status?: string; summary?: string; durationMs?: number | null }>;
+  } | null;
 };
 
 export type DeliveryResult = {

@@ -776,7 +776,7 @@ async def propose_code_edit(user_id: str, slug_id: str, payload: CodeEditProposa
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail="The proposed edit did not pass its required pre-approval validation.",
         )
-    plan_document = await delivery.persist_plan(plan)
+    plan_document = await delivery.persist_plan(plan, static_validation=validation)
     approval = await delivery.create_approval(plan)
     await db.investigations.update_one(
         {"userId": user_id, "sessionId": session["_id"], "runId": run_id},
@@ -1540,6 +1540,33 @@ def _public_delivery_plan(plan: dict[str, Any] | None) -> dict[str, Any] | None:
         }
         for item in _dict_items(public_plan.get("validation_steps"))
     ]
+    candidate_verification = public_plan.get("candidateVerification")
+    public_candidate_verification = None
+    if isinstance(candidate_verification, dict):
+        # This is a deliberately small allowlist. In particular, never expose
+        # a prospective dispatch payload, credentials, or raw command bytes in
+        # replay merely because a future verification implementation records it.
+        public_candidate_verification = {
+            "status": _safe_replay_text(candidate_verification.get("status")),
+            "verificationLevel": _safe_replay_text(
+                candidate_verification.get("verificationLevel")
+            ),
+            "candidatePatchHash": _safe_replay_text(
+                candidate_verification.get("candidatePatchHash")
+            ),
+            "baseSha": _safe_replay_text(candidate_verification.get("baseSha")),
+            "createdAt": _safe_replay_text(candidate_verification.get("createdAt")),
+            "limitations": _string_items(candidate_verification.get("limitations")),
+            "staticValidation": [
+                {
+                    "stepId": _safe_replay_text(item.get("stepId")),
+                    "status": _safe_replay_text(item.get("status")),
+                    "summary": _safe_replay_text(item.get("summary")),
+                    "durationMs": _safe_replay_int(item.get("durationMs")),
+                }
+                for item in _dict_items(candidate_verification.get("staticValidation"))[:20]
+            ],
+        }
     return {
         "id": _safe_replay_text(public_plan.get("id")),
         "title": _safe_replay_text(public_plan.get("title")),
@@ -1549,6 +1576,7 @@ def _public_delivery_plan(plan: dict[str, Any] | None) -> dict[str, Any] | None:
         "evidence_ids": _string_items(public_plan.get("evidence_ids")),
         "files": public_files,
         "validation_steps": public_validation,
+        "candidateVerification": public_candidate_verification,
     }
 
 

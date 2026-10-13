@@ -1283,7 +1283,7 @@ class AgentGraph:
                 "model_usage_events": proposal_usage_events,
             }
 
-        document = await self.delivery.persist_plan(plan)
+        document = await self.delivery.persist_plan(plan, static_validation=validation)
         return {
             "delivery_plan_id": plan.id,
             "delivery_plan": document,

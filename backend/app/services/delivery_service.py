@@ -170,7 +170,9 @@ class DeliveryService:
             "diff_hash": self.diff_hash(plan),
         }
 
-    async def persist_plan(self, plan: DeliveryPlan) -> dict[str, Any]:
+    async def persist_plan(
+        self, plan: DeliveryPlan, *, static_validation: list[ValidationResult] | None = None
+    ) -> dict[str, Any]:
         from app.services.candidate_verification_service import initial_candidate_verification
 
         document = plan.model_dump()
@@ -179,7 +181,11 @@ class DeliveryService:
         ]
         document["_id"] = plan.id
         document.update({"userId": plan.user_id, "sessionId": plan.session_id, "runId": plan.run_id})
-        document["candidateVerification"] = initial_candidate_verification(plan)
+        document["candidateVerification"] = initial_candidate_verification(
+            plan,
+            candidate_patch_hash=self.diff_hash(plan),
+            static_validation=[result.model_dump() for result in static_validation or []],
+        )
         await get_db().delivery_plans.insert_one(document)
         return document
 

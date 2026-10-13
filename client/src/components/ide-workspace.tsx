@@ -912,6 +912,7 @@ function ReviewPanel({ file, draft, deliveryPlan, ci, stagedForCommit, reviewedF
   const commitMessageChanged = commitMessage.trim() !== deliveryPlan.title;
   const passedValidation = (pendingApproval?.validation ?? []).filter((v) => v.status === "passed");
   const failedJob = ci?.failed_jobs[0];
+  const candidateVerification = deliveryPlan.candidateVerification;
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <div className="shrink-0 border-b px-5 py-3" style={{ borderColor: "var(--ide-danger-border)", background: "var(--ide-danger-bg)" }}>
@@ -942,6 +943,14 @@ function ReviewPanel({ file, draft, deliveryPlan, ci, stagedForCommit, reviewedF
             ? `${passedValidation.length} required pre-delivery validation ${passedValidation.length === 1 ? "check has" : "checks have"} passed.`
             : "Validation results will be recorded before delivery."} GitHub Actions remains the final verifier after push.
         </p>
+        {candidateVerification ? (
+          <p className="mt-1 text-[10px] leading-4" style={{ color: "var(--ide-fg2)" }}>
+            Candidate verification: <strong>{candidateVerification.status ?? "proposed"}</strong>
+            {candidateVerification.verificationLevel === "not_independently_tested"
+              ? " — static validation is recorded separately; no targeted remote verification has run."
+              : candidateVerification.verificationLevel ? ` — ${candidateVerification.verificationLevel.replaceAll("_", " ")}.` : "."}
+          </p>
+        ) : null}
       </div>
       <div className="grid min-h-0 flex-1 grid-cols-1 overflow-hidden xl:grid-cols-2">
         <div className="flex min-h-0 flex-col overflow-hidden border-r" style={{ borderColor: "var(--ide-border)" }}>
