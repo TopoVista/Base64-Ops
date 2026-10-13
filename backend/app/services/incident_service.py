@@ -24,6 +24,7 @@ from app.memory.models import MemoryEntryCandidate, OperationalMemoryKind
 from app.schemas.incident import EvidenceStrength, IncidentDiagnosis, IncidentStatus
 from app.services.background_job_service import BackgroundJobService
 from app.services.ci_investigation_service import CIInvestigationService
+from app.services.flaky_test_service import FlakyTestObservationService
 from app.services.github_service import list_repositories, normalize_github_repository_url
 from app.services.workspace_service import WorkspaceService
 from app.utils.datetime import utc_now
@@ -61,6 +62,7 @@ class GitHubWebhookService:
             sparse=True,
             name="incident_one_active_group_per_user",
         )
+        await FlakyTestObservationService().ensure_indexes()
 
     @staticmethod
     def verify_signature(*, body: bytes, signature: str, secret: str) -> bool:
@@ -519,10 +521,12 @@ class IncidentDispatchService:
         ci_investigation: CIInvestigationService | None = None,
         workspace: WorkspaceService | None = None,
         memory: MemoryService | None = None,
+        flaky_observations: FlakyTestObservationService | None = None,
     ) -> None:
         self.workspace = workspace or WorkspaceService()
         self.ci_investigation = ci_investigation or CIInvestigationService(workspace=self.workspace)
         self.memory = memory or MemoryService()
+        self.flaky_observations = flaky_observations or FlakyTestObservationService()
 
     async def dispatch(self, *, event_id: str) -> None:
         db = get_db()
@@ -667,6 +671,12 @@ class IncidentDispatchService:
             repo_path=repo_path,
         )
         diagnosis = build_structured_incident_diagnosis(context)
+        flaky_observations = await self._record_flaky_observations(
+            incident_id=incident_id,
+            event=event,
+            session=session,
+            context=context,
+        )
         await db.incidents.update_one(
             {"_id": incident_id, "userId": automation["userId"]},
             {
@@ -675,6 +685,7 @@ class IncidentDispatchService:
                     "failureCategories": [str(category) for category in context.failure_categories],
                     "failedTestIdentifiers": context.failed_test_identifiers,
                     "flakySignal": _flaky_signal(context),
+                    "flakyObservations": flaky_observations,
                     "evidenceStrength": diagnosis.evidence_strength.value,
                     "hypothesisStatus": diagnosis.status,
                     "diagnosisSummary": diagnosis.summary,
@@ -708,6 +719,35 @@ class IncidentDispatchService:
             automation=automation,
             context=context,
         )
+
+    async def _record_flaky_observations(
+        self,
+        *,
+        incident_id: str,
+        event: dict[str, Any],
+        session: dict[str, Any],
+        context: Any,
+    ) -> list[dict[str, Any]]:
+        """Record bounded observations without making flaky CI a hard dependency.
+
+        Failure histories are useful supplemental evidence.  A temporary write
+        failure must not hide the underlying incident or turn an investigation
+        into a retry loop.
+        """
+
+        try:
+            return await self.flaky_observations.record(
+                user_id=str(session["userId"]),
+                session_id=str(session["_id"]),
+                repository_id=str(event["repositoryId"]),
+                incident_id=incident_id,
+                context=context,
+            )
+        except Exception:
+            limitation = "Flaky-test observations could not be recorded."
+            if limitation not in context.limitations:
+                context.limitations.append(limitation)
+            return []
 
     async def _record_incident_memory(
         self,

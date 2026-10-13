@@ -72,6 +72,21 @@ class IncidentFeedbackRequest(BaseModel):
     correction: str = Field(default="", max_length=2_000)
 
 
+class FlakyTestObservationSummary(BaseModel):
+    """A bounded public observation, not a test-execution command."""
+
+    id: str
+    repository_id: str
+    workflow_key: str
+    test_identifier: str
+    head_sha: str
+    assessment: Literal["insufficient_evidence", "suspected_flakiness", "reproducible_regression"]
+    same_sha_failure_count: int = 0
+    same_sha_success_count: int = 0
+    limitations: list[str] = Field(default_factory=list)
+    updated_at: datetime
+
+
 class IncidentSummary(BaseModel):
     id: str
     repository_id: str

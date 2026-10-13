@@ -20,6 +20,7 @@ import type {
   IncidentRecord,
   IncidentFeedbackInput,
   IncidentsResponse,
+  FlakyTestObservation,
   RepositoryAutomationSettings,
   RepositoryAutomationSettingsInput,
 } from "@/types/incident.type";
@@ -75,6 +76,13 @@ export const getIncidents = async (): Promise<IncidentsResponse> => {
 
 export const getIncident = async (incidentId: string): Promise<IncidentRecord> => {
   const response = await API.get<IncidentRecord>(`/incidents/${encodeURIComponent(incidentId)}`);
+  return response.data;
+};
+
+export const getFlakyTestObservations = async (): Promise<FlakyTestObservation[]> => {
+  const response = await API.get<FlakyTestObservation[]>("/incidents/flaky-tests", {
+    params: { limit: 100 },
+  });
   return response.data;
 };
 

@@ -49,6 +49,15 @@ as **suspected** only when that identifier is present and bounded history has
 mixed successful and failed runs at the same SHA. It neither reruns CI nor
 declares a test flaky automatically.
 
+Each extracted identifier now also creates a tenant-scoped
+`flaky-test-observation-v1` record. The record stores a bounded workflow key,
+failed-run SHA, comparable same-SHA outcome counts, evidence IDs, timestamp,
+and explicit limitations. Successful Actions runs usually lack test-level
+results, so a mixed result remains workflow-level support for a *suspected*
+signal, never a test-level verdict. Observations are viewable through the
+read-only `GET /api/incidents/flaky-tests` endpoint; they do not rerun,
+quarantine, disable, or otherwise mutate CI.
+
 The Incident Inbox lets a user select an owned repository session, opt in or
 out, restrict workflows/branches, and set a bounded daily investigation limit.
 The detail view can export a JSON or Markdown incident record. Export queries

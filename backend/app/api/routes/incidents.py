@@ -11,6 +11,7 @@ from fastapi.responses import JSONResponse, PlainTextResponse
 from app.api.deps import get_current_user
 from app.db.mongo import get_db
 from app.schemas.incident import (
+    FlakyTestObservationSummary,
     IncidentFeedbackRequest,
     RepositoryAutomationSettingsRequest,
     RepositoryAutomationSettingsResponse,
@@ -59,6 +60,7 @@ def _incident_response(document: dict) -> dict:
         "failureCategories",
         "failedTestIdentifiers",
         "flakySignal",
+        "flakyObservations",
         "evidenceStrength",
         "hypothesisStatus",
         "diagnosisSummary",
@@ -89,6 +91,23 @@ def _incident_response(document: dict) -> dict:
     response = {key: value for key, value in document.items() if key in allowed}
     response["id"] = str(response.pop("_id"))
     return response
+
+
+def _flaky_observation_response(document: dict) -> FlakyTestObservationSummary:
+    """Translate the storage document without exposing tenant or evidence internals."""
+
+    return FlakyTestObservationSummary(
+        id=str(document.get("_id")),
+        repository_id=str(document["repositoryId"]),
+        workflow_key=str(document["workflowKey"]),
+        test_identifier=str(document["testIdentifier"]),
+        head_sha=str(document["headSha"]),
+        assessment=str(document["assessment"]),
+        same_sha_failure_count=int(document.get("sameShaFailureCount", 0)),
+        same_sha_success_count=int(document.get("sameShaSuccessCount", 0)),
+        limitations=list(document.get("limitations") or []),
+        updated_at=document["updatedAt"],
+    )
 
 
 @router.put(
@@ -145,6 +164,21 @@ async def list_incidents(
     )
     records = [_incident_response(record) async for record in cursor]
     return {"incidents": records}
+
+
+@router.get("/flaky-tests", response_model=list[FlakyTestObservationSummary])
+async def list_flaky_test_observations(
+    limit: int = Query(default=50, ge=1, le=100), user: dict = Depends(get_current_user)
+) -> list[FlakyTestObservationSummary]:
+    """List only the signed-in user's bounded historical observations."""
+
+    cursor = (
+        get_db()
+        .flaky_test_observations.find({"userId": user["_id"]})
+        .sort("updatedAt", -1)
+        .limit(limit)
+    )
+    return [_flaky_observation_response(record) async for record in cursor]
 
 
 @router.get("/{incident_id}")

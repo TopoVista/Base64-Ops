@@ -86,6 +86,12 @@ Implemented so far:
 - Failed pytest/Jest-style identifiers are now retained as bounded untrusted
   evidence. A `suspected` flaky signal needs both an extracted identifier and
   mixed same-SHA history; it has no auto-rerun or auto-resolution behavior.
+- Each extracted failed-test identifier now creates a tenant-scoped,
+  bounded `flaky-test-observation-v1` record. It captures the test identity,
+  workflow/SHA scope, comparable same-SHA counts, evidence references, and
+  limitations. A read-only `/api/incidents/flaky-tests` route exposes only
+  public presentation fields; it does not treat workflow-level successes as
+  proof that an individual test is flaky.
 - Incident grouping retries when evidence collection completed but the final
   grouping write was interrupted; a collected record becomes terminal only
   after it is a root or group member.
@@ -107,8 +113,8 @@ Still required in this stage:
   has no installation-token boundary).
 - Live GitHub webhook verification, a deployed dispatcher/scheduler profile,
   GitHub-native reporting, full causality comparison (environment, dependency,
-  and successful-run diffs), reconciliation, notification preferences, and the
-  verification lifecycle.
+  and successful-run diffs), prevention-rule promotion, notification
+  preferences, and the verification lifecycle.
 
 ## Verified-repair contract
 

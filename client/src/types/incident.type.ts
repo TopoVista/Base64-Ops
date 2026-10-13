@@ -13,6 +13,7 @@ export type IncidentRecord = {
   failureCategories: string[];
   failedTestIdentifiers?: string[];
   flakySignal?: "suspected" | null;
+  flakyObservations?: FlakyTestObservation[];
   evidenceStrength: "insufficient" | "observed" | "correlated" | "supported";
   hypothesisStatus?: "insufficient" | "candidate" | "supported";
   diagnosisSummary?: string | null;
@@ -76,6 +77,19 @@ export type IncidentsResponse = { incidents: IncidentRecord[] };
 export type IncidentFeedbackInput = {
   disposition: "helpful" | "incorrect" | "needs_more_evidence";
   correction?: string;
+};
+
+export type FlakyTestObservation = {
+  id: string;
+  repository_id: string;
+  workflow_key: string;
+  test_identifier: string;
+  head_sha: string;
+  assessment: "insufficient_evidence" | "suspected_flakiness" | "reproducible_regression";
+  same_sha_failure_count: number;
+  same_sha_success_count: number;
+  limitations: string[];
+  updated_at: string;
 };
 
 export type RepositoryAutomationSettings = {
