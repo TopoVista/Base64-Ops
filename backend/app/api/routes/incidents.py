@@ -80,6 +80,8 @@ def _incident_response(document: dict) -> dict:
         "firstObservedAt",
         "lastObservedAt",
         "sameShaSuccess",
+        "memoryEntryCount",
+        "memoryRecordedAt",
         "feedback",
         "createdAt",
         "updatedAt",

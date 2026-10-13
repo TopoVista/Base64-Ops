@@ -15,6 +15,7 @@ from app.services.incident_service import (
     build_structured_incident_diagnosis,
     incident_dispatch_is_complete,
     incident_group_key,
+    incident_memory_candidate,
 )
 
 
@@ -110,6 +111,27 @@ def test_flaky_signal_requires_a_test_identity_and_mixed_same_sha_history() -> N
             failed_test_identifiers=["tests/test_login.py::test_login"],
         )
     ) == "suspected"
+
+
+def test_only_evidence_supported_incidents_become_historical_memory() -> None:
+    supported_context = _context(
+        failure_categories=["dependency_failure"],
+        workflow_path=".github/workflows/ci.yml",
+        relevant_paths=["backend/requirements.txt"],
+        workflow_evidence_ids=["evd_workflow"],
+        changed_file_evidence_ids=["evd_requirements"],
+    )
+    diagnosis = build_structured_incident_diagnosis(supported_context)
+    candidate = incident_memory_candidate(context=supported_context, diagnosis=diagnosis)
+
+    assert candidate is not None
+    assert str(candidate.kind) == "incident_outcome"
+    assert candidate.confidence == 0.75
+    assert candidate.value == diagnosis.summary
+    assert "github-actions" in candidate.tags
+
+    insufficient = build_structured_incident_diagnosis(_context(evidence_ids=[]))
+    assert incident_memory_candidate(context=_context(evidence_ids=[]), diagnosis=insufficient) is None
 
 
 def test_incident_export_re_redacts_and_omits_internal_routing_fields() -> None:
@@ -381,3 +403,46 @@ async def test_incident_feedback_is_tenant_scoped_redacted_and_not_a_diagnosis_m
     assert response["feedback"]["disposition"] == "incorrect"
     assert "feedback-secret" not in response["feedback"]["correction"]
     assert response["feedback"]["untrusted"] is True
+
+
+async def test_incident_dispatch_records_only_a_policy_gated_memory_summary(monkeypatch) -> None:  # noqa: ANN001
+    class _Memory:
+        def __init__(self) -> None:
+            self.calls: list[dict] = []
+
+        async def record_incident_outcome(self, **kwargs):  # noqa: ANN003, ANN201
+            self.calls.append(kwargs)
+            return ["mem_1"]
+
+    class _Incidents:
+        def __init__(self) -> None:
+            self.updates: list[dict] = []
+
+        async def update_one(self, _query, update):  # noqa: ANN001, ANN201
+            self.updates.append(update)
+
+    incidents = _Incidents()
+    monkeypatch.setattr(incident_service, "get_db", lambda: SimpleNamespace(incidents=incidents))
+    context = _context(
+        failure_categories=["workflow_configuration"],
+        workflow_path=".github/workflows/ci.yml",
+        relevant_paths=[".github/workflows/ci.yml"],
+        workflow_evidence_ids=["evd_workflow"],
+        changed_file_evidence_ids=["evd_change"],
+    )
+    diagnosis = build_structured_incident_diagnosis(context)
+    memory = _Memory()
+    service = IncidentDispatchService(memory=memory)
+
+    await service._record_incident_memory(
+        incident_id="inc_1",
+        event={"branch": "main", "headSha": "a" * 40},
+        session={"userId": "user_a", "repoUrl": "https://github.com/acme/base64.git", "defaultBranch": "main"},
+        context=context,
+        diagnosis=diagnosis,
+    )
+
+    assert len(memory.calls) == 1
+    assert memory.calls[0]["verified_evidence_ids"] == {"evd_log", "evd_workflow", "evd_change"}
+    assert memory.calls[0]["candidates"][0].kind.value == "incident_outcome"
+    assert incidents.updates[-1]["$set"]["memoryEntryCount"] == 1

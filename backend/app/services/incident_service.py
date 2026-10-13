@@ -19,6 +19,8 @@ from pymongo.errors import DuplicateKeyError
 
 from app.core.config import get_settings
 from app.db.mongo import get_db
+from app.memory.memory_service import MemoryService
+from app.memory.models import MemoryEntryCandidate, OperationalMemoryKind
 from app.schemas.incident import EvidenceStrength, IncidentDiagnosis, IncidentStatus
 from app.services.background_job_service import BackgroundJobService
 from app.services.ci_investigation_service import CIInvestigationService
@@ -416,6 +418,40 @@ def build_structured_incident_diagnosis(context: Any) -> IncidentDiagnosis:
     )
 
 
+def incident_memory_candidate(
+    *, context: Any, diagnosis: IncidentDiagnosis
+) -> MemoryEntryCandidate | None:
+    """Build a conservative, evidence-gated historical incident summary.
+
+    This deliberately records the *observed diagnosis*, not a claimed repair
+    or merge outcome.  Weak/insufficient investigations must not become
+    reusable operational memory.
+    """
+
+    if diagnosis.evidence_strength not in {EvidenceStrength.CORRELATED, EvidenceStrength.SUPPORTED}:
+        return None
+    categories = sorted(set(diagnosis.failure_categories))
+    if not categories or not diagnosis.supporting_evidence_ids:
+        return None
+    workflow_identity = str(
+        getattr(context, "workflow_path", None) or getattr(context, "workflow_name", None) or "unknown"
+    )
+    confidence = 0.75 if diagnosis.evidence_strength is EvidenceStrength.SUPPORTED else 0.65
+    return MemoryEntryCandidate(
+        kind=OperationalMemoryKind.INCIDENT_OUTCOME,
+        key=f"ci-incident:{workflow_identity}:{','.join(categories)}",
+        value=diagnosis.summary,
+        tags=["ci", "github-actions", *categories],
+        confidence=confidence,
+        evidence_ids=diagnosis.supporting_evidence_ids,
+        affected_paths=diagnosis.relevant_paths[:30],
+        metadata={
+            "schemaVersion": "incident-memory-v1",
+            "applicability": diagnosis.applicability,
+            "hypothesisStatus": diagnosis.status,
+            "historical": bool(getattr(context, "run_is_historical", False)),
+        },
+    )
 def incident_group_key(*, event: dict[str, Any], context: Any) -> str:
     """Return a conservative stable key for repeated evidence-equivalent failures."""
 
@@ -482,9 +518,11 @@ class IncidentDispatchService:
         *,
         ci_investigation: CIInvestigationService | None = None,
         workspace: WorkspaceService | None = None,
+        memory: MemoryService | None = None,
     ) -> None:
         self.workspace = workspace or WorkspaceService()
         self.ci_investigation = ci_investigation or CIInvestigationService(workspace=self.workspace)
+        self.memory = memory or MemoryService()
 
     async def dispatch(self, *, event_id: str) -> None:
         db = get_db()
@@ -657,12 +695,66 @@ class IncidentDispatchService:
                 }
             },
         )
+        await self._record_incident_memory(
+            incident_id=incident_id,
+            event=event,
+            session=session,
+            context=context,
+            diagnosis=diagnosis,
+        )
         await self._assign_incident_group(
             incident_id=incident_id,
             event=event,
             automation=automation,
             context=context,
         )
+
+    async def _record_incident_memory(
+        self,
+        *,
+        incident_id: str,
+        event: dict[str, Any],
+        session: dict[str, Any],
+        context: Any,
+        diagnosis: IncidentDiagnosis,
+    ) -> None:
+        candidate = incident_memory_candidate(context=context, diagnosis=diagnosis)
+        if candidate is None:
+            return
+        evidence_ids = set(diagnosis.supporting_evidence_ids)
+        try:
+            entries = await self.memory.record_incident_outcome(
+                user_id=str(session["userId"]),
+                repository_id=str(session["repoUrl"]),
+                branch=str(event.get("branch") or session.get("defaultBranch") or "main"),
+                commit_sha=str(event["headSha"]),
+                run_id=incident_id,
+                verified_evidence_ids=evidence_ids,
+                candidates=[candidate],
+            )
+        except Exception:
+            # Memory improves later investigations but cannot make a durable,
+            # evidence-backed incident disappear. Keep the dispatch retry-free
+            # here and leave an observable limitation for an operator.
+            await get_db().incidents.update_one(
+                {"_id": incident_id, "userId": session["userId"]},
+                {
+                    "$addToSet": {"limitations": "Historical incident memory could not be recorded."},
+                    "$set": {"updatedAt": utc_now()},
+                },
+            )
+            return
+        if entries:
+            await get_db().incidents.update_one(
+                {"_id": incident_id, "userId": session["userId"]},
+                {
+                    "$set": {
+                        "memoryEntryCount": len(entries),
+                        "memoryRecordedAt": utc_now(),
+                        "updatedAt": utc_now(),
+                    }
+                },
+            )
 
     async def _assign_incident_group(
         self,

@@ -60,6 +60,8 @@ export type IncidentRecord = {
     headSha: string;
     observedAt: string;
   };
+  memoryEntryCount?: number;
+  memoryRecordedAt?: string;
   feedback?: {
     disposition: "helpful" | "incorrect" | "needs_more_evidence";
     correction?: string;
