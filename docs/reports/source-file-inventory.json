@@ -1,7 +1,7 @@
 {
   "schemaVersion": "base64-ops-source-inventory-v1",
-  "generatedAt": "2026-10-14T03:57:04.875311+00:00",
-  "analyzedCommit": "0faa515397bdc99177d50ff7b52afb21ff6a7b40",
+  "generatedAt": "2026-10-14T04:03:04.998902+00:00",
+  "analyzedCommit": "4a208290e878787a80f3f3f05d1514c43b8757a7",
   "repositoryState": "M backend/.gitignore\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
   "totalTrackedFiles": 389,
   "includedCount": 368,
@@ -2215,7 +2215,7 @@
         "backend/app/agent/graph.py",
         "backend/app/services/ci_investigation_service.py",
         "backend/app/services/session_service.py",
-        "docs/IMPLEMENTATION_GAP_ANALYSIS.md"
+        "docs/IMPLEMENTATION_AUDIT.md"
       ],
       "lines": 96,
       "sha256": "c359472ca6ecb0c2cc623d0abd61d081a891e9de7b52f25bd4e6ba8bad47cbb0",
@@ -2507,8 +2507,8 @@
       "dependents": [
         "backend/app/services/session_service.py",
         "backend/tests/test_regression_prevention_service.py",
-        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
-        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf"
+        "docs/IMPLEMENTATION_AUDIT.md",
+        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md"
       ],
       "lines": 234,
       "sha256": "8b58139eabfad2d9b216e2e1059fa3229975d5bc906f33aca8404570cfa42d4d",
@@ -2603,8 +2603,8 @@
       "dependents": [
         "backend/app/services/rag_service.py",
         "backend/tests/test_rag_chunking.py",
-        "docs/IMPLEMENTATION_AUDIT.md",
-        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md"
+        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
+        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf"
       ],
       "lines": 12,
       "sha256": "ecf51d171383beb5e06518a2c4c77f789aabd562b5345cf9e529a7d266937e3d",
@@ -5979,8 +5979,8 @@
       "dependents": [
         "client/src/index.css",
         "client/src/pages/session/index.tsx",
-        "docs/IMPLEMENTATION_GAP_ANALYSIS.md",
-        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md"
+        "docs/IMPLEMENTATION_AUDIT.md",
+        "docs/IMPLEMENTATION_GAP_ANALYSIS.md"
       ],
       "lines": 1521,
       "sha256": "ddeea2c1424479170f371ee16826b5df00979a80e1da9fe5570b04c5a5dc0c17",
@@ -6002,9 +6002,9 @@
       ],
       "dependents": [
         "client/src/pages/dev/DevRunInspector.tsx",
-        "docs/IMPLEMENTATION_AUDIT.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
-        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf"
+        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
+        "docs/reports/source-file-inventory.json"
       ],
       "lines": 51,
       "sha256": "cc7fdf851f4eeaad387267b9a9902fc5a5329180018a02c7df8fd6ac57ac022f",
@@ -6077,9 +6077,9 @@
       ],
       "dependents": [
         "client/src/layouts/app-layout.tsx",
-        "docs/IMPLEMENTATION_AUDIT.md",
         "docs/IMPLEMENTATION_STATUS.md",
-        "docs/SAAS_SECURITY_AND_SCALE.md"
+        "docs/SAAS_SECURITY_AND_SCALE.md",
+        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md"
       ],
       "lines": 144,
       "sha256": "540b878022d533545a74a3599532b917d90b615061f8252289e5ef8802ac4414",
@@ -6517,7 +6517,7 @@
       "dependencies": [
         "client/src/lib/utils.ts",
         "client/src/components/ui/button.tsx",
-        "client/src/components/ui/input-group.tsx",
+        "client/src/components/ui/input.tsx",
         "client/src/components/ui/textarea.tsx"
       ],
       "dependents": [
@@ -6715,7 +6715,7 @@
         "client/src/hooks/use-mobile.ts",
         "client/src/lib/utils.ts",
         "client/src/components/ui/button.tsx",
-        "client/src/components/ui/input-group.tsx",
+        "client/src/components/ui/input.tsx",
         "client/src/components/ui/separator.tsx"
       ],
       "dependents": [
@@ -6927,9 +6927,9 @@
       ],
       "dependents": [
         "client/src/components/chat/index.tsx",
-        "docs/IMPLEMENTATION_AUDIT.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
-        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf"
+        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
+        "docs/reports/source-file-inventory.json"
       ],
       "lines": 356,
       "sha256": "abd0dc96b9869e1216332df406a39cbdb1423e14b0f3ebd138d6de2d23685270",
@@ -7006,7 +7006,7 @@
         "AppLayout"
       ],
       "dependencies": [
-        "client/src/components/sidebar/session-search-dialog.tsx",
+        "client/src/components/sidebar/index.tsx",
         "client/src/components/ui/sidebar.tsx"
       ],
       "dependents": [
@@ -7388,7 +7388,7 @@
         "location"
       ],
       "dependencies": [
-        "client/src/components/chat/chat-input.tsx"
+        "client/src/components/chat/index.tsx"
       ],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -7417,7 +7417,7 @@
       "dependencies": [
         "client/src/components/ui/badge.tsx",
         "client/src/components/ui/button.tsx",
-        "client/src/components/ui/input-group.tsx",
+        "client/src/components/ui/input.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/components/ui/skeleton.tsx"
       ],
@@ -7465,7 +7465,7 @@
         "pathsReferToSameFile"
       ],
       "dependencies": [
-        "client/src/components/chat/chat-input.tsx",
+        "client/src/components/chat/index.tsx",
         "client/src/components/ui/badge.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/components/ide-workspace.tsx",
@@ -8106,9 +8106,9 @@
         "Base64 Ops implementation audit",
         "Current architecture",
         "Important implementation locations",
-        "Existing LangGraph flow",
-        "Existing gaps against the evidence-first target",
-        "Implementation approach"
+        "Current investigation and recovery flow",
+        "Remaining gaps and intentionally unsupported behavior",
+        "Verification snapshot"
       ],
       "dependencies": [],
       "dependents": [
@@ -8117,9 +8117,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf"
       ],
-      "lines": 42,
-      "sha256": "a31a42359f77612093bc3e4e2a532d5dfa11e13487cae1c3cb3762e2cdb59886",
-      "word_count": 594
+      "lines": 94,
+      "sha256": "4e06c415cb42ebeb7149eefd763bee005146d3897419ac32e5fbd49a7eabccf0",
+      "word_count": 982
     },
     {
       "path": "docs/IMPLEMENTATION_GAP_ANALYSIS.md",
@@ -8181,6 +8181,7 @@
       ],
       "dependencies": [],
       "dependents": [
+        "docs/IMPLEMENTATION_AUDIT.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
         "docs/reports/source-file-inventory.json"
@@ -8539,7 +8540,7 @@
         "backend/tests/test_deployment_blueprints.py",
         "backend/tests/test_render_blueprint.py",
         "docs/DEPLOYMENT.md",
-        "docs/IMPLEMENTATION_PROGRESS.md"
+        "docs/IMPLEMENTATION_AUDIT.md"
       ],
       "lines": 121,
       "sha256": "745c677c50e40aaf6e0fe203e47b814673b74a42a78cc1f5248c93a88453c360",
