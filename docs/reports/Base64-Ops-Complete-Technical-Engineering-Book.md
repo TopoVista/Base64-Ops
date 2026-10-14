@@ -4,8 +4,8 @@
 *An Evidence First AI DevOps Engineering System From Product Problem to Individual Source Files*
 
 - Repository: https://github.com/TopoVista/Base64-Ops
-- Generated: 2026-10-14 00:21 UTC
-- Analyzed commit: `1262af398304a3cc5e72e30994b6360e49fc9b43`
+- Generated: 2026-10-14 00:26 UTC
+- Analyzed commit: `bc9e448459bbf5544e02eaf1e89fdb5421f9357d`
 - Scope: Git-tracked source at the recorded commit. Generated outputs, secrets, ignored environment files, decorative assets, and lockfiles are excluded by the accompanying inventory.
 - Verification statement: architecture claims are derived from checked-in code and local deterministic tests. External providers and deployed environments are called out as unverified when no live evidence was available.
 
@@ -1046,15 +1046,15 @@ This router exposes a tenant-aware FastAPI boundary for Incidents. It validates 
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Incidents. Its extracted size is 394 lines and 1279 lexical tokens; the source digest begins 90597bfb8160.
+It exists to provide a coherent Python module boundary for Incidents. Its extracted size is 455 lines and 1544 lexical tokens; the source digest begins 4a05c57c4178.
 
 #### Important symbols
 
-Important exported or declared symbols/sections identified by static inspection: _settings_response, _candidate_verification_settings_response, _incident_response, _flaky_observation_response, configure_automation, automation_settings, configure_candidate_verification. These names are a navigation aid, not a claim that every symbol is externally public.
+Important exported or declared symbols/sections identified by static inspection: _settings_response, _candidate_verification_settings_response, _incident_response, _record_incorrect_feedback_memory, _flaky_observation_response, configure_automation, automation_settings. These names are a navigation aid, not a claim that every symbol is externally public.
 
 #### Connections
 
-Static in-repository dependencies: backend/app/api/deps.py, backend/app/db/mongo.py, backend/app/schemas/incident.py, backend/app/services/candidate_verification_service.py, backend/app/services/github_service.py. Potential consumers found through bounded textual/import analysis: README.md, backend/app/main.py, backend/app/schemas/incident.py, backend/app/schemas/regression_prevention.py. The containing category is Backend API routes.
+Static in-repository dependencies: backend/app/api/deps.py, backend/app/db/mongo.py, backend/app/memory/memory_service.py, backend/app/memory/models.py, backend/app/schemas/incident.py. Potential consumers found through bounded textual/import analysis: README.md, backend/app/main.py, backend/app/schemas/incident.py, backend/app/schemas/regression_prevention.py. The containing category is Backend API routes.
 
 #### Simplified pseudocode
 
@@ -1077,7 +1077,7 @@ The implementation is reviewed in the context of tenant isolation, bounded input
 
 #### Brief summary
 
-In one sentence: backend/app/api/routes/incidents.py is a Python module that owns a focused part of backend api routes. Related files: backend/app/api/deps.py, backend/app/db/mongo.py, backend/app/schemas/incident.py, backend/app/services/candidate_verification_service.py, backend/app/services/github_service.py. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: backend/app/api/routes/incidents.py is a Python module that owns a focused part of backend api routes. Related files: backend/app/api/deps.py, backend/app/db/mongo.py, backend/app/memory/memory_service.py, backend/app/memory/models.py, backend/app/schemas/incident.py. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `backend/app/api/routes/memory.py`
 
@@ -2694,7 +2694,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/db/mongo.py, backend/app/memory/models.py, backend/app/services/redaction_service.py, backend/app/utils/datetime.py, backend/app/utils/ids.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/api/routes/memory.py, backend/app/services/incident_service.py, backend/tests/test_memory_freshness.py. The containing category is Operational memory.
+Static in-repository dependencies: backend/app/db/mongo.py, backend/app/memory/models.py, backend/app/services/redaction_service.py, backend/app/utils/datetime.py, backend/app/utils/ids.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/api/routes/incidents.py, backend/app/api/routes/memory.py, backend/app/services/incident_service.py. The containing category is Operational memory.
 
 #### Simplified pseudocode
 
@@ -8382,7 +8382,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Incident Models. Its extracted size is 448 lines and 1452 lexical tokens; the source digest begins 67f7d7e9cf97.
+It exists to provide a coherent test boundary for Test Incident Models. Its extracted size is 522 lines and 1698 lexical tokens; the source digest begins 0535a11593e1.
 
 #### Important symbols
 
@@ -11423,7 +11423,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/memory/memory_service.py, backend/app/memory/models.py, backend/app/schemas/replay.py. The containing category is Frontend components.
+Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/api/routes/incidents.py, backend/app/memory/memory_service.py, backend/app/memory/models.py. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -12202,7 +12202,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/sidebar/index.tsx, client/src/components/ui/sidebar.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, client/src/routes/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend application.
+Static in-repository dependencies: client/src/components/sidebar/session-search-dialog.tsx, client/src/components/ui/sidebar.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, client/src/routes/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend application.
 
 #### Simplified pseudocode
 
@@ -12225,7 +12225,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/layouts/app-layout.tsx is a TypeScript module that owns a focused part of frontend application. Related files: client/src/components/sidebar/index.tsx, client/src/components/ui/sidebar.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/layouts/app-layout.tsx is a TypeScript module that owns a focused part of frontend application. Related files: client/src/components/sidebar/session-search-dialog.tsx, client/src/components/ui/sidebar.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/layouts/base-layout.tsx`
 
@@ -12817,7 +12817,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/chat/chat-input.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
+Static in-repository dependencies: client/src/components/chat/index.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
 
 #### Simplified pseudocode
 
@@ -12840,7 +12840,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/pages/home/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/chat/chat-input.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/pages/home/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/chat/index.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/pages/incidents/index.tsx`
 
@@ -12940,7 +12940,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/chat/chat-input.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/textarea.tsx, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
+Static in-repository dependencies: client/src/components/chat/index.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/textarea.tsx, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
 
 #### Simplified pseudocode
 
@@ -12963,7 +12963,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/pages/session/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/chat/chat-input.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/textarea.tsx, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/pages/session/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/chat/index.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/textarea.tsx, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/routes/index.tsx`
 
@@ -13627,7 +13627,7 @@ This documentation file records the repository's current guidance for Architectu
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Architecture. Its extracted size is 123 lines and 1028 lexical tokens; the source digest begins 7b51c28af78b.
+It exists to provide a coherent documentation boundary for Architecture. Its extracted size is 131 lines and 1098 lexical tokens; the source digest begins c45b4dca9404.
 
 #### Important symbols
 
@@ -13907,7 +13907,7 @@ This documentation file records the repository's current guidance for Evaluation
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Evaluation. Its extracted size is 39 lines and 395 lexical tokens; the source digest begins 8da1fa52f7c3.
+It exists to provide a coherent documentation boundary for Evaluation. Its extracted size is 42 lines and 422 lexical tokens; the source digest begins 12c5dbd49d3d.
 
 #### Important symbols
 
@@ -14147,7 +14147,7 @@ This documentation file records the repository's current guidance for Implementa
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Implementation Gap Analysis. Its extracted size is 103 lines and 1261 lexical tokens; the source digest begins 420e470724e8.
+It exists to provide a coherent documentation boundary for Implementation Gap Analysis. Its extracted size is 103 lines and 1275 lexical tokens; the source digest begins ab57bc8e5487.
 
 #### Important symbols
 
@@ -14187,7 +14187,7 @@ This documentation file records the repository's current guidance for Implementa
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Implementation Progress. Its extracted size is 166 lines and 1308 lexical tokens; the source digest begins 8d6728920e04.
+It exists to provide a coherent documentation boundary for Implementation Progress. Its extracted size is 168 lines and 1335 lexical tokens; the source digest begins 84659e986fbb.
 
 #### Important symbols
 
@@ -14227,7 +14227,7 @@ This documentation file records the repository's current guidance for Implementa
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Implementation Status. Its extracted size is 154 lines and 3684 lexical tokens; the source digest begins 184730f3ea18.
+It exists to provide a coherent documentation boundary for Implementation Status. Its extracted size is 156 lines and 3704 lexical tokens; the source digest begins 71828d04f15d.
 
 #### Important symbols
 

@@ -1,7 +1,7 @@
 {
   "schemaVersion": "base64-ops-source-inventory-v1",
-  "generatedAt": "2026-10-14T00:21:57.524914+00:00",
-  "analyzedCommit": "1262af398304a3cc5e72e30994b6360e49fc9b43",
+  "generatedAt": "2026-10-14T00:26:19.783258+00:00",
+  "analyzedCommit": "bc9e448459bbf5544e02eaf1e89fdb5421f9357d",
   "repositoryState": "M backend/.gitignore\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
   "totalTrackedFiles": 387,
   "includedCount": 367,
@@ -506,17 +506,17 @@
         "_settings_response",
         "_candidate_verification_settings_response",
         "_incident_response",
+        "_record_incorrect_feedback_memory",
         "_flaky_observation_response",
         "configure_automation",
-        "automation_settings",
-        "configure_candidate_verification"
+        "automation_settings"
       ],
       "dependencies": [
         "backend/app/api/deps.py",
         "backend/app/db/mongo.py",
-        "backend/app/schemas/incident.py",
-        "backend/app/services/candidate_verification_service.py",
-        "backend/app/services/github_service.py"
+        "backend/app/memory/memory_service.py",
+        "backend/app/memory/models.py",
+        "backend/app/schemas/incident.py"
       ],
       "dependents": [
         "README.md",
@@ -524,9 +524,9 @@
         "backend/app/schemas/incident.py",
         "backend/app/schemas/regression_prevention.py"
       ],
-      "lines": 394,
-      "sha256": "90597bfb81603eb838153c7bbc5d0fdbdb5c919c8bade3d9b6dc4dfa66f29164",
-      "word_count": 1279
+      "lines": 455,
+      "sha256": "4a05c57c4178f79c6026fc50d14b046866291a8a929068d38ccc039ac615c352",
+      "word_count": 1544
     },
     {
       "path": "backend/app/api/routes/memory.py",
@@ -1472,9 +1472,9 @@
       ],
       "dependents": [
         "backend/app/agent/graph.py",
+        "backend/app/api/routes/incidents.py",
         "backend/app/api/routes/memory.py",
-        "backend/app/services/incident_service.py",
-        "backend/tests/test_memory_freshness.py"
+        "backend/app/services/incident_service.py"
       ],
       "lines": 1480,
       "sha256": "99a48ef918330a6ab8c559044249532a4e1c707c52e889c49a4837e0a56297f8",
@@ -4726,9 +4726,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
         "docs/reports/source-file-inventory.json"
       ],
-      "lines": 448,
-      "sha256": "67f7d7e9cf97a57da8e4c6758b9d59929d23c72005a77443ba68a18a45a817b4",
-      "word_count": 1452
+      "lines": 522,
+      "sha256": "0535a11593e167ff8571e1fde8c350d7916325f6dde2f28017a2d92abab0683a",
+      "word_count": 1698
     },
     {
       "path": "backend/tests/test_incident_reporting.py",
@@ -6562,9 +6562,9 @@
       ],
       "dependents": [
         "backend/app/agent/graph.py",
+        "backend/app/api/routes/incidents.py",
         "backend/app/memory/memory_service.py",
-        "backend/app/memory/models.py",
-        "backend/app/schemas/replay.py"
+        "backend/app/memory/models.py"
       ],
       "lines": 24,
       "sha256": "a476e41f08b9de5bd447de66a33d8bc2ad18f2fa6b96c064778bab4b6f439f4c",
@@ -7004,7 +7004,7 @@
         "AppLayout"
       ],
       "dependencies": [
-        "client/src/components/sidebar/index.tsx",
+        "client/src/components/sidebar/session-search-dialog.tsx",
         "client/src/components/ui/sidebar.tsx"
       ],
       "dependents": [
@@ -7386,7 +7386,7 @@
         "location"
       ],
       "dependencies": [
-        "client/src/components/chat/chat-input.tsx"
+        "client/src/components/chat/index.tsx"
       ],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -7463,7 +7463,7 @@
         "pathsReferToSameFile"
       ],
       "dependencies": [
-        "client/src/components/chat/chat-input.tsx",
+        "client/src/components/chat/index.tsx",
         "client/src/components/ui/badge.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/components/ide-workspace.tsx",
@@ -7844,9 +7844,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
         "docs/reports/source-file-inventory.json"
       ],
-      "lines": 123,
-      "sha256": "7b51c28af78b1db23f331656451ef42c5ad3da3d6eba46070b0dfefd87fc443a",
-      "word_count": 1028
+      "lines": 131,
+      "sha256": "c45b4dca9404eb2c3b77b7ed96b392ea3ed570edf19c6db03578e589dffed2c3",
+      "word_count": 1098
     },
     {
       "path": "docs/CANDIDATE_VERIFICATION.md",
@@ -8004,9 +8004,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf"
       ],
-      "lines": 39,
-      "sha256": "8da1fa52f7c30a27e6da781cd828269fbabb6e2fc03a0c4f381d9811d8fd965c",
-      "word_count": 395
+      "lines": 42,
+      "sha256": "12c5dbd49d3da386ecacae28c7d0b36f654a85d86165bc4bb86d85c8d492c8fd",
+      "word_count": 422
     },
     {
       "path": "docs/EXECUTION_SANDBOX.md",
@@ -8141,8 +8141,8 @@
         "docs/reports/source-file-inventory.json"
       ],
       "lines": 103,
-      "sha256": "420e470724e8dfe150273a768f1d4ef6b1bfe4d965d69ec4a23917ff91f82ea9",
-      "word_count": 1261
+      "sha256": "ab57bc8e548782e356a7745310454c2950f5d47628a3065fa7e63b9d1b2946cc",
+      "word_count": 1275
     },
     {
       "path": "docs/IMPLEMENTATION_PROGRESS.md",
@@ -8163,9 +8163,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
         "docs/reports/source-file-inventory.json"
       ],
-      "lines": 166,
-      "sha256": "8d6728920e0479380bee3e8e584dc7a4fb72b843fb3e09e5a0626915e12d6fdc",
-      "word_count": 1308
+      "lines": 168,
+      "sha256": "84659e986fbb3f36d73b453a3662cd8fa7d84ef6942a00d6458d0925e2fd85e3",
+      "word_count": 1335
     },
     {
       "path": "docs/IMPLEMENTATION_STATUS.md",
@@ -8183,9 +8183,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
         "docs/reports/source-file-inventory.json"
       ],
-      "lines": 154,
-      "sha256": "184730f3ea18b1e0690b8c03ca3cff6efbf8d6f08f73b84208b2dadd9c5dd1a2",
-      "word_count": 3684
+      "lines": 156,
+      "sha256": "71828d04f15d9dcf7729d1b19478887cf62b4b335f9f7dbab8d57fd6c5db1208",
+      "word_count": 3704
     },
     {
       "path": "docs/INTERVIEW_TALK_TRACK.md",
