@@ -27,6 +27,7 @@ from app.services.ci_investigation_service import CIInvestigationService
 from app.services.flaky_test_service import FlakyTestObservationService
 from app.services.github_service import list_repositories, normalize_github_repository_url
 from app.services.incident_reporting_service import IncidentReportingService
+from app.services.prevention_rule_service import PreventionRuleService
 from app.services.workspace_service import WorkspaceService
 from app.utils.datetime import utc_now
 from app.utils.ids import new_id
@@ -525,11 +526,13 @@ class IncidentDispatchService:
         workspace: WorkspaceService | None = None,
         memory: MemoryService | None = None,
         flaky_observations: FlakyTestObservationService | None = None,
+        prevention_rules: PreventionRuleService | None = None,
     ) -> None:
         self.workspace = workspace or WorkspaceService()
         self.ci_investigation = ci_investigation or CIInvestigationService(workspace=self.workspace)
         self.memory = memory or MemoryService()
         self.flaky_observations = flaky_observations or FlakyTestObservationService()
+        self.prevention_rules = prevention_rules or PreventionRuleService()
 
     async def dispatch(self, *, event_id: str) -> None:
         db = get_db()
@@ -722,6 +725,11 @@ class IncidentDispatchService:
             automation=automation,
             context=context,
         )
+        await self._refresh_prevention_rules(
+            incident_id=incident_id,
+            automation=automation,
+            repository_id=str(event["repositoryId"]),
+        )
         await self._publish_github_check(
             incident={
                 **incident,
@@ -733,6 +741,34 @@ class IncidentDispatchService:
             },
             automation=automation,
         )
+
+    async def _refresh_prevention_rules(
+        self,
+        *,
+        incident_id: str,
+        automation: dict[str, Any],
+        repository_id: str,
+    ) -> None:
+        """Persist only eligible recurrence patterns after incident grouping.
+
+        A persistence failure must not hide durable incident evidence or make
+        the worker retry GitHub collection. It becomes an explicit limitation.
+        """
+
+        try:
+            await self.prevention_rules.refresh_for_repository(
+                user_id=str(automation["userId"]),
+                session_id=str(automation["sessionId"]),
+                repository_id=repository_id,
+            )
+        except Exception:
+            await get_db().incidents.update_one(
+                {"_id": incident_id, "userId": automation["userId"]},
+                {
+                    "$addToSet": {"limitations": "Historical prevention rules could not be refreshed."},
+                    "$set": {"updatedAt": utc_now()},
+                },
+            )
 
     async def _publish_github_check(self, *, incident: dict[str, Any], automation: dict[str, Any]) -> None:
         """Best-effort native reporting after durable evidence/grouping writes.

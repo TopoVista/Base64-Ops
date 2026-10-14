@@ -13,6 +13,18 @@
 > Persistent prevention-rule governance and live GitHub verification remain
 > `NOT STARTED` / `BLOCKED`, respectively.
 
+> Prevention-rule promotion update (2026-10-14): `PARTIAL`. After durable
+> incident grouping, Base64 now promotes only two-or-more supported incidents
+> from distinct failed-run SHAs into a tenant/session/repository-scoped,
+> exact-path/category `prevention_rules` record. Matching DeliveryPlans
+> recompute live historical context and visibly label an equivalent persisted
+> rule. This record remains an advisory correlation, not a repair-success
+> claim; it never blocks delivery, registers a command, changes risk, or
+> authorizes GitHub. Full local verification passed: **364 backend tests**,
+> **28/28 deterministic evals**, Ruff, LangGraph initialization, frontend
+> TypeScript, and Vite production build. Rule supersession/invalidation
+> workflows and live webhook verification remain `NOT STARTED` / `BLOCKED`.
+
 > CI recovery and candidate-verification update (2026-10-14): `PARTIAL`.
 > The repository now has an explicit GitHub App candidate-verification boundary
 > for immutable exact delivery plans: an owner binds one reviewed workflow to
@@ -91,7 +103,7 @@ Status reflects executable code in this repository as of 2026-10-14. `BLOCKED` m
 | 11. Strong approval binding | DONE | Canonical SHA-256 approval binding checks plan, diff, action, arguments, repository, and HEAD before execution. |
 | 12. Generalized Patch Engine | DONE | Evidence-backed candidate selection, structured edit proposals, path security validation, original hash verification, candidate workspace diff generation, surface classification, and risk rules implemented. Zero LLM post-approval execution. |
 | 13. Change impact | PARTIAL | Changes can run a tenant/session-scoped, exact-plan, base-SHA-bound reverse-dependency analysis against the immutable graph. It returns potential direct/indirect dependents, related parsed tests/workflows, relation paths, explicit limits, and a browser-safe persisted report. It never treats structure as causality or authorizes a mutation. Graph diffs, richer service/runtime extraction, and graph-aware retrieval remain not started. |
-| 14. Operational memory | PARTIAL | Semantic memory kinds, verification lifecycle, path-aware freshness, historical recall, policy-controlled writes, and current-evidence precedence are implemented. A DeliveryPlan can request a read-only historical prevention advisory only after two supported incidents from distinct failed-run SHAs overlap an exact changed path/category. Memory cannot authorize mutation. Delivered ≠ merged. Local Git changed-path comparison is wired; live authenticated GitHub merge lookup remains not exercised. |
+| 14. Operational memory | PARTIAL | Semantic memory kinds, verification lifecycle, path-aware freshness, historical recall, policy-controlled writes, and current-evidence precedence are implemented. Two supported incidents from distinct failed-run SHAs promote an exact-path/category, tenant-scoped prevention rule; DeliveryPlans recompute live history and label matching rules as advisory only. Memory cannot authorize mutation. Delivered ≠ merged. Local Git changed-path comparison is wired; live authenticated GitHub merge lookup remains not exercised. |
 | 15. User feedback | PARTIAL | Tenant-scoped incident feedback supports helpful, incorrect, and needs-more-evidence dispositions with a bounded correction note. Feedback remains untrusted product input and does not alter policy, approval, or execution; broader feedback analytics and evaluation curation remain not started. |
 | 16. Agent observability | DONE | Per-node tracing, token usage telemetry, retrieval score metadata, and protected `/dev/runs/:runId` run inspector implemented. |
 | 17. Timeline UI | DONE | Safe graph events, evidence, patch proposal, risk level, and exact diff reviewer displayed in UI. |
@@ -107,7 +119,7 @@ Status reflects executable code in this repository as of 2026-10-14. `BLOCKED` m
 | 27. Configuration cleanup | DONE | Configurable patch limits and memory settings (`memory_max_context_entries=5`, `memory_learning_enabled`). |
 | 28. GitHub auth hardening | DONE | OAuth state signing and encrypted token storage implemented. |
 | 29. Security hardening | DONE | Tenant-scoped queries, strict `RepositoryPathPolicy`, allowlisted commands, redaction, memory-cannot-authorize invariant. |
-| 30. Testing | DONE | 361 backend tests passed, 28/28 deterministic evals, clean Ruff, frontend TypeScript, LangGraph initialization, and Vite build passed in the latest local verification. The production bundle and npm-audit results are recorded in prior verification updates. Live provider and load tests remain blocked pending authorized external environments. |
+| 30. Testing | DONE | 364 backend tests passed, 28/28 deterministic evals, clean Ruff, frontend TypeScript, LangGraph initialization, and Vite build passed in the latest local verification. The production bundle and npm-audit results are recorded in prior verification updates. Live provider and load tests remain blocked pending authorized external environments. |
 | 31. Documentation | DONE | Core architecture, safety, evaluation, observability, memory, deployment, and implementation-status documents are maintained; the reproducible complete technical engineering book and its inventory/coverage/generation artifacts are in `docs/reports/`. |
 | 32. CI Regression Gate | DONE | `.github/workflows/ci.yml` runs backend tests, Ruff, deterministic evals, frontend build, a JavaScript bundle budget, and high-severity npm advisory gating. |
 | 33. Execution Runtime Sandbox | DONE | Subsystem `app.execution` implemented with request/result models, command registry, environment sanitization, process tree termination, output bounding, candidate workspace integrity checks, Docker sandbox runtime (`--network none`), and `GET /api/system/capabilities` API. |

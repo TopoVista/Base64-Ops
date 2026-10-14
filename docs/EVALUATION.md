@@ -24,8 +24,9 @@ success. They use no GitHub token and do not constitute live App verification.
 Historical regression-prevention coverage is also a focused deterministic
 service suite. It proves the explicit promotion threshold (two supported
 incidents from different failed-run SHAs), exact changed-path matching,
-base-SHA exclusion, and tenant/session/repository-scoped lookup. Its advisory
-is intentionally not counted as a prediction or repair-success metric: it
-cannot generate commands, alter an approval, or mutate GitHub.
+base-SHA exclusion, durable tenant/session/repository-scoped rule upsert, and
+safe rendering of a matching persisted rule. Its advisory is intentionally not
+counted as a prediction or repair-success metric: it cannot generate commands,
+alter an approval, or mutate GitHub.
 
 Use `python -m evals.runner --mode deterministic --output ../artifacts/eval-summary.json --format json` from `backend` to generate a machine-readable report containing only measured case results and summary metrics.

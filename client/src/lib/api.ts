@@ -425,6 +425,8 @@ export type RegressionPreventionReport = {
     historical_incident_ids: string[];
     historical_run_shas: string[];
     occurrence_count: number;
+    prevention_rule_id?: string | null;
+    promotion_state: "persisted_rule" | "live_pattern";
     message: string;
     recommendation: string;
   }>;

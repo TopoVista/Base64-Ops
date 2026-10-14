@@ -1022,6 +1022,9 @@ function Changes({ data }: { data: SingleSessionResponse }) {
                             <div className="flex flex-wrap items-center gap-2">
                               <code className="text-xs font-medium text-foreground">{advisory.path}</code>
                               <Badge variant="outline" className="text-[10px]">{label(advisory.failure_category)}</Badge>
+                              {advisory.promotion_state === "persisted_rule" ? (
+                                <Badge variant="outline" className="text-[10px]">historical rule</Badge>
+                              ) : null}
                               <span className="text-xs text-muted-foreground">{advisory.occurrence_count} independent run SHAs</span>
                             </div>
                             <p className="mt-2 text-xs leading-5 text-muted-foreground">{advisory.message}</p>

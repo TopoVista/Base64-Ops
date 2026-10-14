@@ -21,6 +21,8 @@ class RegressionPreventionAdvisory(BaseModel):
     historical_incident_ids: list[str] = Field(default_factory=list, max_length=12)
     historical_run_shas: list[str] = Field(default_factory=list, max_length=12)
     occurrence_count: int = Field(ge=2)
+    prevention_rule_id: str | None = None
+    promotion_state: Literal["persisted_rule", "live_pattern"] = "live_pattern"
     message: str
     recommendation: str
 

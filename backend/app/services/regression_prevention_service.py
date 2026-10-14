@@ -32,7 +32,10 @@ _THRESHOLD_DESCRIPTION = (
 def _normalise_path(value: object) -> str | None:
     if not isinstance(value, str):
         return None
-    path = value.replace("\\", "/").strip().lstrip("./").strip("/")
+    path = value.replace("\\", "/").strip()
+    while path.startswith("./"):
+        path = path[2:]
+    path = path.lstrip("/").rstrip("/")
     return path or None
 
 
@@ -187,4 +190,31 @@ class RegressionPreventionService:
             .limit(_HISTORY_LIMIT)
         )
         incidents = [record async for record in cursor]
-        return self.analyze(plan=plan, incidents=incidents)
+        report = self.analyze(plan=plan, incidents=incidents)
+
+        # A persisted rule is an audit/reuse record for the same deterministic
+        # threshold, not extra authority. Live pattern calculation above stays
+        # authoritative while a rule refresh is unavailable or delayed.
+        rule_collection = getattr(get_db(), "prevention_rules", None)
+        if rule_collection is None or not report.advisories:
+            return report
+        rule_cursor = rule_collection.find(
+            {
+                "userId": user_id,
+                "sessionId": session_id,
+                "repositoryId": repository_id,
+                "status": "active",
+                "affectedPath": {"$in": report.changed_paths},
+            },
+            {"_id": 1, "affectedPath": 1, "failureCategory": 1},
+        ).limit(_MAX_ADVISORIES)
+        persisted = {
+            (str(rule.get("affectedPath")), str(rule.get("failureCategory"))): str(rule.get("_id"))
+            async for rule in rule_cursor
+            if rule.get("_id") and rule.get("affectedPath") and rule.get("failureCategory")
+        }
+        for advisory in report.advisories:
+            if rule_id := persisted.get((advisory.path, advisory.failure_category)):
+                advisory.prevention_rule_id = rule_id
+                advisory.promotion_state = "persisted_rule"
+        return report

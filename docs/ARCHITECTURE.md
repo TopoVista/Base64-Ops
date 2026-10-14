@@ -102,3 +102,12 @@ are correlation, not proof that the new change will fail. It creates no patch,
 command, approval, background job, GitHub request, or durable policy rule.
 The ordinary evidence, validation, risk, exact-approval, and delivery paths
 remain the only routes to mutation.
+
+After an incident is durably grouped, `PreventionRuleService` evaluates the
+same threshold across that tenant/session's supported incident roots and
+upserts an additive `prevention_rules` record keyed by numeric GitHub
+repository ID, exact path, and category. The record preserves only incident
+IDs, run SHAs, threshold metadata, and advisory limitations. A later
+DeliveryPlan still recomputes its live match from incident history, then labels
+an equivalent active record as a persisted historical rule. Persisting a rule
+does not strengthen the underlying causality claim or authorize any action.

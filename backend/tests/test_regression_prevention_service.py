@@ -122,6 +122,14 @@ class _AutomationSettings:
         return {"repositoryId": "1234"}
 
 
+class _Rules:
+    def __init__(self, rows: list[dict]) -> None:
+        self.rows = rows
+
+    def find(self, _query: dict, _projection: dict) -> _Cursor:
+        return _Cursor(self.rows)
+
+
 @pytest.mark.asyncio
 async def test_prevention_history_query_is_tenant_session_and_repository_scoped(monkeypatch) -> None:
     from app.services import regression_prevention_service as module
@@ -148,6 +156,38 @@ async def test_prevention_history_query_is_tenant_session_and_repository_scoped(
         "isGroupRoot": {"$ne": False},
         "evidenceStrength": "supported",
     }
+
+
+@pytest.mark.asyncio
+async def test_prevention_report_labels_a_matching_persisted_rule(monkeypatch) -> None:
+    from app.services import regression_prevention_service as module
+
+    collection = _Incidents(
+        [_incident(incident_id="inc_1", sha="a" * 40), _incident(incident_id="inc_2", sha="b" * 40)]
+    )
+    rules = _Rules(
+        [
+            {
+                "_id": "prv_1",
+                "affectedPath": "backend/requirements.txt",
+                "failureCategory": "dependency_failure",
+            }
+        ]
+    )
+    monkeypatch.setattr(
+        module,
+        "get_db",
+        lambda: SimpleNamespace(
+            incidents=collection,
+            prevention_rules=rules,
+            repository_automation_settings=_AutomationSettings(),
+        ),
+    )
+    report = await RegressionPreventionService().analyze_for_plan(
+        user_id="user_a", session_id="session_a", plan=_plan()
+    )
+    assert report.advisories[0].prevention_rule_id == "prv_1"
+    assert report.advisories[0].promotion_state == "persisted_rule"
 
 
 class _Documents:
