@@ -1,8 +1,8 @@
 {
   "schemaVersion": "base64-ops-source-inventory-v1",
-  "generatedAt": "2026-10-14T04:27:32.461112+00:00",
-  "analyzedCommit": "3fc29e5aec5da23ebc04166fca63920d723bea02",
-  "repositoryState": "M backend/.gitignore\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
+  "generatedAt": "2026-10-14T04:30:26.382114+00:00",
+  "analyzedCommit": "21274300da67292c2cfee48f826cea75be8d4af8",
+  "repositoryState": "M backend/.gitignore\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf\n M docs/reports/document-generation-report.md\n M docs/reports/file-coverage-report.md\n M docs/reports/source-file-inventory.json",
   "totalTrackedFiles": 389,
   "includedCount": 368,
   "excludedCount": 21,
@@ -8845,7 +8845,7 @@
       ],
       "endpoints": [],
       "dependencies": [
-        "client/src/components/sidebar/chat-sessions.tsx",
+        "client/src/components/sidebar/session-search-dialog.tsx",
         "client/src/components/ui/sidebar.tsx"
       ],
       "dependents": [
@@ -9326,7 +9326,7 @@
       ],
       "endpoints": [],
       "dependencies": [
-        "client/src/components/chat/chat-input.tsx"
+        "client/src/components/chat/index.tsx"
       ],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -9428,7 +9428,7 @@
       ],
       "endpoints": [],
       "dependencies": [
-        "client/src/components/chat/chat-input.tsx",
+        "client/src/components/chat/index.tsx",
         "client/src/components/ui/badge.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/components/ide-workspace.tsx",
@@ -10244,7 +10244,7 @@
         "docs/reports/source-file-inventory.json"
       ],
       "lines": 180,
-      "sha256": "d3e01394e8e625cfeac608173b80cba5f8fec92237ee69a728837432d5ae6eed",
+      "sha256": "045d8c00ff9831b7cc07c0bfd662f8a12046ee34b1c418b5c8548c15d4d09c56",
       "word_count": 4063
     },
     {
@@ -10757,9 +10757,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf"
       ],
-      "lines": 1085,
-      "sha256": "f95ae11cbeef5e3429f37285c5a4353688c079c80cd16bc421ca67446e16e822",
-      "word_count": 11466
+      "lines": 1100,
+      "sha256": "68e5f39a199ffb1dd98a04677ade22b0e554d9f8287145b9bf3b10b9b1576962",
+      "word_count": 11547
     },
     {
       "path": "scripts/requirements-engineering-book.txt",

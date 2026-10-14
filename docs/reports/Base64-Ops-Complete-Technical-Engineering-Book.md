@@ -4,8 +4,8 @@
 *An Evidence First AI DevOps Engineering System From Product Problem to Individual Source Files*
 
 - Repository: https://github.com/TopoVista/Base64-Ops
-- Generated: 2026-10-14 04:27 UTC
-- Analyzed commit: `3fc29e5aec5da23ebc04166fca63920d723bea02`
+- Generated: 2026-10-14 04:30 UTC
+- Analyzed commit: `21274300da67292c2cfee48f826cea75be8d4af8`
 - Scope: Git-tracked source at the recorded commit. Generated outputs, secrets, ignored environment files, decorative assets, and lockfiles are excluded by the accompanying inventory.
 - Verification statement: architecture claims are derived from checked-in code and local deterministic tests. External providers and deployed environments are called out as unverified when no live evidence was available.
 
@@ -12203,7 +12203,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static imports or declared workflow actions: @/components/sidebar, @/components/ui/sidebar, react-router-dom, react, @/components/product-guide. Resolved in-repository dependencies: client/src/components/sidebar/chat-sessions.tsx, client/src/components/ui/sidebar.tsx. Potential consumers from bounded textual/import analysis: .commandcode/taste/taste.md, client/src/routes/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend application; dynamic imports and framework discovery are intentionally not inferred.
+Static imports or declared workflow actions: @/components/sidebar, @/components/ui/sidebar, react-router-dom, react, @/components/product-guide. Resolved in-repository dependencies: client/src/components/sidebar/session-search-dialog.tsx, client/src/components/ui/sidebar.tsx. Potential consumers from bounded textual/import analysis: .commandcode/taste/taste.md, client/src/routes/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend application; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12226,7 +12226,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/layouts/app-layout.tsx is a TypeScript module that owns a focused part of frontend application. Related files: client/src/components/sidebar/chat-sessions.tsx, client/src/components/ui/sidebar.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/layouts/app-layout.tsx is a TypeScript module that owns a focused part of frontend application. Related files: client/src/components/sidebar/session-search-dialog.tsx, client/src/components/ui/sidebar.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/layouts/base-layout.tsx`
 
@@ -12818,7 +12818,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static imports or declared workflow actions: @/components/chat, react-router-dom. Resolved in-repository dependencies: client/src/components/chat/chat-input.tsx. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages; dynamic imports and framework discovery are intentionally not inferred.
+Static imports or declared workflow actions: @/components/chat, react-router-dom. Resolved in-repository dependencies: client/src/components/chat/index.tsx. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12841,7 +12841,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/pages/home/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/chat/chat-input.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/pages/home/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/chat/index.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/pages/incidents/index.tsx`
 
@@ -12941,7 +12941,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static imports or declared workflow actions: @/components/chat, @/components/ui/badge, @/components/ui/textarea, @/components/ide-workspace, @/lib/api, @/lib/utils, @/types/agent.type. Resolved in-repository dependencies: client/src/components/chat/chat-input.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/textarea.tsx, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages; dynamic imports and framework discovery are intentionally not inferred.
+Static imports or declared workflow actions: @/components/chat, @/components/ui/badge, @/components/ui/textarea, @/components/ide-workspace, @/lib/api, @/lib/utils, @/types/agent.type. Resolved in-repository dependencies: client/src/components/chat/index.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/textarea.tsx, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12964,7 +12964,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/pages/session/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/chat/chat-input.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/textarea.tsx, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/pages/session/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/chat/index.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/textarea.tsx, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/routes/index.tsx`
 
@@ -14228,7 +14228,7 @@ This documentation file records the repository's current guidance for Implementa
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Implementation Status. Static inspection found 3 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 180 lines and 4063 lexical tokens; the source digest begins d3e01394e8e6.
+It exists to provide a coherent documentation boundary for Implementation Status. Static inspection found 3 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 180 lines and 4063 lexical tokens; the source digest begins 045d8c00ff98.
 
 #### Important symbols
 
@@ -15076,7 +15076,7 @@ This Python module is part of the developer and operational tooling layer. It su
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Generate Engineering Book. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 1085 lines and 11466 lexical tokens; the source digest begins f95ae11cbeef.
+It exists to provide a coherent Python module boundary for Generate Engineering Book. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 1100 lines and 11547 lexical tokens; the source digest begins 68e5f39a199f.
 
 #### Important symbols
 
@@ -15479,7 +15479,45 @@ flowchart LR
   N3 --> N4
 ```
 
-### Diagram 13: Incident to delivery workflow
+### Diagram 13: Candidate verification boundary
+
+```mermaid
+flowchart LR
+  N0[Exact DeliveryPlan]
+  N1[Separate approval]
+  N2[GitHub App installation binding]
+  N3[Candidate ref]
+  N4[Reviewed workflow dispatch]
+  N5[Bounded observer]
+  N6[Read-only UI status]
+  N0 --> N1
+  N1 --> N2
+  N2 --> N3
+  N3 --> N4
+  N4 --> N5
+  N5 --> N6
+```
+
+### Diagram 14: Historical replay
+
+```mermaid
+flowchart LR
+  N0[Persisted run snapshot]
+  N1[Redacted evidence IDs]
+  N2[Safe trace spans]
+  N3[Plan and approval state]
+  N4[Browser-safe projection]
+  N5[Read-only inspector]
+  N0 --> N1
+  N0 --> N2
+  N0 --> N3
+  N1 --> N4
+  N2 --> N4
+  N3 --> N4
+  N4 --> N5
+```
+
+### Diagram 15: Incident to delivery workflow
 
 ```mermaid
 flowchart LR

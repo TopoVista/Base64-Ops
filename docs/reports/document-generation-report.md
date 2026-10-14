@@ -1,19 +1,20 @@
 # Document generation report
 
-- Generated at: 2026-10-14T04:27:32.560586+00:00
-- Repository commit: `3fc29e5aec5da23ebc04166fca63920d723bea02`
+- Generated at: 2026-10-14T04:30:26.458379+00:00
+- Repository commit: `21274300da67292c2cfee48f826cea75be8d4af8`
 - Repository state at generation: `M backend/.gitignore
  M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md
  M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf
+ M docs/reports/document-generation-report.md
  M docs/reports/file-coverage-report.md
  M docs/reports/source-file-inventory.json`
 - Generator: `scripts/generate_engineering_book.py`
 - PDF renderer: ReportLab core fonts with Pypdf structural validation.
 - Source discovery: `git ls-files`; ignored `.env` files were never read.
 - PDF readability check: True
-- PDF page count: 425
+- PDF page count: 427
 - Outline entries observed by Pypdf: 37
-- Rendered sample pages: C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-1.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-3.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-6.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-12.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-37.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-57.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-157.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-404.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-410.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-425.png
+- Rendered sample pages: C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-1.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-3.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-6.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-12.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-37.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-57.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-157.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-404.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-411.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-425.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-427.png
 - Manual visual inspection recorded: True
 - Genuine deterministic product screenshots embedded: docs\assets\screenshots\safe-repair-demo.png
 
