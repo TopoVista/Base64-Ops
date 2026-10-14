@@ -1,7 +1,7 @@
 {
   "schemaVersion": "base64-ops-source-inventory-v1",
-  "generatedAt": "2026-10-14T00:18:14.154456+00:00",
-  "analyzedCommit": "6a66bf564be6a822d53247bf31411b2ea6639304",
+  "generatedAt": "2026-10-14T00:21:57.524914+00:00",
+  "analyzedCommit": "1262af398304a3cc5e72e30994b6360e49fc9b43",
   "repositoryState": "M backend/.gitignore\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
   "totalTrackedFiles": 387,
   "includedCount": 367,
@@ -2509,9 +2509,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf"
       ],
-      "lines": 220,
-      "sha256": "43cd2a733e14fecccbd7dd2c1565da6c7a346d67c042965c6a5e6f5538a7c77f",
-      "word_count": 847
+      "lines": 234,
+      "sha256": "8b58139eabfad2d9b216e2e1059fa3229975d5bc906f33aca8404570cfa42d4d",
+      "word_count": 907
     },
     {
       "path": "backend/app/services/serializers.py",
@@ -5162,10 +5162,10 @@
         "_plan",
         "_incident",
         "test_prevention_requires_two_independent_supported_run_shas",
+        "test_prevention_excludes_user_corrected_incidents_from_live_patterns",
         "test_prevention_requires_exact_path_overlap_and_excludes_base_sha",
         "_Cursor",
-        "_Incidents",
-        "_AutomationSettings"
+        "_Incidents"
       ],
       "dependencies": [
         "backend/app/schemas/delivery.py",
@@ -5176,9 +5176,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
         "docs/reports/source-file-inventory.json"
       ],
-      "lines": 229,
-      "sha256": "b43de59f5366ea78b70405faefa52a21a5c50b5993a5286371c59fe39da1c52c",
-      "word_count": 615
+      "lines": 251,
+      "sha256": "168d8879ad395e893cbf29177392932ddd1b5deb386ea64a27e10262de2d6547",
+      "word_count": 676
     },
     {
       "path": "backend/tests/test_render_blueprint.py",
@@ -6150,7 +6150,7 @@
         "NavItems"
       ],
       "dependencies": [
-        "client/src/routes/route.ts"
+        "client/src/routes/route-guard.tsx"
       ],
       "dependents": [
         "client/src/components/sidebar/index.tsx",
@@ -7364,7 +7364,7 @@
         "client/src/components/mode-toggle.tsx",
         "client/src/components/ui/badge.tsx",
         "client/src/components/ui/button-group.tsx",
-        "client/src/routes/route.ts"
+        "client/src/routes/route-guard.tsx"
       ],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -7844,9 +7844,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
         "docs/reports/source-file-inventory.json"
       ],
-      "lines": 121,
-      "sha256": "d0ab98e582390226a5e97523fc4aefef9e7a28a0588c3eb37a1d6d0c82370b3c",
-      "word_count": 1006
+      "lines": 123,
+      "sha256": "7b51c28af78b1db23f331656451ef42c5ad3da3d6eba46070b0dfefd87fc443a",
+      "word_count": 1028
     },
     {
       "path": "docs/CANDIDATE_VERIFICATION.md",
@@ -8004,9 +8004,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf"
       ],
-      "lines": 37,
-      "sha256": "16c133493909d2b24558a8635b0fce7a0e05b49adfd00278e640bc0a3c9df093",
-      "word_count": 373
+      "lines": 39,
+      "sha256": "8da1fa52f7c30a27e6da781cd828269fbabb6e2fc03a0c4f381d9811d8fd965c",
+      "word_count": 395
     },
     {
       "path": "docs/EXECUTION_SANDBOX.md",
@@ -8163,9 +8163,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
         "docs/reports/source-file-inventory.json"
       ],
-      "lines": 164,
-      "sha256": "ec90e7437cfc141a67c1c7d38db14a0ca456bf2cf85cdfc3b51584f6f385f055",
-      "word_count": 1291
+      "lines": 166,
+      "sha256": "8d6728920e0479380bee3e8e584dc7a4fb72b843fb3e09e5a0626915e12d6fdc",
+      "word_count": 1308
     },
     {
       "path": "docs/IMPLEMENTATION_STATUS.md",
@@ -8184,7 +8184,7 @@
         "docs/reports/source-file-inventory.json"
       ],
       "lines": 154,
-      "sha256": "2cbec5834b1ca6f88734eab8c6f69c35ca86d936ec55169a492734466e7ddede",
+      "sha256": "184730f3ea18b1e0690b8c03ca3cff6efbf8d6f08f73b84208b2dadd9c5dd1a2",
       "word_count": 3684
     },
     {
