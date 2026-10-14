@@ -1,7 +1,7 @@
 {
   "schemaVersion": "base64-ops-source-inventory-v1",
-  "generatedAt": "2026-10-14T00:31:05.912584+00:00",
-  "analyzedCommit": "8de5dde63f240c1c4e4f5cfe76bdc58cca6782c7",
+  "generatedAt": "2026-10-14T00:29:56.433811+00:00",
+  "analyzedCommit": "30e4c72f4bb7e5ec5f8a21335b15ef49cdd4b969",
   "repositoryState": "M backend/.gitignore\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
   "totalTrackedFiles": 387,
   "includedCount": 367,
@@ -5624,7 +5624,7 @@
       ],
       "dependencies": [
         "client/src/components/ui/avatar.tsx",
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/collapsible.tsx",
         "client/src/lib/utils.ts"
       ],
@@ -5653,7 +5653,7 @@
         "ConversationScrollButtonProps"
       ],
       "dependencies": [
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/lib/utils.ts"
       ],
       "dependents": [
@@ -5681,6 +5681,7 @@
         "MessageActionProps"
       ],
       "dependencies": [
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/tooltip.tsx",
         "client/src/lib/utils.ts"
@@ -5912,7 +5913,7 @@
       ],
       "dependencies": [
         "client/src/components/diff-viewer.tsx",
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/lib/api.ts"
       ],
@@ -6039,7 +6040,7 @@
         "ModeToggle"
       ],
       "dependencies": [
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/dropdown-menu.tsx",
         "client/src/components/theme-provider.tsx"
       ],
@@ -6069,7 +6070,7 @@
       ],
       "dependencies": [
         "client/src/lib/api.ts",
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/scroll-area.tsx",
         "client/src/components/ui/textarea.tsx"
       ],
@@ -6150,7 +6151,7 @@
         "NavItems"
       ],
       "dependencies": [
-        "client/src/routes/route-guard.tsx"
+        "client/src/routes/route.ts"
       ],
       "dependents": [
         "client/src/components/sidebar/index.tsx",
@@ -6409,7 +6410,7 @@
       ],
       "dependencies": [
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button-group.tsx"
+        "client/src/components/ui/button.tsx"
       ],
       "dependents": [
         "client/src/components/ai-elements/prompt-input.tsx",
@@ -6514,8 +6515,8 @@
       ],
       "dependencies": [
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button-group.tsx",
-        "client/src/components/ui/input-group.tsx",
+        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/input.tsx",
         "client/src/components/ui/textarea.tsx"
       ],
       "dependents": [
@@ -6683,7 +6684,7 @@
       ],
       "dependencies": [
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button-group.tsx"
+        "client/src/components/ui/button.tsx"
       ],
       "dependents": [
         "client/index.html",
@@ -6712,8 +6713,8 @@
       "dependencies": [
         "client/src/hooks/use-mobile.ts",
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button-group.tsx",
-        "client/src/components/ui/input-group.tsx",
+        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/input.tsx",
         "client/src/components/ui/separator.tsx"
       ],
       "dependents": [
@@ -7255,7 +7256,7 @@
         "plan"
       ],
       "dependencies": [
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/badge.tsx",
         "client/src/lib/api.ts"
       ],
@@ -7363,8 +7364,8 @@
         "client/src/components/logo.tsx",
         "client/src/components/mode-toggle.tsx",
         "client/src/components/ui/badge.tsx",
-        "client/src/components/ui/button-group.tsx",
-        "client/src/routes/route-guard.tsx"
+        "client/src/components/ui/button.tsx",
+        "client/src/routes/route.ts"
       ],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -7386,7 +7387,7 @@
         "location"
       ],
       "dependencies": [
-        "client/src/components/chat/index.tsx"
+        "client/src/components/chat/chat-input.tsx"
       ],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -7414,8 +7415,8 @@
       ],
       "dependencies": [
         "client/src/components/ui/badge.tsx",
-        "client/src/components/ui/button-group.tsx",
-        "client/src/components/ui/input-group.tsx",
+        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/input.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/components/ui/skeleton.tsx"
       ],
@@ -7463,7 +7464,7 @@
         "pathsReferToSameFile"
       ],
       "dependencies": [
-        "client/src/components/chat/index.tsx",
+        "client/src/components/chat/chat-input.tsx",
         "client/src/components/ui/badge.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/components/ide-workspace.tsx",
