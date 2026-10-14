@@ -1,8 +1,8 @@
 {
   "schemaVersion": "base64-ops-source-inventory-v1",
-  "generatedAt": "2026-10-14T03:42:54.489185+00:00",
-  "analyzedCommit": "11cdb9494571cba52f527d66c46daccab63b04e9",
-  "repositoryState": "M backend/.gitignore\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf\n M docs/reports/document-generation-report.md\n M docs/reports/file-coverage-report.md\n M docs/reports/source-file-inventory.json",
+  "generatedAt": "2026-10-14T03:47:18.837665+00:00",
+  "analyzedCommit": "076c104319956d953bbed8ee7db96d79435e2aac",
+  "repositoryState": "M backend/.gitignore\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
   "totalTrackedFiles": 389,
   "includedCount": 368,
   "excludedCount": 21,
@@ -5624,7 +5624,7 @@
       ],
       "dependencies": [
         "client/src/components/ui/avatar.tsx",
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/collapsible.tsx",
         "client/src/lib/utils.ts"
       ],
@@ -5653,7 +5653,7 @@
         "ConversationScrollButtonProps"
       ],
       "dependencies": [
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/lib/utils.ts"
       ],
       "dependents": [
@@ -5681,6 +5681,7 @@
         "MessageActionProps"
       ],
       "dependencies": [
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/tooltip.tsx",
         "client/src/lib/utils.ts"
@@ -5912,7 +5913,7 @@
       ],
       "dependencies": [
         "client/src/components/diff-viewer.tsx",
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/lib/api.ts"
       ],
@@ -6039,7 +6040,7 @@
         "ModeToggle"
       ],
       "dependencies": [
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/dropdown-menu.tsx",
         "client/src/components/theme-provider.tsx"
       ],
@@ -6069,7 +6070,7 @@
       ],
       "dependencies": [
         "client/src/lib/api.ts",
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/scroll-area.tsx",
         "client/src/components/ui/textarea.tsx"
       ],
@@ -6150,7 +6151,7 @@
         "NavItems"
       ],
       "dependencies": [
-        "client/src/routes/route-guard.tsx"
+        "client/src/routes/route.ts"
       ],
       "dependents": [
         "client/src/components/sidebar/index.tsx",
@@ -6409,7 +6410,7 @@
       ],
       "dependencies": [
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button-group.tsx"
+        "client/src/components/ui/button.tsx"
       ],
       "dependents": [
         "client/src/components/ai-elements/prompt-input.tsx",
@@ -6514,7 +6515,7 @@
       ],
       "dependencies": [
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/input.tsx",
         "client/src/components/ui/textarea.tsx"
       ],
@@ -6683,7 +6684,7 @@
       ],
       "dependencies": [
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button-group.tsx"
+        "client/src/components/ui/button.tsx"
       ],
       "dependents": [
         "client/index.html",
@@ -6712,7 +6713,7 @@
       "dependencies": [
         "client/src/hooks/use-mobile.ts",
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/input.tsx",
         "client/src/components/ui/separator.tsx"
       ],
@@ -7004,7 +7005,7 @@
         "AppLayout"
       ],
       "dependencies": [
-        "client/src/components/sidebar/session-search-dialog.tsx",
+        "client/src/components/sidebar/index.tsx",
         "client/src/components/ui/sidebar.tsx"
       ],
       "dependents": [
@@ -7255,7 +7256,7 @@
         "plan"
       ],
       "dependencies": [
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/badge.tsx",
         "client/src/lib/api.ts"
       ],
@@ -7363,8 +7364,8 @@
         "client/src/components/logo.tsx",
         "client/src/components/mode-toggle.tsx",
         "client/src/components/ui/badge.tsx",
-        "client/src/components/ui/button-group.tsx",
-        "client/src/routes/route-guard.tsx"
+        "client/src/components/ui/button.tsx",
+        "client/src/routes/route.ts"
       ],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -7414,7 +7415,7 @@
       ],
       "dependencies": [
         "client/src/components/ui/badge.tsx",
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/input.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/components/ui/skeleton.tsx"
@@ -7910,7 +7911,7 @@
         "README.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
-        "docs/reports/document-generation-report.md"
+        "docs/reports/source-file-inventory.json"
       ],
       "lines": 65,
       "sha256": "a746c0a8f26664970cd45962d8e8b3119cc1c4eb10bacfc2fca44691f7ca05ad",
@@ -8065,7 +8066,6 @@
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
-        "docs/reports/document-generation-report.md",
         "docs/reports/source-file-inventory.json"
       ],
       "lines": 76,
@@ -8182,12 +8182,11 @@
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
-        "docs/reports/document-generation-report.md",
         "docs/reports/source-file-inventory.json"
       ],
-      "lines": 156,
-      "sha256": "016e846ef286c95dec04655dad57064f4fc89afb172202e3286e5850c468be0f",
-      "word_count": 3779
+      "lines": 158,
+      "sha256": "e526f0412cbca5ff3418ed0c38d6daa062a735d61fd18d7eab41c62a75f049f3",
+      "word_count": 3791
     },
     {
       "path": "docs/INTERVIEW_TALK_TRACK.md",
@@ -8582,7 +8581,7 @@
         "docs/DEMO_SCRIPT.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
-        "docs/reports/document-generation-report.md"
+        "docs/reports/source-file-inventory.json"
       ],
       "lines": 86,
       "sha256": "a6f22ad1f6bc1007991cdb124e97391986bb691859405474e7cdc9bcc3f7c7c8",
@@ -8643,9 +8642,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf"
       ],
-      "lines": 1032,
-      "sha256": "ac1618005fa4c1f2f197941cae12c862a25ddbee85bbaf16356566d2aa7f3d9b",
-      "word_count": 11119
+      "lines": 1037,
+      "sha256": "e2fee11ef33841ef24af2b65fef3b75bc8317f153ea902833f3f77e41649c8f4",
+      "word_count": 11147
     },
     {
       "path": "scripts/requirements-engineering-book.txt",
@@ -8766,7 +8765,7 @@
     },
     {
       "path": "docs/assets/screenshots/safe-repair-demo.png",
-      "reason": "Decorative asset, lockfile, runtime-version pin, or routine ignore configuration; it has no dedicated architecture behavior."
+      "reason": "Generated deterministic UI evidence embedded in the book; it is intentionally excluded from one-file source-reference pages."
     },
     {
       "path": "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",

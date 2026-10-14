@@ -1,6 +1,6 @@
 # Source-file coverage report
 
-- Analyzed Git commit: `11cdb9494571cba52f527d66c46daccab63b04e9`
+- Analyzed Git commit: `076c104319956d953bbed8ee7db96d79435e2aac`
 - Total tracked files considered: **389**
 - Included source/documentation/test/configuration files: **368**
 - Excluded files: **21**
@@ -37,7 +37,7 @@ Included files are all Git-tracked implementation modules, tests, deterministic 
 - `client/src/assets/logo.png` - Decorative asset, lockfile, runtime-version pin, or routine ignore configuration; it has no dedicated architecture behavior.
 - `client/src/assets/react.svg` - Decorative asset, lockfile, runtime-version pin, or routine ignore configuration; it has no dedicated architecture behavior.
 - `client/src/assets/vite.svg` - Decorative asset, lockfile, runtime-version pin, or routine ignore configuration; it has no dedicated architecture behavior.
-- `docs/assets/screenshots/safe-repair-demo.png` - Decorative asset, lockfile, runtime-version pin, or routine ignore configuration; it has no dedicated architecture behavior.
+- `docs/assets/screenshots/safe-repair-demo.png` - Generated deterministic UI evidence embedded in the book; it is intentionally excluded from one-file source-reference pages.
 - `docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md` - Generated report output is excluded from the snapshot to avoid self-documenting recursive artifacts.
 - `docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf` - Generated report output is excluded from the snapshot to avoid self-documenting recursive artifacts.
 - `docs/reports/document-generation-report.md` - Generated report output is excluded from the snapshot to avoid self-documenting recursive artifacts.
