@@ -60,9 +60,10 @@ The command center is complete only when one deterministic session displays:
 
 Every capability above now has an explicit product, operator, or
 documentation surface. The deterministic browser-rendered smoke capture is
-available at [demo-command-center-full.png](../artifacts/demo-command-center-full.png)
-and was taken from `/demo` after a production frontend build. It proves the
-complete visible command-center chain without requiring a live GitHub mutation.
+available at [safe-repair-demo.png](assets/screenshots/safe-repair-demo.png)
+and is reproducibly captured from `/demo` after a production frontend build.
+It proves the complete visible command-center chain without requiring a live
+GitHub mutation.
 
 ## Deterministic rendered fixture
 

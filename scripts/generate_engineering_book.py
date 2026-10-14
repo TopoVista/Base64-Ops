@@ -36,6 +36,7 @@ from reportlab.lib.colors import Color, HexColor
 from reportlab.lib.pagesizes import LETTER
 from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.pdfgen.canvas import Canvas
+from reportlab.lib.utils import ImageReader
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -45,6 +46,7 @@ MARKDOWN_PATH = REPORTS / "Base64-Ops-Complete-Technical-Engineering-Book.md"
 INVENTORY_PATH = REPORTS / "source-file-inventory.json"
 COVERAGE_PATH = REPORTS / "file-coverage-report.md"
 GENERATION_REPORT_PATH = REPORTS / "document-generation-report.md"
+DEMO_SCREENSHOT_PATH = ROOT / "docs" / "assets" / "screenshots" / "safe-repair-demo.png"
 
 NAVY = HexColor("#0B1F3A")
 INK = HexColor("#172033")
@@ -69,6 +71,7 @@ EXCLUDED_EXACT = {
     "client/src/assets/vite.svg",
     "backend/.python-version",
     "client/.nvmrc",
+    "docs/assets/screenshots/safe-repair-demo.png",
 }
 
 REQUIRED_FILE_SECTIONS = (
@@ -452,7 +455,7 @@ def markdown_book(records: list[FileRecord], commit_sha: str, source_start: int,
     ]
     for index, (title, _) in enumerate(CHAPTERS, start=1):
         lines.append(f"- [{title}](#chapter-{index})")
-    lines.extend(["- [Visual diagrams](#visual-diagrams)", "- [Glossary](#glossary)", "- [References](#references)", "- [Source file reference](#source-file-reference)", ""])
+    lines.extend(["- [Rendered product evidence](#rendered-product-evidence)", "- [Visual diagrams](#visual-diagrams)", "- [Glossary](#glossary)", "- [References](#references)", "- [Source file reference](#source-file-reference)", ""])
     part_headings = {
         1: "## Part I - Product Problem and System Identity",
         6: "## Part II - Architecture and Engineering Design",
@@ -477,7 +480,16 @@ def markdown_book(records: list[FileRecord], commit_sha: str, source_start: int,
     lines.extend(["## Part V - Engineering Deep Dives", ""])
     for index, (title, body) in enumerate(CHAPTERS[23:], start=24):
         lines.extend([f"## Chapter {index}: {title.split(' ', 1)[1]}", f"<a id=\"chapter-{index}\"></a>", "", body, ""])
-    lines.extend(["## Part VI - Visual Diagrams", ""])
+    lines.extend([
+        "## Rendered product evidence",
+        "",
+        "![Public Safe Repair fixture](../assets/screenshots/safe-repair-demo.png)",
+        "",
+        "This is a genuine headless-Chromium capture of the public `/demo` route. The route is deterministic and mutation-disabled: it demonstrates product presentation, not a live GitHub, database, model, approval, or delivery integration. Regenerate it with `scripts/capture_demo_screenshot.ps1`.",
+        "",
+        "## Part VI - Visual Diagrams",
+        "",
+    ])
     for number, (title, nodes, edges) in enumerate(DIAGRAMS, start=1):
         lines.extend([f"### Diagram {number}: {title}", "", "```mermaid", "flowchart LR"])
         for node_index, node in enumerate(nodes):
@@ -693,6 +705,48 @@ def draw_diagram(renderer: BookRenderer, number: int, title: str, nodes: tuple[s
     renderer.wrapped("This diagram is a conceptual representation of relationships verified in the repository. It does not imply a live deployment topology, provider permission, or runtime execution beyond the source and local test evidence documented in this edition.", 58, 110, 496, size=9.5, leading=13, color=MUTED)
 
 
+def draw_demo_screenshot(renderer: BookRenderer) -> None:
+    """Render the reproducible, public Safe Repair demo as genuine UI evidence."""
+
+    renderer.new_page("Rendered product evidence", "Public deterministic fixture")
+    renderer.bookmark("demo-screenshot", "Rendered Safe Repair demo", level=1)
+    renderer.wrapped(
+        "This is a genuine headless-Chromium capture of the public /demo route. "
+        "It renders the deterministic, mutation-disabled Safe Repair fixture and "
+        "therefore demonstrates product presentation only. It does not prove a live "
+        "GitHub, database, model, approval, or delivery integration.",
+        52,
+        renderer.height - 105,
+        508,
+        size=9.4,
+        leading=13,
+        color=MUTED,
+    )
+    image = ImageReader(str(DEMO_SCREENSHOT_PATH))
+    image_width, image_height = image.getSize()
+    max_width = 508
+    max_height = 500
+    scale = min(max_width / image_width, max_height / image_height)
+    width = image_width * scale
+    height = image_height * scale
+    x = 52 + (max_width - width) / 2
+    y = 135
+    renderer.canvas.setFillColor(PALE)
+    renderer.canvas.setStrokeColor(RULE)
+    renderer.canvas.roundRect(x - 4, y - 4, width + 8, height + 8, 4, fill=1, stroke=1)
+    renderer.canvas.drawImage(image, x, y, width=width, height=height, preserveAspectRatio=True, mask="auto")
+    renderer.wrapped(
+        "Capture provenance: docs/assets/screenshots/safe-repair-demo.png. Regenerate "
+        "with scripts/capture_demo_screenshot.ps1 after a production client build.",
+        52,
+        105,
+        508,
+        size=8.4,
+        leading=11,
+        color=MUTED,
+    )
+
+
 def draw_glossary(renderer: BookRenderer) -> None:
     renderer.new_page("Glossary", "Reference")
     renderer.bookmark("glossary", "Glossary")
@@ -769,7 +823,8 @@ def render_pdf(records: list[FileRecord], commit_sha: str, excluded: list[dict[s
     # Pages 1-5 are cover/front matter. Chapters 1-23 occupy pages 6-28;
     # the Part IV source index follows, then the one-file-per-page reference.
     source_start = 29 + index_pages
-    total_pages = source_start - 1 + len(records) + len(CHAPTERS[23:]) + len(DIAGRAMS) + 2
+    screenshot_pages = 1 if DEMO_SCREENSHOT_PATH.is_file() else 0
+    total_pages = source_start - 1 + len(records) + len(CHAPTERS[23:]) + len(DIAGRAMS) + 2 + screenshot_pages
     renderer = BookRenderer(PDF_PATH, total_pages)
     draw_cover(renderer, commit_sha, len(records))
     draw_scope(renderer, commit_sha, len(records), records, excluded)
@@ -782,6 +837,8 @@ def render_pdf(records: list[FileRecord], commit_sha: str, excluded: list[dict[s
         draw_file_page(renderer, record, source_start + index)
     for index, (title, body) in enumerate(CHAPTERS[23:], start=24):
         draw_chapter(renderer, index, title.split(" ", 1)[1], body)
+    if screenshot_pages:
+        draw_demo_screenshot(renderer)
     for number, (title, nodes, edges) in enumerate(DIAGRAMS, start=1):
         draw_diagram(renderer, number, title, nodes, edges)
     draw_glossary(renderer)
@@ -876,6 +933,7 @@ def write_reports(
 ) -> None:
     INVENTORY_PATH.write_text(json.dumps(inventory_payload(commit_sha=commit_sha, all_files=all_files, records=records, excluded=excluded), indent=2) + "\n", encoding="utf-8")
     required_sections_ok = all(len(file_sections(record)) == len(REQUIRED_FILE_SECTIONS) for record in records)
+    screenshot_paths = [str(DEMO_SCREENSHOT_PATH.relative_to(ROOT))] if DEMO_SCREENSHOT_PATH.is_file() else []
     coverage = [
         "# Source-file coverage report",
         "",
@@ -893,6 +951,7 @@ def write_reports(
         f"- Required reference sections present in every record: **{required_sections_ok}**",
         f"- PDF page count matches deterministic plan: **{validation['pageCountMatches']}**",
         f"- PDF source-page marker validation: **{not validation['invalidSourcePages']}**",
+        f"- Genuine deterministic product screenshots embedded: **{len(screenshot_paths)}**",
         "",
         "## Inclusion rules",
         "",
@@ -918,10 +977,11 @@ def write_reports(
         f"- Outline entries observed by Pypdf: {validation['outlineTopLevelEntries']}",
         f"- Rendered sample pages: {', '.join(samples) if samples else 'not rendered in this invocation'}",
         f"- Manual visual inspection recorded: {visual_verified}",
+        f"- Genuine deterministic product screenshots embedded: {', '.join(screenshot_paths) if screenshot_paths else 'none'}",
         "",
         "## Validation limitations",
         "",
-        "The generator validates each source page by its unique FILE REFERENCE marker and expected path. It validates that every included record has all eight required sections. It cannot turn local source inspection into a live verification of GitHub, Clerk, MongoDB Atlas, Redis, OpenAI, Render, Vercel, or a GitHub App. Screenshot count is zero in this edition because no authenticated or deterministic browser capture was available; no mock screenshot was substituted.",
+        "The generator validates each source page by its unique FILE REFERENCE marker and expected path. It validates that every included record has all eight required sections. It cannot turn local source inspection into a live verification of GitHub, Clerk, MongoDB Atlas, Redis, OpenAI, Render, Vercel, or a GitHub App. The deterministic screenshot, when present, is captured only from the public mutation-disabled /demo fixture and is explicitly not evidence of a live provider integration.",
         "",
         "## Security handling",
         "",

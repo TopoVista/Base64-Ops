@@ -120,7 +120,7 @@ Status reflects executable code in this repository as of 2026-10-14. `BLOCKED` m
 | 15. User feedback | PARTIAL | Tenant-scoped incident feedback supports helpful, incorrect, and needs-more-evidence dispositions with a bounded correction note. An `incorrect` explanation is redacted, marks contributing prevention rules for review, and is recorded through the existing `USER_CORRECTION` memory lifecycle using only server-owned session provenance. Feedback remains untrusted product input and does not alter policy, approval, or execution; broader feedback analytics and evaluation curation remain not started. |
 | 16. Agent observability | DONE | Per-node tracing, token usage telemetry, retrieval score metadata, and protected `/dev/runs/:runId` run inspector implemented. |
 | 17. Timeline UI | DONE | Safe graph events, evidence, patch proposal, risk level, and exact diff reviewer displayed in UI. |
-| 18. Screenshot evidence | NOT STARTED | |
+| 18. Screenshot evidence | PARTIAL | `docs/assets/screenshots/safe-repair-demo.png` is a reproducible genuine headless-Chromium capture of the public mutation-disabled `/demo` fixture and is embedded in the engineering book. Authenticated repository, incident, approval, and replay screenshots remain unavailable without a safe deterministic signed-in fixture. |
 | 19. Playbooks | NOT STARTED | |
 | 20. Prompt-injection defense | DONE | Trusted policy treats retrieved repository data as untrusted evidence; static sanity check rejects malicious code injection. |
 | 21. Secret redaction | DONE | Central redaction covers evidence, validation summaries, execution failures, and PR descriptions. Memory values redacted before persistence. |

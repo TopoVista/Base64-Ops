@@ -44,3 +44,22 @@ Show Operational Memory separately from Evidence. Explain that current CI/reposi
 ## Safety notes
 
 The deterministic demo does not verify live GitHub access or delivery. Those remain `NOT EXERCISED` unless an authorized repository and credentials are explicitly configured.
+
+## Screenshot regeneration
+
+The committed [Safe Repair fixture screenshot](assets/screenshots/safe-repair-demo.png)
+is a genuine headless-Chromium rendering of this public `/demo` route. It is
+included in the technical engineering book as product UI evidence only; it
+does not authenticate, access GitHub, or demonstrate a live provider flow.
+
+On Windows with Chrome installed at its default location, regenerate it from
+the repository root with:
+
+```powershell
+./scripts/capture_demo_screenshot.ps1
+```
+
+The script builds the client, starts a private local Vite preview, waits for
+the deterministic walkthrough, captures the image at 1440×1100, and cleans up
+the preview process. Run `scripts/generate_engineering_book.py` afterward to
+embed the refreshed capture and update the generation report.
