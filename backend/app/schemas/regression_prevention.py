@@ -43,3 +43,24 @@ class RegressionPreventionReport(BaseModel):
     threshold_description: str
     limitations: list[str] = Field(default_factory=list)
     analyzed_at: datetime
+
+
+class PreventionRuleSummary(BaseModel):
+    """Browser-safe view of one persisted recurrence advisory.
+
+    This intentionally exposes provenance and review status only. A rule is
+    not a prediction, policy gate, executable action, or delivery authority.
+    """
+
+    id: str
+    repository_id: str
+    affected_path: str
+    failure_category: str
+    historical_incident_ids: list[str] = Field(default_factory=list, max_length=16)
+    historical_run_shas: list[str] = Field(default_factory=list, max_length=16)
+    occurrence_count: int = Field(ge=2)
+    status: Literal["active", "needs_review"]
+    applicability_limitations: list[str] = Field(default_factory=list)
+    invalidation_reason: str | None = None
+    created_at: datetime
+    updated_at: datetime

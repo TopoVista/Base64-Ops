@@ -103,6 +103,25 @@ export type FlakyTestObservation = {
   updated_at: string;
 };
 
+/**
+ * A persisted, human-review-only recurrence observation. It cannot predict a
+ * regression, run a command, alter risk, or authorize a GitHub mutation.
+ */
+export type PreventionRule = {
+  id: string;
+  repository_id: string;
+  affected_path: string;
+  failure_category: string;
+  historical_incident_ids: string[];
+  historical_run_shas: string[];
+  occurrence_count: number;
+  status: "active" | "needs_review";
+  applicability_limitations: string[];
+  invalidation_reason?: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
 export type RepositoryAutomationSettings = {
   id: string;
   session_id: string;

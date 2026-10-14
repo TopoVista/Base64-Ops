@@ -20,6 +20,7 @@ from app.schemas.incident import (
     RepositoryAutomationSettingsRequest,
     RepositoryAutomationSettingsResponse,
 )
+from app.schemas.regression_prevention import PreventionRuleSummary
 from app.services.candidate_verification_service import CandidateVerificationService
 from app.services.github_service import github_app_is_configured
 from app.services.incident_export_service import (
@@ -184,6 +185,35 @@ def _flaky_observation_response(document: dict) -> FlakyTestObservationSummary:
     )
 
 
+def _prevention_rule_response(document: dict) -> PreventionRuleSummary:
+    """Project one persisted rule into browser-safe, advisory-only fields."""
+
+    status_value = str(document.get("status") or "needs_review")
+    status = status_value if status_value in {"active", "needs_review"} else "needs_review"
+    return PreventionRuleSummary(
+        id=str(document.get("_id")),
+        repository_id=str(document.get("repositoryId") or ""),
+        affected_path=str(document.get("affectedPath") or ""),
+        failure_category=str(document.get("failureCategory") or "unknown"),
+        historical_incident_ids=[
+            value for value in document.get("historicalIncidentIds", []) if isinstance(value, str)
+        ][:16],
+        historical_run_shas=[
+            value for value in document.get("historicalRunShas", []) if isinstance(value, str)
+        ][:16],
+        occurrence_count=max(2, int(document.get("occurrenceCount") or 2)),
+        status=status,
+        applicability_limitations=[
+            value for value in document.get("applicabilityLimitations", []) if isinstance(value, str)
+        ][:8],
+        invalidation_reason=(
+            str(document["invalidationReason"]) if isinstance(document.get("invalidationReason"), str) else None
+        ),
+        created_at=document["createdAt"],
+        updated_at=document["updatedAt"],
+    )
+
+
 @router.put(
     "/sessions/{slug_id}/automation",
     response_model=RepositoryAutomationSettingsResponse,
@@ -281,6 +311,28 @@ async def latest_candidate_verification_run(
     return await CandidateVerificationService().get_latest_run(
         user_id=str(user["_id"]), session_id=str(session["_id"])
     )
+
+
+@router.get("/sessions/{slug_id}/prevention-rules", response_model=list[PreventionRuleSummary])
+async def list_prevention_rules(
+    slug_id: str,
+    limit: int = Query(default=30, ge=1, le=50),
+    user: dict = Depends(get_current_user),
+) -> list[PreventionRuleSummary]:
+    """List read-only recurring-incident advisories for one owned session.
+
+    This is a visibility endpoint, not an administrative mutation surface.
+    Persisted rules remain non-blocking context for a human review and never
+    affect validation, approval, delivery, or GitHub permissions.
+    """
+
+    session = await get_db().sessions.find_one({"userId": user["_id"], "slugId": slug_id})
+    if not session:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
+    records = await PreventionRuleService().list_for_session(
+        user_id=str(user["_id"]), session_id=str(session["_id"]), limit=limit
+    )
+    return [_prevention_rule_response(record) for record in records]
 
 
 @router.get("")

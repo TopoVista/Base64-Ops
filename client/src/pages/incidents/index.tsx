@@ -8,6 +8,7 @@ import {
   getCandidateVerificationSettings,
   getIncident,
   getIncidents,
+  getPreventionRules,
   getRepositoryAutomationSettings,
   getSystemCapabilities,
   getUserSessions,
@@ -19,6 +20,7 @@ import { cn } from "@/lib/utils";
 import type {
   CandidateVerificationSettingsInput,
   IncidentRecord,
+  PreventionRule,
   RepositoryAutomationSettingsInput,
 } from "@/types/incident.type";
 import type { SessionRecord } from "@/types/session.type";
@@ -45,6 +47,7 @@ const prettify = (value: string) => value.replaceAll("_", " ");
 const shortSha = (sha: string) => sha.slice(0, 12);
 const EMPTY_INCIDENTS: IncidentRecord[] = [];
 const EMPTY_SESSIONS: SessionRecord[] = [];
+const EMPTY_PREVENTION_RULES: PreventionRule[] = [];
 const dateTime = (value: string) => {
   const parsed = new Date(value);
   return Number.isNaN(parsed.getTime()) ? "Time unavailable" : parsed.toLocaleString();
@@ -133,6 +136,12 @@ function AutomationSettingsPanel() {
   const candidateVerificationQuery = useQuery({
     queryKey: ["candidate-verification-settings", selectedSlugId],
     queryFn: () => getCandidateVerificationSettings(selectedSlugId),
+    enabled: Boolean(selectedSlugId),
+    staleTime: 20_000,
+  });
+  const preventionRulesQuery = useQuery({
+    queryKey: ["prevention-rules", selectedSlugId],
+    queryFn: () => getPreventionRules(selectedSlugId),
     enabled: Boolean(selectedSlugId),
     staleTime: 20_000,
   });
@@ -338,6 +347,49 @@ function AutomationSettingsPanel() {
             {saveCandidateVerification.isSuccess ? <span className="text-sm text-emerald-700 dark:text-emerald-300">Candidate verification setting saved. Each run still requires a separate exact approval.</span> : null}
           </div>
         </form>
+      </section>
+      <section className="mt-6 border-t border-border pt-5" aria-labelledby="prevention-rules-heading">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h3 id="prevention-rules-heading" className="font-semibold">Recurring-pattern advisories</h3>
+            <p className="mt-1 max-w-3xl text-sm leading-6 text-muted-foreground">
+              These evidence-backed patterns are review context from independent historical failed-run SHAs. They are not predictions and cannot run commands, change risk, block delivery, or authorize GitHub access.
+            </p>
+          </div>
+          <Button type="button" size="sm" variant="outline" onClick={() => void preventionRulesQuery.refetch()} disabled={preventionRulesQuery.isFetching}>
+            <RefreshCw className={cn("mr-2 size-3.5", preventionRulesQuery.isFetching && "animate-spin")} />
+            Refresh advisories
+          </Button>
+        </div>
+        {preventionRulesQuery.isError ? (
+          <p className="mt-3 text-sm text-destructive">Recurring-pattern advisories could not be loaded. Existing rules were not changed.</p>
+        ) : null}
+        {preventionRulesQuery.isPending ? <Skeleton className="mt-4 h-24 w-full rounded-lg" /> : null}
+        {!preventionRulesQuery.isPending && !preventionRulesQuery.isError && (preventionRulesQuery.data ?? EMPTY_PREVENTION_RULES).length === 0 ? (
+          <p className="mt-3 rounded-md border border-dashed border-border px-3 py-3 text-sm leading-6 text-muted-foreground">
+            No persisted recurrence advisory is available for this repository session. A rule requires at least two supported incidents from distinct failed-run SHAs with the same exact path and failure category.
+          </p>
+        ) : null}
+        <div className="mt-4 grid gap-3">
+          {(preventionRulesQuery.data ?? EMPTY_PREVENTION_RULES).map((rule) => (
+            <div key={rule.id} className="rounded-lg border border-border bg-background/60 p-4 text-sm">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="font-mono text-xs text-foreground break-all">{rule.affected_path}</p>
+                  <p className="mt-1 text-muted-foreground">{prettify(rule.failure_category)} · {rule.occurrence_count} independent failed-run SHA{rule.occurrence_count === 1 ? "" : "s"}</p>
+                </div>
+                <Badge variant="outline" className={rule.status === "active" ? "border-sky-500/40 bg-sky-500/10 text-sky-700 dark:text-sky-300" : "border-amber-500/40 bg-amber-500/10 text-amber-800 dark:text-amber-200"}>
+                  {prettify(rule.status)}
+                </Badge>
+              </div>
+              <div className="mt-3 flex flex-wrap gap-2 text-xs">
+                {rule.historical_incident_ids.map((incidentId) => <Link key={incidentId} to={`/incidents/${incidentId}`} className="rounded border border-border px-2 py-1 font-mono text-primary hover:bg-muted">Incident {incidentId.slice(-8)}</Link>)}
+              </div>
+              {rule.invalidation_reason ? <p className="mt-3 text-xs leading-5 text-amber-800 dark:text-amber-200">Review required: {rule.invalidation_reason}</p> : null}
+              {rule.applicability_limitations.map((limitation) => <p key={limitation} className="mt-2 text-xs leading-5 text-muted-foreground">Limitation: {limitation}</p>)}
+            </div>
+          ))}
+        </div>
       </section>
     </section>
   );

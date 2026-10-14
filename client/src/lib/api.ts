@@ -21,6 +21,7 @@ import type {
   IncidentFeedbackInput,
   IncidentsResponse,
   FlakyTestObservation,
+  PreventionRule,
   CandidateVerificationRun,
   CandidateVerificationSettings,
   CandidateVerificationSettingsInput,
@@ -86,6 +87,16 @@ export const getFlakyTestObservations = async (): Promise<FlakyTestObservation[]
   const response = await API.get<FlakyTestObservation[]>("/incidents/flaky-tests", {
     params: { limit: 100 },
   });
+  return response.data;
+};
+
+export const getPreventionRules = async (
+  slugId: string,
+): Promise<PreventionRule[]> => {
+  const response = await API.get<PreventionRule[]>(
+    `/incidents/sessions/${encodeURIComponent(slugId)}/prevention-rules`,
+    { params: { limit: 30 } },
+  );
   return response.data;
 };
 

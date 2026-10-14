@@ -87,6 +87,18 @@ class _Rules:
         return SimpleNamespace(modified_count=1)
 
 
+class _ReadableRules:
+    def __init__(self, rows: list[dict]) -> None:
+        self.rows = rows
+        self.query: dict | None = None
+        self.projection: dict | None = None
+
+    def find(self, query: dict, projection: dict) -> _Cursor:
+        self.query = query
+        self.projection = projection
+        return _Cursor(self.rows)
+
+
 @pytest.mark.asyncio
 async def test_rule_refresh_is_scoped_and_persists_only_advisory_metadata(monkeypatch) -> None:
     from app.services import prevention_rule_service as module
@@ -144,3 +156,34 @@ async def test_rule_invalidation_is_scoped_to_a_corrected_incident(monkeypatch) 
     }
     assert update["$set"]["status"] == "needs_review"
     assert "user marked" in update["$set"]["invalidationReason"]
+
+
+@pytest.mark.asyncio
+async def test_rule_list_is_tenant_and_session_scoped_with_no_internal_projection(monkeypatch) -> None:
+    from app.services import prevention_rule_service as module
+
+    rules = _ReadableRules(
+        [
+            {
+                "_id": "prv_1",
+                "repositoryId": "repo_123",
+                "affectedPath": "backend/app/auth.py",
+                "failureCategory": "test_failure",
+                "historicalIncidentIds": ["inc_1", "inc_2"],
+                "historicalRunShas": ["a" * 40, "b" * 40],
+                "occurrenceCount": 2,
+                "status": "active",
+            }
+        ]
+    )
+    monkeypatch.setattr(module, "get_db", lambda: SimpleNamespace(prevention_rules=rules))
+
+    result = await PreventionRuleService().list_for_session(
+        user_id="user_a", session_id="session_a", limit=999
+    )
+
+    assert result[0]["_id"] == "prv_1"
+    assert rules.query == {"userId": "user_a", "sessionId": "session_a"}
+    assert rules.projection is not None
+    assert "userId" not in rules.projection
+    assert "sessionId" not in rules.projection

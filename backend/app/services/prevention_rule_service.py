@@ -60,6 +60,45 @@ class PreventionRuleService:
             [("userId", 1), ("sessionId", 1), ("updatedAt", -1)], name="prevention_rule_tenant_recent"
         )
 
+    async def list_for_session(
+        self,
+        *,
+        user_id: str,
+        session_id: str,
+        limit: int = 30,
+    ) -> list[dict[str, Any]]:
+        """Return bounded persisted advisories from one owned session.
+
+        Session identity is resolved by the authenticated route, not supplied
+        by a browser as a repository identifier. The projection deliberately
+        omits internal tenant fields and all future administrative controls.
+        """
+
+        bounded_limit = min(max(limit, 1), 50)
+        cursor = (
+            get_db()
+            .prevention_rules.find(
+                {"userId": user_id, "sessionId": session_id},
+                {
+                    "_id": 1,
+                    "repositoryId": 1,
+                    "affectedPath": 1,
+                    "failureCategory": 1,
+                    "historicalIncidentIds": 1,
+                    "historicalRunShas": 1,
+                    "occurrenceCount": 1,
+                    "status": 1,
+                    "applicabilityLimitations": 1,
+                    "invalidationReason": 1,
+                    "createdAt": 1,
+                    "updatedAt": 1,
+                },
+            )
+            .sort("updatedAt", -1)
+            .limit(bounded_limit)
+        )
+        return [record async for record in cursor]
+
     @staticmethod
     def candidates(incidents: list[dict[str, Any]]) -> list[dict[str, Any]]:
         """Produce bounded candidates from supported group-root incidents.

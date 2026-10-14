@@ -17,6 +17,7 @@ from app.services.incident_service import (
     incident_group_key,
     incident_memory_candidate,
 )
+from app.utils.datetime import utc_now
 
 
 def _context(**overrides):  # noqa: ANN202
@@ -403,6 +404,42 @@ async def test_incident_feedback_is_tenant_scoped_redacted_and_not_a_diagnosis_m
     assert response["feedback"]["disposition"] == "incorrect"
     assert "feedback-secret" not in response["feedback"]["correction"]
     assert response["feedback"]["untrusted"] is True
+
+
+async def test_prevention_rule_route_resolves_an_owned_session_before_listing(monkeypatch) -> None:  # noqa: ANN001
+    class _Sessions:
+        async def find_one(self, query):  # noqa: ANN001, ANN201
+            if query == {"userId": "user_a", "slugId": "safe-session"}:
+                return {"_id": "session_a"}
+            return None
+
+    class _Rules:
+        async def list_for_session(self, **kwargs):  # noqa: ANN003, ANN201
+            assert kwargs == {"user_id": "user_a", "session_id": "session_a", "limit": 30}
+            return [
+                {
+                    "_id": "prv_1",
+                    "repositoryId": "repo_123",
+                    "affectedPath": "backend/app/auth.py",
+                    "failureCategory": "test_failure",
+                    "historicalIncidentIds": ["inc_1", "inc_2"],
+                    "historicalRunShas": ["a" * 40, "b" * 40],
+                    "occurrenceCount": 2,
+                    "status": "active",
+                    "applicabilityLimitations": ["Correlation is not causation."],
+                    "createdAt": utc_now(),
+                    "updatedAt": utc_now(),
+                }
+            ]
+
+    monkeypatch.setattr(incident_routes, "get_db", lambda: SimpleNamespace(sessions=_Sessions()))
+    monkeypatch.setattr(incident_routes, "PreventionRuleService", _Rules)
+
+    response = await incident_routes.list_prevention_rules("safe-session", 30, {"_id": "user_a"})
+
+    assert response[0].id == "prv_1"
+    assert response[0].affected_path == "backend/app/auth.py"
+    assert response[0].status == "active"
 
 
 async def test_incorrect_incident_feedback_records_redacted_user_correction_memory(monkeypatch) -> None:  # noqa: ANN001
