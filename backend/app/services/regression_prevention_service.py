@@ -60,10 +60,19 @@ class RegressionPreventionService:
         matches: dict[tuple[str, str], dict[str, list[str]]] = defaultdict(lambda: defaultdict(list))
         inspected = 0
         ignored_same_revision = 0
+        ignored_corrected = 0
 
         for incident in incidents:
             inspected += 1
             if incident.get("evidenceStrength") != "supported":
+                continue
+            feedback = incident.get("feedback")
+            if isinstance(feedback, dict) and feedback.get("disposition") == "incorrect":
+                # A correction is untrusted user feedback, never replacement
+                # evidence. It removes the incident from automatic historical
+                # pattern matching until a human review establishes a new
+                # supported record.
+                ignored_corrected += 1
                 continue
             sha = incident.get("headSha")
             if not isinstance(sha, str) or not sha or sha == plan.base_sha:
@@ -126,6 +135,10 @@ class RegressionPreventionService:
                 "Incidents from the DeliveryPlan base SHA were excluded to avoid treating the "
                 "current investigation as history."
             )
+        if ignored_corrected:
+            limitations.append(
+                "User-corrected incidents were excluded from historical pattern matching."
+            )
         if inspected >= _HISTORY_LIMIT:
             limitations.append(f"Historical incident lookup was bounded to the most recent {_HISTORY_LIMIT} records.")
         if len(advisories) >= _MAX_ADVISORIES:
@@ -183,6 +196,7 @@ class RegressionPreventionService:
                     "failureCategories": 1,
                     "relevantPaths": 1,
                     "evidenceStrength": 1,
+                    "feedback": 1,
                     "updatedAt": 1,
                 },
             )

@@ -75,6 +75,28 @@ def test_prevention_requires_two_independent_supported_run_shas() -> None:
     assert "not proof" in advisory.message
 
 
+def test_prevention_excludes_user_corrected_incidents_from_live_patterns() -> None:
+    report = RegressionPreventionService().analyze(
+        plan=_plan(path="backend/app/auth.py"),
+        incidents=[
+            {
+                **_incident(
+                    incident_id="inc_corrected",
+                    sha="a" * 40,
+                    path="backend/app/auth.py",
+                    category="test_failure",
+                ),
+                "feedback": {"disposition": "incorrect", "untrusted": True},
+            },
+            _incident(incident_id="inc_other", sha="b" * 40, path="backend/app/auth.py", category="test_failure"),
+        ],
+    )
+
+    assert report.status == "insufficient_history"
+    assert not report.advisories
+    assert "User-corrected incidents" in " ".join(report.limitations)
+
+
 def test_prevention_requires_exact_path_overlap_and_excludes_base_sha() -> None:
     report = RegressionPreventionService().analyze(
         plan=_plan(),

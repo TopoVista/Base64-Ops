@@ -118,4 +118,6 @@ records with server-owned session/repository metadata, it then marks only
 active rules containing that incident as `needs_review` and recomputes eligible
 patterns without the corrected incident. A rule can return to `active` only
 when other independent supported incidents still meet the threshold. Feedback
-does not itself create evidence or a rule.
+does not itself create evidence or a rule. The live DeliveryPlan advisory
+calculation excludes the same corrected incidents, so delayed rule refreshes
+cannot reintroduce a corrected incident as historical support.

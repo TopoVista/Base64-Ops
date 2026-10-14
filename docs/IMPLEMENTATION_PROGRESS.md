@@ -117,7 +117,9 @@ Still required in this stage:
   historical match and labels an equivalent active rule. It is not an
   automatic rule or approval gate. A redacted `incorrect` incident feedback
   item flags its referenced rules for review and recomputes from remaining
-  supported history; feedback itself is not evidence.
+  supported history; feedback itself is not evidence. The live DeliveryPlan
+  recurrence review excludes the same corrected record, including during a
+  delayed durable-rule refresh.
   Dependency/lockfile and
   declared-runner workflow comparisons are now bounded correlation signals;
   optional neutral GitHub Check reporting has a separate opt-in and App
