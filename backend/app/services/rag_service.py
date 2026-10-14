@@ -60,7 +60,10 @@ class RagService:
             }
         else:
             persistence = await self._persist_incremental_lexical_rows(
-                session_id=str(session["_id"]), rows=rows, max_chunks=settings.rag_index_max_chunks
+                collection=db.rag_chunks,
+                session_id=str(session["_id"]),
+                rows=rows,
+                max_chunks=settings.rag_index_max_chunks,
             )
         result: dict[str, Any] = {
             "indexed": len(documents),
@@ -81,6 +84,7 @@ class RagService:
     async def _persist_incremental_lexical_rows(
         self,
         *,
+        collection: Any,
         session_id: str,
         rows: list[dict[str, Any]],
         max_chunks: int,
@@ -94,7 +98,6 @@ class RagService:
         of silently retaining stale context.
         """
 
-        collection = get_db().rag_chunks
         query = {"sessionId": session_id, "kind": "repo"}
         cursor = collection.find(query, {"source": 1, "contentHash": 1, "metadata.contentHash": 1})
         existing_rows = await cursor.limit(max_chunks + 1).to_list(max_chunks + 1)
