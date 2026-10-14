@@ -26,6 +26,7 @@ from app.services.incident_export_service import (
     incident_export_markdown,
 )
 from app.services.incident_service import GitHubWebhookService
+from app.services.prevention_rule_service import PreventionRuleService
 from app.services.redaction_service import RedactionService
 from app.utils.datetime import utc_now
 
@@ -321,6 +322,36 @@ async def submit_incident_feedback(
     incident = await get_db().incidents.find_one({"_id": incident_id, "userId": user["_id"]})
     if not incident:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Incident not found")
+    session_id = incident.get("sessionId")
+    repository_id = incident.get("repositoryId")
+    if payload.disposition == "incorrect" and isinstance(session_id, str) and isinstance(repository_id, str):
+        try:
+            rules = PreventionRuleService()
+            await rules.invalidate_for_incident(
+                user_id=str(user["_id"]),
+                session_id=session_id,
+                repository_id=repository_id,
+                incident_id=incident_id,
+            )
+            await rules.refresh_for_repository(
+                user_id=str(user["_id"]),
+                session_id=session_id,
+                repository_id=repository_id,
+            )
+        except Exception:
+            # Feedback is valuable even when optional historical maintenance is
+            # temporarily unavailable. Preserve the correction and surface a
+            # bounded limitation instead of failing the browser request.
+            limitations = list(incident.get("limitations") or [])
+            limitation = "Prevention rules could not be reevaluated after this correction."
+            if limitation not in limitations:
+                limitations.append(limitation)
+            await get_db().incidents.update_one(
+                {"_id": incident_id, "userId": user["_id"]},
+                {
+                    "$set": {"limitations": limitations, "updatedAt": utc_now()}
+                },
+            )
     return _incident_response(incident)
 
 

@@ -29,4 +29,9 @@ safe rendering of a matching persisted rule. Its advisory is intentionally not
 counted as a prediction or repair-success metric: it cannot generate commands,
 alter an approval, or mutate GitHub.
 
+The feedback contract additionally verifies that a user correction stays
+redacted and tenant-scoped; prevention maintenance can flag only rules that
+reference that corrected incident, then recomputes from remaining supported
+history. Feedback never upgrades evidence strength or makes an approval.
+
 Use `python -m evals.runner --mode deterministic --output ../artifacts/eval-summary.json --format json` from `backend` to generate a machine-readable report containing only measured case results and summary metrics.

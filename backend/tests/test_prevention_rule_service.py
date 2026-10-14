@@ -39,6 +39,13 @@ def test_rule_candidates_require_two_independent_supported_run_shas() -> None:
     assert candidates[0]["occurrenceCount"] == 2
     assert candidates[0]["historicalIncidentIds"] == ["inc_1", "inc_2"]
 
+    assert not service.candidates(
+        [
+            {**_incident(incident_id="inc_1", sha="a" * 40), "feedback": {"disposition": "incorrect"}},
+            _incident(incident_id="inc_2", sha="b" * 40),
+        ]
+    )
+
 
 class _Cursor:
     def __init__(self, rows: list[dict]) -> None:
@@ -75,6 +82,10 @@ class _Rules:
     async def update_one(self, query: dict, update: dict, upsert: bool = False) -> None:
         self.writes.append((query, update, upsert))
 
+    async def update_many(self, query: dict, update: dict):
+        self.writes.append((query, update, False))
+        return SimpleNamespace(modified_count=1)
+
 
 @pytest.mark.asyncio
 async def test_rule_refresh_is_scoped_and_persists_only_advisory_metadata(monkeypatch) -> None:
@@ -106,3 +117,30 @@ async def test_rule_refresh_is_scoped_and_persists_only_advisory_metadata(monkey
     assert stored["status"] == "active"
     assert stored["threshold"] == {"minimumSupportedRuns": 2, "distinctFailedRunShas": True}
     assert "command" not in str(stored).lower()
+
+
+@pytest.mark.asyncio
+async def test_rule_invalidation_is_scoped_to_a_corrected_incident(monkeypatch) -> None:
+    from app.services import prevention_rule_service as module
+
+    rules = _Rules()
+    monkeypatch.setattr(module, "get_db", lambda: SimpleNamespace(prevention_rules=rules))
+
+    changed = await PreventionRuleService().invalidate_for_incident(
+        user_id="user_a",
+        session_id="session_a",
+        repository_id="repo_123",
+        incident_id="inc_1",
+    )
+
+    assert changed == 1
+    query, update, _ = rules.writes[0]
+    assert query == {
+        "userId": "user_a",
+        "sessionId": "session_a",
+        "repositoryId": "repo_123",
+        "status": "active",
+        "historicalIncidentIds": "inc_1",
+    }
+    assert update["$set"]["status"] == "needs_review"
+    assert "user marked" in update["$set"]["invalidationReason"]

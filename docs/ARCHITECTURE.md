@@ -111,3 +111,11 @@ IDs, run SHAs, threshold metadata, and advisory limitations. A later
 DeliveryPlan still recomputes its live match from incident history, then labels
 an equivalent active record as a persisted historical rule. Persisting a rule
 does not strengthen the underlying causality claim or authorize any action.
+
+When a signed-in user marks an incident `incorrect`, the existing feedback
+route persists that redacted, untrusted annotation first. For current incident
+records with server-owned session/repository metadata, it then marks only
+active rules containing that incident as `needs_review` and recomputes eligible
+patterns without the corrected incident. A rule can return to `active` only
+when other independent supported incidents still meet the threshold. Feedback
+does not itself create evidence or a rule.

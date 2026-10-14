@@ -111,11 +111,13 @@ Still required in this stage:
 
 - Live GitHub webhook verification, a deployed dispatcher/scheduler profile,
   actual runner-environment metadata where GitHub exposes it, prevention-rule
-  invalidation/supersession governance, and live candidate/App verification.
+  supersession/retention governance, and live candidate/App verification.
   Two supported incidents from independent failed-run SHAs now persist an
   exact-path/category prevention rule; a DeliveryPlan recomputes its live
   historical match and labels an equivalent active rule. It is not an
-  automatic rule or approval gate.
+  automatic rule or approval gate. A redacted `incorrect` incident feedback
+  item flags its referenced rules for review and recomputes from remaining
+  supported history; feedback itself is not evidence.
   Dependency/lockfile and
   declared-runner workflow comparisons are now bounded correlation signals;
   optional neutral GitHub Check reporting has a separate opt-in and App

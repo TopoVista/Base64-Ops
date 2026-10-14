@@ -25,6 +25,17 @@
 > TypeScript, and Vite production build. Rule supersession/invalidation
 > workflows and live webhook verification remain `NOT STARTED` / `BLOCKED`.
 
+> Prevention-rule correction update (2026-10-14): `PARTIAL`. Marking an
+> incident `incorrect` continues to persist only centrally redacted, untrusted
+> feedback. When server-owned session/repository provenance exists, Base64
+> marks active rules referencing that incident as `needs_review`, then
+> recomputes them from the remaining supported history. Feedback cannot make a
+> rule, elevate evidence, alter risk, or authorize delivery. Full local
+> verification passed: **365 backend tests**, **28/28 deterministic evals**,
+> Ruff, LangGraph initialization, frontend TypeScript, and Vite production
+> build. Administrative supersession/retention controls and live webhook
+> verification remain `NOT STARTED` / `BLOCKED`.
+
 > CI recovery and candidate-verification update (2026-10-14): `PARTIAL`.
 > The repository now has an explicit GitHub App candidate-verification boundary
 > for immutable exact delivery plans: an owner binds one reviewed workflow to
@@ -119,7 +130,7 @@ Status reflects executable code in this repository as of 2026-10-14. `BLOCKED` m
 | 27. Configuration cleanup | DONE | Configurable patch limits and memory settings (`memory_max_context_entries=5`, `memory_learning_enabled`). |
 | 28. GitHub auth hardening | DONE | OAuth state signing and encrypted token storage implemented. |
 | 29. Security hardening | DONE | Tenant-scoped queries, strict `RepositoryPathPolicy`, allowlisted commands, redaction, memory-cannot-authorize invariant. |
-| 30. Testing | DONE | 364 backend tests passed, 28/28 deterministic evals, clean Ruff, frontend TypeScript, LangGraph initialization, and Vite build passed in the latest local verification. The production bundle and npm-audit results are recorded in prior verification updates. Live provider and load tests remain blocked pending authorized external environments. |
+| 30. Testing | DONE | 365 backend tests passed, 28/28 deterministic evals, clean Ruff, frontend TypeScript, LangGraph initialization, and Vite build passed in the latest local verification. The production bundle and npm-audit results are recorded in prior verification updates. Live provider and load tests remain blocked pending authorized external environments. |
 | 31. Documentation | DONE | Core architecture, safety, evaluation, observability, memory, deployment, and implementation-status documents are maintained; the reproducible complete technical engineering book and its inventory/coverage/generation artifacts are in `docs/reports/`. |
 | 32. CI Regression Gate | DONE | `.github/workflows/ci.yml` runs backend tests, Ruff, deterministic evals, frontend build, a JavaScript bundle budget, and high-severity npm advisory gating. |
 | 33. Execution Runtime Sandbox | DONE | Subsystem `app.execution` implemented with request/result models, command registry, environment sanitization, process tree termination, output bounding, candidate workspace integrity checks, Docker sandbox runtime (`--network none`), and `GET /api/system/capabilities` API. |

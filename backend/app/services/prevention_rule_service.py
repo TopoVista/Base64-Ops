@@ -72,6 +72,12 @@ class PreventionRuleService:
         for incident in incidents:
             if incident.get("evidenceStrength") != "supported":
                 continue
+            feedback = incident.get("feedback")
+            if isinstance(feedback, dict) and feedback.get("disposition") == "incorrect":
+                # A user correction is untrusted product input, not a new
+                # causal claim. It does make this incident ineligible for an
+                # automatically active historical rule until reviewed.
+                continue
             incident_id = incident.get("_id")
             sha = incident.get("headSha")
             if not isinstance(incident_id, str) or not incident_id or not isinstance(sha, str) or not sha:
@@ -129,7 +135,14 @@ class PreventionRuleService:
                     "isGroupRoot": {"$ne": False},
                     "evidenceStrength": "supported",
                 },
-                {"_id": 1, "headSha": 1, "relevantPaths": 1, "failureCategories": 1, "evidenceStrength": 1},
+                {
+                    "_id": 1,
+                    "headSha": 1,
+                    "relevantPaths": 1,
+                    "failureCategories": 1,
+                    "evidenceStrength": 1,
+                    "feedback": 1,
+                },
             )
             .sort("updatedAt", -1)
             .limit(_SCAN_LIMIT)
@@ -177,3 +190,36 @@ class PreventionRuleService:
             )
             rule_ids.append(rule_id)
         return rule_ids
+
+    async def invalidate_for_incident(
+        self,
+        *,
+        user_id: str,
+        session_id: str,
+        repository_id: str,
+        incident_id: str,
+    ) -> int:
+        """Flag rules using a user-corrected incident for reevaluation.
+
+        This operation has no effect outside the caller's tenant/session and
+        does not destroy provenance. A following refresh can reactivate a rule
+        only if sufficient independent supported history remains.
+        """
+
+        result = await get_db().prevention_rules.update_many(
+            {
+                "userId": user_id,
+                "sessionId": session_id,
+                "repositoryId": repository_id,
+                "status": "active",
+                "historicalIncidentIds": incident_id,
+            },
+            {
+                "$set": {
+                    "status": "needs_review",
+                    "invalidatedAt": utc_now(),
+                    "invalidationReason": "A user marked a contributing incident as incorrect.",
+                }
+            },
+        )
+        return int(result.modified_count)
