@@ -1,10 +1,10 @@
 {
   "schemaVersion": "base64-ops-source-inventory-v1",
-  "generatedAt": "2026-10-14T00:02:01.674665+00:00",
-  "analyzedCommit": "c31bc987b465133056049790dd9917af0a5c0fc9",
+  "generatedAt": "2026-10-14T00:12:21.570808+00:00",
+  "analyzedCommit": "323fde8ca8f7419177b0233f1b48f53d625b6de4",
   "repositoryState": "M backend/.gitignore\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf\n M docs/reports/document-generation-report.md\n M docs/reports/file-coverage-report.md\n M docs/reports/source-file-inventory.json",
-  "totalTrackedFiles": 385,
-  "includedCount": 365,
+  "totalTrackedFiles": 387,
+  "includedCount": 367,
   "excludedCount": 20,
   "included": [
     {
@@ -1402,9 +1402,9 @@
         ".github/workflows/deployment-readiness.yml",
         "README.md"
       ],
-      "lines": 245,
-      "sha256": "71dda9707f0da16a1fb6619d6572163e20adde64bfbfbae515a39beac3178e32",
-      "word_count": 1104
+      "lines": 247,
+      "sha256": "f56029aff9f7594ae08c584987ea1978c5c90cc3cad8d6cf81d7a9fff88315a6",
+      "word_count": 1113
     },
     {
       "path": "backend/app/memory/__init__.py",
@@ -1854,9 +1854,9 @@
         "backend/app/services/session_service.py",
         "backend/tests/test_regression_prevention_service.py"
       ],
-      "lines": 43,
-      "sha256": "ad167aabf115de6b0646dab58a110ce90e776af399078f2c1f215c22d96fd151",
-      "word_count": 165
+      "lines": 45,
+      "sha256": "5aae3dad1e54273867515b9ff86a60c55fed07bace6a5a824c57811c64a59fdb",
+      "word_count": 174
     },
     {
       "path": "backend/app/schemas/replay.py",
@@ -2351,9 +2351,9 @@
         "backend/app/main.py",
         "backend/app/workers/worker.py"
       ],
-      "lines": 952,
-      "sha256": "2b648b56debc956013f727b79af04f561c3c8eb49b4c2bd8d9d0d6bc0897ff12",
-      "word_count": 3324
+      "lines": 988,
+      "sha256": "8ee981d0f88ecd23d0b9152ee797628a35d1908f51d3d317656b447fa4703db3",
+      "word_count": 3430
     },
     {
       "path": "backend/app/services/patch_engine.py",
@@ -2381,6 +2381,34 @@
       "lines": 337,
       "sha256": "ea6d025cd2b0ada7e897fe7d0fea4e8d814aab3b63a49ff9da850b716a46a9f8",
       "word_count": 1363
+    },
+    {
+      "path": "backend/app/services/prevention_rule_service.py",
+      "category": "Backend services",
+      "kind": "Python module",
+      "summary": "This service coordinates the Prevention Rule Service domain boundary. It combines typed inputs, persistence or provider access, and safety checks while leaving API authentication and UI presentation to adjacent layers.",
+      "symbols": [
+        "_SCAN_LIMIT",
+        "_MAX_RULES_PER_REFRESH",
+        "_MAX_HISTORY_PER_RULE",
+        "_SCHEMA_VERSION",
+        "_normalise_path",
+        "_strings",
+        "_rule_id"
+      ],
+      "dependencies": [
+        "backend/app/db/mongo.py",
+        "backend/app/utils/datetime.py"
+      ],
+      "dependents": [
+        "backend/app/main.py",
+        "backend/app/services/incident_service.py",
+        "backend/tests/test_prevention_rule_service.py",
+        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md"
+      ],
+      "lines": 179,
+      "sha256": "6307db6851cf2c36e19cadc4a46f4e7789f6dbfa95d309bd3277c0c6551d97eb",
+      "word_count": 629
     },
     {
       "path": "backend/app/services/product_assistant_service.py",
@@ -2481,9 +2509,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf"
       ],
-      "lines": 190,
-      "sha256": "468a17e984fc1eefcf37e60b1df7536825fe7a5bef6dfc5bec8fc3a832c54450",
-      "word_count": 720
+      "lines": 220,
+      "sha256": "43cd2a733e14fecccbd7dd2c1565da6c7a346d67c042965c6a5e6f5538a7c77f",
+      "word_count": 847
     },
     {
       "path": "backend/app/services/serializers.py",
@@ -4991,6 +5019,31 @@
       "word_count": 731
     },
     {
+      "path": "backend/tests/test_prevention_rule_service.py",
+      "category": "Backend tests",
+      "kind": "test",
+      "summary": "This test module protects the behavior of the backend tests area by arranging controlled inputs, exercising the public or service boundary, and asserting its safety or correctness contract. Its visible symbols include _incident, test_rule_candidates_require_two_independent_supported_run_shas, _Cursor.",
+      "symbols": [
+        "_incident",
+        "test_rule_candidates_require_two_independent_supported_run_shas",
+        "_Cursor",
+        "_Incidents",
+        "_Rules",
+        "test_rule_refresh_is_scoped_and_persists_only_advisory_metadata"
+      ],
+      "dependencies": [
+        "backend/app/services/prevention_rule_service.py"
+      ],
+      "dependents": [
+        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
+        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
+        "docs/reports/source-file-inventory.json"
+      ],
+      "lines": 108,
+      "sha256": "16a64b81d0a2ba416e94e4433d1eafaeedc7d2ef14424f47df024ce0a66fc57e",
+      "word_count": 330
+    },
+    {
       "path": "backend/tests/test_product_assistant.py",
       "category": "Backend tests",
       "kind": "test",
@@ -5122,9 +5175,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
         "docs/reports/source-file-inventory.json"
       ],
-      "lines": 189,
-      "sha256": "339834c0b5edc7501b7ed83ffe70aec4860e086d4cbaeb27067e7559d0060f11",
-      "word_count": 518
+      "lines": 229,
+      "sha256": "b43de59f5366ea78b70405faefa52a21a5c50b5993a5286371c59fe39da1c52c",
+      "word_count": 615
     },
     {
       "path": "backend/tests/test_render_blueprint.py",
@@ -6951,7 +7004,7 @@
         "AppLayout"
       ],
       "dependencies": [
-        "client/src/components/sidebar/index.tsx",
+        "client/src/components/sidebar/navitems.tsx",
         "client/src/components/ui/sidebar.tsx"
       ],
       "dependents": [
@@ -7010,9 +7063,9 @@
         "backend/app/agent/graph.py",
         "backend/app/api/deps.py"
       ],
-      "lines": 681,
-      "sha256": "63a968e9a6f87dcf685822cbd031130cd337607e1d2fb2688de9f2975a4f9090",
-      "word_count": 1919
+      "lines": 683,
+      "sha256": "338c00876bc7458c2f5c610eca2b69dd7a674acf703272e00ac574fe7b42f6c4",
+      "word_count": 1925
     },
     {
       "path": "client/src/lib/auth-redirect.ts",
@@ -7333,7 +7386,7 @@
         "location"
       ],
       "dependencies": [
-        "client/src/components/chat/index.tsx"
+        "client/src/components/chat/tool-parts.tsx"
       ],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -7410,7 +7463,7 @@
         "pathsReferToSameFile"
       ],
       "dependencies": [
-        "client/src/components/chat/index.tsx",
+        "client/src/components/chat/tool-parts.tsx",
         "client/src/components/ui/badge.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/components/ide-workspace.tsx",
@@ -7422,9 +7475,9 @@
         "backend/.env.example",
         "backend/README.md"
       ],
-      "lines": 2262,
-      "sha256": "1bc89d07e29ba0686dd8761030a3cf09e872fe63555ad3fa826c7cf59360f51b",
-      "word_count": 8777
+      "lines": 2265,
+      "sha256": "7dddf1595b94e0c4be4e9674ed52f6dd542710affa88a6e0e4489aae6d735056",
+      "word_count": 8790
     },
     {
       "path": "client/src/routes/index.tsx",
@@ -7791,9 +7844,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
         "docs/reports/source-file-inventory.json"
       ],
-      "lines": 104,
-      "sha256": "5d2463d1cd641928c7c8442dcef758577fa027c8a5279b60dac93c39ddc8737b",
-      "word_count": 849
+      "lines": 113,
+      "sha256": "9e4e5a39b46ed17a94db2f7911350d3096a0acbd59d8e862f0ea2f05d4569d8b",
+      "word_count": 933
     },
     {
       "path": "docs/CANDIDATE_VERIFICATION.md",
@@ -7951,9 +8004,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf"
       ],
-      "lines": 31,
-      "sha256": "3400bb8fb0fe4e77a055e5cb75d3e433f9f95918617de8e78f31115c666942e4",
-      "word_count": 324
+      "lines": 32,
+      "sha256": "ebb462bc85dbf4811538d42b32bf8ce5e00fb90d4ac655035dbc18649118a2b7",
+      "word_count": 333
     },
     {
       "path": "docs/EXECUTION_SANDBOX.md",
@@ -8088,8 +8141,8 @@
         "docs/reports/source-file-inventory.json"
       ],
       "lines": 103,
-      "sha256": "1a2d1139908f821c272cc2c5307c49575f334dc6d9b08f07713ad7933d57bdf6",
-      "word_count": 1237
+      "sha256": "792b90ec25737fa38c595d2505d761e907ef4a5e64f4da8ffbf16360d56321d6",
+      "word_count": 1238
     },
     {
       "path": "docs/IMPLEMENTATION_PROGRESS.md",
@@ -8110,9 +8163,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
         "docs/reports/source-file-inventory.json"
       ],
-      "lines": 161,
-      "sha256": "a04fd168cea3b6d8e1e683d067c3c834d1de74d80a68ff3d76dfba55ca4e058c",
-      "word_count": 1267
+      "lines": 162,
+      "sha256": "db3ad86ee53968ccb890e1739e5b01ccfa9655b44dcc5d3d1f50d433f3a1c55d",
+      "word_count": 1268
     },
     {
       "path": "docs/IMPLEMENTATION_STATUS.md",
@@ -8130,9 +8183,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
         "docs/reports/source-file-inventory.json"
       ],
-      "lines": 131,
-      "sha256": "debcc92854e22ea5b2834025e946d939c01351b7124ba3db104fa5a2cfeddd7b",
-      "word_count": 3489
+      "lines": 143,
+      "sha256": "3ad4e993922180682d9a6427b770dc1aeb4d908ee2ed1d972fbcfe0da41ae491",
+      "word_count": 3596
     },
     {
       "path": "docs/INTERVIEW_TALK_TRACK.md",

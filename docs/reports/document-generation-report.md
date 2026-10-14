@@ -1,7 +1,7 @@
 # Document generation report
 
-- Generated at: 2026-10-14T00:02:01.750478+00:00
-- Repository commit: `c31bc987b465133056049790dd9917af0a5c0fc9`
+- Generated at: 2026-10-14T00:12:21.648743+00:00
+- Repository commit: `323fde8ca8f7419177b0233f1b48f53d625b6de4`
 - Repository state at generation: `M backend/.gitignore
  M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md
  M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf
@@ -12,9 +12,9 @@
 - PDF renderer: ReportLab core fonts with Pypdf structural validation.
 - Source discovery: `git ls-files`; ignored `.env` files were never read.
 - PDF readability check: True
-- PDF page count: 421
+- PDF page count: 423
 - Outline entries observed by Pypdf: 37
-- Rendered sample pages: C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-1.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-3.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-6.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-12.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-37.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-57.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-157.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-401.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-407.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-421.png
+- Rendered sample pages: C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-1.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-3.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-6.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-12.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-37.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-57.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-157.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-403.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-409.png, C:\Users\KIIT0001\AppData\Local\Temp\base64-ops-book-samples\page-423.png
 - Manual visual inspection recorded: True
 
 ## Validation limitations

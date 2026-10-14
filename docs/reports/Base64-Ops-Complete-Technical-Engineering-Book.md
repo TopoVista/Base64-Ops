@@ -4,8 +4,8 @@
 *An Evidence First AI DevOps Engineering System From Product Problem to Individual Source Files*
 
 - Repository: https://github.com/TopoVista/Base64-Ops
-- Generated: 2026-10-14 00:01 UTC
-- Analyzed commit: `c31bc987b465133056049790dd9917af0a5c0fc9`
+- Generated: 2026-10-14 00:12 UTC
+- Analyzed commit: `323fde8ca8f7419177b0233f1b48f53d625b6de4`
 - Scope: Git-tracked source at the recorded commit. Generated outputs, secrets, ignored environment files, decorative assets, and lockfiles are excluded by the accompanying inventory.
 - Verification statement: architecture claims are derived from checked-in code and local deterministic tests. External providers and deployed environments are called out as unverified when no live evidence was available.
 
@@ -177,7 +177,7 @@ A signed completed workflow_run webhook is verified against an exact raw-body HM
 
 ## Source file reference
 
-The PDF source reference begins on page 37. It contains 365 dedicated file pages. The PDF index spans 8 page(s).
+The PDF source reference begins on page 37. It contains 367 dedicated file pages. The PDF index spans 8 page(s).
 
 ### File reference: `.github/workflows/ci.yml`
 
@@ -2563,7 +2563,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Main. Its extracted size is 245 lines and 1104 lexical tokens; the source digest begins 71dda9707f0d.
+It exists to provide a coherent Python module boundary for Main. Its extracted size is 247 lines and 1113 lexical tokens; the source digest begins f56029aff9f7.
 
 #### Important symbols
 
@@ -3383,7 +3383,7 @@ This Python module contributes to the backend domain contracts subsystem. It def
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Regression Prevention. Its extracted size is 43 lines and 165 lexical tokens; the source digest begins ad167aabf115.
+It exists to provide a coherent Python module boundary for Regression Prevention. Its extracted size is 45 lines and 174 lexical tokens; the source digest begins 5aae3dad1e54.
 
 #### Important symbols
 
@@ -4162,7 +4162,7 @@ This service coordinates the Incident Service domain boundary. It combines typed
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Incident Service. Its extracted size is 952 lines and 3324 lexical tokens; the source digest begins 2b648b56debc.
+It exists to provide a coherent Python module boundary for Incident Service. Its extracted size is 988 lines and 3430 lexical tokens; the source digest begins 8ee981d0f88e.
 
 #### Important symbols
 
@@ -4235,6 +4235,47 @@ The implementation is reviewed in the context of tenant isolation, bounded input
 #### Brief summary
 
 In one sentence: backend/app/services/patch_engine.py is a Python module that owns a focused part of backend services. Related files: backend/app/core/config.py, backend/app/schemas/delivery.py, backend/app/schemas/patch.py, backend/app/services/delivery_service.py, backend/app/services/redaction_service.py. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+
+### File reference: `backend/app/services/prevention_rule_service.py`
+
+#### Purpose
+
+This service coordinates the Prevention Rule Service domain boundary. It combines typed inputs, persistence or provider access, and safety checks while leaving API authentication and UI presentation to adjacent layers.
+
+#### Key responsibilities
+
+It exists to provide a coherent Python module boundary for Prevention Rule Service. Its extracted size is 179 lines and 629 lexical tokens; the source digest begins 6307db6851cf.
+
+#### Important symbols
+
+Important exported or declared symbols/sections identified by static inspection: _SCAN_LIMIT, _MAX_RULES_PER_REFRESH, _MAX_HISTORY_PER_RULE, _SCHEMA_VERSION, _normalise_path, _strings, _rule_id. These names are a navigation aid, not a claim that every symbol is externally public.
+
+#### Connections
+
+Static in-repository dependencies: backend/app/db/mongo.py, backend/app/utils/datetime.py. Potential consumers found through bounded textual/import analysis: backend/app/main.py, backend/app/services/incident_service.py, backend/tests/test_prevention_rule_service.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Backend services.
+
+#### Simplified pseudocode
+
+```text
+READ backend/app/services/prevention_rule_service.py from its owning layer
+ACCEPT typed inputs or declared configuration
+APPLY the file's focused responsibility
+USE only its declared collaborators and boundaries
+RETURN typed data, rendered UI, a test assertion, or an operational contract
+SURFACE limitations rather than granting new authority
+```
+
+#### Workflow role
+
+It participates as a focused building block in the larger investigation, delivery, deployment, or verification flow described by its containing subsystem.
+
+#### Engineering details
+
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+
+#### Brief summary
+
+In one sentence: backend/app/services/prevention_rule_service.py is a Python module that owns a focused part of backend services. Related files: backend/app/db/mongo.py, backend/app/utils/datetime.py. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `backend/app/services/product_assistant_service.py`
 
@@ -4367,7 +4408,7 @@ This service coordinates the Regression Prevention Service domain boundary. It c
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Regression Prevention Service. Its extracted size is 190 lines and 720 lexical tokens; the source digest begins 468a17e984fc.
+It exists to provide a coherent Python module boundary for Regression Prevention Service. Its extracted size is 220 lines and 847 lexical tokens; the source digest begins 43cd2a733e14.
 
 #### Important symbols
 
@@ -8866,6 +8907,47 @@ The file is a deterministic regression guard. Its result is evidence about check
 
 In one sentence: backend/tests/test_patch_engine.py is a test that owns a focused part of backend tests. Related files: backend/app/schemas/patch.py, backend/app/services/delivery_service.py, backend/app/services/patch_engine.py. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
+### File reference: `backend/tests/test_prevention_rule_service.py`
+
+#### Purpose
+
+This test module protects the behavior of the backend tests area by arranging controlled inputs, exercising the public or service boundary, and asserting its safety or correctness contract. Its visible symbols include _incident, test_rule_candidates_require_two_independent_supported_run_shas, _Cursor.
+
+#### Key responsibilities
+
+It exists to provide a coherent test boundary for Test Prevention Rule Service. Its extracted size is 108 lines and 330 lexical tokens; the source digest begins 16a64b81d0a2.
+
+#### Important symbols
+
+Important exported or declared symbols/sections identified by static inspection: _incident, test_rule_candidates_require_two_independent_supported_run_shas, _Cursor, _Incidents, _Rules, test_rule_refresh_is_scoped_and_persists_only_advisory_metadata. These names are a navigation aid, not a claim that every symbol is externally public.
+
+#### Connections
+
+Static in-repository dependencies: backend/app/services/prevention_rule_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+
+#### Simplified pseudocode
+
+```text
+READ backend/tests/test_prevention_rule_service.py from its owning layer
+ACCEPT typed inputs or declared configuration
+APPLY the file's focused responsibility
+USE only its declared collaborators and boundaries
+RETURN typed data, rendered UI, a test assertion, or an operational contract
+SURFACE limitations rather than granting new authority
+```
+
+#### Workflow role
+
+It participates when the verification suite exercises this subsystem. The file protects a behavior contract rather than serving an end-user request directly.
+
+#### Engineering details
+
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+
+#### Brief summary
+
+In one sentence: backend/tests/test_prevention_rule_service.py is a test that owns a focused part of backend tests. Related files: backend/app/services/prevention_rule_service.py. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+
 ### File reference: `backend/tests/test_product_assistant.py`
 
 #### Purpose
@@ -9038,7 +9120,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Regression Prevention Service. Its extracted size is 189 lines and 518 lexical tokens; the source digest begins 339834c0b5ed.
+It exists to provide a coherent test boundary for Test Regression Prevention Service. Its extracted size is 229 lines and 615 lexical tokens; the source digest begins b43de59f5366.
 
 #### Important symbols
 
@@ -12120,7 +12202,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/sidebar/index.tsx, client/src/components/ui/sidebar.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, client/src/routes/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend application.
+Static in-repository dependencies: client/src/components/sidebar/navitems.tsx, client/src/components/ui/sidebar.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, client/src/routes/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend application.
 
 #### Simplified pseudocode
 
@@ -12143,7 +12225,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/layouts/app-layout.tsx is a TypeScript module that owns a focused part of frontend application. Related files: client/src/components/sidebar/index.tsx, client/src/components/ui/sidebar.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/layouts/app-layout.tsx is a TypeScript module that owns a focused part of frontend application. Related files: client/src/components/sidebar/navitems.tsx, client/src/components/ui/sidebar.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/layouts/base-layout.tsx`
 
@@ -12194,7 +12276,7 @@ This frontend module implements part of the frontend api and utilities surface. 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Api. Its extracted size is 681 lines and 1919 lexical tokens; the source digest begins 63a968e9a6f8.
+It exists to provide a coherent TypeScript module boundary for Api. Its extracted size is 683 lines and 1925 lexical tokens; the source digest begins 338c00876bc7.
 
 #### Important symbols
 
@@ -12735,7 +12817,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/chat/index.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
+Static in-repository dependencies: client/src/components/chat/tool-parts.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
 
 #### Simplified pseudocode
 
@@ -12758,7 +12840,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/pages/home/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/chat/index.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/pages/home/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/chat/tool-parts.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/pages/incidents/index.tsx`
 
@@ -12850,7 +12932,7 @@ This frontend module implements part of the frontend pages surface. It composes 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Index. Its extracted size is 2262 lines and 8777 lexical tokens; the source digest begins 1bc89d07e29b.
+It exists to provide a coherent TypeScript module boundary for Index. Its extracted size is 2265 lines and 8790 lexical tokens; the source digest begins 7dddf1595b94.
 
 #### Important symbols
 
@@ -12858,7 +12940,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/chat/index.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/textarea.tsx, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
+Static in-repository dependencies: client/src/components/chat/tool-parts.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/textarea.tsx, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
 
 #### Simplified pseudocode
 
@@ -12881,7 +12963,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/pages/session/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/chat/index.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/textarea.tsx, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/pages/session/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/chat/tool-parts.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/textarea.tsx, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/routes/index.tsx`
 
@@ -13545,7 +13627,7 @@ This documentation file records the repository's current guidance for Architectu
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Architecture. Its extracted size is 104 lines and 849 lexical tokens; the source digest begins 5d2463d1cd64.
+It exists to provide a coherent documentation boundary for Architecture. Its extracted size is 113 lines and 933 lexical tokens; the source digest begins 9e4e5a39b46e.
 
 #### Important symbols
 
@@ -13825,7 +13907,7 @@ This documentation file records the repository's current guidance for Evaluation
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Evaluation. Its extracted size is 31 lines and 324 lexical tokens; the source digest begins 3400bb8fb0fe.
+It exists to provide a coherent documentation boundary for Evaluation. Its extracted size is 32 lines and 333 lexical tokens; the source digest begins ebb462bc85db.
 
 #### Important symbols
 
@@ -14065,7 +14147,7 @@ This documentation file records the repository's current guidance for Implementa
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Implementation Gap Analysis. Its extracted size is 103 lines and 1237 lexical tokens; the source digest begins 1a2d1139908f.
+It exists to provide a coherent documentation boundary for Implementation Gap Analysis. Its extracted size is 103 lines and 1238 lexical tokens; the source digest begins 792b90ec2573.
 
 #### Important symbols
 
@@ -14105,7 +14187,7 @@ This documentation file records the repository's current guidance for Implementa
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Implementation Progress. Its extracted size is 161 lines and 1267 lexical tokens; the source digest begins a04fd168cea3.
+It exists to provide a coherent documentation boundary for Implementation Progress. Its extracted size is 162 lines and 1268 lexical tokens; the source digest begins db3ad86ee539.
 
 #### Important symbols
 
@@ -14145,7 +14227,7 @@ This documentation file records the repository's current guidance for Implementa
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Implementation Status. Its extracted size is 131 lines and 3489 lexical tokens; the source digest begins debcc92854e2.
+It exists to provide a coherent documentation boundary for Implementation Status. Its extracted size is 143 lines and 3596 lexical tokens; the source digest begins 3ad4e9939221.
 
 #### Important symbols
 
