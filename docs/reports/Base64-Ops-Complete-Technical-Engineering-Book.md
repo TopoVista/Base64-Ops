@@ -4,8 +4,8 @@
 *An Evidence First AI DevOps Engineering System From Product Problem to Individual Source Files*
 
 - Repository: https://github.com/TopoVista/Base64-Ops
-- Generated: 2026-10-14 03:47 UTC
-- Analyzed commit: `076c104319956d953bbed8ee7db96d79435e2aac`
+- Generated: 2026-10-14 03:56 UTC
+- Analyzed commit: `0faa515397bdc99177d50ff7b52afb21ff6a7b40`
 - Scope: Git-tracked source at the recorded commit. Generated outputs, secrets, ignored environment files, decorative assets, and lockfiles are excluded by the accompanying inventory.
 - Verification statement: architecture claims are derived from checked-in code and local deterministic tests. External providers and deployed environments are called out as unverified when no live evidence was available.
 
@@ -1047,11 +1047,11 @@ This router exposes a tenant-aware FastAPI boundary for Incidents. It validates 
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Incidents. Its extracted size is 455 lines and 1544 lexical tokens; the source digest begins 4a05c57c4178.
+It exists to provide a coherent Python module boundary for Incidents. Its extracted size is 507 lines and 1786 lexical tokens; the source digest begins 83b84eb65c68.
 
 #### Important symbols
 
-Important exported or declared symbols/sections identified by static inspection: _settings_response, _candidate_verification_settings_response, _incident_response, _record_incorrect_feedback_memory, _flaky_observation_response, configure_automation, automation_settings. These names are a navigation aid, not a claim that every symbol is externally public.
+Important exported or declared symbols/sections identified by static inspection: _settings_response, _candidate_verification_settings_response, _incident_response, _record_incorrect_feedback_memory, _flaky_observation_response, _prevention_rule_response, configure_automation. These names are a navigation aid, not a claim that every symbol is externally public.
 
 #### Connections
 
@@ -3380,19 +3380,19 @@ In one sentence: backend/app/schemas/patch.py is a Python module that owns a foc
 
 #### Purpose
 
-This Python module contributes to the backend domain contracts subsystem. It defines focused behavior around RegressionPreventionAdvisory, RegressionPreventionReport and is composed by higher-level application, service, or worker code.
+This Python module contributes to the backend domain contracts subsystem. It defines focused behavior around RegressionPreventionAdvisory, RegressionPreventionReport, PreventionRuleSummary and is composed by higher-level application, service, or worker code.
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Regression Prevention. Its extracted size is 45 lines and 174 lexical tokens; the source digest begins 5aae3dad1e54.
+It exists to provide a coherent Python module boundary for Regression Prevention. Its extracted size is 66 lines and 253 lexical tokens; the source digest begins 9eab6c4b70f8.
 
 #### Important symbols
 
-Important exported or declared symbols/sections identified by static inspection: RegressionPreventionAdvisory, RegressionPreventionReport. These names are a navigation aid, not a claim that every symbol is externally public.
+Important exported or declared symbols/sections identified by static inspection: RegressionPreventionAdvisory, RegressionPreventionReport, PreventionRuleSummary. These names are a navigation aid, not a claim that every symbol is externally public.
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/session.py, backend/app/services/regression_prevention_service.py, backend/app/services/session_service.py, backend/tests/test_regression_prevention_service.py. The containing category is Backend domain contracts.
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/incidents.py, backend/app/api/routes/session.py, backend/app/services/regression_prevention_service.py, backend/app/services/session_service.py. The containing category is Backend domain contracts.
 
 #### Simplified pseudocode
 
@@ -4245,7 +4245,7 @@ This service coordinates the Prevention Rule Service domain boundary. It combine
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Prevention Rule Service. Its extracted size is 225 lines and 756 lexical tokens; the source digest begins d2ce44ca483c.
+It exists to provide a coherent Python module boundary for Prevention Rule Service. Its extracted size is 264 lines and 858 lexical tokens; the source digest begins 932bfa25b74c.
 
 #### Important symbols
 
@@ -8383,7 +8383,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Incident Models. Its extracted size is 522 lines and 1698 lexical tokens; the source digest begins 0535a11593e1.
+It exists to provide a coherent test boundary for Test Incident Models. Its extracted size is 559 lines and 1824 lexical tokens; the source digest begins 065af56004a5.
 
 #### Important symbols
 
@@ -8916,11 +8916,11 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Prevention Rule Service. Its extracted size is 146 lines and 437 lexical tokens; the source digest begins b6fcff885c51.
+It exists to provide a coherent test boundary for Test Prevention Rule Service. Its extracted size is 189 lines and 565 lexical tokens; the source digest begins 7b146a0c98a4.
 
 #### Important symbols
 
-Important exported or declared symbols/sections identified by static inspection: _incident, test_rule_candidates_require_two_independent_supported_run_shas, _Cursor, _Incidents, _Rules, test_rule_refresh_is_scoped_and_persists_only_advisory_metadata, test_rule_invalidation_is_scoped_to_a_corrected_incident. These names are a navigation aid, not a claim that every symbol is externally public.
+Important exported or declared symbols/sections identified by static inspection: _incident, test_rule_candidates_require_two_independent_supported_run_shas, _Cursor, _Incidents, _Rules, _ReadableRules, test_rule_refresh_is_scoped_and_persists_only_advisory_metadata. These names are a navigation aid, not a claim that every symbol is externally public.
 
 #### Connections
 
@@ -10768,7 +10768,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/routes/route.ts. Potential consumers found through bounded textual/import analysis: client/src/components/sidebar/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components.
+Static in-repository dependencies: client/src/routes/route-guard.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/sidebar/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -10791,7 +10791,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/components/sidebar/navitems.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/routes/route.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/components/sidebar/navitems.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/routes/route-guard.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/components/sidebar/session-search-dialog.tsx`
 
@@ -11342,7 +11342,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts, client/src/components/ui/button.tsx, client/src/components/ui/input.tsx, client/src/components/ui/textarea.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/prompt-input.tsx, client/src/components/ui/command.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend components.
+Static in-repository dependencies: client/src/lib/utils.ts, client/src/components/ui/button.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/textarea.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/prompt-input.tsx, client/src/components/ui/command.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -11365,7 +11365,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/components/ui/input-group.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/lib/utils.ts, client/src/components/ui/button.tsx, client/src/components/ui/input.tsx, client/src/components/ui/textarea.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/components/ui/input-group.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/lib/utils.ts, client/src/components/ui/button.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/textarea.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/components/ui/input.tsx`
 
@@ -11670,7 +11670,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/hooks/use-mobile.ts, client/src/lib/utils.ts, client/src/components/ui/button.tsx, client/src/components/ui/input.tsx, client/src/components/ui/separator.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/sidebar/chat-sessions.tsx, client/src/components/sidebar/index.tsx, client/src/components/sidebar/navitems.tsx, client/src/index.css. The containing category is Frontend components.
+Static in-repository dependencies: client/src/hooks/use-mobile.ts, client/src/lib/utils.ts, client/src/components/ui/button.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/separator.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/sidebar/chat-sessions.tsx, client/src/components/sidebar/index.tsx, client/src/components/sidebar/navitems.tsx, client/src/index.css. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -11693,7 +11693,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/components/ui/sidebar.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/hooks/use-mobile.ts, client/src/lib/utils.ts, client/src/components/ui/button.tsx, client/src/components/ui/input.tsx, client/src/components/ui/separator.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/components/ui/sidebar.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/hooks/use-mobile.ts, client/src/lib/utils.ts, client/src/components/ui/button.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/separator.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/components/ui/skeleton.tsx`
 
@@ -12203,7 +12203,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/sidebar/index.tsx, client/src/components/ui/sidebar.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, client/src/routes/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend application.
+Static in-repository dependencies: client/src/components/sidebar/session-search-dialog.tsx, client/src/components/ui/sidebar.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, client/src/routes/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend application.
 
 #### Simplified pseudocode
 
@@ -12226,7 +12226,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/layouts/app-layout.tsx is a TypeScript module that owns a focused part of frontend application. Related files: client/src/components/sidebar/index.tsx, client/src/components/ui/sidebar.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/layouts/app-layout.tsx is a TypeScript module that owns a focused part of frontend application. Related files: client/src/components/sidebar/session-search-dialog.tsx, client/src/components/ui/sidebar.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/layouts/base-layout.tsx`
 
@@ -12277,7 +12277,7 @@ This frontend module implements part of the frontend api and utilities surface. 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Api. Its extracted size is 683 lines and 1925 lexical tokens; the source digest begins 338c00876bc7.
+It exists to provide a coherent TypeScript module boundary for Api. Its extracted size is 694 lines and 1952 lexical tokens; the source digest begins b23d1beeb977.
 
 #### Important symbols
 
@@ -12777,7 +12777,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/logo.tsx, client/src/components/mode-toggle.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/button.tsx, client/src/routes/route.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
+Static in-repository dependencies: client/src/components/logo.tsx, client/src/components/mode-toggle.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/button.tsx, client/src/routes/route-guard.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
 
 #### Simplified pseudocode
 
@@ -12800,7 +12800,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/pages/guide/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/logo.tsx, client/src/components/mode-toggle.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/button.tsx, client/src/routes/route.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/pages/guide/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/logo.tsx, client/src/components/mode-toggle.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/button.tsx, client/src/routes/route-guard.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/pages/home/index.tsx`
 
@@ -12818,7 +12818,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/chat/tool-parts.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
+Static in-repository dependencies: client/src/components/chat/chat-input.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
 
 #### Simplified pseudocode
 
@@ -12841,7 +12841,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/pages/home/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/chat/tool-parts.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/pages/home/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/chat/chat-input.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/pages/incidents/index.tsx`
 
@@ -12851,15 +12851,15 @@ This frontend module implements part of the frontend pages surface. It composes 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Index. Its extracted size is 500 lines and 4325 lexical tokens; the source digest begins 1ad487d6a7dc.
+It exists to provide a coherent TypeScript module boundary for Index. Its extracted size is 552 lines and 4771 lexical tokens; the source digest begins a7c920cc1888.
 
 #### Important symbols
 
-Important exported or declared symbols/sections identified by static inspection: prettify, shortSha, EMPTY_INCIDENTS, EMPTY_SESSIONS, dateTime, parsed, listValue. These names are a navigation aid, not a claim that every symbol is externally public.
+Important exported or declared symbols/sections identified by static inspection: prettify, shortSha, EMPTY_INCIDENTS, EMPTY_SESSIONS, EMPTY_PREVENTION_RULES, dateTime, parsed. These names are a navigation aid, not a claim that every symbol is externally public.
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/ui/badge.tsx, client/src/components/ui/button.tsx, client/src/components/ui/input.tsx, client/src/components/ui/textarea.tsx, client/src/components/ui/skeleton.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
+Static in-repository dependencies: client/src/components/ui/badge.tsx, client/src/components/ui/button.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/textarea.tsx, client/src/components/ui/skeleton.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
 
 #### Simplified pseudocode
 
@@ -12882,7 +12882,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/pages/incidents/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/ui/badge.tsx, client/src/components/ui/button.tsx, client/src/components/ui/input.tsx, client/src/components/ui/textarea.tsx, client/src/components/ui/skeleton.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/pages/incidents/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/ui/badge.tsx, client/src/components/ui/button.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/textarea.tsx, client/src/components/ui/skeleton.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/pages/not-found/index.tsx`
 
@@ -12941,7 +12941,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/chat/tool-parts.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/textarea.tsx, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
+Static in-repository dependencies: client/src/components/chat/chat-input.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/textarea.tsx, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
 
 #### Simplified pseudocode
 
@@ -12964,7 +12964,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/pages/session/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/chat/tool-parts.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/textarea.tsx, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/pages/session/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/chat/chat-input.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/textarea.tsx, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/routes/index.tsx`
 
@@ -13220,11 +13220,11 @@ This frontend module implements part of the frontend contracts surface. It compo
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Incident.Type. Its extracted size is 156 lines and 355 lexical tokens; the source digest begins 17980f63b3f3.
+It exists to provide a coherent TypeScript module boundary for Incident.Type. Its extracted size is 175 lines and 406 lexical tokens; the source digest begins f7c69dfdead6.
 
 #### Important symbols
 
-Important exported or declared symbols/sections identified by static inspection: IncidentRecord, IncidentsResponse, IncidentFeedbackInput, FlakyTestObservation, RepositoryAutomationSettings, RepositoryAutomationSettingsInput, CandidateVerificationSettings. These names are a navigation aid, not a claim that every symbol is externally public.
+Important exported or declared symbols/sections identified by static inspection: IncidentRecord, IncidentsResponse, IncidentFeedbackInput, FlakyTestObservation, PreventionRule, RepositoryAutomationSettings, RepositoryAutomationSettingsInput. These names are a navigation aid, not a claim that every symbol is externally public.
 
 #### Connections
 
@@ -14148,7 +14148,7 @@ This documentation file records the repository's current guidance for Implementa
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Implementation Gap Analysis. Its extracted size is 103 lines and 1283 lexical tokens; the source digest begins 46970ad00033.
+It exists to provide a coherent documentation boundary for Implementation Gap Analysis. Its extracted size is 103 lines and 1309 lexical tokens; the source digest begins 20e8677409bf.
 
 #### Important symbols
 
@@ -14228,7 +14228,7 @@ This documentation file records the repository's current guidance for Implementa
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Implementation Status. Its extracted size is 158 lines and 3791 lexical tokens; the source digest begins e526f0412cbc.
+It exists to provide a coherent documentation boundary for Implementation Status. Its extracted size is 169 lines and 3912 lexical tokens; the source digest begins 77f3f838ba69.
 
 #### Important symbols
 
