@@ -1,7 +1,7 @@
 {
   "schemaVersion": "base64-ops-source-inventory-v1",
-  "generatedAt": "2026-10-14T00:27:36.001460+00:00",
-  "analyzedCommit": "23e19e9113746427b994b7665889b8d3ca2da3a5",
+  "generatedAt": "2026-10-14T00:29:56.433811+00:00",
+  "analyzedCommit": "30e4c72f4bb7e5ec5f8a21335b15ef49cdd4b969",
   "repositoryState": "M backend/.gitignore\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
   "totalTrackedFiles": 387,
   "includedCount": 367,
@@ -6151,7 +6151,7 @@
         "NavItems"
       ],
       "dependencies": [
-        "client/src/routes/route-guard.tsx"
+        "client/src/routes/route.ts"
       ],
       "dependents": [
         "client/src/components/sidebar/index.tsx",
@@ -7005,7 +7005,7 @@
         "AppLayout"
       ],
       "dependencies": [
-        "client/src/components/sidebar/chat-sessions.tsx",
+        "client/src/components/sidebar/index.tsx",
         "client/src/components/ui/sidebar.tsx"
       ],
       "dependents": [
@@ -7365,7 +7365,7 @@
         "client/src/components/mode-toggle.tsx",
         "client/src/components/ui/badge.tsx",
         "client/src/components/ui/button.tsx",
-        "client/src/routes/route-guard.tsx"
+        "client/src/routes/route.ts"
       ],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -7387,7 +7387,7 @@
         "location"
       ],
       "dependencies": [
-        "client/src/components/chat/index.tsx"
+        "client/src/components/chat/chat-input.tsx"
       ],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -7464,7 +7464,7 @@
         "pathsReferToSameFile"
       ],
       "dependencies": [
-        "client/src/components/chat/index.tsx",
+        "client/src/components/chat/chat-input.tsx",
         "client/src/components/ui/badge.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/components/ide-workspace.tsx",
@@ -7476,9 +7476,9 @@
         "backend/.env.example",
         "backend/README.md"
       ],
-      "lines": 2265,
-      "sha256": "7dddf1595b94e0c4be4e9674ed52f6dd542710affa88a6e0e4489aae6d735056",
-      "word_count": 8790
+      "lines": 2279,
+      "sha256": "31981de934d39787d66ff49be14dd5925fadc51f755eecc91b762b6c67cf138e",
+      "word_count": 8846
     },
     {
       "path": "client/src/routes/index.tsx",
@@ -8142,8 +8142,8 @@
         "docs/reports/source-file-inventory.json"
       ],
       "lines": 103,
-      "sha256": "ab57bc8e548782e356a7745310454c2950f5d47628a3065fa7e63b9d1b2946cc",
-      "word_count": 1275
+      "sha256": "46970ad00033e6d82f20761cfb9c437d456dc48c05478cf85dc0d042015fa311",
+      "word_count": 1283
     },
     {
       "path": "docs/IMPLEMENTATION_PROGRESS.md",
@@ -8185,8 +8185,8 @@
         "docs/reports/source-file-inventory.json"
       ],
       "lines": 156,
-      "sha256": "222da0304cefbbe4f582ca507ddc3111fa487543719d426591b5afdb2132786d",
-      "word_count": 3730
+      "sha256": "58d28b8e146266eb0647ac1d5d8ba20833cab1db32920de7b2dc1c2ba053e761",
+      "word_count": 3736
     },
     {
       "path": "docs/INTERVIEW_TALK_TRACK.md",
