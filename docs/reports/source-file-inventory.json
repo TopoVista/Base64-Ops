@@ -1,7 +1,7 @@
 {
   "schemaVersion": "base64-ops-source-inventory-v1",
-  "generatedAt": "2026-10-14T04:24:34.379157+00:00",
-  "analyzedCommit": "316fa8d6498623a6659eb240de1050aa44021bb5",
+  "generatedAt": "2026-10-14T04:27:32.461112+00:00",
+  "analyzedCommit": "3fc29e5aec5da23ebc04166fca63920d723bea02",
   "repositoryState": "M backend/.gitignore\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
   "totalTrackedFiles": 389,
   "includedCount": 368,
@@ -7079,7 +7079,7 @@
       "endpoints": [],
       "dependencies": [
         "client/src/components/ui/avatar.tsx",
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/collapsible.tsx",
         "client/src/lib/utils.ts"
       ],
@@ -7117,7 +7117,7 @@
       ],
       "endpoints": [],
       "dependencies": [
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/lib/utils.ts"
       ],
       "dependents": [
@@ -7155,6 +7155,7 @@
       ],
       "endpoints": [],
       "dependencies": [
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/tooltip.tsx",
         "client/src/lib/utils.ts"
@@ -7458,7 +7459,7 @@
       "endpoints": [],
       "dependencies": [
         "client/src/components/diff-viewer.tsx",
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/lib/api.ts"
       ],
@@ -7621,7 +7622,7 @@
       ],
       "endpoints": [],
       "dependencies": [
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/dropdown-menu.tsx",
         "client/src/components/theme-provider.tsx"
       ],
@@ -7661,7 +7662,7 @@
       "endpoints": [],
       "dependencies": [
         "client/src/lib/api.ts",
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/scroll-area.tsx",
         "client/src/components/ui/textarea.tsx"
       ],
@@ -7769,7 +7770,7 @@
       ],
       "endpoints": [],
       "dependencies": [
-        "client/src/routes/route-guard.tsx"
+        "client/src/routes/route.ts"
       ],
       "dependents": [
         "client/src/components/sidebar/index.tsx",
@@ -8096,7 +8097,7 @@
       "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button-group.tsx"
+        "client/src/components/ui/button.tsx"
       ],
       "dependents": [
         "client/src/components/ai-elements/prompt-input.tsx",
@@ -8228,7 +8229,7 @@
       "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/input.tsx",
         "client/src/components/ui/textarea.tsx"
       ],
@@ -8441,7 +8442,7 @@
       "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button-group.tsx"
+        "client/src/components/ui/button.tsx"
       ],
       "dependents": [
         "client/index.html",
@@ -8480,7 +8481,7 @@
       "dependencies": [
         "client/src/hooks/use-mobile.ts",
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/input.tsx",
         "client/src/components/ui/separator.tsx"
       ],
@@ -8844,7 +8845,7 @@
       ],
       "endpoints": [],
       "dependencies": [
-        "client/src/components/sidebar/index.tsx",
+        "client/src/components/sidebar/chat-sessions.tsx",
         "client/src/components/ui/sidebar.tsx"
       ],
       "dependents": [
@@ -9161,7 +9162,7 @@
       ],
       "endpoints": [],
       "dependencies": [
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/badge.tsx",
         "client/src/lib/api.ts"
       ],
@@ -9297,8 +9298,8 @@
         "client/src/components/logo.tsx",
         "client/src/components/mode-toggle.tsx",
         "client/src/components/ui/badge.tsx",
-        "client/src/components/ui/button-group.tsx",
-        "client/src/routes/route-guard.tsx"
+        "client/src/components/ui/button.tsx",
+        "client/src/routes/route.ts"
       ],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -9325,7 +9326,7 @@
       ],
       "endpoints": [],
       "dependencies": [
-        "client/src/components/chat/tool-parts.tsx"
+        "client/src/components/chat/chat-input.tsx"
       ],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -9363,7 +9364,7 @@
       "endpoints": [],
       "dependencies": [
         "client/src/components/ui/badge.tsx",
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/input.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/components/ui/skeleton.tsx"
@@ -9427,7 +9428,7 @@
       ],
       "endpoints": [],
       "dependencies": [
-        "client/src/components/chat/tool-parts.tsx",
+        "client/src/components/chat/chat-input.tsx",
         "client/src/components/ui/badge.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/components/ide-workspace.tsx",
@@ -10194,9 +10195,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
         "docs/reports/source-file-inventory.json"
       ],
-      "lines": 103,
-      "sha256": "20e8677409bf2175bc3ca69993955c5d9971d846f36d7d24bfb57ae42cfad6af",
-      "word_count": 1309
+      "lines": 106,
+      "sha256": "3b1b2c71ed84a7221857904d58270063878243e887efca981478e7e1bebbb264",
+      "word_count": 1336
     },
     {
       "path": "docs/IMPLEMENTATION_PROGRESS.md",
@@ -10240,7 +10241,7 @@
         "docs/IMPLEMENTATION_AUDIT.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
-        "docs/reports/document-generation-report.md"
+        "docs/reports/source-file-inventory.json"
       ],
       "lines": 180,
       "sha256": "d3e01394e8e625cfeac608173b80cba5f8fec92237ee69a728837432d5ae6eed",
