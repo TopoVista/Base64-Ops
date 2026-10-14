@@ -1,0 +1,6 @@
+# Reproducible dependencies for scripts/generate_engineering_book.py.
+# Install with:
+#   backend/venv/Scripts/python.exe -m pip install -r scripts/requirements-engineering-book.txt
+pypdf==6.20.1
+pypdfium2==5.14.0
+reportlab==5.0.1

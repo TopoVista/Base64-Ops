@@ -8,6 +8,7 @@ constructed one-at-a-time so an included file cannot share a page with another
 file's reference entry.
 
 Usage (from repository root):
+    python -m pip install -r scripts/requirements-engineering-book.txt
     python scripts/generate_engineering_book.py
     python scripts/generate_engineering_book.py --render-samples
     python scripts/generate_engineering_book.py --render-samples --visual-verified
