@@ -50,9 +50,9 @@
 > `scripts/generate_engineering_book.py` generator produced
 > `docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf` and its
 > Markdown source, source inventory, coverage report, and generation report.
-> The current edition contains 365 relevant tracked
-> source/documentation/test/configuration files, 365 dedicated reference pages,
-> and 421 PDF pages. Structural validation found zero missing or duplicate file
+> The current edition contains 367 relevant tracked
+> source/documentation/test/configuration files, 367 dedicated reference pages,
+> and 423 PDF pages. Structural validation found zero missing or duplicate file
 > pages; representative rendered pages were manually inspected. The documented
 > install command is now `backend/venv/Scripts/python.exe -m pip install -r
 > scripts/requirements-engineering-book.txt`. Live GitHub, Atlas, Clerk,
