@@ -1,7 +1,7 @@
 {
   "schemaVersion": "base64-ops-source-inventory-v1",
-  "generatedAt": "2026-10-14T04:03:04.998902+00:00",
-  "analyzedCommit": "4a208290e878787a80f3f3f05d1514c43b8757a7",
+  "generatedAt": "2026-10-14T04:11:22.264311+00:00",
+  "analyzedCommit": "2f3fd3ab6959764053a38ba79f421d20783de1d0",
   "repositoryState": "M backend/.gitignore\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
   "totalTrackedFiles": 389,
   "includedCount": 368,
@@ -2462,9 +2462,9 @@
         "backend/app/workers/worker.py",
         "backend/tests/test_rag_chunking.py"
       ],
-      "lines": 330,
-      "sha256": "58ee57492adf8725d973f52664ed1007db8aba5187301b5a135cb076d2a64730",
-      "word_count": 1224
+      "lines": 449,
+      "sha256": "a941a0459313aea925ada4297ff86332f56d4ab88ca047a51059796829fdf42e",
+      "word_count": 1687
     },
     {
       "path": "backend/app/services/redaction_service.py",
@@ -2603,8 +2603,8 @@
       "dependents": [
         "backend/app/services/rag_service.py",
         "backend/tests/test_rag_chunking.py",
-        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
-        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf"
+        "docs/IMPLEMENTATION_STATUS.md",
+        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md"
       ],
       "lines": 12,
       "sha256": "ecf51d171383beb5e06518a2c4c77f789aabd562b5345cf9e529a7d266937e3d",
@@ -5097,9 +5097,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
         "docs/reports/source-file-inventory.json"
       ],
-      "lines": 217,
-      "sha256": "ddb52bae7b9fb340c93c997fb28b873a48b667d854f3c7d00eda348780380dc0",
-      "word_count": 795
+      "lines": 265,
+      "sha256": "03d28e253b20ce6792990bd1e1ffcb08ff28ae34e238bebdb089a41e02570313",
+      "word_count": 992
     },
     {
       "path": "backend/tests/test_razorpay_security.py",
@@ -5625,7 +5625,7 @@
       ],
       "dependencies": [
         "client/src/components/ui/avatar.tsx",
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/collapsible.tsx",
         "client/src/lib/utils.ts"
       ],
@@ -5654,7 +5654,7 @@
         "ConversationScrollButtonProps"
       ],
       "dependencies": [
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/lib/utils.ts"
       ],
       "dependents": [
@@ -5682,7 +5682,6 @@
         "MessageActionProps"
       ],
       "dependencies": [
-        "client/src/components/ui/button.tsx",
         "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/tooltip.tsx",
         "client/src/lib/utils.ts"
@@ -5914,7 +5913,7 @@
       ],
       "dependencies": [
         "client/src/components/diff-viewer.tsx",
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/lib/api.ts"
       ],
@@ -6041,7 +6040,7 @@
         "ModeToggle"
       ],
       "dependencies": [
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/dropdown-menu.tsx",
         "client/src/components/theme-provider.tsx"
       ],
@@ -6071,7 +6070,7 @@
       ],
       "dependencies": [
         "client/src/lib/api.ts",
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/scroll-area.tsx",
         "client/src/components/ui/textarea.tsx"
       ],
@@ -6411,7 +6410,7 @@
       ],
       "dependencies": [
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button.tsx"
+        "client/src/components/ui/button-group.tsx"
       ],
       "dependents": [
         "client/src/components/ai-elements/prompt-input.tsx",
@@ -6516,7 +6515,7 @@
       ],
       "dependencies": [
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/input.tsx",
         "client/src/components/ui/textarea.tsx"
       ],
@@ -6685,7 +6684,7 @@
       ],
       "dependencies": [
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button.tsx"
+        "client/src/components/ui/button-group.tsx"
       ],
       "dependents": [
         "client/index.html",
@@ -6714,7 +6713,7 @@
       "dependencies": [
         "client/src/hooks/use-mobile.ts",
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/input.tsx",
         "client/src/components/ui/separator.tsx"
       ],
@@ -7006,7 +7005,7 @@
         "AppLayout"
       ],
       "dependencies": [
-        "client/src/components/sidebar/index.tsx",
+        "client/src/components/sidebar/session-search-dialog.tsx",
         "client/src/components/ui/sidebar.tsx"
       ],
       "dependents": [
@@ -7257,7 +7256,7 @@
         "plan"
       ],
       "dependencies": [
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/badge.tsx",
         "client/src/lib/api.ts"
       ],
@@ -7365,7 +7364,7 @@
         "client/src/components/logo.tsx",
         "client/src/components/mode-toggle.tsx",
         "client/src/components/ui/badge.tsx",
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/routes/route-guard.tsx"
       ],
       "dependents": [
@@ -7388,7 +7387,7 @@
         "location"
       ],
       "dependencies": [
-        "client/src/components/chat/index.tsx"
+        "client/src/components/chat/chat-input.tsx"
       ],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -7416,7 +7415,7 @@
       ],
       "dependencies": [
         "client/src/components/ui/badge.tsx",
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/input.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/components/ui/skeleton.tsx"
@@ -7465,7 +7464,7 @@
         "pathsReferToSameFile"
       ],
       "dependencies": [
-        "client/src/components/chat/index.tsx",
+        "client/src/components/chat/chat-input.tsx",
         "client/src/components/ui/badge.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/components/ide-workspace.tsx",
@@ -8117,9 +8116,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf"
       ],
-      "lines": 94,
-      "sha256": "4e06c415cb42ebeb7149eefd763bee005146d3897419ac32e5fbd49a7eabccf0",
-      "word_count": 982
+      "lines": 96,
+      "sha256": "bb11fbaa47d775ced83b01b97a0bf69201932339cba175a4e8846216f14bd73b",
+      "word_count": 1010
     },
     {
       "path": "docs/IMPLEMENTATION_GAP_ANALYSIS.md",
@@ -8186,9 +8185,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
         "docs/reports/source-file-inventory.json"
       ],
-      "lines": 169,
-      "sha256": "77f3f838ba6915f27510a6f8a7a7d3a1f61186fa547837410fbd3ffc2ae8e7ee",
-      "word_count": 3912
+      "lines": 178,
+      "sha256": "b8f8ab6b710162f23c4076e986e163e15ed29026a05d99e508380d076cec31e1",
+      "word_count": 4040
     },
     {
       "path": "docs/INTERVIEW_TALK_TRACK.md",
