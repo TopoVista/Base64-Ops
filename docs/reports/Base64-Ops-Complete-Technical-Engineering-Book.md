@@ -4,8 +4,8 @@
 *An Evidence First AI DevOps Engineering System From Product Problem to Individual Source Files*
 
 - Repository: https://github.com/TopoVista/Base64-Ops
-- Generated: 2026-10-14 04:12 UTC
-- Analyzed commit: `b4f8d8c719632279f3210e62f6a4da9cec6f9322`
+- Generated: 2026-10-14 04:23 UTC
+- Analyzed commit: `40614de947f947aa5b92d06d36c4baf10de43f8b`
 - Scope: Git-tracked source at the recorded commit. Generated outputs, secrets, ignored environment files, decorative assets, and lockfiles are excluded by the accompanying inventory.
 - Verification statement: architecture claims are derived from checked-in code and local deterministic tests. External providers and deployed environments are called out as unverified when no live evidence was available.
 
@@ -188,7 +188,7 @@ This YAML configuration is part of the continuous integration configuration laye
 
 #### Key responsibilities
 
-It exists to provide a coherent YAML configuration boundary for Ci. Its extracted size is 103 lines and 260 lexical tokens; the source digest begins 5d76068fba46.
+It exists to provide a coherent YAML configuration boundary for Ci. Static inspection found 5 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 103 lines and 260 lexical tokens; the source digest begins 5d76068fba46.
 
 #### Important symbols
 
@@ -196,7 +196,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, .github/workflows/deployment-readiness.yml, .github/workflows/live-evals.yml. The containing category is Continuous integration configuration.
+Static imports or declared workflow actions: actions/setup-python@v5, actions/setup-node@v4. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, .github/workflows/deployment-readiness.yml, .github/workflows/live-evals.yml. The containing category is Continuous integration configuration; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -215,7 +215,7 @@ It participates when GitHub Actions evaluates repository automation. Base64 Ops 
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -229,7 +229,7 @@ This YAML configuration is part of the continuous integration configuration laye
 
 #### Key responsibilities
 
-It exists to provide a coherent YAML configuration boundary for Deployment Readiness. Its extracted size is 48 lines and 125 lexical tokens; the source digest begins ceaec5bb7d72.
+It exists to provide a coherent YAML configuration boundary for Deployment Readiness. Static inspection found 4 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 48 lines and 125 lexical tokens; the source digest begins ceaec5bb7d72.
 
 #### Important symbols
 
@@ -237,7 +237,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Continuous integration configuration.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Continuous integration configuration; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -256,7 +256,7 @@ It participates when GitHub Actions evaluates repository automation. Base64 Ops 
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -270,7 +270,7 @@ This YAML configuration is part of the continuous integration configuration laye
 
 #### Key responsibilities
 
-It exists to provide a coherent YAML configuration boundary for Live Evals. Its extracted size is 53 lines and 155 lexical tokens; the source digest begins 85b6e6225e4a.
+It exists to provide a coherent YAML configuration boundary for Live Evals. Static inspection found 5 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 53 lines and 155 lexical tokens; the source digest begins 85b6e6225e4a.
 
 #### Important symbols
 
@@ -278,7 +278,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md, docs/LIVE_EVALUATION.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Continuous integration configuration.
+Static imports or declared workflow actions: actions/setup-python@v5. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md, docs/LIVE_EVALUATION.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Continuous integration configuration; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -297,7 +297,7 @@ It participates when GitHub Actions evaluates repository automation. Base64 Ops 
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -311,7 +311,7 @@ This documentation file records the repository's current guidance for Readme. It
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Readme. Its extracted size is 89 lines and 611 lexical tokens; the source digest begins 0cab31b281e6.
+It exists to provide a coherent documentation boundary for Readme. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 89 lines and 611 lexical tokens; the source digest begins 0cab31b281e6.
 
 #### Important symbols
 
@@ -319,7 +319,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/docs/CONTEXT_ENGINEERING.md, backend/evals/cases/prompt-injection.json, backend/evals/cases/stale-readme.json, backend/tests/test_load_harness_safety.py. The containing category is Repository reference.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/docs/CONTEXT_ENGINEERING.md, backend/evals/cases/prompt-injection.json, backend/evals/cases/stale-readme.json, backend/tests/test_load_harness_safety.py. The containing category is Repository reference; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -337,7 +337,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -351,7 +351,7 @@ This configuration is part of the project configuration layer. It supplies the r
 
 #### Key responsibilities
 
-It exists to provide a coherent configuration boundary for .Env. Its extracted size is 161 lines and 962 lexical tokens; the source digest begins e4f672829ffd.
+It exists to provide a coherent configuration boundary for .Env. Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 161 lines and 962 lexical tokens; the source digest begins e4f672829ffd.
 
 #### Important symbols
 
@@ -359,7 +359,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/README.md. The containing category is Project configuration.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/README.md. The containing category is Project configuration; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -378,7 +378,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -392,7 +392,7 @@ This configuration is part of the deployment configuration layer. It supplies th
 
 #### Key responsibilities
 
-It exists to provide a coherent configuration boundary for Dockerfile. Its extracted size is 19 lines and 67 lexical tokens; the source digest begins 7e4c2e05d2ee.
+It exists to provide a coherent configuration boundary for Dockerfile. Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 19 lines and 67 lexical tokens; the source digest begins 7e4c2e05d2ee.
 
 #### Important symbols
 
@@ -400,7 +400,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/execution/docker_runtime.py, backend/app/services/workspace_service.py, backend/tests/test_agent_policy.py, backend/tests/test_redaction_and_investigation.py. The containing category is Deployment configuration.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/execution/docker_runtime.py, backend/app/services/workspace_service.py, backend/tests/test_agent_policy.py, backend/tests/test_redaction_and_investigation.py. The containing category is Deployment configuration; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -419,7 +419,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -433,7 +433,7 @@ This documentation file records the repository's current guidance for Readme. It
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Readme. Its extracted size is 27 lines and 122 lexical tokens; the source digest begins f1600ae0ad40.
+It exists to provide a coherent documentation boundary for Readme. Static inspection found 4 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 27 lines and 122 lexical tokens; the source digest begins f1600ae0ad40.
 
 #### Important symbols
 
@@ -441,7 +441,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/docs/CONTEXT_ENGINEERING.md, backend/evals/cases/prompt-injection.json, backend/evals/cases/stale-readme.json, backend/tests/test_load_harness_safety.py. The containing category is Repository reference.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/docs/CONTEXT_ENGINEERING.md, backend/evals/cases/prompt-injection.json, backend/evals/cases/stale-readme.json, backend/tests/test_load_harness_safety.py. The containing category is Repository reference; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -459,7 +459,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -473,7 +473,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for   Init  . Its extracted size is 1 lines and 5 lexical tokens; the source digest begins f68b575ce78a.
+It exists to provide a coherent Python module boundary for   Init  . Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 5 lexical tokens; the source digest begins f68b575ce78a.
 
 #### Important symbols
 
@@ -481,7 +481,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Backend platform.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -500,7 +500,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -514,7 +514,7 @@ This Python module contributes to the langgraph agent orchestration subsystem. I
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Graph. Its extracted size is 1520 lines and 5424 lexical tokens; the source digest begins ff4c66dc9c9a.
+It exists to provide a coherent Python module boundary for Graph. Static inspection found 3 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 1520 lines and 5424 lexical tokens; the source digest begins ff4c66dc9c9a.
 
 #### Important symbols
 
@@ -522,7 +522,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/agent/policy.py, backend/app/agent/prompts.py, backend/app/agent/state.py, backend/app/agent/tools.py, backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: backend/.env.example, backend/app/agent/state.py, backend/app/api/routes/session.py, backend/app/billing/usage_service.py. The containing category is LangGraph agent orchestration.
+Static imports or declared workflow actions: re, time, pathlib, typing, httpx, langchain_openai, langgraph.checkpoint.memory. Resolved in-repository dependencies: backend/app/agent/policy.py, backend/app/agent/prompts.py, backend/app/agent/state.py, backend/app/agent/tools.py, backend/app/core/config.py. Potential consumers from bounded textual/import analysis: backend/.env.example, backend/app/agent/state.py, backend/app/api/routes/session.py, backend/app/billing/usage_service.py. The containing category is LangGraph agent orchestration; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -541,7 +541,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -555,7 +555,7 @@ This Python module contributes to the langgraph agent orchestration subsystem. I
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Policy. Its extracted size is 79 lines and 224 lexical tokens; the source digest begins 4fc1c3897628.
+It exists to provide a coherent Python module boundary for Policy. Static inspection found 5 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 79 lines and 224 lexical tokens; the source digest begins 4fc1c3897628.
 
 #### Important symbols
 
@@ -563,7 +563,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/agent/state.py. Potential consumers found through bounded textual/import analysis: README.md, backend/app/agent/graph.py, backend/app/core/agent_run_guard.py, backend/app/core/failures.py. The containing category is LangGraph agent orchestration.
+Static imports or declared workflow actions: app.agent.state, app.policy. Resolved in-repository dependencies: backend/app/agent/state.py. Potential consumers from bounded textual/import analysis: README.md, backend/app/agent/graph.py, backend/app/core/agent_run_guard.py, backend/app/core/failures.py. The containing category is LangGraph agent orchestration; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -582,7 +582,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -596,7 +596,7 @@ This Python module contributes to the langgraph agent orchestration subsystem. I
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Prompts. Its extracted size is 35 lines and 217 lexical tokens; the source digest begins 9e326f92cfec.
+It exists to provide a coherent Python module boundary for Prompts. Static inspection found 2 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 35 lines and 217 lexical tokens; the source digest begins 9e326f92cfec.
 
 #### Important symbols
 
@@ -604,7 +604,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/state.py, backend/app/api/routes/assistant.py, backend/app/schemas/assistant.py. The containing category is LangGraph agent orchestration.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/state.py, backend/app/api/routes/assistant.py, backend/app/schemas/assistant.py. The containing category is LangGraph agent orchestration; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -623,7 +623,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -637,7 +637,7 @@ This Python module contributes to the langgraph agent orchestration subsystem. I
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for State. Its extracted size is 66 lines and 277 lexical tokens; the source digest begins 4b1e1e449535.
+It exists to provide a coherent Python module boundary for State. Static inspection found 2 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 66 lines and 277 lexical tokens; the source digest begins 4b1e1e449535.
 
 #### Important symbols
 
@@ -645,7 +645,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, README.md, backend/.env.example, backend/app/agent/graph.py. The containing category is LangGraph agent orchestration.
+Static imports or declared workflow actions: typing. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/taste.md, README.md, backend/.env.example, backend/app/agent/graph.py. The containing category is LangGraph agent orchestration; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -664,7 +664,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -678,7 +678,7 @@ This Python module contributes to the langgraph agent orchestration subsystem. I
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Tools. Its extracted size is 45 lines and 180 lexical tokens; the source digest begins 07f611fcd41a.
+It exists to provide a coherent Python module boundary for Tools. Static inspection found 1 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 45 lines and 180 lexical tokens; the source digest begins 07f611fcd41a.
 
 #### Important symbols
 
@@ -686,7 +686,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/services/workspace_service.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/policy.py, backend/app/core/config.py, backend/evals/cases/actions-path.json. The containing category is LangGraph agent orchestration.
+Static imports or declared workflow actions: pathlib, typing, app.services.workspace_service. Resolved in-repository dependencies: backend/app/services/workspace_service.py. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/policy.py, backend/app/core/config.py, backend/evals/cases/actions-path.json. The containing category is LangGraph agent orchestration; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -705,7 +705,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -719,7 +719,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Deps. Its extracted size is 192 lines and 778 lexical tokens; the source digest begins fafa5bcf4c17.
+It exists to provide a coherent Python module boundary for Deps. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 192 lines and 778 lexical tokens; the source digest begins fafa5bcf4c17.
 
 #### Important symbols
 
@@ -727,7 +727,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py, backend/app/db/mongo.py, backend/app/utils/datetime.py, backend/app/utils/ids.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/assistant.py, backend/app/api/routes/auth.py, backend/app/api/routes/billing.py, backend/app/api/routes/dev.py. The containing category is Backend platform.
+Static imports or declared workflow actions: typing, jwt, fastapi, pymongo.errors, app.core.config, app.db.mongo, app.utils.datetime. Resolved in-repository dependencies: backend/app/core/config.py, backend/app/db/mongo.py, backend/app/utils/datetime.py, backend/app/utils/ids.py. Potential consumers from bounded textual/import analysis: backend/app/api/routes/assistant.py, backend/app/api/routes/auth.py, backend/app/api/routes/billing.py, backend/app/api/routes/dev.py. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -746,7 +746,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -760,7 +760,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Middleware. Its extracted size is 216 lines and 818 lexical tokens; the source digest begins d05a741c8b22.
+It exists to provide a coherent Python module boundary for Middleware. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 216 lines and 818 lexical tokens; the source digest begins d05a741c8b22.
 
 #### Important symbols
 
@@ -768,7 +768,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py, backend/app/core/rate_limit.py. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/app/main.py, backend/tests/test_http_protection.py. The containing category is Backend platform.
+Static imports or declared workflow actions: __future__, logging, ipaddress, fastapi, fastapi.responses, starlette.middleware.base, starlette.types. Resolved in-repository dependencies: backend/app/core/config.py, backend/app/core/rate_limit.py. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/app/main.py, backend/tests/test_http_protection.py. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -787,7 +787,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -801,7 +801,7 @@ This router exposes a tenant-aware FastAPI boundary for Assistant. It validates 
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Assistant. Its extracted size is 41 lines and 150 lexical tokens; the source digest begins 3c10695dcb05.
+It exists to provide a coherent Python module boundary for Assistant. Static inspection found 2 named symbols, 6 import/action references, and 2 explicit route decorators. Its extracted size is 41 lines and 150 lexical tokens; the source digest begins 3c10695dcb05.
 
 #### Important symbols
 
@@ -809,7 +809,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/api/deps.py, backend/app/billing/usage_service.py, backend/app/core/agent_run_guard.py, backend/app/schemas/assistant.py, backend/app/services/product_assistant_service.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/api/middleware.py, backend/app/main.py, backend/app/schemas/session.py. The containing category is Backend API routes.
+Static imports or declared workflow actions: fastapi, app.api.deps, app.billing.usage_service, app.core.agent_run_guard, app.schemas.assistant, app.services.product_assistant_service. Resolved in-repository dependencies: backend/app/api/deps.py, backend/app/billing/usage_service.py, backend/app/core/agent_run_guard.py, backend/app/schemas/assistant.py, backend/app/services/product_assistant_service.py. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/api/middleware.py, backend/app/main.py, backend/app/schemas/session.py. The containing category is Backend API routes; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -824,11 +824,11 @@ SURFACE limitations rather than granting new authority
 
 #### Workflow role
 
-It participates at the authenticated HTTP boundary, before service coordination and after browser-safe response projection.
+It participates at the authenticated HTTP boundary, before service coordination and after browser-safe response projection. Static decorator inspection found: GET /starter-prompts, POST /chat.
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -842,7 +842,7 @@ This router exposes a tenant-aware FastAPI boundary for Auth. It validates the r
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Auth. Its extracted size is 40 lines and 170 lexical tokens; the source digest begins c612b2cf62b1.
+It exists to provide a coherent Python module boundary for Auth. Static inspection found 3 named symbols, 4 import/action references, and 2 explicit route decorators. Its extracted size is 40 lines and 170 lexical tokens; the source digest begins c612b2cf62b1.
 
 #### Important symbols
 
@@ -850,7 +850,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/api/deps.py, backend/app/db/mongo.py, backend/app/services/serializers.py. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, .github/workflows/ci.yml, README.md. The containing category is Backend API routes.
+Static imports or declared workflow actions: fastapi, app.api.deps, app.db.mongo, app.services.serializers. Resolved in-repository dependencies: backend/app/api/deps.py, backend/app/db/mongo.py, backend/app/services/serializers.py. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, .github/workflows/ci.yml, README.md. The containing category is Backend API routes; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -865,11 +865,11 @@ SURFACE limitations rather than granting new authority
 
 #### Workflow role
 
-It participates at the authenticated HTTP boundary, before service coordination and after browser-safe response projection.
+It participates at the authenticated HTTP boundary, before service coordination and after browser-safe response projection. Static decorator inspection found: POST /me, GET /me.
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -883,7 +883,7 @@ This router exposes a tenant-aware FastAPI boundary for Billing. It validates th
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Billing. Its extracted size is 40 lines and 183 lexical tokens; the source digest begins 64d289492e6b.
+It exists to provide a coherent Python module boundary for Billing. Static inspection found 3 named symbols, 7 import/action references, and 3 explicit route decorators. Its extracted size is 40 lines and 183 lexical tokens; the source digest begins 64d289492e6b.
 
 #### Important symbols
 
@@ -891,7 +891,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/api/deps.py, backend/app/billing/billing_service.py, backend/app/billing/razorpay.py, backend/app/core/config.py, backend/app/schemas/billing.py. Potential consumers found through bounded textual/import analysis: backend/.env.example, backend/app/agent/graph.py, backend/app/api/routes/assistant.py, backend/app/api/routes/diagnostic.py. The containing category is Backend API routes.
+Static imports or declared workflow actions: __future__, json, fastapi, app.api.deps, app.billing.billing_service, app.billing.razorpay, app.core.config. Resolved in-repository dependencies: backend/app/api/deps.py, backend/app/billing/billing_service.py, backend/app/billing/razorpay.py, backend/app/core/config.py, backend/app/schemas/billing.py. Potential consumers from bounded textual/import analysis: backend/.env.example, backend/app/agent/graph.py, backend/app/api/routes/assistant.py, backend/app/api/routes/diagnostic.py. The containing category is Backend API routes; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -906,11 +906,11 @@ SURFACE limitations rather than granting new authority
 
 #### Workflow role
 
-It participates at the authenticated HTTP boundary, before service coordination and after browser-safe response projection.
+It participates at the authenticated HTTP boundary, before service coordination and after browser-safe response projection. Static decorator inspection found: GET /entitlement, POST /checkout, POST /webhooks/razorpay.
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -924,7 +924,7 @@ This router exposes a tenant-aware FastAPI boundary for Dev. It validates the re
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Dev. Its extracted size is 15 lines and 52 lexical tokens; the source digest begins f7f5042d3659.
+It exists to provide a coherent Python module boundary for Dev. Static inspection found 1 named symbols, 4 import/action references, and 1 explicit route decorators. Its extracted size is 15 lines and 52 lexical tokens; the source digest begins f7f5042d3659.
 
 #### Important symbols
 
@@ -932,7 +932,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/api/deps.py, backend/app/schemas/replay.py, backend/app/services/session_service.py. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Backend API routes.
+Static imports or declared workflow actions: fastapi, app.api.deps, app.schemas.replay, app.services.session_service. Resolved in-repository dependencies: backend/app/api/deps.py, backend/app/schemas/replay.py, backend/app/services/session_service.py. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Backend API routes; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -947,11 +947,11 @@ SURFACE limitations rather than granting new authority
 
 #### Workflow role
 
-It participates at the authenticated HTTP boundary, before service coordination and after browser-safe response projection.
+It participates at the authenticated HTTP boundary, before service coordination and after browser-safe response projection. Static decorator inspection found: GET /runs/{run_id}.
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -965,7 +965,7 @@ This router exposes a tenant-aware FastAPI boundary for Diagnostic. It validates
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Diagnostic. Its extracted size is 60 lines and 203 lexical tokens; the source digest begins 6f6e6ab706a3.
+It exists to provide a coherent Python module boundary for Diagnostic. Static inspection found 2 named symbols, 7 import/action references, and 2 explicit route decorators. Its extracted size is 60 lines and 203 lexical tokens; the source digest begins 6f6e6ab706a3.
 
 #### Important symbols
 
@@ -973,7 +973,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/api/deps.py, backend/app/billing/usage_service.py, backend/app/core/agent_run_guard.py, backend/app/schemas/session.py, backend/app/services/diagnostic_stream_service.py. Potential consumers found through bounded textual/import analysis: backend/README.md, backend/app/agent/graph.py, backend/app/agent/prompts.py, backend/app/api/middleware.py. The containing category is Backend API routes.
+Static imports or declared workflow actions: fastapi, fastapi.responses, app.api.deps, app.billing.usage_service, app.core.agent_run_guard, app.schemas.session, app.services.diagnostic_stream_service. Resolved in-repository dependencies: backend/app/api/deps.py, backend/app/billing/usage_service.py, backend/app/core/agent_run_guard.py, backend/app/schemas/session.py, backend/app/services/diagnostic_stream_service.py. Potential consumers from bounded textual/import analysis: backend/README.md, backend/app/agent/graph.py, backend/app/agent/prompts.py, backend/app/api/middleware.py. The containing category is Backend API routes; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -988,11 +988,11 @@ SURFACE limitations rather than granting new authority
 
 #### Workflow role
 
-It participates at the authenticated HTTP boundary, before service coordination and after browser-safe response projection.
+It participates at the authenticated HTTP boundary, before service coordination and after browser-safe response projection. Static decorator inspection found: POST /stream-diagnostic, POST /apply-patch.
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -1006,7 +1006,7 @@ This router exposes a tenant-aware FastAPI boundary for Github. It validates the
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Github. Its extracted size is 52 lines and 198 lexical tokens; the source digest begins 9d677be1aeea.
+It exists to provide a coherent Python module boundary for Github. Static inspection found 5 named symbols, 5 import/action references, and 5 explicit route decorators. Its extracted size is 52 lines and 198 lexical tokens; the source digest begins 9d677be1aeea.
 
 #### Important symbols
 
@@ -1014,7 +1014,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/api/deps.py, backend/app/services/github_service.py, backend/app/services/incident_service.py. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, .github/workflows/ci.yml, .github/workflows/deployment-readiness.yml, .github/workflows/live-evals.yml. The containing category is Backend API routes.
+Static imports or declared workflow actions: fastapi, fastapi.responses, app.api.deps, app.services.github_service, app.services.incident_service. Resolved in-repository dependencies: backend/app/api/deps.py, backend/app/services/github_service.py, backend/app/services/incident_service.py. Potential consumers from bounded textual/import analysis: .commandcode/taste/taste.md, .github/workflows/ci.yml, .github/workflows/deployment-readiness.yml, .github/workflows/live-evals.yml. The containing category is Backend API routes; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -1029,11 +1029,11 @@ SURFACE limitations rather than granting new authority
 
 #### Workflow role
 
-It participates at the authenticated HTTP boundary, before service coordination and after browser-safe response projection.
+It participates at the authenticated HTTP boundary, before service coordination and after browser-safe response projection. Static decorator inspection found: GET /connect, GET /callback, POST /webhooks, GET /repos, DELETE /disconnect.
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -1047,7 +1047,7 @@ This router exposes a tenant-aware FastAPI boundary for Incidents. It validates 
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Incidents. Its extracted size is 507 lines and 1786 lexical tokens; the source digest begins 83b84eb65c68.
+It exists to provide a coherent Python module boundary for Incidents. Static inspection found 7 named symbols, 7 import/action references, and 6 explicit route decorators. Its extracted size is 507 lines and 1786 lexical tokens; the source digest begins 83b84eb65c68.
 
 #### Important symbols
 
@@ -1055,7 +1055,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/api/deps.py, backend/app/db/mongo.py, backend/app/memory/memory_service.py, backend/app/memory/models.py, backend/app/schemas/incident.py. Potential consumers found through bounded textual/import analysis: README.md, backend/app/main.py, backend/app/schemas/incident.py, backend/app/schemas/regression_prevention.py. The containing category is Backend API routes.
+Static imports or declared workflow actions: __future__, typing, fastapi, fastapi.encoders, fastapi.responses, app.api.deps, app.db.mongo. Resolved in-repository dependencies: backend/app/api/deps.py, backend/app/db/mongo.py, backend/app/memory/memory_service.py, backend/app/memory/models.py, backend/app/schemas/incident.py. Potential consumers from bounded textual/import analysis: README.md, backend/app/main.py, backend/app/schemas/incident.py, backend/app/schemas/regression_prevention.py. The containing category is Backend API routes; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -1070,11 +1070,11 @@ SURFACE limitations rather than granting new authority
 
 #### Workflow role
 
-It participates at the authenticated HTTP boundary, before service coordination and after browser-safe response projection.
+It participates at the authenticated HTTP boundary, before service coordination and after browser-safe response projection. Static decorator inspection found: PUT /sessions/{slug_id}/automation, GET /sessions/{slug_id}/automation, PUT /sessions/{slug_id}/candidate-verification, GET /sessions/{slug_id}/candidate-verification, GET /sessions/{slug_id}/candidate-verification/latest-run, GET /sessions/{slug_id}/prevention-rules.
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -1088,7 +1088,7 @@ This router exposes a tenant-aware FastAPI boundary for Memory. It validates the
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Memory. Its extracted size is 224 lines and 761 lexical tokens; the source digest begins 99462647319e.
+It exists to provide a coherent Python module boundary for Memory. Static inspection found 7 named symbols, 7 import/action references, and 6 explicit route decorators. Its extracted size is 224 lines and 761 lexical tokens; the source digest begins 99462647319e.
 
 #### Important symbols
 
@@ -1096,7 +1096,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/api/routes/auth.py, backend/app/core/config.py, backend/app/memory/memory_service.py, backend/app/services/workspace_service.py, backend/app/db/mongo.py. Potential consumers found through bounded textual/import analysis: README.md, backend/app/agent/graph.py, backend/app/agent/state.py, backend/app/api/routes/incidents.py. The containing category is Backend API routes.
+Static imports or declared workflow actions: typing, fastapi, app.api.routes.auth, app.core.config, app.memory.memory_service, app.services.workspace_service, app.db.mongo. Resolved in-repository dependencies: backend/app/api/routes/auth.py, backend/app/core/config.py, backend/app/memory/memory_service.py, backend/app/services/workspace_service.py, backend/app/db/mongo.py. Potential consumers from bounded textual/import analysis: README.md, backend/app/agent/graph.py, backend/app/agent/state.py, backend/app/api/routes/incidents.py. The containing category is Backend API routes; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -1111,11 +1111,11 @@ SURFACE limitations rather than granting new authority
 
 #### Workflow role
 
-It participates at the authenticated HTTP boundary, before service coordination and after browser-safe response projection.
+It participates at the authenticated HTTP boundary, before service coordination and after browser-safe response projection. Static decorator inspection found: GET /{repository_id:path}/staleness, POST /{repository_id:path}/check-staleness, DELETE /entry/{entry_id}, POST /{repository_id:path}/entry/{entry_id}/refresh, POST /{repository_id:path}/entry/{entry_id}/promote, GET /{repository_id:path}.
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -1129,7 +1129,7 @@ This router exposes a tenant-aware FastAPI boundary for Session. It validates th
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Session. Its extracted size is 287 lines and 968 lexical tokens; the source digest begins 3ad2ececd84b.
+It exists to provide a coherent Python module boundary for Session. Static inspection found 7 named symbols, 7 import/action references, and 6 explicit route decorators. Its extracted size is 287 lines and 968 lexical tokens; the source digest begins 3ad2ececd84b.
 
 #### Important symbols
 
@@ -1137,7 +1137,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/api/deps.py, backend/app/billing/usage_service.py, backend/app/core/agent_run_guard.py, backend/app/schemas/intelligence.py, backend/app/schemas/replay.py. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/app/agent/graph.py. The containing category is Backend API routes.
+Static imports or declared workflow actions: fastapi, fastapi.responses, app.api.deps, app.billing.usage_service, app.core.agent_run_guard, app.schemas.intelligence, app.schemas.replay. Resolved in-repository dependencies: backend/app/api/deps.py, backend/app/billing/usage_service.py, backend/app/core/agent_run_guard.py, backend/app/schemas/intelligence.py, backend/app/schemas/replay.py. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/app/agent/graph.py. The containing category is Backend API routes; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -1152,11 +1152,11 @@ SURFACE limitations rather than granting new authority
 
 #### Workflow role
 
-It participates at the authenticated HTTP boundary, before service coordination and after browser-safe response projection.
+It participates at the authenticated HTTP boundary, before service coordination and after browser-safe response projection. Static decorator inspection found: GET /all, POST /chat, POST /{slug_id}/approval/{approval_id}, POST /{slug_id}/rag/reindex, GET /{slug_id}/rag/sources, GET /{slug_id}/evidence.
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -1170,7 +1170,7 @@ This router exposes a tenant-aware FastAPI boundary for System. It validates the
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for System. Its extracted size is 84 lines and 248 lexical tokens; the source digest begins 9712801d989a.
+It exists to provide a coherent Python module boundary for System. Static inspection found 1 named symbols, 5 import/action references, and 1 explicit route decorators. Its extracted size is 84 lines and 248 lexical tokens; the source digest begins 9712801d989a.
 
 #### Important symbols
 
@@ -1178,7 +1178,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py, backend/app/execution/docker_runtime.py, backend/app/services/github_service.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/execution/__init__.py, backend/app/intelligence/graph/models.py, backend/app/main.py. The containing category is Backend API routes.
+Static imports or declared workflow actions: typing, fastapi, app.core.config, app.execution.docker_runtime, app.services.github_service. Resolved in-repository dependencies: backend/app/core/config.py, backend/app/execution/docker_runtime.py, backend/app/services/github_service.py. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/execution/__init__.py, backend/app/intelligence/graph/models.py, backend/app/main.py. The containing category is Backend API routes; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -1193,11 +1193,11 @@ SURFACE limitations rather than granting new authority
 
 #### Workflow role
 
-It participates at the authenticated HTTP boundary, before service coordination and after browser-safe response projection.
+It participates at the authenticated HTTP boundary, before service coordination and after browser-safe response projection. Static decorator inspection found: GET /capabilities.
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -1211,7 +1211,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for   Init  . Its extracted size is 1 lines and 11 lexical tokens; the source digest begins 08511684fb5c.
+It exists to provide a coherent Python module boundary for   Init  . Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 11 lexical tokens; the source digest begins 08511684fb5c.
 
 #### Important symbols
 
@@ -1219,7 +1219,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Backend platform.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -1238,7 +1238,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -1252,7 +1252,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Billing Service. Its extracted size is 277 lines and 1020 lexical tokens; the source digest begins 77055c4f4fc1.
+It exists to provide a coherent Python module boundary for Billing Service. Static inspection found 2 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 277 lines and 1020 lexical tokens; the source digest begins 77055c4f4fc1.
 
 #### Important symbols
 
@@ -1260,7 +1260,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/billing/models.py, backend/app/billing/razorpay.py, backend/app/billing/usage_service.py, backend/app/core/config.py, backend/app/db/mongo.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/billing.py, backend/app/main.py, backend/tests/test_billing_lifecycle.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Backend platform.
+Static imports or declared workflow actions: __future__, hashlib, typing, fastapi, pymongo.errors, app.billing.models, app.billing.razorpay. Resolved in-repository dependencies: backend/app/billing/models.py, backend/app/billing/razorpay.py, backend/app/billing/usage_service.py, backend/app/core/config.py, backend/app/db/mongo.py. Potential consumers from bounded textual/import analysis: backend/app/api/routes/billing.py, backend/app/main.py, backend/tests/test_billing_lifecycle.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -1279,7 +1279,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -1293,7 +1293,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Models. Its extracted size is 29 lines and 51 lexical tokens; the source digest begins fbc3275e241f.
+It exists to provide a coherent Python module boundary for Models. Static inspection found 3 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 29 lines and 51 lexical tokens; the source digest begins fbc3275e241f.
 
 #### Important symbols
 
@@ -1301,7 +1301,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/app/agent/graph.py. The containing category is Backend platform.
+Static imports or declared workflow actions: __future__, enum, pydantic. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/app/agent/graph.py. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -1320,7 +1320,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -1334,7 +1334,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Razorpay. Its extracted size is 143 lines and 505 lexical tokens; the source digest begins b88ac1099f18.
+It exists to provide a coherent Python module boundary for Razorpay. Static inspection found 6 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 143 lines and 505 lexical tokens; the source digest begins b88ac1099f18.
 
 #### Important symbols
 
@@ -1342,7 +1342,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/billing/models.py, backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/billing.py, backend/app/billing/billing_service.py, backend/app/core/config.py, backend/tests/test_billing_lifecycle.py. The containing category is Backend platform.
+Static imports or declared workflow actions: __future__, hashlib, hmac, dataclasses, urllib.parse, httpx, fastapi. Resolved in-repository dependencies: backend/app/billing/models.py, backend/app/core/config.py. Potential consumers from bounded textual/import analysis: backend/app/api/routes/billing.py, backend/app/billing/billing_service.py, backend/app/core/config.py, backend/tests/test_billing_lifecycle.py. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -1361,7 +1361,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -1375,7 +1375,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Usage Service. Its extracted size is 236 lines and 821 lexical tokens; the source digest begins 205720d736ea.
+It exists to provide a coherent Python module boundary for Usage Service. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 236 lines and 821 lexical tokens; the source digest begins 205720d736ea.
 
 #### Important symbols
 
@@ -1383,7 +1383,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/billing/models.py, backend/app/core/config.py, backend/app/db/mongo.py, backend/app/utils/datetime.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/assistant.py, backend/app/api/routes/diagnostic.py, backend/app/api/routes/session.py, backend/app/billing/billing_service.py. The containing category is Backend platform.
+Static imports or declared workflow actions: __future__, datetime, hashlib, typing, fastapi, pymongo, pymongo.errors. Resolved in-repository dependencies: backend/app/billing/models.py, backend/app/core/config.py, backend/app/db/mongo.py, backend/app/utils/datetime.py. Potential consumers from bounded textual/import analysis: backend/app/api/routes/assistant.py, backend/app/api/routes/diagnostic.py, backend/app/api/routes/session.py, backend/app/billing/billing_service.py. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -1402,7 +1402,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -1416,7 +1416,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Access Logging. Its extracted size is 44 lines and 207 lexical tokens; the source digest begins dfe890cd5047.
+It exists to provide a coherent Python module boundary for Access Logging. Static inspection found 3 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 44 lines and 207 lexical tokens; the source digest begins dfe890cd5047.
 
 #### Important symbols
 
@@ -1424,7 +1424,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/main.py, backend/tests/test_http_protection.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Backend platform.
+Static imports or declared workflow actions: logging, typing. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/main.py, backend/tests/test_http_protection.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -1443,7 +1443,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -1457,7 +1457,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Agent Run Guard. Its extracted size is 136 lines and 548 lexical tokens; the source digest begins 6759302e687b.
+It exists to provide a coherent Python module boundary for Agent Run Guard. Static inspection found 6 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 136 lines and 548 lexical tokens; the source digest begins 6759302e687b.
 
 #### Important symbols
 
@@ -1465,7 +1465,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/assistant.py, backend/app/api/routes/diagnostic.py, backend/app/api/routes/session.py, backend/tests/test_agent_run_guard.py. The containing category is Backend platform.
+Static imports or declared workflow actions: __future__, asyncio, secrets, time, dataclasses, hashlib, typing. Resolved in-repository dependencies: backend/app/core/config.py. Potential consumers from bounded textual/import analysis: backend/app/api/routes/assistant.py, backend/app/api/routes/diagnostic.py, backend/app/api/routes/session.py, backend/tests/test_agent_run_guard.py. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -1484,7 +1484,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -1498,7 +1498,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Config. Its extracted size is 338 lines and 2151 lexical tokens; the source digest begins f579cba08eaf.
+It exists to provide a coherent Python module boundary for Config. Static inspection found 3 named symbols, 6 import/action references, and 0 explicit route decorators. Its extracted size is 338 lines and 2151 lexical tokens; the source digest begins f579cba08eaf.
 
 #### Important symbols
 
@@ -1506,7 +1506,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/README.md. The containing category is Backend platform.
+Static imports or declared workflow actions: functools, pathlib, urllib.parse, cryptography.fernet, pydantic, pydantic_settings. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/README.md. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -1525,7 +1525,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -1539,7 +1539,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Failures. Its extracted size is 16 lines and 45 lexical tokens; the source digest begins 0ca668c91259.
+It exists to provide a coherent Python module boundary for Failures. Static inspection found 2 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 16 lines and 45 lexical tokens; the source digest begins 0ca668c91259.
 
 #### Important symbols
 
@@ -1547,7 +1547,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: README.md, backend/app/agent/graph.py, backend/app/services/candidate_verification_service.py, backend/app/services/ci_applicability.py. The containing category is Backend platform.
+Static imports or declared workflow actions: enum. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: README.md, backend/app/agent/graph.py, backend/app/services/candidate_verification_service.py, backend/app/services/ci_applicability.py. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -1566,7 +1566,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -1580,7 +1580,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Rate Limit. Its extracted size is 132 lines and 571 lexical tokens; the source digest begins e16f4df51e18.
+It exists to provide a coherent Python module boundary for Rate Limit. Static inspection found 5 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 132 lines and 571 lexical tokens; the source digest begins e16f4df51e18.
 
 #### Important symbols
 
@@ -1588,7 +1588,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/api/middleware.py, backend/app/core/agent_run_guard.py, backend/app/core/config.py, backend/app/main.py. The containing category is Backend platform.
+Static imports or declared workflow actions: __future__, asyncio, time, collections, dataclasses, hashlib, typing. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/api/middleware.py, backend/app/core/agent_run_guard.py, backend/app/core/config.py, backend/app/main.py. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -1607,7 +1607,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -1621,7 +1621,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Security. Its extracted size is 144 lines and 576 lexical tokens; the source digest begins 42c0e2c0d654.
+It exists to provide a coherent Python module boundary for Security. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 144 lines and 576 lexical tokens; the source digest begins 42c0e2c0d654.
 
 #### Important symbols
 
@@ -1629,7 +1629,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: backend/app/core/config.py, backend/app/schemas/investigation.py, backend/app/services/auth_service.py, backend/app/services/delivery_service.py. The containing category is Backend platform.
+Static imports or declared workflow actions: base64, hashlib, hmac, json, datetime, typing, urllib.parse. Resolved in-repository dependencies: backend/app/core/config.py. Potential consumers from bounded textual/import analysis: backend/app/core/config.py, backend/app/schemas/investigation.py, backend/app/services/auth_service.py, backend/app/services/delivery_service.py. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -1648,7 +1648,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -1662,7 +1662,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Mongo. Its extracted size is 64 lines and 199 lexical tokens; the source digest begins cdcd625c1827.
+It exists to provide a coherent Python module boundary for Mongo. Static inspection found 5 named symbols, 4 import/action references, and 0 explicit route decorators. Its extracted size is 64 lines and 199 lexical tokens; the source digest begins cdcd625c1827.
 
 #### Important symbols
 
@@ -1670,7 +1670,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, backend/.env.example, backend/README.md, backend/app/agent/graph.py. The containing category is Backend platform.
+Static imports or declared workflow actions: asyncio, motor.motor_asyncio, pymongo.errors, app.core.config. Resolved in-repository dependencies: backend/app/core/config.py. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, backend/.env.example, backend/README.md, backend/app/agent/graph.py. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -1689,7 +1689,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -1703,7 +1703,7 @@ This Python module contributes to the execution safety subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for   Init  . Its extracted size is 1 lines and 6 lexical tokens; the source digest begins 0e2f57fe5fe3.
+It exists to provide a coherent Python module boundary for   Init  . Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 6 lexical tokens; the source digest begins 0e2f57fe5fe3.
 
 #### Important symbols
 
@@ -1711,7 +1711,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Execution safety.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Execution safety; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -1730,7 +1730,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -1744,7 +1744,7 @@ This Python module contributes to the execution safety subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Docker Runtime. Its extracted size is 111 lines and 370 lexical tokens; the source digest begins 3bec59db9269.
+It exists to provide a coherent Python module boundary for Docker Runtime. Static inspection found 1 named symbols, 6 import/action references, and 0 explicit route decorators. Its extracted size is 111 lines and 370 lexical tokens; the source digest begins 3bec59db9269.
 
 #### Important symbols
 
@@ -1752,7 +1752,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/execution/models.py, backend/app/services/redaction_service.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/system.py, backend/app/execution/runtime.py, backend/tests/test_execution_sandbox.py, docs/PRODUCTION_READINESS_AUDIT.md. The containing category is Execution safety.
+Static imports or declared workflow actions: shutil, subprocess, time, pathlib, app.execution.models, app.services.redaction_service. Resolved in-repository dependencies: backend/app/execution/models.py, backend/app/services/redaction_service.py. Potential consumers from bounded textual/import analysis: backend/app/api/routes/system.py, backend/app/execution/runtime.py, backend/tests/test_execution_sandbox.py, docs/PRODUCTION_READINESS_AUDIT.md. The containing category is Execution safety; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -1771,7 +1771,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -1785,7 +1785,7 @@ This Python module contributes to the execution safety subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Local Runtime. Its extracted size is 108 lines and 339 lexical tokens; the source digest begins e363ab2b7c31.
+It exists to provide a coherent Python module boundary for Local Runtime. Static inspection found 1 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 108 lines and 339 lexical tokens; the source digest begins e363ab2b7c31.
 
 #### Important symbols
 
@@ -1793,7 +1793,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/execution/models.py, backend/app/execution/policy.py, backend/app/services/redaction_service.py. Potential consumers found through bounded textual/import analysis: backend/app/execution/runtime.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Execution safety.
+Static imports or declared workflow actions: os, signal, subprocess, time, pathlib, app.execution.models, app.execution.policy. Resolved in-repository dependencies: backend/app/execution/models.py, backend/app/execution/policy.py, backend/app/services/redaction_service.py. Potential consumers from bounded textual/import analysis: backend/app/execution/runtime.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Execution safety; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -1812,7 +1812,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -1826,7 +1826,7 @@ This Python module contributes to the execution safety subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Models. Its extracted size is 47 lines and 140 lexical tokens; the source digest begins 926ae34444df.
+It exists to provide a coherent Python module boundary for Models. Static inspection found 3 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 47 lines and 140 lexical tokens; the source digest begins 926ae34444df.
 
 #### Important symbols
 
@@ -1834,7 +1834,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/app/agent/graph.py. The containing category is Execution safety.
+Static imports or declared workflow actions: typing, pydantic. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/app/agent/graph.py. The containing category is Execution safety; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -1853,7 +1853,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -1867,7 +1867,7 @@ This Python module contributes to the execution safety subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Policy. Its extracted size is 83 lines and 296 lexical tokens; the source digest begins da9920197058.
+It exists to provide a coherent Python module boundary for Policy. Static inspection found 2 named symbols, 4 import/action references, and 0 explicit route decorators. Its extracted size is 83 lines and 296 lexical tokens; the source digest begins da9920197058.
 
 #### Important symbols
 
@@ -1875,7 +1875,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/services/delivery_service.py. Potential consumers found through bounded textual/import analysis: README.md, backend/app/agent/graph.py, backend/app/agent/policy.py, backend/app/core/agent_run_guard.py. The containing category is Execution safety.
+Static imports or declared workflow actions: os, re, pathlib, app.services.delivery_service. Resolved in-repository dependencies: backend/app/services/delivery_service.py. Potential consumers from bounded textual/import analysis: README.md, backend/app/agent/graph.py, backend/app/agent/policy.py, backend/app/core/agent_run_guard.py. The containing category is Execution safety; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -1894,7 +1894,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -1908,7 +1908,7 @@ This Python module contributes to the execution safety subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Registry. Its extracted size is 98 lines and 191 lexical tokens; the source digest begins d207786f0d5a.
+It exists to provide a coherent Python module boundary for Registry. Static inspection found 1 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 98 lines and 191 lexical tokens; the source digest begins d207786f0d5a.
 
 #### Important symbols
 
@@ -1916,7 +1916,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/execution/models.py. Potential consumers found through bounded textual/import analysis: backend/app/execution/runtime.py, backend/app/policy/__init__.py, backend/app/policy/evaluator.py, backend/app/services/candidate_verification_service.py. The containing category is Execution safety.
+Static imports or declared workflow actions: app.execution.models. Resolved in-repository dependencies: backend/app/execution/models.py. Potential consumers from bounded textual/import analysis: backend/app/execution/runtime.py, backend/app/policy/__init__.py, backend/app/policy/evaluator.py, backend/app/services/candidate_verification_service.py. The containing category is Execution safety; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -1935,7 +1935,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -1949,7 +1949,7 @@ This Python module contributes to the execution safety subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Runtime. Its extracted size is 114 lines and 414 lexical tokens; the source digest begins d06ae5d2472d.
+It exists to provide a coherent Python module boundary for Runtime. Static inspection found 1 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 114 lines and 414 lexical tokens; the source digest begins d06ae5d2472d.
 
 #### Important symbols
 
@@ -1957,7 +1957,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py, backend/app/execution/docker_runtime.py, backend/app/execution/local_runtime.py, backend/app/execution/models.py, backend/app/execution/policy.py. Potential consumers found through bounded textual/import analysis: backend/.env.example, backend/app/agent/graph.py, backend/app/api/routes/system.py, backend/app/core/config.py. The containing category is Execution safety.
+Static imports or declared workflow actions: pathlib, app.core.config, app.execution.docker_runtime, app.execution.local_runtime, app.execution.models, app.execution.policy, app.execution.registry. Resolved in-repository dependencies: backend/app/core/config.py, backend/app/execution/docker_runtime.py, backend/app/execution/local_runtime.py, backend/app/execution/models.py, backend/app/execution/policy.py. Potential consumers from bounded textual/import analysis: backend/.env.example, backend/app/agent/graph.py, backend/app/api/routes/system.py, backend/app/core/config.py. The containing category is Execution safety; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -1976,7 +1976,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -1990,7 +1990,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for   Init  . Its extracted size is 0 lines and 0 lexical tokens; the source digest begins e3b0c44298fc.
+It exists to provide a coherent Python module boundary for   Init  . Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 0 lines and 0 lexical tokens; the source digest begins e3b0c44298fc.
 
 #### Important symbols
 
@@ -1998,7 +1998,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Backend platform.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -2017,7 +2017,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -2031,7 +2031,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Actions. Its extracted size is 360 lines and 1512 lexical tokens; the source digest begins dc3243b7ce9b.
+It exists to provide a coherent Python module boundary for Actions. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 360 lines and 1512 lexical tokens; the source digest begins dc3243b7ce9b.
 
 #### Important symbols
 
@@ -2039,7 +2039,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py, backend/app/services/redaction_service.py, backend/app/services/github_service.py. Potential consumers found through bounded textual/import analysis: .github/workflows/ci.yml, .github/workflows/deployment-readiness.yml, .github/workflows/live-evals.yml, README.md. The containing category is Backend platform.
+Static imports or declared workflow actions: __future__, re, datetime, enum, typing, pydantic, app.core.config. Resolved in-repository dependencies: backend/app/core/config.py, backend/app/services/redaction_service.py, backend/app/services/github_service.py. Potential consumers from bounded textual/import analysis: .github/workflows/ci.yml, .github/workflows/deployment-readiness.yml, .github/workflows/live-evals.yml, README.md. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -2058,7 +2058,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -2072,7 +2072,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Change Provider. Its extracted size is 385 lines and 1221 lexical tokens; the source digest begins 0025ac23c914.
+It exists to provide a coherent Python module boundary for Change Provider. Static inspection found 5 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 385 lines and 1221 lexical tokens; the source digest begins 0025ac23c914.
 
 #### Important symbols
 
@@ -2080,7 +2080,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/services/github_service.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/memory/freshness.py, backend/app/services/ci_investigation_service.py, backend/tests/test_ci_investigation_service.py. The containing category is Backend platform.
+Static imports or declared workflow actions: __future__, logging, re, shutil, subprocess, pathlib, typing. Resolved in-repository dependencies: backend/app/services/github_service.py. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/memory/freshness.py, backend/app/services/ci_investigation_service.py, backend/tests/test_ci_investigation_service.py. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -2099,7 +2099,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -2113,7 +2113,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Pr Status. Its extracted size is 154 lines and 432 lexical tokens; the source digest begins ca74d93a7ba5.
+It exists to provide a coherent Python module boundary for Pr Status. Static inspection found 2 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 154 lines and 432 lexical tokens; the source digest begins ca74d93a7ba5.
 
 #### Important symbols
 
@@ -2121,7 +2121,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/services/github_service.py. Potential consumers found through bounded textual/import analysis: backend/app/memory/memory_service.py, backend/tests/test_memory_freshness.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Backend platform.
+Static imports or declared workflow actions: __future__, logging, datetime, typing, pydantic, re, app.services.github_service. Resolved in-repository dependencies: backend/app/services/github_service.py. Potential consumers from bounded textual/import analysis: backend/app/memory/memory_service.py, backend/tests/test_memory_freshness.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -2140,7 +2140,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -2154,7 +2154,7 @@ This Python module contributes to the engineering intelligence subsystem. It def
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for   Init  . Its extracted size is 6 lines and 35 lexical tokens; the source digest begins a702340f7a91.
+It exists to provide a coherent Python module boundary for   Init  . Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 6 lines and 35 lexical tokens; the source digest begins a702340f7a91.
 
 #### Important symbols
 
@@ -2162,7 +2162,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Engineering intelligence.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Engineering intelligence; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -2181,7 +2181,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -2195,7 +2195,7 @@ This Python module contributes to the engineering intelligence subsystem. It def
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for   Init  . Its extracted size is 19 lines and 25 lexical tokens; the source digest begins be2be8a51663.
+It exists to provide a coherent Python module boundary for   Init  . Static inspection found 0 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 19 lines and 25 lexical tokens; the source digest begins be2be8a51663.
 
 #### Important symbols
 
@@ -2203,7 +2203,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/intelligence/graph/models.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Engineering intelligence.
+Static imports or declared workflow actions: app.intelligence.graph.models. Resolved in-repository dependencies: backend/app/intelligence/graph/models.py. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Engineering intelligence; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -2222,7 +2222,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -2236,7 +2236,7 @@ This Python module contributes to the engineering intelligence subsystem. It def
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Builder. Its extracted size is 542 lines and 1706 lexical tokens; the source digest begins 8baf2a1df9a3.
+It exists to provide a coherent Python module boundary for Builder. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 542 lines and 1706 lexical tokens; the source digest begins 8baf2a1df9a3.
 
 #### Important symbols
 
@@ -2244,7 +2244,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/intelligence/graph/models.py, backend/app/utils/datetime.py, backend/app/utils/ids.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/execution/models.py, backend/app/execution/registry.py, backend/app/intelligence/graph/service.py. The containing category is Engineering intelligence.
+Static imports or declared workflow actions: __future__, ast, hashlib, json, re, collections.abc, pathlib. Resolved in-repository dependencies: backend/app/intelligence/graph/models.py, backend/app/utils/datetime.py, backend/app/utils/ids.py. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/execution/models.py, backend/app/execution/registry.py, backend/app/intelligence/graph/service.py. The containing category is Engineering intelligence; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -2263,7 +2263,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -2277,7 +2277,7 @@ This Python module contributes to the engineering intelligence subsystem. It def
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Models. Its extracted size is 134 lines and 360 lexical tokens; the source digest begins 48d3f835eee0.
+It exists to provide a coherent Python module boundary for Models. Static inspection found 7 named symbols, 5 import/action references, and 0 explicit route decorators. Its extracted size is 134 lines and 360 lexical tokens; the source digest begins 48d3f835eee0.
 
 #### Important symbols
 
@@ -2285,7 +2285,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/app/agent/graph.py. The containing category is Engineering intelligence.
+Static imports or declared workflow actions: __future__, datetime, enum, typing, pydantic. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/app/agent/graph.py. The containing category is Engineering intelligence; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -2304,7 +2304,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -2318,7 +2318,7 @@ This Python module contributes to the engineering intelligence subsystem. It def
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Service. Its extracted size is 103 lines and 429 lexical tokens; the source digest begins e5ab5d132db2.
+It exists to provide a coherent Python module boundary for Service. Static inspection found 4 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 103 lines and 429 lexical tokens; the source digest begins e5ab5d132db2.
 
 #### Important symbols
 
@@ -2326,7 +2326,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/intelligence/graph/builder.py, backend/app/intelligence/graph/models.py, backend/app/intelligence/graph/store.py, backend/app/services/workspace_service.py. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/app/agent/graph.py, backend/app/agent/tools.py. The containing category is Engineering intelligence.
+Static imports or declared workflow actions: __future__, collections, pathlib, fastapi, app.intelligence.graph.builder, app.intelligence.graph.models, app.intelligence.graph.store. Resolved in-repository dependencies: backend/app/intelligence/graph/builder.py, backend/app/intelligence/graph/models.py, backend/app/intelligence/graph/store.py, backend/app/services/workspace_service.py. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/app/agent/graph.py, backend/app/agent/tools.py. The containing category is Engineering intelligence; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -2345,7 +2345,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -2359,7 +2359,7 @@ This Python module contributes to the engineering intelligence subsystem. It def
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Store. Its extracted size is 93 lines and 313 lexical tokens; the source digest begins 581ca25ade34.
+It exists to provide a coherent Python module boundary for Store. Static inspection found 1 named symbols, 4 import/action references, and 0 explicit route decorators. Its extracted size is 93 lines and 313 lexical tokens; the source digest begins 581ca25ade34.
 
 #### Important symbols
 
@@ -2367,7 +2367,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/db/mongo.py, backend/app/intelligence/graph/models.py. Potential consumers found through bounded textual/import analysis: README.md, backend/.env.example, backend/app/agent/graph.py, backend/app/api/middleware.py. The containing category is Engineering intelligence.
+Static imports or declared workflow actions: __future__, typing, app.db.mongo, app.intelligence.graph.models. Resolved in-repository dependencies: backend/app/db/mongo.py, backend/app/intelligence/graph/models.py. Potential consumers from bounded textual/import analysis: README.md, backend/.env.example, backend/app/agent/graph.py, backend/app/api/middleware.py. The containing category is Engineering intelligence; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -2386,7 +2386,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -2400,7 +2400,7 @@ This Python module contributes to the engineering intelligence subsystem. It def
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for   Init  . Its extracted size is 12 lines and 63 lexical tokens; the source digest begins 1125fbdd9520.
+It exists to provide a coherent Python module boundary for   Init  . Static inspection found 0 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 12 lines and 63 lexical tokens; the source digest begins 1125fbdd9520.
 
 #### Important symbols
 
@@ -2408,7 +2408,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/intelligence/impact/models.py, backend/app/intelligence/impact/service.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Engineering intelligence.
+Static imports or declared workflow actions: app.intelligence.impact.models, app.intelligence.impact.service. Resolved in-repository dependencies: backend/app/intelligence/impact/models.py, backend/app/intelligence/impact/service.py. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Engineering intelligence; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -2427,7 +2427,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -2441,7 +2441,7 @@ This Python module contributes to the engineering intelligence subsystem. It def
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Models. Its extracted size is 93 lines and 297 lexical tokens; the source digest begins fb250cd3d43c.
+It exists to provide a coherent Python module boundary for Models. Static inspection found 5 named symbols, 5 import/action references, and 0 explicit route decorators. Its extracted size is 93 lines and 297 lexical tokens; the source digest begins fb250cd3d43c.
 
 #### Important symbols
 
@@ -2449,7 +2449,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/intelligence/graph/models.py. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/app/agent/graph.py. The containing category is Engineering intelligence.
+Static imports or declared workflow actions: __future__, datetime, enum, pydantic, app.intelligence.graph.models. Resolved in-repository dependencies: backend/app/intelligence/graph/models.py. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/app/agent/graph.py. The containing category is Engineering intelligence; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -2468,7 +2468,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -2482,7 +2482,7 @@ This Python module contributes to the engineering intelligence subsystem. It def
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Service. Its extracted size is 243 lines and 1012 lexical tokens; the source digest begins af076a01f504.
+It exists to provide a coherent Python module boundary for Service. Static inspection found 5 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 243 lines and 1012 lexical tokens; the source digest begins af076a01f504.
 
 #### Important symbols
 
@@ -2490,7 +2490,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/intelligence/graph/models.py, backend/app/intelligence/impact/models.py, backend/app/intelligence/impact/store.py, backend/app/schemas/delivery.py, backend/app/utils/datetime.py. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/app/agent/graph.py, backend/app/agent/tools.py. The containing category is Engineering intelligence.
+Static imports or declared workflow actions: __future__, collections, app.intelligence.graph.models, app.intelligence.impact.models, app.intelligence.impact.store, app.schemas.delivery, app.utils.datetime. Resolved in-repository dependencies: backend/app/intelligence/graph/models.py, backend/app/intelligence/impact/models.py, backend/app/intelligence/impact/store.py, backend/app/schemas/delivery.py, backend/app/utils/datetime.py. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/app/agent/graph.py, backend/app/agent/tools.py. The containing category is Engineering intelligence; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -2509,7 +2509,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -2523,7 +2523,7 @@ This Python module contributes to the engineering intelligence subsystem. It def
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Store. Its extracted size is 91 lines and 293 lexical tokens; the source digest begins c829f41e79ff.
+It exists to provide a coherent Python module boundary for Store. Static inspection found 1 named symbols, 4 import/action references, and 0 explicit route decorators. Its extracted size is 91 lines and 293 lexical tokens; the source digest begins c829f41e79ff.
 
 #### Important symbols
 
@@ -2531,7 +2531,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/db/mongo.py, backend/app/intelligence/impact/models.py. Potential consumers found through bounded textual/import analysis: README.md, backend/.env.example, backend/app/agent/graph.py, backend/app/api/middleware.py. The containing category is Engineering intelligence.
+Static imports or declared workflow actions: __future__, typing, app.db.mongo, app.intelligence.impact.models. Resolved in-repository dependencies: backend/app/db/mongo.py, backend/app/intelligence/impact/models.py. Potential consumers from bounded textual/import analysis: README.md, backend/.env.example, backend/app/agent/graph.py, backend/app/api/middleware.py. The containing category is Engineering intelligence; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -2550,7 +2550,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -2564,7 +2564,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Main. Its extracted size is 247 lines and 1113 lexical tokens; the source digest begins f56029aff9f7.
+It exists to provide a coherent Python module boundary for Main. Static inspection found 6 named symbols, 7 import/action references, and 4 explicit route decorators. Its extracted size is 247 lines and 1113 lexical tokens; the source digest begins f56029aff9f7.
 
 #### Important symbols
 
@@ -2572,7 +2572,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/api/deps.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py, backend/app/billing/usage_service.py, backend/app/core/access_logging.py. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, .github/workflows/ci.yml, .github/workflows/deployment-readiness.yml, README.md. The containing category is Backend platform.
+Static imports or declared workflow actions: asyncio, logging, collections.abc, contextlib, fastapi, fastapi.middleware.cors, fastapi.responses. Resolved in-repository dependencies: backend/app/api/deps.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py, backend/app/billing/usage_service.py, backend/app/core/access_logging.py. Potential consumers from bounded textual/import analysis: .commandcode/taste/taste.md, .github/workflows/ci.yml, .github/workflows/deployment-readiness.yml, README.md. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -2591,7 +2591,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -2605,7 +2605,7 @@ This Python module contributes to the operational memory subsystem. It defines f
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for   Init  . Its extracted size is 1 lines and 5 lexical tokens; the source digest begins 97dfb65d4179.
+It exists to provide a coherent Python module boundary for   Init  . Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 5 lexical tokens; the source digest begins 97dfb65d4179.
 
 #### Important symbols
 
@@ -2613,7 +2613,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Operational memory.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Operational memory; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -2632,7 +2632,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -2646,7 +2646,7 @@ This Python module contributes to the operational memory subsystem. It defines f
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Freshness. Its extracted size is 394 lines and 1197 lexical tokens; the source digest begins 54c592608f56.
+It exists to provide a coherent Python module boundary for Freshness. Static inspection found 3 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 394 lines and 1197 lexical tokens; the source digest begins 54c592608f56.
 
 #### Important symbols
 
@@ -2654,7 +2654,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/git/change_provider.py, backend/app/memory/models.py, backend/app/utils/datetime.py, backend/app/db/mongo.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/api/routes/memory.py, backend/app/memory/memory_service.py, backend/app/memory/models.py. The containing category is Operational memory.
+Static imports or declared workflow actions: __future__, logging, pathlib, typing, pydantic, app.git.change_provider, app.memory.models. Resolved in-repository dependencies: backend/app/git/change_provider.py, backend/app/memory/models.py, backend/app/utils/datetime.py, backend/app/db/mongo.py. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/api/routes/memory.py, backend/app/memory/memory_service.py, backend/app/memory/models.py. The containing category is Operational memory; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -2673,7 +2673,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -2687,7 +2687,7 @@ This Python module contributes to the operational memory subsystem. It defines f
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Memory Service. Its extracted size is 1480 lines and 4306 lexical tokens; the source digest begins 99a48ef91833.
+It exists to provide a coherent Python module boundary for Memory Service. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 1480 lines and 4306 lexical tokens; the source digest begins 99a48ef91833.
 
 #### Important symbols
 
@@ -2695,7 +2695,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/db/mongo.py, backend/app/memory/models.py, backend/app/services/redaction_service.py, backend/app/utils/datetime.py, backend/app/utils/ids.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/api/routes/incidents.py, backend/app/api/routes/memory.py, backend/app/services/incident_service.py. The containing category is Operational memory.
+Static imports or declared workflow actions: __future__, fnmatch, logging, pathlib, typing, app.db.mongo, app.memory.models. Resolved in-repository dependencies: backend/app/db/mongo.py, backend/app/memory/models.py, backend/app/services/redaction_service.py, backend/app/utils/datetime.py, backend/app/utils/ids.py. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/api/routes/incidents.py, backend/app/api/routes/memory.py, backend/app/services/incident_service.py. The containing category is Operational memory; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -2714,7 +2714,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -2728,7 +2728,7 @@ This Python module contributes to the operational memory subsystem. It defines f
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Models. Its extracted size is 376 lines and 1302 lexical tokens; the source digest begins 6723a99da30c.
+It exists to provide a coherent Python module boundary for Models. Static inspection found 7 named symbols, 4 import/action references, and 0 explicit route decorators. Its extracted size is 376 lines and 1302 lexical tokens; the source digest begins 6723a99da30c.
 
 #### Important symbols
 
@@ -2736,7 +2736,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/app/agent/graph.py. The containing category is Operational memory.
+Static imports or declared workflow actions: datetime, enum, typing, pydantic. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/app/agent/graph.py. The containing category is Operational memory; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -2755,7 +2755,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -2769,7 +2769,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for   Init  . Its extracted size is 3 lines and 8 lexical tokens; the source digest begins 537ce3e227c6.
+It exists to provide a coherent Python module boundary for   Init  . Static inspection found 0 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 3 lines and 8 lexical tokens; the source digest begins 537ce3e227c6.
 
 #### Important symbols
 
@@ -2777,7 +2777,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/observability/recorder.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Backend platform.
+Static imports or declared workflow actions: app.observability.recorder. Resolved in-repository dependencies: backend/app/observability/recorder.py. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -2796,7 +2796,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -2810,7 +2810,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Models. Its extracted size is 35 lines and 117 lexical tokens; the source digest begins adbab9d1b97d.
+It exists to provide a coherent Python module boundary for Models. Static inspection found 2 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 35 lines and 117 lexical tokens; the source digest begins adbab9d1b97d.
 
 #### Important symbols
 
@@ -2818,7 +2818,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/app/agent/graph.py. The containing category is Backend platform.
+Static imports or declared workflow actions: datetime, typing, pydantic. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/app/agent/graph.py. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -2837,7 +2837,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -2851,7 +2851,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Recorder. Its extracted size is 95 lines and 360 lexical tokens; the source digest begins a906ef0ac4c9.
+It exists to provide a coherent Python module boundary for Recorder. Static inspection found 4 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 95 lines and 360 lexical tokens; the source digest begins a906ef0ac4c9.
 
 #### Important symbols
 
@@ -2859,7 +2859,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/db/mongo.py, backend/app/observability/models.py, backend/app/services/redaction_service.py, backend/app/utils/datetime.py, backend/app/utils/ids.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/observability/__init__.py, backend/app/services/session_service.py, backend/tests/test_evals_and_tracing.py. The containing category is Backend platform.
+Static imports or declared workflow actions: time, collections.abc, contextlib, typing, app.db.mongo, app.observability.models, app.services.redaction_service. Resolved in-repository dependencies: backend/app/db/mongo.py, backend/app/observability/models.py, backend/app/services/redaction_service.py, backend/app/utils/datetime.py, backend/app/utils/ids.py. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/observability/__init__.py, backend/app/services/session_service.py, backend/tests/test_evals_and_tracing.py. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -2878,7 +2878,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -2892,7 +2892,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for   Init  . Its extracted size is 5 lines and 24 lexical tokens; the source digest begins 8118046a399e.
+It exists to provide a coherent Python module boundary for   Init  . Static inspection found 0 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 5 lines and 24 lexical tokens; the source digest begins 8118046a399e.
 
 #### Important symbols
 
@@ -2900,7 +2900,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/policy/evaluator.py, backend/app/policy/models.py, backend/app/policy/registry.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Backend platform.
+Static imports or declared workflow actions: app.policy.evaluator, app.policy.models, app.policy.registry. Resolved in-repository dependencies: backend/app/policy/evaluator.py, backend/app/policy/models.py, backend/app/policy/registry.py. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -2919,7 +2919,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -2933,7 +2933,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Evaluator. Its extracted size is 5 lines and 15 lexical tokens; the source digest begins 3af3837a40a1.
+It exists to provide a coherent Python module boundary for Evaluator. Static inspection found 1 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 5 lines and 15 lexical tokens; the source digest begins 3af3837a40a1.
 
 #### Important symbols
 
@@ -2941,7 +2941,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/policy/registry.py. Potential consumers found through bounded textual/import analysis: backend/app/policy/__init__.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend platform.
+Static imports or declared workflow actions: app.policy.registry. Resolved in-repository dependencies: backend/app/policy/registry.py. Potential consumers from bounded textual/import analysis: backend/app/policy/__init__.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -2960,7 +2960,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -2974,7 +2974,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Models. Its extracted size is 20 lines and 46 lexical tokens; the source digest begins 1977bebd9a18.
+It exists to provide a coherent Python module boundary for Models. Static inspection found 2 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 20 lines and 46 lexical tokens; the source digest begins 1977bebd9a18.
 
 #### Important symbols
 
@@ -2982,7 +2982,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/app/agent/graph.py. The containing category is Backend platform.
+Static imports or declared workflow actions: enum, pydantic. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/app/agent/graph.py. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -3001,7 +3001,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -3015,7 +3015,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Registry. Its extracted size is 30 lines and 177 lexical tokens; the source digest begins 1b4ce9d5e2d1.
+It exists to provide a coherent Python module boundary for Registry. Static inspection found 1 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 30 lines and 177 lexical tokens; the source digest begins 1b4ce9d5e2d1.
 
 #### Important symbols
 
@@ -3023,7 +3023,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/policy/models.py. Potential consumers found through bounded textual/import analysis: backend/app/execution/runtime.py, backend/app/policy/__init__.py, backend/app/policy/evaluator.py, backend/app/services/candidate_verification_service.py. The containing category is Backend platform.
+Static imports or declared workflow actions: app.policy.models. Resolved in-repository dependencies: backend/app/policy/models.py. Potential consumers from bounded textual/import analysis: backend/app/execution/runtime.py, backend/app/policy/__init__.py, backend/app/policy/evaluator.py, backend/app/services/candidate_verification_service.py. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -3042,7 +3042,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -3056,7 +3056,7 @@ This Python module contributes to the backend domain contracts subsystem. It def
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Assistant. Its extracted size is 19 lines and 110 lexical tokens; the source digest begins 2319ddb74a89.
+It exists to provide a coherent Python module boundary for Assistant. Static inspection found 2 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 19 lines and 110 lexical tokens; the source digest begins 2319ddb74a89.
 
 #### Important symbols
 
@@ -3064,7 +3064,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/api/middleware.py, backend/app/api/routes/assistant.py, backend/app/main.py. The containing category is Backend domain contracts.
+Static imports or declared workflow actions: pydantic. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/api/middleware.py, backend/app/api/routes/assistant.py, backend/app/main.py. The containing category is Backend domain contracts; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -3083,7 +3083,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -3097,7 +3097,7 @@ This Python module contributes to the backend domain contracts subsystem. It def
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Auth. Its extracted size is 29 lines and 68 lexical tokens; the source digest begins 94ad49bc45d7.
+It exists to provide a coherent Python module boundary for Auth. Static inspection found 4 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 29 lines and 68 lexical tokens; the source digest begins 94ad49bc45d7.
 
 #### Important symbols
 
@@ -3105,7 +3105,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, .github/workflows/ci.yml, README.md. The containing category is Backend domain contracts.
+Static imports or declared workflow actions: pydantic. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, .github/workflows/ci.yml, README.md. The containing category is Backend domain contracts; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -3124,7 +3124,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -3138,7 +3138,7 @@ This Python module contributes to the backend domain contracts subsystem. It def
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Billing. Its extracted size is 18 lines and 31 lexical tokens; the source digest begins a1e107fd555e.
+It exists to provide a coherent Python module boundary for Billing. Static inspection found 3 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 18 lines and 31 lexical tokens; the source digest begins a1e107fd555e.
 
 #### Important symbols
 
@@ -3146,7 +3146,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/billing/models.py. Potential consumers found through bounded textual/import analysis: backend/.env.example, backend/app/agent/graph.py, backend/app/api/routes/assistant.py, backend/app/api/routes/billing.py. The containing category is Backend domain contracts.
+Static imports or declared workflow actions: pydantic, app.billing.models. Resolved in-repository dependencies: backend/app/billing/models.py. Potential consumers from bounded textual/import analysis: backend/.env.example, backend/app/agent/graph.py, backend/app/api/routes/assistant.py, backend/app/api/routes/billing.py. The containing category is Backend domain contracts; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -3165,7 +3165,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -3179,7 +3179,7 @@ This Python module contributes to the backend domain contracts subsystem. It def
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Delivery. Its extracted size is 82 lines and 225 lexical tokens; the source digest begins dbd3e43b09c9.
+It exists to provide a coherent Python module boundary for Delivery. Static inspection found 6 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 82 lines and 225 lexical tokens; the source digest begins dbd3e43b09c9.
 
 #### Important symbols
 
@@ -3187,7 +3187,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: README.md, backend/.env.example, backend/app/agent/graph.py, backend/app/agent/state.py. The containing category is Backend domain contracts.
+Static imports or declared workflow actions: datetime, typing, pydantic. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: README.md, backend/.env.example, backend/app/agent/graph.py, backend/app/agent/state.py. The containing category is Backend domain contracts; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -3206,7 +3206,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -3220,7 +3220,7 @@ This Python module contributes to the backend domain contracts subsystem. It def
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Incident. Its extracted size is 131 lines and 421 lexical tokens; the source digest begins 3430c5c78875.
+It exists to provide a coherent Python module boundary for Incident. Static inspection found 7 named symbols, 5 import/action references, and 0 explicit route decorators. Its extracted size is 131 lines and 421 lexical tokens; the source digest begins 3430c5c78875.
 
 #### Important symbols
 
@@ -3228,7 +3228,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: README.md, backend/.env.example, backend/app/agent/graph.py, backend/app/api/routes/github.py. The containing category is Backend domain contracts.
+Static imports or declared workflow actions: __future__, datetime, enum, typing, pydantic. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: README.md, backend/.env.example, backend/app/agent/graph.py, backend/app/api/routes/github.py. The containing category is Backend domain contracts; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -3247,7 +3247,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -3261,7 +3261,7 @@ This Python module contributes to the backend domain contracts subsystem. It def
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Intelligence. Its extracted size is 120 lines and 293 lexical tokens; the source digest begins 70b265a33c2b.
+It exists to provide a coherent Python module boundary for Intelligence. Static inspection found 4 named symbols, 5 import/action references, and 0 explicit route decorators. Its extracted size is 120 lines and 293 lexical tokens; the source digest begins 70b265a33c2b.
 
 #### Important symbols
 
@@ -3269,7 +3269,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/intelligence/graph/models.py, backend/app/intelligence/impact/models.py. Potential consumers found through bounded textual/import analysis: README.md, backend/app/api/routes/session.py, backend/app/intelligence/__init__.py, backend/app/intelligence/graph/__init__.py. The containing category is Backend domain contracts.
+Static imports or declared workflow actions: __future__, datetime, pydantic, app.intelligence.graph.models, app.intelligence.impact.models. Resolved in-repository dependencies: backend/app/intelligence/graph/models.py, backend/app/intelligence/impact/models.py. Potential consumers from bounded textual/import analysis: README.md, backend/app/api/routes/session.py, backend/app/intelligence/__init__.py, backend/app/intelligence/graph/__init__.py. The containing category is Backend domain contracts; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -3288,7 +3288,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -3302,7 +3302,7 @@ This Python module contributes to the backend domain contracts subsystem. It def
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Investigation. Its extracted size is 71 lines and 197 lexical tokens; the source digest begins 6aa15107b465.
+It exists to provide a coherent Python module boundary for Investigation. Static inspection found 4 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 71 lines and 197 lexical tokens; the source digest begins 6aa15107b465.
 
 #### Important symbols
 
@@ -3310,7 +3310,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: README.md, backend/.env.example, backend/app/agent/graph.py, backend/app/agent/prompts.py. The containing category is Backend domain contracts.
+Static imports or declared workflow actions: datetime, typing, pydantic. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: README.md, backend/.env.example, backend/app/agent/graph.py, backend/app/agent/prompts.py. The containing category is Backend domain contracts; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -3329,7 +3329,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -3343,7 +3343,7 @@ This Python module contributes to the backend domain contracts subsystem. It def
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Patch. Its extracted size is 33 lines and 87 lexical tokens; the source digest begins 2ec73457ffbc.
+It exists to provide a coherent Python module boundary for Patch. Static inspection found 4 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 33 lines and 87 lexical tokens; the source digest begins 2ec73457ffbc.
 
 #### Important symbols
 
@@ -3351,7 +3351,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .github/workflows/live-evals.yml, README.md, backend/.env.example, backend/app/agent/graph.py. The containing category is Backend domain contracts.
+Static imports or declared workflow actions: typing, pydantic. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .github/workflows/live-evals.yml, README.md, backend/.env.example, backend/app/agent/graph.py. The containing category is Backend domain contracts; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -3370,7 +3370,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -3384,7 +3384,7 @@ This Python module contributes to the backend domain contracts subsystem. It def
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Regression Prevention. Its extracted size is 66 lines and 253 lexical tokens; the source digest begins 9eab6c4b70f8.
+It exists to provide a coherent Python module boundary for Regression Prevention. Static inspection found 3 named symbols, 4 import/action references, and 0 explicit route decorators. Its extracted size is 66 lines and 253 lexical tokens; the source digest begins 9eab6c4b70f8.
 
 #### Important symbols
 
@@ -3392,7 +3392,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/incidents.py, backend/app/api/routes/session.py, backend/app/services/regression_prevention_service.py, backend/app/services/session_service.py. The containing category is Backend domain contracts.
+Static imports or declared workflow actions: __future__, datetime, typing, pydantic. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/api/routes/incidents.py, backend/app/api/routes/session.py, backend/app/services/regression_prevention_service.py, backend/app/services/session_service.py. The containing category is Backend domain contracts; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -3411,7 +3411,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -3425,7 +3425,7 @@ This Python module contributes to the backend domain contracts subsystem. It def
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Replay. Its extracted size is 250 lines and 883 lexical tokens; the source digest begins 0b967b6f4888.
+It exists to provide a coherent Python module boundary for Replay. Static inspection found 7 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 250 lines and 883 lexical tokens; the source digest begins 0b967b6f4888.
 
 #### Important symbols
 
@@ -3433,7 +3433,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: README.md, backend/.env.example, backend/app/api/routes/dev.py, backend/app/api/routes/session.py. The containing category is Backend domain contracts.
+Static imports or declared workflow actions: typing, pydantic. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: README.md, backend/.env.example, backend/app/api/routes/dev.py, backend/app/api/routes/session.py. The containing category is Backend domain contracts; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -3452,7 +3452,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -3466,7 +3466,7 @@ This Python module contributes to the backend domain contracts subsystem. It def
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Session. Its extracted size is 122 lines and 528 lexical tokens; the source digest begins e2d46bc0817f.
+It exists to provide a coherent Python module boundary for Session. Static inspection found 7 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 122 lines and 528 lexical tokens; the source digest begins e2d46bc0817f.
 
 #### Important symbols
 
@@ -3474,7 +3474,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/app/agent/graph.py. The containing category is Backend domain contracts.
+Static imports or declared workflow actions: typing, pydantic. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/app/agent/graph.py. The containing category is Backend domain contracts; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -3493,7 +3493,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -3507,7 +3507,7 @@ This service coordinates the Auth Service domain boundary. It combines typed inp
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Auth Service. Its extracted size is 44 lines and 191 lexical tokens; the source digest begins 8ce2ed80da50.
+It exists to provide a coherent Python module boundary for Auth Service. Static inspection found 3 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 44 lines and 191 lexical tokens; the source digest begins 8ce2ed80da50.
 
 #### Important symbols
 
@@ -3515,7 +3515,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/security.py, backend/app/db/mongo.py, backend/app/schemas/auth.py, backend/app/services/serializers.py, backend/app/utils/datetime.py. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_AUDIT.md, docs/IMPLEMENTATION_GAP_ANALYSIS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Backend services.
+Static imports or declared workflow actions: fastapi, app.core.security, app.db.mongo, app.schemas.auth, app.services.serializers, app.utils.datetime, app.utils.ids. Resolved in-repository dependencies: backend/app/core/security.py, backend/app/db/mongo.py, backend/app/schemas/auth.py, backend/app/services/serializers.py, backend/app/utils/datetime.py. Potential consumers from bounded textual/import analysis: docs/IMPLEMENTATION_AUDIT.md, docs/IMPLEMENTATION_GAP_ANALYSIS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -3534,7 +3534,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -3548,7 +3548,7 @@ This service coordinates the Background Job Service domain boundary. It combines
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Background Job Service. Its extracted size is 248 lines and 904 lexical tokens; the source digest begins d51a781efdf1.
+It exists to provide a coherent Python module boundary for Background Job Service. Static inspection found 1 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 248 lines and 904 lexical tokens; the source digest begins d51a781efdf1.
 
 #### Important symbols
 
@@ -3556,7 +3556,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py, backend/app/db/mongo.py, backend/app/utils/datetime.py, backend/app/utils/ids.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/main.py, backend/app/services/incident_service.py, backend/app/services/session_service.py. The containing category is Backend services.
+Static imports or declared workflow actions: __future__, datetime, typing, pymongo, pymongo.errors, app.core.config, app.db.mongo. Resolved in-repository dependencies: backend/app/core/config.py, backend/app/db/mongo.py, backend/app/utils/datetime.py, backend/app/utils/ids.py. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/main.py, backend/app/services/incident_service.py, backend/app/services/session_service.py. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -3575,7 +3575,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -3589,7 +3589,7 @@ This service coordinates the Candidate Verification Service domain boundary. It 
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Candidate Verification Service. Its extracted size is 704 lines and 2813 lexical tokens; the source digest begins db78df20ed51.
+It exists to provide a coherent Python module boundary for Candidate Verification Service. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 704 lines and 2813 lexical tokens; the source digest begins db78df20ed51.
 
 #### Important symbols
 
@@ -3597,7 +3597,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/db/mongo.py, backend/app/schemas/delivery.py, backend/app/services/github_service.py, backend/app/services/redaction_service.py, backend/app/utils/datetime.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/incidents.py, backend/app/main.py, backend/app/services/delivery_service.py, backend/app/services/session_service.py. The containing category is Backend services.
+Static imports or declared workflow actions: __future__, hashlib, json, re, datetime, typing, urllib.parse. Resolved in-repository dependencies: backend/app/db/mongo.py, backend/app/schemas/delivery.py, backend/app/services/github_service.py, backend/app/services/redaction_service.py, backend/app/utils/datetime.py. Potential consumers from bounded textual/import analysis: backend/app/api/routes/incidents.py, backend/app/main.py, backend/app/services/delivery_service.py, backend/app/services/session_service.py. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -3616,7 +3616,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -3630,7 +3630,7 @@ This service coordinates the Ci Applicability domain boundary. It combines typed
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Ci Applicability. Its extracted size is 79 lines and 235 lexical tokens; the source digest begins 4ee63805e34a.
+It exists to provide a coherent Python module boundary for Ci Applicability. Static inspection found 5 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 79 lines and 235 lexical tokens; the source digest begins 4ee63805e34a.
 
 #### Important symbols
 
@@ -3638,7 +3638,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/state.py, backend/app/services/ci_investigation_service.py, backend/evals/models.py. The containing category is Backend services.
+Static imports or declared workflow actions: re, enum, pydantic. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/state.py, backend/app/services/ci_investigation_service.py, backend/evals/models.py. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -3657,7 +3657,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -3671,7 +3671,7 @@ This service coordinates the Ci Investigation Service domain boundary. It combin
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Ci Investigation Service. Its extracted size is 821 lines and 2925 lexical tokens; the source digest begins ee0621f87c78.
+It exists to provide a coherent Python module boundary for Ci Investigation Service. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 821 lines and 2925 lexical tokens; the source digest begins ee0621f87c78.
 
 #### Important symbols
 
@@ -3679,7 +3679,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/git/actions.py, backend/app/git/change_provider.py, backend/app/services/ci_applicability.py, backend/app/services/evidence_service.py, backend/app/services/patch_engine.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/services/incident_service.py, backend/app/services/session_service.py, backend/evals/runner.py. The containing category is Backend services.
+Static imports or declared workflow actions: __future__, re, pathlib, typing, app.git.actions, app.git.change_provider, app.services.ci_applicability. Resolved in-repository dependencies: backend/app/git/actions.py, backend/app/git/change_provider.py, backend/app/services/ci_applicability.py, backend/app/services/evidence_service.py, backend/app/services/patch_engine.py. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/services/incident_service.py, backend/app/services/session_service.py, backend/evals/runner.py. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -3698,7 +3698,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -3712,7 +3712,7 @@ This service coordinates the Ci Request Intent domain boundary. It combines type
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Ci Request Intent. Its extracted size is 36 lines and 172 lexical tokens; the source digest begins 0468c2778bdc.
+It exists to provide a coherent Python module boundary for Ci Request Intent. Static inspection found 6 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 36 lines and 172 lexical tokens; the source digest begins 0468c2778bdc.
 
 #### Important symbols
 
@@ -3720,7 +3720,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/state.py, backend/app/services/ci_run_resolution_service.py, backend/app/services/session_service.py. The containing category is Backend services.
+Static imports or declared workflow actions: __future__, re, pydantic. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/state.py, backend/app/services/ci_run_resolution_service.py, backend/app/services/session_service.py. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -3739,7 +3739,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -3753,7 +3753,7 @@ This service coordinates the Ci Run Resolution Service domain boundary. It combi
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Ci Run Resolution Service. Its extracted size is 75 lines and 292 lexical tokens; the source digest begins 9a03c2171e21.
+It exists to provide a coherent Python module boundary for Ci Run Resolution Service. Static inspection found 2 named symbols, 4 import/action references, and 0 explicit route decorators. Its extracted size is 75 lines and 292 lexical tokens; the source digest begins 9a03c2171e21.
 
 #### Important symbols
 
@@ -3761,7 +3761,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/git/actions.py, backend/app/services/ci_request_intent.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/services/session_service.py, backend/tests/test_ci_run_resolution.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Backend services.
+Static imports or declared workflow actions: __future__, pydantic, app.git.actions, app.services.ci_request_intent. Resolved in-repository dependencies: backend/app/git/actions.py, backend/app/services/ci_request_intent.py. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/services/session_service.py, backend/tests/test_ci_run_resolution.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -3780,7 +3780,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -3794,7 +3794,7 @@ This service coordinates the Context Budget domain boundary. It combines typed i
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Context Budget. Its extracted size is 144 lines and 613 lexical tokens; the source digest begins 58ef4c891df9.
+It exists to provide a coherent Python module boundary for Context Budget. Static inspection found 5 named symbols, 4 import/action references, and 0 explicit route decorators. Its extracted size is 144 lines and 613 lexical tokens; the source digest begins 58ef4c891df9.
 
 #### Important symbols
 
@@ -3802,7 +3802,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/tests/test_context_budget.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Backend services.
+Static imports or declared workflow actions: __future__, json, dataclasses, typing. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/tests/test_context_budget.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -3821,7 +3821,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -3835,7 +3835,7 @@ This service coordinates the Delivery Ci Service domain boundary. It combines ty
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Delivery Ci Service. Its extracted size is 39 lines and 226 lexical tokens; the source digest begins 9a76cbde7b45.
+It exists to provide a coherent Python module boundary for Delivery Ci Service. Static inspection found 2 named symbols, 4 import/action references, and 0 explicit route decorators. Its extracted size is 39 lines and 226 lexical tokens; the source digest begins 9a76cbde7b45.
 
 #### Important symbols
 
@@ -3843,7 +3843,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/git/actions.py. Potential consumers found through bounded textual/import analysis: backend/app/workers/worker.py, backend/tests/test_delivery_ci_service.py, docs/IMPLEMENTATION_GAP_ANALYSIS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Backend services.
+Static imports or declared workflow actions: __future__, collections.abc, dataclasses, app.git.actions. Resolved in-repository dependencies: backend/app/git/actions.py. Potential consumers from bounded textual/import analysis: backend/app/workers/worker.py, backend/tests/test_delivery_ci_service.py, docs/IMPLEMENTATION_GAP_ANALYSIS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -3862,7 +3862,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -3876,7 +3876,7 @@ This service coordinates the Delivery Service domain boundary. It combines typed
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Delivery Service. Its extracted size is 419 lines and 1770 lexical tokens; the source digest begins 2b475aab724c.
+It exists to provide a coherent Python module boundary for Delivery Service. Static inspection found 4 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 419 lines and 1770 lexical tokens; the source digest begins 2b475aab724c.
 
 #### Important symbols
 
@@ -3884,7 +3884,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/db/mongo.py, backend/app/schemas/delivery.py, backend/app/services/github_service.py, backend/app/services/redaction_service.py, backend/app/services/workspace_service.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/execution/policy.py, backend/app/services/candidate_verification_service.py, backend/app/services/patch_engine.py. The containing category is Backend services.
+Static imports or declared workflow actions: hashlib, json, time, pathlib, typing, fastapi, pymongo. Resolved in-repository dependencies: backend/app/db/mongo.py, backend/app/schemas/delivery.py, backend/app/services/github_service.py, backend/app/services/redaction_service.py, backend/app/services/workspace_service.py. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/execution/policy.py, backend/app/services/candidate_verification_service.py, backend/app/services/patch_engine.py. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -3903,7 +3903,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -3917,7 +3917,7 @@ This service coordinates the Diagnostic Stream Service domain boundary. It combi
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Diagnostic Stream Service. Its extracted size is 239 lines and 1019 lexical tokens; the source digest begins 6ff5395e6d85.
+It exists to provide a coherent Python module boundary for Diagnostic Stream Service. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 239 lines and 1019 lexical tokens; the source digest begins 6ff5395e6d85.
 
 #### Important symbols
 
@@ -3925,7 +3925,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/db/mongo.py, backend/app/git/actions.py, backend/app/schemas/session.py, backend/app/services/redaction_service.py, backend/app/services/session_service.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/diagnostic.py, backend/devops/agent.py, backend/tests/test_diagnostic_stream.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Backend services.
+Static imports or declared workflow actions: __future__, json, collections.abc, app.db.mongo, app.git.actions, app.schemas.session, app.services.redaction_service. Resolved in-repository dependencies: backend/app/db/mongo.py, backend/app/git/actions.py, backend/app/schemas/session.py, backend/app/services/redaction_service.py, backend/app/services/session_service.py. Potential consumers from bounded textual/import analysis: backend/app/api/routes/diagnostic.py, backend/devops/agent.py, backend/tests/test_diagnostic_stream.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -3944,7 +3944,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -3958,7 +3958,7 @@ This service coordinates the Evidence Service domain boundary. It combines typed
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Evidence Service. Its extracted size is 96 lines and 321 lexical tokens; the source digest begins c359472ca6ec.
+It exists to provide a coherent Python module boundary for Evidence Service. Static inspection found 1 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 96 lines and 321 lexical tokens; the source digest begins c359472ca6ec.
 
 #### Important symbols
 
@@ -3966,7 +3966,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/db/mongo.py, backend/app/schemas/investigation.py, backend/app/services/redaction_service.py, backend/app/utils/datetime.py, backend/app/utils/ids.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/services/ci_investigation_service.py, backend/app/services/session_service.py, docs/IMPLEMENTATION_AUDIT.md. The containing category is Backend services.
+Static imports or declared workflow actions: hashlib, typing, app.db.mongo, app.schemas.investigation, app.services.redaction_service, app.utils.datetime, app.utils.ids. Resolved in-repository dependencies: backend/app/db/mongo.py, backend/app/schemas/investigation.py, backend/app/services/redaction_service.py, backend/app/utils/datetime.py, backend/app/utils/ids.py. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/services/ci_investigation_service.py, backend/app/services/session_service.py, docs/IMPLEMENTATION_AUDIT.md. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -3985,7 +3985,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -3999,7 +3999,7 @@ This service coordinates the Flaky Test Service domain boundary. It combines typ
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Flaky Test Service. Its extracted size is 179 lines and 572 lexical tokens; the source digest begins 734ca8d2c243.
+It exists to provide a coherent Python module boundary for Flaky Test Service. Static inspection found 4 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 179 lines and 572 lexical tokens; the source digest begins 734ca8d2c243.
 
 #### Important symbols
 
@@ -4007,7 +4007,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/db/mongo.py, backend/app/utils/datetime.py, backend/app/utils/ids.py. Potential consumers found through bounded textual/import analysis: backend/app/services/incident_service.py, backend/tests/test_flaky_test_service.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Backend services.
+Static imports or declared workflow actions: __future__, hashlib, enum, typing, pydantic, app.db.mongo, app.utils.datetime. Resolved in-repository dependencies: backend/app/db/mongo.py, backend/app/utils/datetime.py, backend/app/utils/ids.py. Potential consumers from bounded textual/import analysis: backend/app/services/incident_service.py, backend/tests/test_flaky_test_service.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -4026,7 +4026,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -4040,7 +4040,7 @@ This service coordinates the Github Service domain boundary. It combines typed i
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Github Service. Its extracted size is 568 lines and 2337 lexical tokens; the source digest begins d29c54b850b9.
+It exists to provide a coherent Python module boundary for Github Service. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 568 lines and 2337 lexical tokens; the source digest begins d29c54b850b9.
 
 #### Important symbols
 
@@ -4048,7 +4048,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py, backend/app/core/security.py, backend/app/db/mongo.py, backend/app/utils/datetime.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/github.py, backend/app/api/routes/incidents.py, backend/app/api/routes/system.py, backend/app/git/actions.py. The containing category is Backend services.
+Static imports or declared workflow actions: hashlib, re, secrets, datetime, typing, urllib.parse, httpx. Resolved in-repository dependencies: backend/app/core/config.py, backend/app/core/security.py, backend/app/db/mongo.py, backend/app/utils/datetime.py. Potential consumers from bounded textual/import analysis: backend/app/api/routes/github.py, backend/app/api/routes/incidents.py, backend/app/api/routes/system.py, backend/app/git/actions.py. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -4067,7 +4067,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -4081,7 +4081,7 @@ This service coordinates the Incident Export Service domain boundary. It combine
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Incident Export Service. Its extracted size is 123 lines and 418 lexical tokens; the source digest begins e0d11be702a2.
+It exists to provide a coherent Python module boundary for Incident Export Service. Static inspection found 4 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 123 lines and 418 lexical tokens; the source digest begins e0d11be702a2.
 
 #### Important symbols
 
@@ -4089,7 +4089,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/services/redaction_service.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/incidents.py, backend/tests/test_incident_models.py, docs/IMPLEMENTATION_GAP_ANALYSIS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Backend services.
+Static imports or declared workflow actions: __future__, typing, app.services.redaction_service. Resolved in-repository dependencies: backend/app/services/redaction_service.py. Potential consumers from bounded textual/import analysis: backend/app/api/routes/incidents.py, backend/tests/test_incident_models.py, docs/IMPLEMENTATION_GAP_ANALYSIS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -4108,7 +4108,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -4122,7 +4122,7 @@ This service coordinates the Incident Reporting Service domain boundary. It comb
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Incident Reporting Service. Its extracted size is 133 lines and 586 lexical tokens; the source digest begins c78865592e9d.
+It exists to provide a coherent Python module boundary for Incident Reporting Service. Static inspection found 1 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 133 lines and 586 lexical tokens; the source digest begins c78865592e9d.
 
 #### Important symbols
 
@@ -4130,7 +4130,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py, backend/app/services/github_service.py, backend/app/services/redaction_service.py, backend/app/utils/datetime.py. Potential consumers found through bounded textual/import analysis: backend/app/services/incident_service.py, backend/tests/test_incident_reporting.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Backend services.
+Static imports or declared workflow actions: __future__, typing, urllib.parse, app.core.config, app.services.github_service, app.services.redaction_service, app.utils.datetime. Resolved in-repository dependencies: backend/app/core/config.py, backend/app/services/github_service.py, backend/app/services/redaction_service.py, backend/app/utils/datetime.py. Potential consumers from bounded textual/import analysis: backend/app/services/incident_service.py, backend/tests/test_incident_reporting.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -4149,7 +4149,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -4163,7 +4163,7 @@ This service coordinates the Incident Service domain boundary. It combines typed
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Incident Service. Its extracted size is 988 lines and 3430 lexical tokens; the source digest begins 8ee981d0f88e.
+It exists to provide a coherent Python module boundary for Incident Service. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 988 lines and 3430 lexical tokens; the source digest begins 8ee981d0f88e.
 
 #### Important symbols
 
@@ -4171,7 +4171,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py, backend/app/db/mongo.py, backend/app/memory/memory_service.py, backend/app/memory/models.py, backend/app/schemas/incident.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/github.py, backend/app/api/routes/incidents.py, backend/app/main.py, backend/app/workers/worker.py. The containing category is Backend services.
+Static imports or declared workflow actions: __future__, hashlib, hmac, json, re, datetime, typing. Resolved in-repository dependencies: backend/app/core/config.py, backend/app/db/mongo.py, backend/app/memory/memory_service.py, backend/app/memory/models.py, backend/app/schemas/incident.py. Potential consumers from bounded textual/import analysis: backend/app/api/routes/github.py, backend/app/api/routes/incidents.py, backend/app/main.py, backend/app/workers/worker.py. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -4190,7 +4190,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -4204,7 +4204,7 @@ This service coordinates the Patch Engine domain boundary. It combines typed inp
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Patch Engine. Its extracted size is 337 lines and 1363 lexical tokens; the source digest begins ea6d025cd2b0.
+It exists to provide a coherent Python module boundary for Patch Engine. Static inspection found 3 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 337 lines and 1363 lexical tokens; the source digest begins ea6d025cd2b0.
 
 #### Important symbols
 
@@ -4212,7 +4212,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py, backend/app/schemas/delivery.py, backend/app/schemas/patch.py, backend/app/services/delivery_service.py, backend/app/services/redaction_service.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/services/ci_investigation_service.py, backend/app/services/session_service.py, backend/evals/runner.py. The containing category is Backend services.
+Static imports or declared workflow actions: difflib, re, shutil, tempfile, pathlib, typing, app.core.config. Resolved in-repository dependencies: backend/app/core/config.py, backend/app/schemas/delivery.py, backend/app/schemas/patch.py, backend/app/services/delivery_service.py, backend/app/services/redaction_service.py. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/services/ci_investigation_service.py, backend/app/services/session_service.py, backend/evals/runner.py. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -4231,7 +4231,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -4245,7 +4245,7 @@ This service coordinates the Prevention Rule Service domain boundary. It combine
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Prevention Rule Service. Its extracted size is 264 lines and 858 lexical tokens; the source digest begins 932bfa25b74c.
+It exists to provide a coherent Python module boundary for Prevention Rule Service. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 264 lines and 858 lexical tokens; the source digest begins 932bfa25b74c.
 
 #### Important symbols
 
@@ -4253,7 +4253,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/db/mongo.py, backend/app/utils/datetime.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/incidents.py, backend/app/main.py, backend/app/services/incident_service.py, backend/tests/test_prevention_rule_service.py. The containing category is Backend services.
+Static imports or declared workflow actions: __future__, hashlib, json, collections, typing, app.db.mongo, app.utils.datetime. Resolved in-repository dependencies: backend/app/db/mongo.py, backend/app/utils/datetime.py. Potential consumers from bounded textual/import analysis: backend/app/api/routes/incidents.py, backend/app/main.py, backend/app/services/incident_service.py, backend/tests/test_prevention_rule_service.py. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -4272,7 +4272,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -4286,7 +4286,7 @@ This service coordinates the Product Assistant Service domain boundary. It combi
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Product Assistant Service. Its extracted size is 292 lines and 1635 lexical tokens; the source digest begins e80a7c39e5dd.
+It exists to provide a coherent Python module boundary for Product Assistant Service. Static inspection found 6 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 292 lines and 1635 lexical tokens; the source digest begins e80a7c39e5dd.
 
 #### Important symbols
 
@@ -4294,7 +4294,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py, backend/app/db/mongo.py, backend/app/services/redaction_service.py, backend/app/utils/datetime.py, backend/app/utils/ids.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/assistant.py, backend/tests/test_product_assistant.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Backend services.
+Static imports or declared workflow actions: typing, fastapi, langchain_openai, app.core.config, app.db.mongo, app.services.redaction_service, app.utils.datetime. Resolved in-repository dependencies: backend/app/core/config.py, backend/app/db/mongo.py, backend/app/services/redaction_service.py, backend/app/utils/datetime.py, backend/app/utils/ids.py. Potential consumers from bounded textual/import analysis: backend/app/api/routes/assistant.py, backend/tests/test_product_assistant.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -4313,7 +4313,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -4327,7 +4327,7 @@ This service coordinates the Rag Service domain boundary. It combines typed inpu
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Rag Service. Its extracted size is 452 lines and 1689 lexical tokens; the source digest begins ee26df56fa1a.
+It exists to provide a coherent Python module boundary for Rag Service. Static inspection found 1 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 452 lines and 1689 lexical tokens; the source digest begins ee26df56fa1a.
 
 #### Important symbols
 
@@ -4335,7 +4335,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py, backend/app/db/mongo.py, backend/app/services/workspace_service.py, backend/app/utils/chunking.py, backend/app/utils/datetime.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/services/session_service.py, backend/app/workers/worker.py, backend/tests/test_rag_chunking.py. The containing category is Backend services.
+Static imports or declared workflow actions: asyncio, hashlib, re, collections, pathlib, typing, langchain_core.documents. Resolved in-repository dependencies: backend/app/core/config.py, backend/app/db/mongo.py, backend/app/services/workspace_service.py, backend/app/utils/chunking.py, backend/app/utils/datetime.py. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/services/session_service.py, backend/app/workers/worker.py, backend/tests/test_rag_chunking.py. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -4354,7 +4354,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -4368,7 +4368,7 @@ This service coordinates the Redaction Service domain boundary. It combines type
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Redaction Service. Its extracted size is 30 lines and 171 lexical tokens; the source digest begins 7788640ea18c.
+It exists to provide a coherent Python module boundary for Redaction Service. Static inspection found 1 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 30 lines and 171 lexical tokens; the source digest begins 7788640ea18c.
 
 #### Important symbols
 
@@ -4376,7 +4376,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/api/routes/incidents.py, backend/app/execution/docker_runtime.py, backend/app/execution/local_runtime.py. The containing category is Backend services.
+Static imports or declared workflow actions: re. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/api/routes/incidents.py, backend/app/execution/docker_runtime.py, backend/app/execution/local_runtime.py. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -4395,7 +4395,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -4409,7 +4409,7 @@ This service coordinates the Regression Prevention Service domain boundary. It c
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Regression Prevention Service. Its extracted size is 234 lines and 907 lexical tokens; the source digest begins 8b58139eabfa.
+It exists to provide a coherent Python module boundary for Regression Prevention Service. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 234 lines and 907 lexical tokens; the source digest begins 8b58139eabfa.
 
 #### Important symbols
 
@@ -4417,7 +4417,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/db/mongo.py, backend/app/schemas/delivery.py, backend/app/schemas/regression_prevention.py. Potential consumers found through bounded textual/import analysis: backend/app/services/session_service.py, backend/tests/test_regression_prevention_service.py, docs/IMPLEMENTATION_AUDIT.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Backend services.
+Static imports or declared workflow actions: __future__, collections, collections.abc, datetime, typing, app.db.mongo, app.schemas.delivery. Resolved in-repository dependencies: backend/app/db/mongo.py, backend/app/schemas/delivery.py, backend/app/schemas/regression_prevention.py. Potential consumers from bounded textual/import analysis: backend/app/services/session_service.py, backend/tests/test_regression_prevention_service.py, docs/IMPLEMENTATION_AUDIT.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -4436,7 +4436,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -4450,7 +4450,7 @@ This service coordinates the Serializers domain boundary. It combines typed inpu
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Serializers. Its extracted size is 40 lines and 152 lexical tokens; the source digest begins e0811c2f661e.
+It exists to provide a coherent Python module boundary for Serializers. Static inspection found 2 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 40 lines and 152 lexical tokens; the source digest begins e0811c2f661e.
 
 #### Important symbols
 
@@ -4458,7 +4458,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/auth.py, backend/app/services/auth_service.py, backend/app/services/session_service.py, backend/tests/test_run_replay.py. The containing category is Backend services.
+Static imports or declared workflow actions: datetime, typing. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/api/routes/auth.py, backend/app/services/auth_service.py, backend/app/services/session_service.py, backend/tests/test_run_replay.py. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -4477,7 +4477,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -4491,7 +4491,7 @@ This service coordinates the Session Service domain boundary. It combines typed 
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Session Service. Its extracted size is 2391 lines and 10041 lexical tokens; the source digest begins be8feee76808.
+It exists to provide a coherent Python module boundary for Session Service. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 2391 lines and 10041 lexical tokens; the source digest begins be8feee76808.
 
 #### Important symbols
 
@@ -4499,7 +4499,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/agent/graph.py, backend/app/billing/usage_service.py, backend/app/core/config.py, backend/app/db/mongo.py, backend/app/git/actions.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/dev.py, backend/app/api/routes/diagnostic.py, backend/app/api/routes/session.py, backend/app/main.py. The containing category is Backend services.
+Static imports or declared workflow actions: asyncio, logging, math, re, collections.abc, datetime, typing. Resolved in-repository dependencies: backend/app/agent/graph.py, backend/app/billing/usage_service.py, backend/app/core/config.py, backend/app/db/mongo.py, backend/app/git/actions.py. Potential consumers from bounded textual/import analysis: backend/app/api/routes/dev.py, backend/app/api/routes/diagnostic.py, backend/app/api/routes/session.py, backend/app/main.py. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -4518,7 +4518,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -4532,7 +4532,7 @@ This service coordinates the Workspace Service domain boundary. It combines type
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Workspace Service. Its extracted size is 406 lines and 1922 lexical tokens; the source digest begins 78da44c2ecb7.
+It exists to provide a coherent Python module boundary for Workspace Service. Static inspection found 5 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 406 lines and 1922 lexical tokens; the source digest begins 78da44c2ecb7.
 
 #### Important symbols
 
@@ -4540,7 +4540,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py, backend/app/services/github_service.py. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/routes/memory.py, backend/app/intelligence/graph/service.py. The containing category is Backend services.
+Static imports or declared workflow actions: asyncio, os, re, shutil, subprocess, pathlib, typing. Resolved in-repository dependencies: backend/app/core/config.py, backend/app/services/github_service.py. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/routes/memory.py, backend/app/intelligence/graph/service.py. The containing category is Backend services; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -4559,7 +4559,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -4573,7 +4573,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Chunking. Its extracted size is 12 lines and 50 lexical tokens; the source digest begins ecf51d171383.
+It exists to provide a coherent Python module boundary for Chunking. Static inspection found 1 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 12 lines and 50 lexical tokens; the source digest begins ecf51d171383.
 
 #### Important symbols
 
@@ -4581,7 +4581,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/services/rag_service.py, backend/tests/test_rag_chunking.py, docs/IMPLEMENTATION_STATUS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Backend platform.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/services/rag_service.py, backend/tests/test_rag_chunking.py, docs/IMPLEMENTATION_STATUS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -4600,7 +4600,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -4614,7 +4614,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Datetime. Its extracted size is 9 lines and 18 lexical tokens; the source digest begins b61e360db473.
+It exists to provide a coherent Python module boundary for Datetime. Static inspection found 2 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 9 lines and 18 lexical tokens; the source digest begins b61e360db473.
 
 #### Important symbols
 
@@ -4622,7 +4622,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/api/deps.py, backend/app/api/routes/incidents.py, backend/app/billing/billing_service.py. The containing category is Backend platform.
+Static imports or declared workflow actions: datetime. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/api/deps.py, backend/app/api/routes/incidents.py, backend/app/billing/billing_service.py. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -4641,7 +4641,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -4655,7 +4655,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Ids. Its extracted size is 6 lines and 20 lexical tokens; the source digest begins acbf1cdd6b7d.
+It exists to provide a coherent Python module boundary for Ids. Static inspection found 1 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 6 lines and 20 lexical tokens; the source digest begins acbf1cdd6b7d.
 
 #### Important symbols
 
@@ -4663,7 +4663,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/.env.example, backend/app/agent/graph.py, backend/app/agent/state.py, backend/app/api/deps.py. The containing category is Backend platform.
+Static imports or declared workflow actions: uuid. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/.env.example, backend/app/agent/graph.py, backend/app/agent/state.py, backend/app/api/deps.py. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -4682,7 +4682,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -4696,7 +4696,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Sse. Its extracted size is 11 lines and 42 lexical tokens; the source digest begins e8433ba31c14.
+It exists to provide a coherent Python module boundary for Sse. Static inspection found 2 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 11 lines and 42 lexical tokens; the source digest begins e8433ba31c14.
 
 #### Important symbols
 
@@ -4704,7 +4704,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, README.md, backend/.env.example, backend/app/agent/graph.py. The containing category is Backend platform.
+Static imports or declared workflow actions: json, collections.abc, typing. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, README.md, backend/.env.example, backend/app/agent/graph.py. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -4723,7 +4723,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -4737,7 +4737,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for   Init  . Its extracted size is 1 lines and 7 lexical tokens; the source digest begins 595e39e73bcd.
+It exists to provide a coherent Python module boundary for   Init  . Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 7 lexical tokens; the source digest begins 595e39e73bcd.
 
 #### Important symbols
 
@@ -4745,7 +4745,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Backend platform.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -4764,7 +4764,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -4778,7 +4778,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Worker. Its extracted size is 290 lines and 1118 lexical tokens; the source digest begins f574d3bb1654.
+It exists to provide a coherent Python module boundary for Worker. Static inspection found 5 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 290 lines and 1118 lexical tokens; the source digest begins f574d3bb1654.
 
 #### Important symbols
 
@@ -4786,7 +4786,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py, backend/app/db/mongo.py, backend/app/git/actions.py, backend/app/intelligence/graph/service.py, backend/app/intelligence/graph/store.py. Potential consumers found through bounded textual/import analysis: backend/.env.example, backend/app/agent/graph.py, backend/app/billing/billing_service.py, backend/app/core/agent_run_guard.py. The containing category is Backend platform.
+Static imports or declared workflow actions: argparse, asyncio, os, signal, datetime, app.core.config, app.db.mongo. Resolved in-repository dependencies: backend/app/core/config.py, backend/app/db/mongo.py, backend/app/git/actions.py, backend/app/intelligence/graph/service.py, backend/app/intelligence/graph/store.py. Potential consumers from bounded textual/import analysis: backend/.env.example, backend/app/agent/graph.py, backend/app/billing/billing_service.py, backend/app/core/agent_run_guard.py. The containing category is Backend platform; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -4805,7 +4805,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -4819,7 +4819,7 @@ This Python module is part of the repository reference layer. It supplies the re
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for   Init  . Its extracted size is 1 lines and 9 lexical tokens; the source digest begins 210a295e040d.
+It exists to provide a coherent Python module boundary for   Init  . Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 9 lexical tokens; the source digest begins 210a295e040d.
 
 #### Important symbols
 
@@ -4827,7 +4827,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Repository reference.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Repository reference; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -4846,7 +4846,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -4860,7 +4860,7 @@ This Python module is part of the repository reference layer. It supplies the re
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Agent. Its extracted size is 18 lines and 73 lexical tokens; the source digest begins ac32b23bb7f6.
+It exists to provide a coherent Python module boundary for Agent. Static inspection found 1 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 18 lines and 73 lexical tokens; the source digest begins ac32b23bb7f6.
 
 #### Important symbols
 
@@ -4868,7 +4868,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/schemas/session.py, backend/app/services/diagnostic_stream_service.py. Potential consumers found through bounded textual/import analysis: .github/workflows/ci.yml, backend/.env.example, backend/app/__init__.py, backend/app/agent/graph.py. The containing category is Repository reference.
+Static imports or declared workflow actions: collections.abc, app.schemas.session, app.services.diagnostic_stream_service. Resolved in-repository dependencies: backend/app/schemas/session.py, backend/app/services/diagnostic_stream_service.py. Potential consumers from bounded textual/import analysis: .github/workflows/ci.yml, backend/.env.example, backend/app/__init__.py, backend/app/agent/graph.py. The containing category is Repository reference; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -4887,7 +4887,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -4901,7 +4901,7 @@ This Python module is part of the repository reference layer. It supplies the re
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Server. Its extracted size is 10 lines and 46 lexical tokens; the source digest begins 2aea6ca0ef03.
+It exists to provide a coherent Python module boundary for Server. Static inspection found 0 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 10 lines and 46 lexical tokens; the source digest begins 2aea6ca0ef03.
 
 #### Important symbols
 
@@ -4909,7 +4909,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/main.py. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Repository reference.
+Static imports or declared workflow actions: app.main. Resolved in-repository dependencies: backend/app/main.py. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Repository reference; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -4928,7 +4928,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -4942,7 +4942,7 @@ This documentation file records the repository's current guidance for Agent Safe
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Agent Safety. Its extracted size is 64 lines and 680 lexical tokens; the source digest begins 0535e58c31ce.
+It exists to provide a coherent documentation boundary for Agent Safety. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 64 lines and 680 lexical tokens; the source digest begins 0535e58c31ce.
 
 #### Important symbols
 
@@ -4950,7 +4950,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -4968,7 +4968,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -4982,7 +4982,7 @@ This documentation file records the repository's current guidance for Context En
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Context Engineering. Its extracted size is 135 lines and 497 lexical tokens; the source digest begins ca5b315f63a8.
+It exists to provide a coherent documentation boundary for Context Engineering. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 135 lines and 497 lexical tokens; the source digest begins ca5b315f63a8.
 
 #### Important symbols
 
@@ -4990,7 +4990,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -5008,7 +5008,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -5022,7 +5022,7 @@ This documentation file records the repository's current guidance for Operationa
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Operational Memory. Its extracted size is 250 lines and 983 lexical tokens; the source digest begins f5e31a153e5f.
+It exists to provide a coherent documentation boundary for Operational Memory. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 250 lines and 983 lexical tokens; the source digest begins f5e31a153e5f.
 
 #### Important symbols
 
@@ -5030,7 +5030,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -5048,7 +5048,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -5062,7 +5062,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for   Init  . Its extracted size is 1 lines and 5 lexical tokens; the source digest begins 886bac6f1d23.
+It exists to provide a coherent evaluation boundary for   Init  . Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 5 lexical tokens; the source digest begins 886bac6f1d23.
 
 #### Important symbols
 
@@ -5070,7 +5070,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/tools.py, backend/app/api/middleware.py, backend/app/billing/billing_service.py. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -5089,7 +5089,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -5103,7 +5103,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Actions Path. Its extracted size is 1 lines and 37 lexical tokens; the source digest begins e894e7355d70.
+It exists to provide a coherent evaluation boundary for Actions Path. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 37 lexical tokens; the source digest begins e894e7355d70.
 
 #### Important symbols
 
@@ -5111,7 +5111,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/evals/cases/ci-current-workflow-unavailable.json, backend/evals/cases/ci-historical-fixed.json, backend/evals/cases/ci-historical-workflow.json, backend/evals/cases/ci-huge-log.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/evals/cases/ci-current-workflow-unavailable.json, backend/evals/cases/ci-historical-fixed.json, backend/evals/cases/ci-historical-workflow.json, backend/evals/cases/ci-huge-log.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -5130,7 +5130,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -5144,7 +5144,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Changed Head. Its extracted size is 1 lines and 37 lexical tokens; the source digest begins aa0b01c648eb.
+It exists to provide a coherent evaluation boundary for Changed Head. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 37 lexical tokens; the source digest begins aa0b01c648eb.
 
 #### Important symbols
 
@@ -5152,7 +5152,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -5171,7 +5171,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -5185,7 +5185,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Ci Current Workflow Unavailable. Its extracted size is 1 lines and 39 lexical tokens; the source digest begins 66512b3e3c8f.
+It exists to provide a coherent evaluation boundary for Ci Current Workflow Unavailable. Static inspection found 6 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 39 lexical tokens; the source digest begins 66512b3e3c8f.
 
 #### Important symbols
 
@@ -5193,7 +5193,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -5212,7 +5212,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -5226,7 +5226,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Ci Historical Fixed. Its extracted size is 1 lines and 40 lexical tokens; the source digest begins 3cb5fd826a07.
+It exists to provide a coherent evaluation boundary for Ci Historical Fixed. Static inspection found 6 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 40 lexical tokens; the source digest begins 3cb5fd826a07.
 
 #### Important symbols
 
@@ -5234,7 +5234,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/DEMO_SCRIPT.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/DEMO_SCRIPT.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -5253,7 +5253,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -5267,7 +5267,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Ci Historical Workflow. Its extracted size is 1 lines and 38 lexical tokens; the source digest begins bbab59fac359.
+It exists to provide a coherent evaluation boundary for Ci Historical Workflow. Static inspection found 6 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 38 lexical tokens; the source digest begins bbab59fac359.
 
 #### Important symbols
 
@@ -5275,7 +5275,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -5294,7 +5294,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -5308,7 +5308,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Ci Huge Log. Its extracted size is 1 lines and 28 lexical tokens; the source digest begins dddd49e14a50.
+It exists to provide a coherent evaluation boundary for Ci Huge Log. Static inspection found 6 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 28 lexical tokens; the source digest begins dddd49e14a50.
 
 #### Important symbols
 
@@ -5316,7 +5316,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -5335,7 +5335,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -5349,7 +5349,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Ci Logs Unavailable. Its extracted size is 1 lines and 30 lexical tokens; the source digest begins bf4eddafc867.
+It exists to provide a coherent evaluation boundary for Ci Logs Unavailable. Static inspection found 6 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 30 lexical tokens; the source digest begins bf4eddafc867.
 
 #### Important symbols
 
@@ -5357,7 +5357,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -5376,7 +5376,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -5390,7 +5390,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Ci Malicious Log. Its extracted size is 1 lines and 33 lexical tokens; the source digest begins 808cf29d4ff9.
+It exists to provide a coherent evaluation boundary for Ci Malicious Log. Static inspection found 6 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 33 lexical tokens; the source digest begins 808cf29d4ff9.
 
 #### Important symbols
 
@@ -5398,7 +5398,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -5417,7 +5417,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -5431,7 +5431,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Ci Missing Dependency. Its extracted size is 1 lines and 42 lexical tokens; the source digest begins d6ee905eb2ff.
+It exists to provide a coherent evaluation boundary for Ci Missing Dependency. Static inspection found 6 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 42 lexical tokens; the source digest begins d6ee905eb2ff.
 
 #### Important symbols
 
@@ -5439,7 +5439,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -5458,7 +5458,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -5472,7 +5472,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Ci Secret Redaction. Its extracted size is 1 lines and 48 lexical tokens; the source digest begins 6dd86d053ffe.
+It exists to provide a coherent evaluation boundary for Ci Secret Redaction. Static inspection found 6 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 48 lexical tokens; the source digest begins 6dd86d053ffe.
 
 #### Important symbols
 
@@ -5480,7 +5480,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -5499,7 +5499,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -5513,7 +5513,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Ci Stale Working Directory. Its extracted size is 1 lines and 69 lexical tokens; the source digest begins 6f1e220eb1ae.
+It exists to provide a coherent evaluation boundary for Ci Stale Working Directory. Static inspection found 6 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 69 lexical tokens; the source digest begins 6f1e220eb1ae.
 
 #### Important symbols
 
@@ -5521,7 +5521,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/DEMO_SCRIPT.md, docs/FEATURE_PARITY_MATRIX.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/DEMO_SCRIPT.md, docs/FEATURE_PARITY_MATRIX.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -5540,7 +5540,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -5554,7 +5554,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Ci Test Regression. Its extracted size is 1 lines and 42 lexical tokens; the source digest begins e9cfe299c073.
+It exists to provide a coherent evaluation boundary for Ci Test Regression. Static inspection found 6 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 42 lexical tokens; the source digest begins e9cfe299c073.
 
 #### Important symbols
 
@@ -5562,7 +5562,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -5581,7 +5581,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -5595,7 +5595,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Ci Unrelated Workflow Change. Its extracted size is 1 lines and 45 lexical tokens; the source digest begins 11d86fcd9755.
+It exists to provide a coherent evaluation boundary for Ci Unrelated Workflow Change. Static inspection found 6 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 45 lexical tokens; the source digest begins 11d86fcd9755.
 
 #### Important symbols
 
@@ -5603,7 +5603,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -5622,7 +5622,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -5636,7 +5636,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Ci Workflow Command. Its extracted size is 1 lines and 27 lexical tokens; the source digest begins 2e99395a55bb.
+It exists to provide a coherent evaluation boundary for Ci Workflow Command. Static inspection found 6 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 27 lexical tokens; the source digest begins 2e99395a55bb.
 
 #### Important symbols
 
@@ -5644,7 +5644,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -5663,7 +5663,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -5677,7 +5677,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Compose Reference. Its extracted size is 1 lines and 32 lexical tokens; the source digest begins 6fffe7f9f4e5.
+It exists to provide a coherent evaluation boundary for Compose Reference. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 32 lexical tokens; the source digest begins 6fffe7f9f4e5.
 
 #### Important symbols
 
@@ -5685,7 +5685,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -5704,7 +5704,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -5718,7 +5718,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Compose Typo. Its extracted size is 1 lines and 36 lexical tokens; the source digest begins bb9bec722e15.
+It exists to provide a coherent evaluation boundary for Compose Typo. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 36 lexical tokens; the source digest begins bb9bec722e15.
 
 #### Important symbols
 
@@ -5726,7 +5726,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -5745,7 +5745,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -5759,7 +5759,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Docker Binding. Its extracted size is 1 lines and 37 lexical tokens; the source digest begins 32b48cafe664.
+It exists to provide a coherent evaluation boundary for Docker Binding. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 37 lexical tokens; the source digest begins 32b48cafe664.
 
 #### Important symbols
 
@@ -5767,7 +5767,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/EVALUATION.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/EVALUATION.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -5786,7 +5786,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -5800,7 +5800,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Git Status. Its extracted size is 1 lines and 31 lexical tokens; the source digest begins 95b7cdc9aee8.
+It exists to provide a coherent evaluation boundary for Git Status. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 31 lexical tokens; the source digest begins 95b7cdc9aee8.
 
 #### Important symbols
 
@@ -5808,7 +5808,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/session.py, backend/tests/test_evals_and_tracing.py, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/api/routes/session.py, backend/tests/test_evals_and_tracing.py, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -5827,7 +5827,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -5841,7 +5841,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Github Actions Path. Its extracted size is 1 lines and 41 lexical tokens; the source digest begins 035a644b54e8.
+It exists to provide a coherent evaluation boundary for Github Actions Path. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 41 lexical tokens; the source digest begins 035a644b54e8.
 
 #### Important symbols
 
@@ -5849,7 +5849,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -5868,7 +5868,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -5882,7 +5882,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Insufficient Evidence. Its extracted size is 1 lines and 28 lexical tokens; the source digest begins 1f09ccd7669d.
+It exists to provide a coherent evaluation boundary for Insufficient Evidence. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 28 lexical tokens; the source digest begins 1f09ccd7669d.
 
 #### Important symbols
 
@@ -5890,7 +5890,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -5909,7 +5909,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -5923,7 +5923,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Memory Recall. Its extracted size is 1 lines and 53 lexical tokens; the source digest begins e17358712c1f.
+It exists to provide a coherent evaluation boundary for Memory Recall. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 53 lexical tokens; the source digest begins e17358712c1f.
 
 #### Important symbols
 
@@ -5931,7 +5931,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -5950,7 +5950,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -5964,7 +5964,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Missing Env. Its extracted size is 1 lines and 32 lexical tokens; the source digest begins 2a4dc2c72b81.
+It exists to provide a coherent evaluation boundary for Missing Env. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 32 lexical tokens; the source digest begins 2a4dc2c72b81.
 
 #### Important symbols
 
@@ -5972,7 +5972,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -5991,7 +5991,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -6005,7 +6005,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Path Traversal Edit. Its extracted size is 1 lines and 31 lexical tokens; the source digest begins 931c4190107f.
+It exists to provide a coherent evaluation boundary for Path Traversal Edit. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 31 lexical tokens; the source digest begins 931c4190107f.
 
 #### Important symbols
 
@@ -6013,7 +6013,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/evals/runner.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/evals/runner.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -6032,7 +6032,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -6046,7 +6046,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Prompt Injection. Its extracted size is 1 lines and 33 lexical tokens; the source digest begins 3210bc142a4f.
+It exists to provide a coherent evaluation boundary for Prompt Injection. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 33 lexical tokens; the source digest begins 3210bc142a4f.
 
 #### Important symbols
 
@@ -6054,7 +6054,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/tests/test_evals_and_tracing.py, docs/LIVE_EVALUATION.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/tests/test_evals_and_tracing.py, docs/LIVE_EVALUATION.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -6073,7 +6073,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -6087,7 +6087,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Push Request. Its extracted size is 1 lines and 30 lexical tokens; the source digest begins 2ce040cda7ba.
+It exists to provide a coherent evaluation boundary for Push Request. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 30 lexical tokens; the source digest begins 2ce040cda7ba.
 
 #### Important symbols
 
@@ -6095,7 +6095,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -6114,7 +6114,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -6128,7 +6128,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Python Bug. Its extracted size is 1 lines and 38 lexical tokens; the source digest begins d5bc67fdd521.
+It exists to provide a coherent evaluation boundary for Python Bug. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 38 lexical tokens; the source digest begins d5bc67fdd521.
 
 #### Important symbols
 
@@ -6136,7 +6136,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -6155,7 +6155,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -6169,7 +6169,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Stale Readme. Its extracted size is 1 lines and 36 lexical tokens; the source digest begins 1797a0e1bf79.
+It exists to provide a coherent evaluation boundary for Stale Readme. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 36 lexical tokens; the source digest begins 1797a0e1bf79.
 
 #### Important symbols
 
@@ -6177,7 +6177,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -6196,7 +6196,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -6210,7 +6210,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Ts Api Mismatch. Its extracted size is 1 lines and 37 lexical tokens; the source digest begins c9787b86d5a9.
+It exists to provide a coherent evaluation boundary for Ts Api Mismatch. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 37 lexical tokens; the source digest begins c9787b86d5a9.
 
 #### Important symbols
 
@@ -6218,7 +6218,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -6237,7 +6237,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -6251,7 +6251,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Test. Its extracted size is 1 lines and 3 lexical tokens; the source digest begins a00906d80889.
+It exists to provide a coherent evaluation boundary for Test. Static inspection found 1 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 3 lexical tokens; the source digest begins a00906d80889.
 
 #### Important symbols
 
@@ -6259,7 +6259,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .github/workflows/ci.yml, .github/workflows/deployment-readiness.yml, .github/workflows/live-evals.yml. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .github/workflows/ci.yml, .github/workflows/deployment-readiness.yml, .github/workflows/live-evals.yml. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -6278,7 +6278,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -6292,7 +6292,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Main. Its extracted size is 1 lines and 2 lexical tokens; the source digest begins 4f4c4ec95d1f.
+It exists to provide a coherent evaluation boundary for Main. Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 2 lexical tokens; the source digest begins 4f4c4ec95d1f.
 
 #### Important symbols
 
@@ -6300,7 +6300,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, .github/workflows/ci.yml, .github/workflows/deployment-readiness.yml, README.md. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/taste.md, .github/workflows/ci.yml, .github/workflows/deployment-readiness.yml, README.md. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -6319,7 +6319,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -6333,7 +6333,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for App. Its extracted size is 1 lines and 5 lexical tokens; the source digest begins eb42a118c0b1.
+It exists to provide a coherent evaluation boundary for App. Static inspection found 1 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 5 lexical tokens; the source digest begins eb42a118c0b1.
 
 #### Important symbols
 
@@ -6341,7 +6341,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -6360,7 +6360,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -6374,7 +6374,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Docker Compose. Its extracted size is 4 lines and 7 lexical tokens; the source digest begins 88885f446708.
+It exists to provide a coherent evaluation boundary for Docker Compose. Static inspection found 1 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 4 lines and 7 lexical tokens; the source digest begins 88885f446708.
 
 #### Important symbols
 
@@ -6382,7 +6382,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/services/patch_engine.py, backend/app/services/workspace_service.py, backend/evals/cases/compose-reference.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/services/patch_engine.py, backend/app/services/workspace_service.py, backend/evals/cases/compose-reference.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -6401,7 +6401,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -6415,7 +6415,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Docker Compose. Its extracted size is 8 lines and 12 lexical tokens; the source digest begins 359d795d6515.
+It exists to provide a coherent evaluation boundary for Docker Compose. Static inspection found 2 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 8 lines and 12 lexical tokens; the source digest begins 359d795d6515.
 
 #### Important symbols
 
@@ -6423,7 +6423,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/services/patch_engine.py, backend/app/services/workspace_service.py, backend/evals/cases/compose-reference.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/services/patch_engine.py, backend/app/services/workspace_service.py, backend/evals/cases/compose-reference.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -6442,7 +6442,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -6456,7 +6456,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for App. Its extracted size is 1 lines and 5 lexical tokens; the source digest begins eb42a118c0b1.
+It exists to provide a coherent evaluation boundary for App. Static inspection found 1 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 5 lexical tokens; the source digest begins eb42a118c0b1.
 
 #### Important symbols
 
@@ -6464,7 +6464,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -6483,7 +6483,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -6497,7 +6497,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for App. Its extracted size is 1 lines and 3 lexical tokens; the source digest begins 8011d775a8b1.
+It exists to provide a coherent evaluation boundary for App. Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 3 lexical tokens; the source digest begins 8011d775a8b1.
 
 #### Important symbols
 
@@ -6505,7 +6505,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -6524,7 +6524,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -6538,7 +6538,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Ci. Its extracted size is 10 lines and 22 lexical tokens; the source digest begins 9eeb9af97c2b.
+It exists to provide a coherent evaluation boundary for Ci. Static inspection found 3 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 10 lines and 22 lexical tokens; the source digest begins 9eeb9af97c2b.
 
 #### Important symbols
 
@@ -6546,7 +6546,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, .github/workflows/ci.yml, .github/workflows/deployment-readiness.yml. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, .github/workflows/ci.yml, .github/workflows/deployment-readiness.yml. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -6565,7 +6565,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -6579,7 +6579,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Readme. Its extracted size is 1 lines and 12 lexical tokens; the source digest begins 6e913b913002.
+It exists to provide a coherent evaluation boundary for Readme. Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 12 lexical tokens; the source digest begins 6e913b913002.
 
 #### Important symbols
 
@@ -6587,7 +6587,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/docs/CONTEXT_ENGINEERING.md, backend/evals/cases/prompt-injection.json, backend/evals/cases/stale-readme.json, backend/tests/test_load_harness_safety.py. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/docs/CONTEXT_ENGINEERING.md, backend/evals/cases/prompt-injection.json, backend/evals/cases/stale-readme.json, backend/tests/test_load_harness_safety.py. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -6606,7 +6606,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -6620,7 +6620,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for A. Its extracted size is 1 lines and 4 lexical tokens; the source digest begins 3f83ff3c3cf0.
+It exists to provide a coherent evaluation boundary for A. Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 4 lexical tokens; the source digest begins 3f83ff3c3cf0.
 
 #### Important symbols
 
@@ -6628,7 +6628,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, .github/workflows/ci.yml, .github/workflows/deployment-readiness.yml. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, .github/workflows/ci.yml, .github/workflows/deployment-readiness.yml. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -6647,7 +6647,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -6661,7 +6661,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Api. Its extracted size is 12 lines and 64 lexical tokens; the source digest begins ca38898db206.
+It exists to provide a coherent evaluation boundary for Api. Static inspection found 2 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 12 lines and 64 lexical tokens; the source digest begins ca38898db206.
 
 #### Important symbols
 
@@ -6669,7 +6669,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, backend/.env.example, backend/app/agent/graph.py, backend/app/api/deps.py. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/taste.md, backend/.env.example, backend/app/agent/graph.py, backend/app/api/deps.py. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -6688,7 +6688,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -6702,7 +6702,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Docker Compose. Its extracted size is 6 lines and 23 lexical tokens; the source digest begins 08c1b0167604.
+It exists to provide a coherent evaluation boundary for Docker Compose. Static inspection found 1 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 6 lines and 23 lexical tokens; the source digest begins 08c1b0167604.
 
 #### Important symbols
 
@@ -6710,7 +6710,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/services/patch_engine.py, backend/app/services/workspace_service.py, backend/evals/cases/compose-reference.json. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/services/patch_engine.py, backend/app/services/workspace_service.py, backend/evals/cases/compose-reference.json. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -6729,7 +6729,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -6743,7 +6743,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for App. Its extracted size is 1 lines and 2 lexical tokens; the source digest begins b4b309136032.
+It exists to provide a coherent evaluation boundary for App. Static inspection found 1 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 2 lexical tokens; the source digest begins b4b309136032.
 
 #### Important symbols
 
@@ -6751,7 +6751,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -6770,7 +6770,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -6784,7 +6784,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Render. Its extracted size is 1 lines and 1 lexical tokens; the source digest begins a163d50c2e1c.
+It exists to provide a coherent evaluation boundary for Render. Static inspection found 1 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 1 lexical tokens; the source digest begins a163d50c2e1c.
 
 #### Important symbols
 
@@ -6792,7 +6792,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .github/workflows/deployment-readiness.yml, backend/app/agent/graph.py, backend/app/core/access_logging.py, backend/app/services/product_assistant_service.py. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .github/workflows/deployment-readiness.yml, backend/app/agent/graph.py, backend/app/core/access_logging.py, backend/app/services/product_assistant_service.py. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -6811,7 +6811,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -6825,7 +6825,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for App. Its extracted size is 1 lines and 2 lexical tokens; the source digest begins 5d8c3e5b3f6f.
+It exists to provide a coherent evaluation boundary for App. Static inspection found 1 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 2 lexical tokens; the source digest begins 5d8c3e5b3f6f.
 
 #### Important symbols
 
@@ -6833,7 +6833,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -6852,7 +6852,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -6866,7 +6866,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for App. Its extracted size is 1 lines and 4 lexical tokens; the source digest begins d54c2d9f7fbc.
+It exists to provide a coherent evaluation boundary for App. Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 4 lexical tokens; the source digest begins d54c2d9f7fbc.
 
 #### Important symbols
 
@@ -6874,7 +6874,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -6893,7 +6893,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -6907,7 +6907,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for App. Its extracted size is 4 lines and 10 lexical tokens; the source digest begins e2573787f5e2.
+It exists to provide a coherent evaluation boundary for App. Static inspection found 1 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 4 lines and 10 lexical tokens; the source digest begins e2573787f5e2.
 
 #### Important symbols
 
@@ -6915,7 +6915,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -6934,7 +6934,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -6948,7 +6948,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Readme. Its extracted size is 1 lines and 6 lexical tokens; the source digest begins 4265f34523bd.
+It exists to provide a coherent evaluation boundary for Readme. Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 6 lexical tokens; the source digest begins 4265f34523bd.
 
 #### Important symbols
 
@@ -6956,7 +6956,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/docs/CONTEXT_ENGINEERING.md, backend/evals/cases/prompt-injection.json, backend/evals/cases/stale-readme.json, backend/tests/test_load_harness_safety.py. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/docs/CONTEXT_ENGINEERING.md, backend/evals/cases/prompt-injection.json, backend/evals/cases/stale-readme.json, backend/tests/test_load_harness_safety.py. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -6975,7 +6975,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -6989,7 +6989,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Main. Its extracted size is 1 lines and 2 lexical tokens; the source digest begins 040c2b679258.
+It exists to provide a coherent evaluation boundary for Main. Static inspection found 1 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 1 lines and 2 lexical tokens; the source digest begins 040c2b679258.
 
 #### Important symbols
 
@@ -6997,7 +6997,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, .github/workflows/ci.yml, .github/workflows/deployment-readiness.yml, README.md. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/taste.md, .github/workflows/ci.yml, .github/workflows/deployment-readiness.yml, README.md. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -7016,7 +7016,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -7030,7 +7030,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Api. Its extracted size is 4 lines and 13 lexical tokens; the source digest begins 05166bb3fb45.
+It exists to provide a coherent evaluation boundary for Api. Static inspection found 2 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 4 lines and 13 lexical tokens; the source digest begins 05166bb3fb45.
 
 #### Important symbols
 
@@ -7038,7 +7038,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, backend/.env.example, backend/app/agent/graph.py, backend/app/api/deps.py. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/taste.md, backend/.env.example, backend/app/agent/graph.py, backend/app/api/deps.py. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -7057,7 +7057,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -7071,7 +7071,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Graders. Its extracted size is 23 lines and 115 lexical tokens; the source digest begins 27a23b52ae4d.
+It exists to provide a coherent evaluation boundary for Graders. Static inspection found 4 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 23 lines and 115 lexical tokens; the source digest begins 27a23b52ae4d.
 
 #### Important symbols
 
@@ -7079,7 +7079,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/schemas/investigation.py. Potential consumers found through bounded textual/import analysis: backend/evals/runner.py, backend/tests/test_evals_and_tracing.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: app.schemas.investigation. Resolved in-repository dependencies: backend/app/schemas/investigation.py. Potential consumers from bounded textual/import analysis: backend/evals/runner.py, backend/tests/test_evals_and_tracing.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -7098,7 +7098,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -7112,7 +7112,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Models. Its extracted size is 73 lines and 263 lexical tokens; the source digest begins 41c35128f006.
+It exists to provide a coherent evaluation boundary for Models. Static inspection found 4 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 73 lines and 263 lexical tokens; the source digest begins 41c35128f006.
 
 #### Important symbols
 
@@ -7120,7 +7120,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/app/agent/graph.py. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: typing, pydantic. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/app/agent/graph.py. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -7139,7 +7139,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -7153,7 +7153,7 @@ This evaluation artifact defines deterministic inputs or grading behavior for de
 
 #### Key responsibilities
 
-It exists to provide a coherent evaluation boundary for Runner. Its extracted size is 374 lines and 1499 lexical tokens; the source digest begins dd7d6edff4ad.
+It exists to provide a coherent evaluation boundary for Runner. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 374 lines and 1499 lexical tokens; the source digest begins dd7d6edff4ad.
 
 #### Important symbols
 
@@ -7161,7 +7161,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/agent/policy.py, backend/app/core/config.py, backend/app/git/actions.py, backend/app/schemas/patch.py, backend/app/services/ci_applicability.py. Potential consumers found through bounded textual/import analysis: .github/workflows/ci.yml, .github/workflows/deployment-readiness.yml, .github/workflows/live-evals.yml, README.md. The containing category is Deterministic evaluations.
+Static imports or declared workflow actions: argparse, json, os, shutil, tempfile, time, pathlib. Resolved in-repository dependencies: backend/app/agent/policy.py, backend/app/core/config.py, backend/app/git/actions.py, backend/app/schemas/patch.py, backend/app/services/ci_applicability.py. Potential consumers from bounded textual/import analysis: .github/workflows/ci.yml, .github/workflows/deployment-readiness.yml, .github/workflows/live-evals.yml, README.md. The containing category is Deterministic evaluations; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -7180,7 +7180,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -7194,7 +7194,7 @@ This configuration is part of the project configuration layer. It supplies the r
 
 #### Key responsibilities
 
-It exists to provide a coherent configuration boundary for Pyproject. Its extracted size is 19 lines and 58 lexical tokens; the source digest begins aa8f264ff1f6.
+It exists to provide a coherent configuration boundary for Pyproject. Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 19 lines and 58 lexical tokens; the source digest begins aa8f264ff1f6.
 
 #### Important symbols
 
@@ -7202,7 +7202,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/intelligence/graph/builder.py, backend/app/services/ci_investigation_service.py, backend/app/services/delivery_service.py. The containing category is Project configuration.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/intelligence/graph/builder.py, backend/app/services/ci_investigation_service.py, backend/app/services/delivery_service.py. The containing category is Project configuration; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -7221,7 +7221,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -7235,7 +7235,7 @@ This configuration is part of the repository reference layer. It supplies the re
 
 #### Key responsibilities
 
-It exists to provide a coherent configuration boundary for Requirements. Its extracted size is 29 lines and 169 lexical tokens; the source digest begins ba695c9873a4.
+It exists to provide a coherent configuration boundary for Requirements. Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 29 lines and 169 lexical tokens; the source digest begins ba695c9873a4.
 
 #### Important symbols
 
@@ -7243,7 +7243,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .github/workflows/ci.yml, .github/workflows/deployment-readiness.yml, .github/workflows/live-evals.yml, README.md. The containing category is Repository reference.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .github/workflows/ci.yml, .github/workflows/deployment-readiness.yml, .github/workflows/live-evals.yml, README.md. The containing category is Repository reference; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -7262,7 +7262,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -7276,7 +7276,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Agent Policy. Its extracted size is 21 lines and 78 lexical tokens; the source digest begins 8017493359f1.
+It exists to provide a coherent test boundary for Test Agent Policy. Static inspection found 3 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 21 lines and 78 lexical tokens; the source digest begins 8017493359f1.
 
 #### Important symbols
 
@@ -7284,7 +7284,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/agent/policy.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: app.agent.policy. Resolved in-repository dependencies: backend/app/agent/policy.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -7303,7 +7303,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -7317,7 +7317,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Agent Run Guard. Its extracted size is 40 lines and 143 lexical tokens; the source digest begins 7c6e6e6d3566.
+It exists to provide a coherent test boundary for Test Agent Run Guard. Static inspection found 3 named symbols, 5 import/action references, and 0 explicit route decorators. Its extracted size is 40 lines and 143 lexical tokens; the source digest begins 7c6e6e6d3566.
 
 #### Important symbols
 
@@ -7325,7 +7325,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/agent_run_guard.py, backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: pytest, fastapi, app.core, app.core.agent_run_guard, app.core.config. Resolved in-repository dependencies: backend/app/core/agent_run_guard.py, backend/app/core/config.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -7344,7 +7344,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -7358,7 +7358,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Assistant Usage Guard. Its extracted size is 54 lines and 193 lexical tokens; the source digest begins d7af3aef0b88.
+It exists to provide a coherent test boundary for Test Assistant Usage Guard. Static inspection found 1 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 54 lines and 193 lexical tokens; the source digest begins d7af3aef0b88.
 
 #### Important symbols
 
@@ -7366,7 +7366,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/agent_run_guard.py, backend/app/schemas/assistant.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: app.api.routes, app.core.agent_run_guard, app.schemas.assistant. Resolved in-repository dependencies: backend/app/core/agent_run_guard.py, backend/app/schemas/assistant.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -7385,7 +7385,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -7399,7 +7399,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Auth Failure Safety. Its extracted size is 155 lines and 558 lexical tokens; the source digest begins 673bd09ac7d5.
+It exists to provide a coherent test boundary for Test Auth Failure Safety. Static inspection found 7 named symbols, 6 import/action references, and 0 explicit route decorators. Its extracted size is 155 lines and 558 lexical tokens; the source digest begins 673bd09ac7d5.
 
 #### Important symbols
 
@@ -7407,7 +7407,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: jwt, pytest, fastapi, pymongo.errors, app.api, app.core.config. Resolved in-repository dependencies: backend/app/core/config.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -7426,7 +7426,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -7440,7 +7440,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Background Jobs. Its extracted size is 149 lines and 557 lexical tokens; the source digest begins 098d521288a4.
+It exists to provide a coherent test boundary for Test Background Jobs. Static inspection found 7 named symbols, 5 import/action references, and 0 explicit route decorators. Its extracted size is 149 lines and 557 lexical tokens; the source digest begins 098d521288a4.
 
 #### Important symbols
 
@@ -7448,7 +7448,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py, backend/app/services/background_job_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: types, pymongo.errors, app.core.config, app.services, app.services.background_job_service. Resolved in-repository dependencies: backend/app/core/config.py, backend/app/services/background_job_service.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -7467,7 +7467,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -7481,7 +7481,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Billing Lifecycle. Its extracted size is 125 lines and 396 lexical tokens; the source digest begins 6c911e2546b5.
+It exists to provide a coherent test boundary for Test Billing Lifecycle. Static inspection found 3 named symbols, 6 import/action references, and 0 explicit route decorators. Its extracted size is 125 lines and 396 lexical tokens; the source digest begins 6c911e2546b5.
 
 #### Important symbols
 
@@ -7489,7 +7489,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/billing/billing_service.py, backend/app/billing/models.py, backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: types, pymongo.errors, app.billing, app.billing.billing_service, app.billing.models, app.core.config. Resolved in-repository dependencies: backend/app/billing/billing_service.py, backend/app/billing/models.py, backend/app/core/config.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -7508,7 +7508,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -7522,7 +7522,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Candidate Verification. Its extracted size is 270 lines and 875 lexical tokens; the source digest begins 0cf87af1863a.
+It exists to provide a coherent test boundary for Test Candidate Verification. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 270 lines and 875 lexical tokens; the source digest begins 0cf87af1863a.
 
 #### Important symbols
 
@@ -7530,7 +7530,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/schemas/delivery.py, backend/app/services/candidate_verification_service.py, backend/app/services/delivery_service.py, backend/app/services/session_service.py. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/incidents.py, backend/tests/test_system_capabilities.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Backend tests.
+Static imports or declared workflow actions: datetime, types, pytest, app.schemas.delivery, app.services, app.services.candidate_verification_service, app.services.delivery_service. Resolved in-repository dependencies: backend/app/schemas/delivery.py, backend/app/services/candidate_verification_service.py, backend/app/services/delivery_service.py, backend/app/services/session_service.py. Potential consumers from bounded textual/import analysis: backend/app/api/routes/incidents.py, backend/tests/test_system_capabilities.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -7549,7 +7549,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -7563,7 +7563,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Change Impact. Its extracted size is 152 lines and 613 lexical tokens; the source digest begins 65a013ed21c6.
+It exists to provide a coherent test boundary for Test Change Impact. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 152 lines and 613 lexical tokens; the source digest begins 65a013ed21c6.
 
 #### Important symbols
 
@@ -7571,7 +7571,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/intelligence/graph/builder.py, backend/app/intelligence/impact/models.py, backend/app/intelligence/impact/service.py, backend/app/intelligence/impact/store.py, backend/app/schemas/delivery.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: __future__, datetime, pathlib, types, app.intelligence.graph.builder, app.intelligence.impact.models, app.intelligence.impact.service. Resolved in-repository dependencies: backend/app/intelligence/graph/builder.py, backend/app/intelligence/impact/models.py, backend/app/intelligence/impact/service.py, backend/app/intelligence/impact/store.py, backend/app/schemas/delivery.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -7590,7 +7590,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -7604,7 +7604,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Ci Applicability. Its extracted size is 37 lines and 90 lexical tokens; the source digest begins 163821f389d3.
+It exists to provide a coherent test boundary for Test Ci Applicability. Static inspection found 4 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 37 lines and 90 lexical tokens; the source digest begins 163821f389d3.
 
 #### Important symbols
 
@@ -7612,7 +7612,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/services/ci_applicability.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: app.services.ci_applicability. Resolved in-repository dependencies: backend/app/services/ci_applicability.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -7631,7 +7631,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -7645,7 +7645,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Ci Investigation Service. Its extracted size is 414 lines and 1272 lexical tokens; the source digest begins 2fae4b866721.
+It exists to provide a coherent test boundary for Test Ci Investigation Service. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 414 lines and 1272 lexical tokens; the source digest begins 2fae4b866721.
 
 #### Important symbols
 
@@ -7653,7 +7653,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/agent/graph.py, backend/app/git/actions.py, backend/app/git/change_provider.py, backend/app/services/ci_investigation_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: datetime, pathlib, pytest, app.agent.graph, app.git.actions, app.git.change_provider, app.services.ci_investigation_service. Resolved in-repository dependencies: backend/app/agent/graph.py, backend/app/git/actions.py, backend/app/git/change_provider.py, backend/app/services/ci_investigation_service.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -7672,7 +7672,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -7686,7 +7686,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Ci Request Intent. Its extracted size is 11 lines and 34 lexical tokens; the source digest begins a4ccf7b71b77.
+It exists to provide a coherent test boundary for Test Ci Request Intent. Static inspection found 2 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 11 lines and 34 lexical tokens; the source digest begins a4ccf7b71b77.
 
 #### Important symbols
 
@@ -7694,7 +7694,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/services/ci_request_intent.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: app.services.ci_request_intent. Resolved in-repository dependencies: backend/app/services/ci_request_intent.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -7713,7 +7713,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -7727,7 +7727,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Ci Run Resolution. Its extracted size is 98 lines and 400 lexical tokens; the source digest begins 78cbf26f4d8c.
+It exists to provide a coherent test boundary for Test Ci Run Resolution. Static inspection found 7 named symbols, 6 import/action references, and 0 explicit route decorators. Its extracted size is 98 lines and 400 lexical tokens; the source digest begins 78cbf26f4d8c.
 
 #### Important symbols
 
@@ -7735,7 +7735,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/agent/graph.py, backend/app/git/actions.py, backend/app/services/ci_request_intent.py, backend/app/services/ci_run_resolution_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: httpx, pytest, app.agent.graph, app.git.actions, app.services.ci_request_intent, app.services.ci_run_resolution_service. Resolved in-repository dependencies: backend/app/agent/graph.py, backend/app/git/actions.py, backend/app/services/ci_request_intent.py, backend/app/services/ci_run_resolution_service.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -7754,7 +7754,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -7768,7 +7768,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Context Budget. Its extracted size is 53 lines and 174 lexical tokens; the source digest begins 00e910f40012.
+It exists to provide a coherent test boundary for Test Context Budget. Static inspection found 3 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 53 lines and 174 lexical tokens; the source digest begins 00e910f40012.
 
 #### Important symbols
 
@@ -7776,7 +7776,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/services/context_budget.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: app.services.context_budget. Resolved in-repository dependencies: backend/app/services/context_budget.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -7795,7 +7795,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -7809,7 +7809,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Delivery Ci Service. Its extracted size is 48 lines and 151 lexical tokens; the source digest begins 299a77cd60b5.
+It exists to provide a coherent test boundary for Test Delivery Ci Service. Static inspection found 4 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 48 lines and 151 lexical tokens; the source digest begins 299a77cd60b5.
 
 #### Important symbols
 
@@ -7817,7 +7817,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/git/actions.py, backend/app/services/delivery_ci_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: app.git.actions, app.services.delivery_ci_service. Resolved in-repository dependencies: backend/app/git/actions.py, backend/app/services/delivery_ci_service.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -7836,7 +7836,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -7850,7 +7850,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Delivery Policy. Its extracted size is 275 lines and 934 lexical tokens; the source digest begins 265c9afd5ced.
+It exists to provide a coherent test boundary for Test Delivery Policy. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 275 lines and 934 lexical tokens; the source digest begins 265c9afd5ced.
 
 #### Important symbols
 
@@ -7858,7 +7858,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/schemas/delivery.py, backend/app/schemas/patch.py, backend/app/schemas/session.py, backend/app/services/delivery_service.py, backend/app/services/patch_engine.py. Potential consumers found through bounded textual/import analysis: docs/PRODUCTION_READINESS_AUDIT.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: datetime, pathlib, pytest, fastapi, app.policy, app.schemas.delivery, app.schemas.patch. Resolved in-repository dependencies: backend/app/schemas/delivery.py, backend/app/schemas/patch.py, backend/app/schemas/session.py, backend/app/services/delivery_service.py, backend/app/services/patch_engine.py. Potential consumers from bounded textual/import analysis: docs/PRODUCTION_READINESS_AUDIT.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -7877,7 +7877,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -7891,7 +7891,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Deployment Blueprints. Its extracted size is 124 lines and 566 lexical tokens; the source digest begins 1ba2473cafc0.
+It exists to provide a coherent test boundary for Test Deployment Blueprints. Static inspection found 7 named symbols, 4 import/action references, and 0 explicit route decorators. Its extracted size is 124 lines and 566 lexical tokens; the source digest begins 1ba2473cafc0.
 
 #### Important symbols
 
@@ -7899,7 +7899,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: pathlib, typing, yaml, app.core.config. Resolved in-repository dependencies: backend/app/core/config.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -7918,7 +7918,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -7932,7 +7932,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Diagnostic Stream. Its extracted size is 213 lines and 740 lexical tokens; the source digest begins c8b992248b5c.
+It exists to provide a coherent test boundary for Test Diagnostic Stream. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 213 lines and 740 lexical tokens; the source digest begins c8b992248b5c.
 
 #### Important symbols
 
@@ -7940,7 +7940,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/schemas/session.py, backend/app/services/diagnostic_stream_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: json, app.api.routes, app.schemas.session, app.services, app.services.diagnostic_stream_service, devops.agent, devops.server. Resolved in-repository dependencies: backend/app/schemas/session.py, backend/app/services/diagnostic_stream_service.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -7959,7 +7959,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -7973,7 +7973,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Engineering Graph. Its extracted size is 172 lines and 836 lexical tokens; the source digest begins 9b1fa84cbfde.
+It exists to provide a coherent test boundary for Test Engineering Graph. Static inspection found 7 named symbols, 7 import/action references, and 1 explicit route decorators. Its extracted size is 172 lines and 836 lexical tokens; the source digest begins 9b1fa84cbfde.
 
 #### Important symbols
 
@@ -7981,7 +7981,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/intelligence/graph/builder.py, backend/app/intelligence/graph/models.py, backend/app/intelligence/graph/service.py, backend/app/intelligence/graph/store.py, backend/app/schemas/intelligence.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: __future__, pathlib, types, app.intelligence.graph.builder, app.intelligence.graph.models, app.intelligence.graph.service, app.intelligence.graph.store. Resolved in-repository dependencies: backend/app/intelligence/graph/builder.py, backend/app/intelligence/graph/models.py, backend/app/intelligence/graph/service.py, backend/app/intelligence/graph/store.py, backend/app/schemas/intelligence.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -8000,7 +8000,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -8014,7 +8014,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Evals And Tracing. Its extracted size is 44 lines and 200 lexical tokens; the source digest begins 79b231aa9b61.
+It exists to provide a coherent test boundary for Test Evals And Tracing. Static inspection found 4 named symbols, 6 import/action references, and 0 explicit route decorators. Its extracted size is 44 lines and 200 lexical tokens; the source digest begins 79b231aa9b61.
 
 #### Important symbols
 
@@ -8022,7 +8022,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/failures.py, backend/app/observability/recorder.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: asyncio, app.core.failures, app.observability.recorder, evals.graders, evals.models, evals.runner. Resolved in-repository dependencies: backend/app/core/failures.py, backend/app/observability/recorder.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -8041,7 +8041,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -8055,7 +8055,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Execution Sandbox. Its extracted size is 154 lines and 498 lexical tokens; the source digest begins abf055b1ccc6.
+It exists to provide a coherent test boundary for Test Execution Sandbox. Static inspection found 7 named symbols, 6 import/action references, and 0 explicit route decorators. Its extracted size is 154 lines and 498 lexical tokens; the source digest begins abf055b1ccc6.
 
 #### Important symbols
 
@@ -8063,7 +8063,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/execution/docker_runtime.py, backend/app/execution/policy.py, backend/app/execution/runtime.py, backend/app/services/delivery_service.py. Potential consumers found through bounded textual/import analysis: docs/PRODUCTION_READINESS_AUDIT.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: pathlib, pytest, app.execution.docker_runtime, app.execution.policy, app.execution.runtime, app.services.delivery_service. Resolved in-repository dependencies: backend/app/execution/docker_runtime.py, backend/app/execution/policy.py, backend/app/execution/runtime.py, backend/app/services/delivery_service.py. Potential consumers from bounded textual/import analysis: docs/PRODUCTION_READINESS_AUDIT.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -8082,7 +8082,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -8096,7 +8096,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Flaky Test Service. Its extracted size is 142 lines and 410 lexical tokens; the source digest begins 2d4f50f32c24.
+It exists to provide a coherent test boundary for Test Flaky Test Service. Static inspection found 5 named symbols, 6 import/action references, and 0 explicit route decorators. Its extracted size is 142 lines and 410 lexical tokens; the source digest begins 2d4f50f32c24.
 
 #### Important symbols
 
@@ -8104,7 +8104,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/services/flaky_test_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: __future__, datetime, types, pytest, app.api.routes, app.services.flaky_test_service. Resolved in-repository dependencies: backend/app/services/flaky_test_service.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -8123,7 +8123,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -8137,7 +8137,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Frontend Deployment Security. Its extracted size is 21 lines and 111 lexical tokens; the source digest begins 5dc76f7d453f.
+It exists to provide a coherent test boundary for Test Frontend Deployment Security. Static inspection found 1 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 21 lines and 111 lexical tokens; the source digest begins 5dc76f7d453f.
 
 #### Important symbols
 
@@ -8145,7 +8145,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: json, pathlib. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -8164,7 +8164,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -8178,7 +8178,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Github Actions. Its extracted size is 52 lines and 206 lexical tokens; the source digest begins 03aafb730c6f.
+It exists to provide a coherent test boundary for Test Github Actions. Static inspection found 3 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 52 lines and 206 lexical tokens; the source digest begins 03aafb730c6f.
 
 #### Important symbols
 
@@ -8186,7 +8186,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/git/actions.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: app.git.actions. Resolved in-repository dependencies: backend/app/git/actions.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -8205,7 +8205,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -8219,7 +8219,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Github Repository Boundary. Its extracted size is 177 lines and 658 lexical tokens; the source digest begins 7507f0813687.
+It exists to provide a coherent test boundary for Test Github Repository Boundary. Static inspection found 7 named symbols, 4 import/action references, and 0 explicit route decorators. Its extracted size is 177 lines and 658 lexical tokens; the source digest begins 7507f0813687.
 
 #### Important symbols
 
@@ -8227,7 +8227,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: pytest, fastapi, app.core.config, app.services. Resolved in-repository dependencies: backend/app/core/config.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -8246,7 +8246,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -8260,7 +8260,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Github Webhook Intake. Its extracted size is 269 lines and 836 lexical tokens; the source digest begins cb63adbb9823.
+It exists to provide a coherent test boundary for Test Github Webhook Intake. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 269 lines and 836 lexical tokens; the source digest begins cb63adbb9823.
 
 #### Important symbols
 
@@ -8268,7 +8268,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py, backend/app/services/incident_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: hashlib, hmac, json, types, pytest, fastapi, pymongo.errors. Resolved in-repository dependencies: backend/app/core/config.py, backend/app/services/incident_service.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -8287,7 +8287,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -8301,7 +8301,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Graph Indexing Mode. Its extracted size is 81 lines and 279 lexical tokens; the source digest begins e471697c678b.
+It exists to provide a coherent test boundary for Test Graph Indexing Mode. Static inspection found 1 named symbols, 5 import/action references, and 0 explicit route decorators. Its extracted size is 81 lines and 279 lexical tokens; the source digest begins e471697c678b.
 
 #### Important symbols
 
@@ -8309,7 +8309,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/agent/graph.py, backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: pathlib, types, app.agent, app.agent.graph, app.core.config. Resolved in-repository dependencies: backend/app/agent/graph.py, backend/app/core/config.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -8328,7 +8328,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -8342,7 +8342,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Http Protection. Its extracted size is 398 lines and 1235 lexical tokens; the source digest begins fdae78f5f7a7.
+It exists to provide a coherent test boundary for Test Http Protection. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 398 lines and 1235 lexical tokens; the source digest begins fdae78f5f7a7.
 
 #### Important symbols
 
@@ -8350,7 +8350,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/api/middleware.py, backend/app/core/access_logging.py, backend/app/core/config.py, backend/app/core/rate_limit.py, backend/app/schemas/session.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: pytest, cryptography.fernet, pydantic, app.api.middleware, app.core.access_logging, app.core.config, app.core.rate_limit. Resolved in-repository dependencies: backend/app/api/middleware.py, backend/app/core/access_logging.py, backend/app/core/config.py, backend/app/core/rate_limit.py, backend/app/schemas/session.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -8369,7 +8369,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -8383,7 +8383,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Incident Models. Its extracted size is 559 lines and 1824 lexical tokens; the source digest begins 065af56004a5.
+It exists to provide a coherent test boundary for Test Incident Models. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 559 lines and 1824 lexical tokens; the source digest begins 065af56004a5.
 
 #### Important symbols
 
@@ -8391,7 +8391,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/api/routes/incidents.py, backend/app/git/actions.py, backend/app/schemas/incident.py, backend/app/services/incident_export_service.py, backend/app/services/incident_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: json, types, app.api.routes, app.api.routes.incidents, app.git.actions, app.schemas.incident, app.services. Resolved in-repository dependencies: backend/app/api/routes/incidents.py, backend/app/git/actions.py, backend/app/schemas/incident.py, backend/app/services/incident_export_service.py, backend/app/services/incident_service.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -8410,7 +8410,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -8424,7 +8424,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Incident Reporting. Its extracted size is 97 lines and 354 lexical tokens; the source digest begins 18e8f1c99d19.
+It exists to provide a coherent test boundary for Test Incident Reporting. Static inspection found 4 named symbols, 4 import/action references, and 0 explicit route decorators. Its extracted size is 97 lines and 354 lexical tokens; the source digest begins 18e8f1c99d19.
 
 #### Important symbols
 
@@ -8432,7 +8432,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/services/incident_reporting_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: types, pytest, app.services, app.services.incident_reporting_service. Resolved in-repository dependencies: backend/app/services/incident_reporting_service.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -8451,7 +8451,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -8465,7 +8465,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Live Eval Truthfulness. Its extracted size is 26 lines and 89 lexical tokens; the source digest begins 9b5a4c8e5ea8.
+It exists to provide a coherent test boundary for Test Live Eval Truthfulness. Static inspection found 3 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 26 lines and 89 lexical tokens; the source digest begins 9b5a4c8e5ea8.
 
 #### Important symbols
 
@@ -8473,7 +8473,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: evals.models, evals.runner. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -8492,7 +8492,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -8506,7 +8506,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Load Harness Safety. Its extracted size is 28 lines and 121 lexical tokens; the source digest begins b6097f7159f2.
+It exists to provide a coherent test boundary for Test Load Harness Safety. Static inspection found 4 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 28 lines and 121 lexical tokens; the source digest begins b6097f7159f2.
 
 #### Important symbols
 
@@ -8514,7 +8514,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: pathlib. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -8533,7 +8533,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -8547,7 +8547,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Main. Its extracted size is 127 lines and 415 lexical tokens; the source digest begins 73c20668429a.
+It exists to provide a coherent test boundary for Test Main. Static inspection found 7 named symbols, 4 import/action references, and 0 explicit route decorators. Its extracted size is 127 lines and 415 lexical tokens; the source digest begins 73c20668429a.
 
 #### Important symbols
 
@@ -8555,7 +8555,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/db/mongo.py, backend/app/services/session_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: datetime, app, app.db.mongo, app.services.session_service. Resolved in-repository dependencies: backend/app/db/mongo.py, backend/app/services/session_service.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -8574,7 +8574,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -8588,7 +8588,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Memory Freshness. Its extracted size is 166 lines and 645 lexical tokens; the source digest begins ac7fd43859df.
+It exists to provide a coherent test boundary for Test Memory Freshness. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 166 lines and 645 lexical tokens; the source digest begins ac7fd43859df.
 
 #### Important symbols
 
@@ -8596,7 +8596,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/git/pr_status.py, backend/app/memory/freshness.py, backend/app/memory/memory_service.py, backend/app/memory/models.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: __future__, subprocess, datetime, pathlib, unittest.mock, pytest, app.git.pr_status. Resolved in-repository dependencies: backend/app/git/pr_status.py, backend/app/memory/freshness.py, backend/app/memory/memory_service.py, backend/app/memory/models.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -8615,7 +8615,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -8629,7 +8629,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Memory Routes. Its extracted size is 24 lines and 82 lexical tokens; the source digest begins 2425ff2f4dbb.
+It exists to provide a coherent test boundary for Test Memory Routes. Static inspection found 2 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 24 lines and 82 lexical tokens; the source digest begins 2425ff2f4dbb.
 
 #### Important symbols
 
@@ -8637,7 +8637,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: app.api.routes, app.core.config. Resolved in-repository dependencies: backend/app/core/config.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -8656,7 +8656,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -8670,7 +8670,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Model Usage Events. Its extracted size is 23 lines and 54 lexical tokens; the source digest begins 54d40753f05a.
+It exists to provide a coherent test boundary for Test Model Usage Events. Static inspection found 2 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 23 lines and 54 lexical tokens; the source digest begins 54d40753f05a.
 
 #### Important symbols
 
@@ -8678,7 +8678,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/agent/graph.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: types, app.agent.graph. Resolved in-repository dependencies: backend/app/agent/graph.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -8697,7 +8697,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -8711,7 +8711,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Mongo Pooling. Its extracted size is 40 lines and 97 lexical tokens; the source digest begins 9b66b1493b3b.
+It exists to provide a coherent test boundary for Test Mongo Pooling. Static inspection found 1 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 40 lines and 97 lexical tokens; the source digest begins 9b66b1493b3b.
 
 #### Important symbols
 
@@ -8719,7 +8719,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: app.core.config, app.db. Resolved in-repository dependencies: backend/app/core/config.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -8738,7 +8738,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -8752,7 +8752,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Oauth State Security. Its extracted size is 127 lines and 488 lexical tokens; the source digest begins 6248d2a8c943.
+It exists to provide a coherent test boundary for Test Oauth State Security. Static inspection found 4 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 127 lines and 488 lexical tokens; the source digest begins 6248d2a8c943.
 
 #### Important symbols
 
@@ -8760,7 +8760,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: datetime, urllib.parse, pytest, cryptography.fernet, fastapi, app.core, app.core.config. Resolved in-repository dependencies: backend/app/core/config.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -8779,7 +8779,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -8793,7 +8793,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Operational Memory. Its extracted size is 623 lines and 1645 lexical tokens; the source digest begins b6d79ae0297b.
+It exists to provide a coherent test boundary for Test Operational Memory. Static inspection found 7 named symbols, 6 import/action references, and 0 explicit route decorators. Its extracted size is 623 lines and 1645 lexical tokens; the source digest begins b6d79ae0297b.
 
 #### Important symbols
 
@@ -8801,7 +8801,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/memory/memory_service.py, backend/app/memory/models.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: datetime, typing, unittest.mock, pytest, app.memory.memory_service, app.memory.models. Resolved in-repository dependencies: backend/app/memory/memory_service.py, backend/app/memory/models.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -8820,7 +8820,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -8834,7 +8834,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Operational Memory Redesign. Its extracted size is 1072 lines and 3150 lexical tokens; the source digest begins cdc7bd0a25e1.
+It exists to provide a coherent test boundary for Test Operational Memory Redesign. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 1072 lines and 3150 lexical tokens; the source digest begins cdc7bd0a25e1.
 
 #### Important symbols
 
@@ -8842,7 +8842,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/memory/memory_service.py, backend/app/memory/models.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: datetime, typing, unittest.mock, pytest, app.memory.memory_service, app.memory.models, enum. Resolved in-repository dependencies: backend/app/memory/memory_service.py, backend/app/memory/models.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -8861,7 +8861,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -8875,7 +8875,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Patch Engine. Its extracted size is 268 lines and 731 lexical tokens; the source digest begins 835154f52389.
+It exists to provide a coherent test boundary for Test Patch Engine. Static inspection found 7 named symbols, 5 import/action references, and 0 explicit route decorators. Its extracted size is 268 lines and 731 lexical tokens; the source digest begins 835154f52389.
 
 #### Important symbols
 
@@ -8883,7 +8883,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/schemas/patch.py, backend/app/services/delivery_service.py, backend/app/services/patch_engine.py. Potential consumers found through bounded textual/import analysis: backend/tests/test_delivery_policy.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: pathlib, pytest, app.schemas.patch, app.services.delivery_service, app.services.patch_engine. Resolved in-repository dependencies: backend/app/schemas/patch.py, backend/app/services/delivery_service.py, backend/app/services/patch_engine.py. Potential consumers from bounded textual/import analysis: backend/tests/test_delivery_policy.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -8902,7 +8902,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -8916,7 +8916,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Prevention Rule Service. Its extracted size is 189 lines and 565 lexical tokens; the source digest begins 7b146a0c98a4.
+It exists to provide a coherent test boundary for Test Prevention Rule Service. Static inspection found 7 named symbols, 5 import/action references, and 0 explicit route decorators. Its extracted size is 189 lines and 565 lexical tokens; the source digest begins 7b146a0c98a4.
 
 #### Important symbols
 
@@ -8924,7 +8924,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/services/prevention_rule_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: __future__, types, pytest, app.services.prevention_rule_service, app.services. Resolved in-repository dependencies: backend/app/services/prevention_rule_service.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -8943,7 +8943,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -8957,7 +8957,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Product Assistant. Its extracted size is 130 lines and 411 lexical tokens; the source digest begins b1b4a76aac66.
+It exists to provide a coherent test boundary for Test Product Assistant. Static inspection found 7 named symbols, 6 import/action references, and 0 explicit route decorators. Its extracted size is 130 lines and 411 lexical tokens; the source digest begins b1b4a76aac66.
 
 #### Important symbols
 
@@ -8965,7 +8965,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py, backend/app/schemas/assistant.py, backend/app/services/product_assistant_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: pytest, pydantic, app.core.config, app.schemas.assistant, app.services, app.services.product_assistant_service. Resolved in-repository dependencies: backend/app/core/config.py, backend/app/schemas/assistant.py, backend/app/services/product_assistant_service.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -8984,7 +8984,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -8998,7 +8998,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Rag Chunking. Its extracted size is 265 lines and 992 lexical tokens; the source digest begins 03d28e253b20.
+It exists to provide a coherent test boundary for Test Rag Chunking. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 265 lines and 992 lexical tokens; the source digest begins 03d28e253b20.
 
 #### Important symbols
 
@@ -9006,7 +9006,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/services/rag_service.py, backend/app/services/workspace_service.py, backend/app/utils/chunking.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: asyncio, pytest, fastapi, langchain_core.documents, app.services, app.services.rag_service, app.services.workspace_service. Resolved in-repository dependencies: backend/app/services/rag_service.py, backend/app/services/workspace_service.py, backend/app/utils/chunking.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -9025,7 +9025,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -9039,7 +9039,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Razorpay Security. Its extracted size is 41 lines and 165 lexical tokens; the source digest begins 02eb436f6dd6.
+It exists to provide a coherent test boundary for Test Razorpay Security. Static inspection found 4 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 41 lines and 165 lexical tokens; the source digest begins 02eb436f6dd6.
 
 #### Important symbols
 
@@ -9047,7 +9047,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/billing/models.py, backend/app/billing/razorpay.py, backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: hashlib, hmac, pytest, fastapi, app.billing.models, app.billing.razorpay, app.core.config. Resolved in-repository dependencies: backend/app/billing/models.py, backend/app/billing/razorpay.py, backend/app/core/config.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -9066,7 +9066,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -9080,7 +9080,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Redaction And Investigation. Its extracted size is 342 lines and 1071 lexical tokens; the source digest begins fb4e3be71106.
+It exists to provide a coherent test boundary for Test Redaction And Investigation. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 342 lines and 1071 lexical tokens; the source digest begins fb4e3be71106.
 
 #### Important symbols
 
@@ -9088,7 +9088,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/agent/graph.py, backend/app/schemas/investigation.py, backend/app/services/redaction_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: asyncio, datetime, pathlib, types, app.agent.graph, app.schemas.investigation, app.services. Resolved in-repository dependencies: backend/app/agent/graph.py, backend/app/schemas/investigation.py, backend/app/services/redaction_service.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -9107,7 +9107,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -9121,7 +9121,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Regression Prevention Service. Its extracted size is 251 lines and 676 lexical tokens; the source digest begins 168d8879ad39.
+It exists to provide a coherent test boundary for Test Regression Prevention Service. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 251 lines and 676 lexical tokens; the source digest begins 168d8879ad39.
 
 #### Important symbols
 
@@ -9129,7 +9129,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/schemas/delivery.py, backend/app/services/regression_prevention_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: __future__, datetime, types, pytest, fastapi, app.schemas.delivery, app.services.regression_prevention_service. Resolved in-repository dependencies: backend/app/schemas/delivery.py, backend/app/services/regression_prevention_service.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -9148,7 +9148,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -9162,7 +9162,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Render Blueprint. Its extracted size is 71 lines and 356 lexical tokens; the source digest begins 5bb8404246b2.
+It exists to provide a coherent test boundary for Test Render Blueprint. Static inspection found 4 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 71 lines and 356 lexical tokens; the source digest begins 5bb8404246b2.
 
 #### Important symbols
 
@@ -9170,7 +9170,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/tests/test_deployment_blueprints.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: pathlib, yaml. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/tests/test_deployment_blueprints.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -9189,7 +9189,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -9203,7 +9203,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Run Replay. Its extracted size is 764 lines and 2696 lexical tokens; the source digest begins 137abf26e33f.
+It exists to provide a coherent test boundary for Test Run Replay. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 764 lines and 2696 lexical tokens; the source digest begins 137abf26e33f.
 
 #### Important symbols
 
@@ -9211,7 +9211,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/api/deps.py, backend/app/schemas/replay.py, backend/app/services/serializers.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: json, datetime, typing, pytest, fastapi, fastapi.testclient, app.api.deps. Resolved in-repository dependencies: backend/app/api/deps.py, backend/app/schemas/replay.py, backend/app/services/serializers.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -9230,7 +9230,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -9244,7 +9244,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Runtime Requirements. Its extracted size is 9 lines and 38 lexical tokens; the source digest begins 9de5557fadca.
+It exists to provide a coherent test boundary for Test Runtime Requirements. Static inspection found 1 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 9 lines and 38 lexical tokens; the source digest begins 9de5557fadca.
 
 #### Important symbols
 
@@ -9252,7 +9252,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/PRODUCTION_READINESS_AUDIT.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: pathlib. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/PRODUCTION_READINESS_AUDIT.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -9271,7 +9271,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -9285,7 +9285,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Session Uniqueness. Its extracted size is 69 lines and 229 lexical tokens; the source digest begins de60eea1d256.
+It exists to provide a coherent test boundary for Test Session Uniqueness. Static inspection found 2 named symbols, 4 import/action references, and 0 explicit route decorators. Its extracted size is 69 lines and 229 lexical tokens; the source digest begins de60eea1d256.
 
 #### Important symbols
 
@@ -9293,7 +9293,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/schemas/session.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: types, pymongo.errors, app.schemas.session, app.services. Resolved in-repository dependencies: backend/app/schemas/session.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -9312,7 +9312,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -9326,7 +9326,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Startup Resilience. Its extracted size is 23 lines and 65 lexical tokens; the source digest begins 0d28a6f8e7dc.
+It exists to provide a coherent test boundary for Test Startup Resilience. Static inspection found 1 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 23 lines and 65 lexical tokens; the source digest begins 0d28a6f8e7dc.
 
 #### Important symbols
 
@@ -9334,7 +9334,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: app. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -9353,7 +9353,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -9367,7 +9367,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test System Capabilities. Its extracted size is 58 lines and 205 lexical tokens; the source digest begins e5edcda212cf.
+It exists to provide a coherent test boundary for Test System Capabilities. Static inspection found 4 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 58 lines and 205 lexical tokens; the source digest begins e5edcda212cf.
 
 #### Important symbols
 
@@ -9375,7 +9375,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: pytest, app.api.routes, app.core.config. Resolved in-repository dependencies: backend/app/core/config.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -9394,7 +9394,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -9408,7 +9408,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Usage Entitlements. Its extracted size is 150 lines and 460 lexical tokens; the source digest begins 5cecadcdc0d9.
+It exists to provide a coherent test boundary for Test Usage Entitlements. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 150 lines and 460 lexical tokens; the source digest begins 5cecadcdc0d9.
 
 #### Important symbols
 
@@ -9416,7 +9416,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/billing/models.py, backend/app/billing/usage_service.py, backend/app/core/config.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: types, pytest, fastapi, pymongo.errors, app.billing, app.billing.models, app.billing.usage_service. Resolved in-repository dependencies: backend/app/billing/models.py, backend/app/billing/usage_service.py, backend/app/core/config.py. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -9435,7 +9435,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -9449,7 +9449,7 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Worker Shutdown. Its extracted size is 36 lines and 101 lexical tokens; the source digest begins 55b450d783ba.
+It exists to provide a coherent test boundary for Test Worker Shutdown. Static inspection found 1 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 36 lines and 101 lexical tokens; the source digest begins 55b450d783ba.
 
 #### Important symbols
 
@@ -9457,7 +9457,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+Static imports or declared workflow actions: asyncio, app.workers. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -9476,7 +9476,7 @@ It participates when the verification suite exercises this subsystem. The file p
 
 #### Engineering details
 
-The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -9490,7 +9490,7 @@ This configuration is part of the project configuration layer. It supplies the r
 
 #### Key responsibilities
 
-It exists to provide a coherent configuration boundary for .Env. Its extracted size is 2 lines and 15 lexical tokens; the source digest begins d6e342057c26.
+It exists to provide a coherent configuration boundary for .Env. Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 2 lines and 15 lexical tokens; the source digest begins d6e342057c26.
 
 #### Important symbols
 
@@ -9498,7 +9498,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/README.md. The containing category is Project configuration.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/README.md. The containing category is Project configuration; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -9517,7 +9517,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -9531,7 +9531,7 @@ This configuration is part of the deployment configuration layer. It supplies th
 
 #### Key responsibilities
 
-It exists to provide a coherent configuration boundary for Dockerfile. Its extracted size is 13 lines and 49 lexical tokens; the source digest begins 0f95d287950d.
+It exists to provide a coherent configuration boundary for Dockerfile. Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 13 lines and 49 lexical tokens; the source digest begins 0f95d287950d.
 
 #### Important symbols
 
@@ -9539,7 +9539,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/execution/docker_runtime.py, backend/app/services/workspace_service.py, backend/tests/test_agent_policy.py, backend/tests/test_redaction_and_investigation.py. The containing category is Deployment configuration.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/execution/docker_runtime.py, backend/app/services/workspace_service.py, backend/tests/test_agent_policy.py, backend/tests/test_redaction_and_investigation.py. The containing category is Deployment configuration; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -9558,7 +9558,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -9572,7 +9572,7 @@ This documentation file records the repository's current guidance for Readme. It
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Readme. Its extracted size is 73 lines and 289 lexical tokens; the source digest begins 8dc9e0ee2281.
+It exists to provide a coherent documentation boundary for Readme. Static inspection found 3 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 73 lines and 289 lexical tokens; the source digest begins 8dc9e0ee2281.
 
 #### Important symbols
 
@@ -9580,7 +9580,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/docs/CONTEXT_ENGINEERING.md, backend/evals/cases/prompt-injection.json, backend/evals/cases/stale-readme.json, backend/tests/test_load_harness_safety.py. The containing category is Repository reference.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/docs/CONTEXT_ENGINEERING.md, backend/evals/cases/prompt-injection.json, backend/evals/cases/stale-readme.json, backend/tests/test_load_harness_safety.py. The containing category is Repository reference; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -9598,7 +9598,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -9612,7 +9612,7 @@ This JSON configuration is part of the project configuration layer. It supplies 
 
 #### Key responsibilities
 
-It exists to provide a coherent JSON configuration boundary for Components. Its extracted size is 27 lines and 58 lexical tokens; the source digest begins 76322fc650a9.
+It exists to provide a coherent JSON configuration boundary for Components. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 27 lines and 58 lexical tokens; the source digest begins 76322fc650a9.
 
 #### Important symbols
 
@@ -9620,7 +9620,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/eslint.config.js, client/src/components/ai-elements/chain-of-thought.tsx, client/src/components/ai-elements/commit.tsx, client/src/components/ai-elements/conversation.tsx. The containing category is Project configuration.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: client/eslint.config.js, client/src/components/ai-elements/chain-of-thought.tsx, client/src/components/ai-elements/commit.tsx, client/src/components/ai-elements/conversation.tsx. The containing category is Project configuration; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -9639,7 +9639,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -9653,7 +9653,7 @@ This configuration is part of the repository reference layer. It supplies the re
 
 #### Key responsibilities
 
-It exists to provide a coherent configuration boundary for Eslint.Config. Its extracted size is 35 lines and 95 lexical tokens; the source digest begins 761b08b1e3c3.
+It exists to provide a coherent configuration boundary for Eslint.Config. Static inspection found 0 named symbols, 6 import/action references, and 0 explicit route decorators. Its extracted size is 35 lines and 95 lexical tokens; the source digest begins 761b08b1e3c3.
 
 #### Important symbols
 
@@ -9661,7 +9661,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/README.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Repository reference.
+Static imports or declared workflow actions: @eslint/js, globals, eslint-plugin-react-hooks, eslint-plugin-react-refresh, typescript-eslint, eslint/config. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: client/README.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Repository reference; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -9680,7 +9680,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -9694,7 +9694,7 @@ This configuration is part of the repository reference layer. It supplies the re
 
 #### Key responsibilities
 
-It exists to provide a coherent configuration boundary for Index. Its extracted size is 19 lines and 96 lexical tokens; the source digest begins 71466d8431bf.
+It exists to provide a coherent configuration boundary for Index. Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 19 lines and 96 lexical tokens; the source digest begins 71466d8431bf.
 
 #### Important symbols
 
@@ -9702,7 +9702,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Repository reference.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Repository reference; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -9721,7 +9721,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -9735,7 +9735,7 @@ This configuration is part of the repository reference layer. It supplies the re
 
 #### Key responsibilities
 
-It exists to provide a coherent configuration boundary for Nginx. Its extracted size is 23 lines and 151 lexical tokens; the source digest begins 2a151ab4e495.
+It exists to provide a coherent configuration boundary for Nginx. Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 23 lines and 151 lexical tokens; the source digest begins 2a151ab4e495.
 
 #### Important symbols
 
@@ -9743,7 +9743,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/Dockerfile, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Repository reference.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: client/Dockerfile, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Repository reference; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -9762,7 +9762,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -9776,7 +9776,7 @@ This JSON configuration is part of the project configuration layer. It supplies 
 
 #### Key responsibilities
 
-It exists to provide a coherent JSON configuration boundary for Package. Its extracted size is 75 lines and 315 lexical tokens; the source digest begins 75a324b0d74e.
+It exists to provide a coherent JSON configuration boundary for Package. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 75 lines and 315 lexical tokens; the source digest begins 75a324b0d74e.
 
 #### Important symbols
 
@@ -9784,7 +9784,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, .github/workflows/deployment-readiness.yml, README.md. The containing category is Project configuration.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, .github/workflows/deployment-readiness.yml, README.md. The containing category is Project configuration; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -9803,7 +9803,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -9817,7 +9817,7 @@ This automation script is part of the repository reference layer. It supplies th
 
 #### Key responsibilities
 
-It exists to provide a coherent automation script boundary for Check Auth Redirect. Its extracted size is 59 lines and 167 lexical tokens; the source digest begins 3b1ff70a8eb5.
+It exists to provide a coherent automation script boundary for Check Auth Redirect. Static inspection found 4 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 59 lines and 167 lexical tokens; the source digest begins 3b1ff70a8eb5.
 
 #### Important symbols
 
@@ -9825,7 +9825,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/package.json, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Repository reference.
+Static imports or declared workflow actions: vite. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: client/package.json, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Repository reference; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -9844,7 +9844,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -9858,7 +9858,7 @@ This automation script is part of the repository reference layer. It supplies th
 
 #### Key responsibilities
 
-It exists to provide a coherent automation script boundary for Check Bundle Budget. Its extracted size is 37 lines and 160 lexical tokens; the source digest begins 1f62f2522e44.
+It exists to provide a coherent automation script boundary for Check Bundle Budget. Static inspection found 7 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 37 lines and 160 lexical tokens; the source digest begins 1f62f2522e44.
 
 #### Important symbols
 
@@ -9866,7 +9866,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/package.json, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Repository reference.
+Static imports or declared workflow actions: node:fs/promises, node:path. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: client/package.json, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Repository reference; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -9885,7 +9885,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -9899,7 +9899,7 @@ This frontend module implements part of the frontend application surface. It com
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for App. Its extracted size is 9 lines and 46 lexical tokens; the source digest begins 3b32435b45cc.
+It exists to provide a coherent TypeScript module boundary for App. Static inspection found 1 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 9 lines and 46 lexical tokens; the source digest begins 3b32435b45cc.
 
 #### Important symbols
 
@@ -9907,7 +9907,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Frontend application.
+Static imports or declared workflow actions: react-router-dom, react, ./routes. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, README.md, backend/.env.example. The containing category is Frontend application; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -9926,7 +9926,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -9940,7 +9940,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Chain Of Thought. Its extracted size is 222 lines and 554 lexical tokens; the source digest begins fc5dbf976c10.
+It exists to provide a coherent TypeScript module boundary for Chain Of Thought. Static inspection found 7 named symbols, 6 import/action references, and 0 explicit route decorators. Its extracted size is 222 lines and 554 lexical tokens; the source digest begins fc5dbf976c10.
 
 #### Important symbols
 
@@ -9948,7 +9948,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/ui/badge.tsx, client/src/components/ui/collapsible.tsx, client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/chat/tool-parts.tsx, docs/OBSERVABILITY.md, docs/SYSTEM_DESIGN.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Frontend components.
+Static imports or declared workflow actions: @radix-ui/react-use-controllable-state, @/components/ui/badge, @/components/ui/collapsible, @/lib/utils, lucide-react, react. Resolved in-repository dependencies: client/src/components/ui/badge.tsx, client/src/components/ui/collapsible.tsx, client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: client/src/components/chat/tool-parts.tsx, docs/OBSERVABILITY.md, docs/SYSTEM_DESIGN.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -9967,7 +9967,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -9981,7 +9981,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Commit. Its extracted size is 458 lines and 879 lexical tokens; the source digest begins 112005c9e471.
+It exists to provide a coherent TypeScript module boundary for Commit. Static inspection found 7 named symbols, 6 import/action references, and 0 explicit route decorators. Its extracted size is 458 lines and 879 lexical tokens; the source digest begins 112005c9e471.
 
 #### Important symbols
 
@@ -9989,7 +9989,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/ui/avatar.tsx, client/src/components/ui/button.tsx, client/src/components/ui/collapsible.tsx, client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: backend/.env.example, backend/app/agent/graph.py, backend/app/agent/policy.py, backend/app/agent/state.py. The containing category is Frontend components.
+Static imports or declared workflow actions: @/components/ui/avatar, @/components/ui/button, @/components/ui/collapsible, @/lib/utils, lucide-react, react. Resolved in-repository dependencies: client/src/components/ui/avatar.tsx, client/src/components/ui/button-group.tsx, client/src/components/ui/collapsible.tsx, client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: backend/.env.example, backend/app/agent/graph.py, backend/app/agent/policy.py, backend/app/agent/state.py. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -10008,11 +10008,11 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
-In one sentence: client/src/components/ai-elements/commit.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/components/ui/avatar.tsx, client/src/components/ui/button.tsx, client/src/components/ui/collapsible.tsx, client/src/lib/utils.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/components/ai-elements/commit.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/components/ui/avatar.tsx, client/src/components/ui/button-group.tsx, client/src/components/ui/collapsible.tsx, client/src/lib/utils.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/components/ai-elements/conversation.tsx`
 
@@ -10022,7 +10022,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Conversation. Its extracted size is 168 lines and 411 lexical tokens; the source digest begins 1875e32cc23a.
+It exists to provide a coherent TypeScript module boundary for Conversation. Static inspection found 7 named symbols, 6 import/action references, and 0 explicit route decorators. Its extracted size is 168 lines and 411 lexical tokens; the source digest begins 1875e32cc23a.
 
 #### Important symbols
 
@@ -10030,7 +10030,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/ui/button.tsx, client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: backend/app/agent/state.py, backend/app/api/routes/assistant.py, backend/app/schemas/assistant.py, backend/app/services/product_assistant_service.py. The containing category is Frontend components.
+Static imports or declared workflow actions: @/components/ui/button, @/lib/utils, ai, lucide-react, react, use-stick-to-bottom. Resolved in-repository dependencies: client/src/components/ui/button-group.tsx, client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: backend/app/agent/state.py, backend/app/api/routes/assistant.py, backend/app/schemas/assistant.py, backend/app/services/product_assistant_service.py. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -10049,11 +10049,11 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
-In one sentence: client/src/components/ai-elements/conversation.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/components/ui/button.tsx, client/src/lib/utils.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/components/ai-elements/conversation.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/components/ui/button-group.tsx, client/src/lib/utils.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/components/ai-elements/message.tsx`
 
@@ -10063,7 +10063,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Message. Its extracted size is 363 lines and 785 lexical tokens; the source digest begins 23f66a7dc274.
+It exists to provide a coherent TypeScript module boundary for Message. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 363 lines and 785 lexical tokens; the source digest begins 23f66a7dc274.
 
 #### Important symbols
 
@@ -10071,7 +10071,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/ui/button.tsx, client/src/components/ui/button-group.tsx, client/src/components/ui/tooltip.tsx, client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, backend/app/agent/graph.py, backend/app/agent/state.py, backend/app/agent/tools.py. The containing category is Frontend components.
+Static imports or declared workflow actions: @/components/ui/button, @/components/ui/button-group, @/components/ui/tooltip, @/lib/utils, @streamdown/cjk, ai, lucide-react. Resolved in-repository dependencies: client/src/components/ui/button-group.tsx, client/src/components/ui/tooltip.tsx, client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: .commandcode/taste/taste.md, backend/app/agent/graph.py, backend/app/agent/state.py, backend/app/agent/tools.py. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -10090,11 +10090,11 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
-In one sentence: client/src/components/ai-elements/message.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/components/ui/button.tsx, client/src/components/ui/button-group.tsx, client/src/components/ui/tooltip.tsx, client/src/lib/utils.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/components/ai-elements/message.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/components/ui/button-group.tsx, client/src/components/ui/tooltip.tsx, client/src/lib/utils.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/components/ai-elements/prompt-input.tsx`
 
@@ -10104,7 +10104,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Prompt Input. Its extracted size is 1463 lines and 3258 lexical tokens; the source digest begins a4f2c8249411.
+It exists to provide a coherent TypeScript module boundary for Prompt Input. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 1463 lines and 3258 lexical tokens; the source digest begins a4f2c8249411.
 
 #### Important symbols
 
@@ -10112,7 +10112,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/ui/command.tsx, client/src/components/ui/dropdown-menu.tsx, client/src/components/ui/hover-card.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/select.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/chat/chat-input.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components.
+Static imports or declared workflow actions: @/components/ui/command, @/components/ui/dropdown-menu, @/components/ui/hover-card, @/components/ui/input-group, @/components/ui/select, @/components/ui/spinner, @/components/ui/tooltip. Resolved in-repository dependencies: client/src/components/ui/command.tsx, client/src/components/ui/dropdown-menu.tsx, client/src/components/ui/hover-card.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/select.tsx. Potential consumers from bounded textual/import analysis: client/src/components/chat/chat-input.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -10131,7 +10131,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -10145,7 +10145,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Reasoning. Its extracted size is 223 lines and 514 lexical tokens; the source digest begins 6b63a166576c.
+It exists to provide a coherent TypeScript module boundary for Reasoning. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 223 lines and 514 lexical tokens; the source digest begins 6b63a166576c.
 
 #### Important symbols
 
@@ -10153,7 +10153,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/ui/collapsible.tsx, client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/prompts.py, backend/app/services/context_budget.py, client/src/components/ide-workspace.tsx. The containing category is Frontend components.
+Static imports or declared workflow actions: @radix-ui/react-use-controllable-state, @/components/ui/collapsible, @/lib/utils, @streamdown/cjk, lucide-react, react, streamdown. Resolved in-repository dependencies: client/src/components/ui/collapsible.tsx, client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/agent/prompts.py, backend/app/services/context_budget.py, client/src/components/ide-workspace.tsx. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -10172,7 +10172,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -10186,7 +10186,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Shimmer. Its extracted size is 77 lines and 202 lexical tokens; the source digest begins 24bcb9b1dd45.
+It exists to provide a coherent TypeScript module boundary for Shimmer. Static inspection found 7 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 77 lines and 202 lexical tokens; the source digest begins 24bcb9b1dd45.
 
 #### Important symbols
 
@@ -10194,7 +10194,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/reasoning.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components.
+Static imports or declared workflow actions: @/lib/utils, motion/react, react. Resolved in-repository dependencies: client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: client/src/components/ai-elements/reasoning.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -10213,7 +10213,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -10227,7 +10227,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Chat Input. Its extracted size is 232 lines and 1124 lexical tokens; the source digest begins 21fdfde8c605.
+It exists to provide a coherent TypeScript module boundary for Chat Input. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 232 lines and 1124 lexical tokens; the source digest begins 21fdfde8c605.
 
 #### Important symbols
 
@@ -10235,7 +10235,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/types/agent.type.ts, client/src/lib/api.ts, client/src/assets/github.svg, client/src/components/clerk-token-provider.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/chat/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components.
+Static imports or declared workflow actions: @/types/agent.type, @/lib/api, @/assets/github.svg, ../ui/button, ../ui/textarea, ../ui/spinner, ../ai-elements/prompt-input. Resolved in-repository dependencies: client/src/types/agent.type.ts, client/src/lib/api.ts, client/src/assets/github.svg, client/src/components/clerk-token-provider.tsx. Potential consumers from bounded textual/import analysis: client/src/components/chat/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -10254,7 +10254,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -10268,7 +10268,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Index. Its extracted size is 633 lines and 3932 lexical tokens; the source digest begins 3a62363d4b6b.
+It exists to provide a coherent TypeScript module boundary for Index. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 633 lines and 3932 lexical tokens; the source digest begins 3a62363d4b6b.
 
 #### Important symbols
 
@@ -10276,7 +10276,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/hooks/use-agent-session.ts, client/src/hooks/use-user.ts, client/src/components/clerk-token-provider.tsx, client/src/lib/api.ts, client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend components.
+Static imports or declared workflow actions: @/hooks/use-agent-session, @/hooks/use-user, @/components/clerk-token-provider, @/lib/api, @/lib/utils, @/types/agent.type, @/types/github.type. Resolved in-repository dependencies: client/src/hooks/use-agent-session.ts, client/src/hooks/use-user.ts, client/src/components/clerk-token-provider.tsx, client/src/lib/api.ts, client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -10295,7 +10295,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -10309,7 +10309,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Tool Parts. Its extracted size is 392 lines and 1207 lexical tokens; the source digest begins e8f58c7466d3.
+It exists to provide a coherent TypeScript module boundary for Tool Parts. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 392 lines and 1207 lexical tokens; the source digest begins e8f58c7466d3.
 
 #### Important symbols
 
@@ -10317,7 +10317,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/diff-viewer.tsx, client/src/components/ai-elements/commit.tsx, client/src/components/ai-elements/chain-of-thought.tsx, client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components.
+Static imports or declared workflow actions: @/components/diff-viewer, @/components/ai-elements/commit, @/components/ai-elements/chain-of-thought, @/lib/utils, lucide-react, ai, react. Resolved in-repository dependencies: client/src/components/diff-viewer.tsx, client/src/components/ai-elements/commit.tsx, client/src/components/ai-elements/chain-of-thought.tsx, client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -10336,7 +10336,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -10350,7 +10350,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Clerk Token Provider. Its extracted size is 55 lines and 159 lexical tokens; the source digest begins 001a7a191b02.
+It exists to provide a coherent TypeScript module boundary for Clerk Token Provider. Static inspection found 5 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 55 lines and 159 lexical tokens; the source digest begins 001a7a191b02.
 
 #### Important symbols
 
@@ -10358,7 +10358,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/axios-client.ts. Potential consumers found through bounded textual/import analysis: client/src/components/chat/chat-input.tsx, client/src/components/chat/index.tsx, client/src/components/sidebar/chat-sessions.tsx, client/src/components/sidebar/session-search-dialog.tsx. The containing category is Frontend components.
+Static imports or declared workflow actions: react, @clerk/clerk-react, @/lib/axios-client. Resolved in-repository dependencies: client/src/lib/axios-client.ts. Potential consumers from bounded textual/import analysis: client/src/components/chat/chat-input.tsx, client/src/components/chat/index.tsx, client/src/components/sidebar/chat-sessions.tsx, client/src/components/sidebar/session-search-dialog.tsx. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -10377,7 +10377,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -10391,7 +10391,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Diagnostic Dashboard. Its extracted size is 175 lines and 1452 lexical tokens; the source digest begins 8e9453e56983.
+It exists to provide a coherent TypeScript module boundary for Diagnostic Dashboard. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 175 lines and 1452 lexical tokens; the source digest begins 8e9453e56983.
 
 #### Important symbols
 
@@ -10399,7 +10399,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/diff-viewer.tsx, client/src/components/ui/button.tsx, client/src/components/ui/textarea.tsx, client/src/lib/api.ts. Potential consumers found through bounded textual/import analysis: client/src/devops/ui/diagnostic-dashboard.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components.
+Static imports or declared workflow actions: react, motion/react, react-simple-code-editor, lucide-react, sonner, @/components/diff-viewer, @/components/ui/button. Resolved in-repository dependencies: client/src/components/diff-viewer.tsx, client/src/components/ui/button-group.tsx, client/src/components/ui/textarea.tsx, client/src/lib/api.ts. Potential consumers from bounded textual/import analysis: client/src/devops/ui/diagnostic-dashboard.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -10418,11 +10418,11 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
-In one sentence: client/src/components/diagnostic-dashboard.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/components/diff-viewer.tsx, client/src/components/ui/button.tsx, client/src/components/ui/textarea.tsx, client/src/lib/api.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/components/diagnostic-dashboard.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/components/diff-viewer.tsx, client/src/components/ui/button-group.tsx, client/src/components/ui/textarea.tsx, client/src/lib/api.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/components/diff-viewer.tsx`
 
@@ -10432,7 +10432,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Diff Viewer. Its extracted size is 561 lines and 1330 lexical tokens; the source digest begins cd9ed9281d47.
+It exists to provide a coherent TypeScript module boundary for Diff Viewer. Static inspection found 7 named symbols, 6 import/action references, and 0 explicit route decorators. Its extracted size is 561 lines and 1330 lexical tokens; the source digest begins cd9ed9281d47.
 
 #### Important symbols
 
@@ -10440,7 +10440,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/chat/index.tsx, client/src/components/chat/tool-parts.tsx, client/src/components/diagnostic-dashboard.tsx, client/src/components/ide-workspace.tsx. The containing category is Frontend components.
+Static imports or declared workflow actions: react, @assistant-ui/react-markdown, class-variance-authority, diff, parse-diff, @/lib/utils. Resolved in-repository dependencies: client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: client/src/components/chat/index.tsx, client/src/components/chat/tool-parts.tsx, client/src/components/diagnostic-dashboard.tsx, client/src/components/ide-workspace.tsx. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -10459,7 +10459,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -10473,7 +10473,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Ide Workspace. Its extracted size is 1521 lines and 10417 lexical tokens; the source digest begins ddeea2c14244.
+It exists to provide a coherent TypeScript module boundary for Ide Workspace. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 1521 lines and 10417 lexical tokens; the source digest begins ddeea2c14244.
 
 #### Important symbols
 
@@ -10481,7 +10481,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/diff-viewer.tsx, client/src/components/vscode-editor.tsx, client/src/lib/api.ts, client/src/lib/utils.ts, client/src/components/theme-provider.tsx. Potential consumers found through bounded textual/import analysis: client/src/index.css, client/src/pages/session/index.tsx, docs/IMPLEMENTATION_AUDIT.md, docs/IMPLEMENTATION_GAP_ANALYSIS.md. The containing category is Frontend components.
+Static imports or declared workflow actions: @/components/diff-viewer, @/components/vscode-editor, @/lib/api, @/lib/utils, @/components/theme-provider, @/types/agent.type, @/types/session.type. Resolved in-repository dependencies: client/src/components/diff-viewer.tsx, client/src/components/vscode-editor.tsx, client/src/lib/api.ts, client/src/lib/utils.ts, client/src/components/theme-provider.tsx. Potential consumers from bounded textual/import analysis: client/src/index.css, client/src/pages/session/index.tsx, docs/IMPLEMENTATION_AUDIT.md, docs/IMPLEMENTATION_GAP_ANALYSIS.md. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -10500,7 +10500,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -10514,7 +10514,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Loader. Its extracted size is 51 lines and 106 lexical tokens; the source digest begins cc7fdf851f4e.
+It exists to provide a coherent TypeScript module boundary for Loader. Static inspection found 4 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 51 lines and 106 lexical tokens; the source digest begins cc7fdf851f4e.
 
 #### Important symbols
 
@@ -10522,7 +10522,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/pages/dev/DevRunInspector.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components.
+Static imports or declared workflow actions: @/lib/utils. Resolved in-repository dependencies: client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: client/src/pages/dev/DevRunInspector.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -10541,7 +10541,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -10555,7 +10555,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Logo. Its extracted size is 14 lines and 69 lexical tokens; the source digest begins 641976667f67.
+It exists to provide a coherent TypeScript module boundary for Logo. Static inspection found 1 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 14 lines and 69 lexical tokens; the source digest begins 641976667f67.
 
 #### Important symbols
 
@@ -10563,7 +10563,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/assets/logo.png, client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, client/src/components/sidebar/index.tsx, client/src/pages/auth/sign-in.tsx, client/src/pages/auth/sign-up.tsx. The containing category is Frontend components.
+Static imports or declared workflow actions: react-router-dom, @/assets/logo.png, @/lib/utils. Resolved in-repository dependencies: client/src/assets/logo.png, client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, client/src/components/sidebar/index.tsx, client/src/pages/auth/sign-in.tsx, client/src/pages/auth/sign-up.tsx. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -10582,7 +10582,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -10596,7 +10596,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Mode Toggle. Its extracted size is 37 lines and 116 lexical tokens; the source digest begins 32eafe09ab21.
+It exists to provide a coherent TypeScript module boundary for Mode Toggle. Static inspection found 1 named symbols, 4 import/action references, and 0 explicit route decorators. Its extracted size is 37 lines and 116 lexical tokens; the source digest begins 32eafe09ab21.
 
 #### Important symbols
 
@@ -10604,7 +10604,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/ui/button.tsx, client/src/components/ui/dropdown-menu.tsx, client/src/components/theme-provider.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/sidebar/index.tsx, client/src/pages/guide/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend components.
+Static imports or declared workflow actions: lucide-react, @/components/ui/button, @/components/ui/dropdown-menu, @/components/theme-provider. Resolved in-repository dependencies: client/src/components/ui/button-group.tsx, client/src/components/ui/dropdown-menu.tsx, client/src/components/theme-provider.tsx. Potential consumers from bounded textual/import analysis: client/src/components/sidebar/index.tsx, client/src/pages/guide/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -10623,11 +10623,11 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
-In one sentence: client/src/components/mode-toggle.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/components/ui/button.tsx, client/src/components/ui/dropdown-menu.tsx, client/src/components/theme-provider.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/components/mode-toggle.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/components/ui/button-group.tsx, client/src/components/ui/dropdown-menu.tsx, client/src/components/theme-provider.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/components/product-guide.tsx`
 
@@ -10637,7 +10637,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Product Guide. Its extracted size is 144 lines and 736 lexical tokens; the source digest begins 540b878022d5.
+It exists to provide a coherent TypeScript module boundary for Product Guide. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 144 lines and 736 lexical tokens; the source digest begins 540b878022d5.
 
 #### Important symbols
 
@@ -10645,7 +10645,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/api.ts, client/src/components/ui/button.tsx, client/src/components/ui/scroll-area.tsx, client/src/components/ui/textarea.tsx. Potential consumers found through bounded textual/import analysis: client/src/layouts/app-layout.tsx, docs/IMPLEMENTATION_STATUS.md, docs/SAAS_SECURITY_AND_SCALE.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Frontend components.
+Static imports or declared workflow actions: @/lib/api, @/components/ui/button, @/components/ui/scroll-area, @/components/ui/textarea, lucide-react, streamdown, react. Resolved in-repository dependencies: client/src/lib/api.ts, client/src/components/ui/button-group.tsx, client/src/components/ui/scroll-area.tsx, client/src/components/ui/textarea.tsx. Potential consumers from bounded textual/import analysis: client/src/layouts/app-layout.tsx, docs/IMPLEMENTATION_STATUS.md, docs/SAAS_SECURITY_AND_SCALE.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -10664,11 +10664,11 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
-In one sentence: client/src/components/product-guide.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/lib/api.ts, client/src/components/ui/button.tsx, client/src/components/ui/scroll-area.tsx, client/src/components/ui/textarea.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/components/product-guide.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/lib/api.ts, client/src/components/ui/button-group.tsx, client/src/components/ui/scroll-area.tsx, client/src/components/ui/textarea.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/components/sidebar/chat-sessions.tsx`
 
@@ -10678,7 +10678,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Chat Sessions. Its extracted size is 129 lines and 586 lexical tokens; the source digest begins dfe1a99e3ead.
+It exists to provide a coherent TypeScript module boundary for Chat Sessions. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 129 lines and 586 lexical tokens; the source digest begins dfe1a99e3ead.
 
 #### Important symbols
 
@@ -10686,7 +10686,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/api.ts, client/src/components/clerk-token-provider.tsx, client/src/types/session.type.ts, client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/sidebar/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components.
+Static imports or declared workflow actions: @/lib/api, @/components/clerk-token-provider, @clerk/clerk-react, @tanstack/react-query, react, react-router-dom, @/types/session.type. Resolved in-repository dependencies: client/src/lib/api.ts, client/src/components/clerk-token-provider.tsx, client/src/types/session.type.ts, client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: client/src/components/sidebar/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -10705,7 +10705,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -10719,7 +10719,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Index. Its extracted size is 130 lines and 549 lexical tokens; the source digest begins 3f42c14b3465.
+It exists to provide a coherent TypeScript module boundary for Index. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 130 lines and 549 lexical tokens; the source digest begins 3f42c14b3465.
 
 #### Important symbols
 
@@ -10727,7 +10727,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend components.
+Static imports or declared workflow actions: ../ui/sidebar, ../logo, ./navitems, ./chat-sessions, @clerk/clerk-react, @tanstack/react-query, react-router-dom. Resolved in-repository dependencies: client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -10746,7 +10746,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -10760,7 +10760,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Navitems. Its extracted size is 44 lines and 133 lexical tokens; the source digest begins cce9fe3fa624.
+It exists to provide a coherent TypeScript module boundary for Navitems. Static inspection found 2 named symbols, 4 import/action references, and 0 explicit route decorators. Its extracted size is 44 lines and 133 lexical tokens; the source digest begins cce9fe3fa624.
 
 #### Important symbols
 
@@ -10768,7 +10768,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/routes/route-guard.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/sidebar/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components.
+Static imports or declared workflow actions: @/routes/route, lucide-react, ../ui/sidebar, react-router-dom. Resolved in-repository dependencies: client/src/routes/route.ts. Potential consumers from bounded textual/import analysis: client/src/components/sidebar/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -10787,11 +10787,11 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
-In one sentence: client/src/components/sidebar/navitems.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/routes/route-guard.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/components/sidebar/navitems.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/routes/route.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/components/sidebar/session-search-dialog.tsx`
 
@@ -10801,7 +10801,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Session Search Dialog. Its extracted size is 99 lines and 294 lexical tokens; the source digest begins 4dbca637a3e3.
+It exists to provide a coherent TypeScript module boundary for Session Search Dialog. Static inspection found 6 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 99 lines and 294 lexical tokens; the source digest begins 4dbca637a3e3.
 
 #### Important symbols
 
@@ -10809,7 +10809,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/ui/command.tsx, client/src/lib/api.ts, client/src/components/clerk-token-provider.tsx, client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/sidebar/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components.
+Static imports or declared workflow actions: react, react-router-dom, @tanstack/react-query, @/components/ui/command, @/lib/api, @/components/clerk-token-provider, @clerk/clerk-react. Resolved in-repository dependencies: client/src/components/ui/command.tsx, client/src/lib/api.ts, client/src/components/clerk-token-provider.tsx, client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: client/src/components/sidebar/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -10828,7 +10828,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -10842,7 +10842,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Theme Provider. Its extracted size is 73 lines and 142 lexical tokens; the source digest begins 9c661a4bef9f.
+It exists to provide a coherent TypeScript module boundary for Theme Provider. Static inspection found 7 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 73 lines and 142 lexical tokens; the source digest begins 9c661a4bef9f.
 
 #### Important symbols
 
@@ -10850,7 +10850,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/src/components/ide-workspace.tsx, client/src/components/mode-toggle.tsx, client/src/main.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Frontend components.
+Static imports or declared workflow actions: react. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: client/src/components/ide-workspace.tsx, client/src/components/mode-toggle.tsx, client/src/main.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -10869,7 +10869,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -10883,7 +10883,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Alert. Its extracted size is 76 lines and 239 lexical tokens; the source digest begins 126a26b401ab.
+It exists to provide a coherent TypeScript module boundary for Alert. Static inspection found 6 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 76 lines and 239 lexical tokens; the source digest begins 126a26b401ab.
 
 #### Important symbols
 
@@ -10891,7 +10891,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/chat/chat-input.tsx, client/src/components/sidebar/chat-sessions.tsx, docs/SAAS_SECURITY_AND_SCALE.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Frontend components.
+Static imports or declared workflow actions: react, class-variance-authority, @/lib/utils. Resolved in-repository dependencies: client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: client/src/components/chat/chat-input.tsx, client/src/components/sidebar/chat-sessions.tsx, docs/SAAS_SECURITY_AND_SCALE.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -10910,7 +10910,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -10924,7 +10924,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Avatar. Its extracted size is 110 lines and 374 lexical tokens; the source digest begins 232a6ac077e0.
+It exists to provide a coherent TypeScript module boundary for Avatar. Static inspection found 6 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 110 lines and 374 lexical tokens; the source digest begins 232a6ac077e0.
 
 #### Important symbols
 
@@ -10932,7 +10932,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: backend/app/api/deps.py, backend/app/schemas/auth.py, backend/app/services/auth_service.py, backend/app/services/github_service.py. The containing category is Frontend components.
+Static imports or declared workflow actions: react, radix-ui, @/lib/utils. Resolved in-repository dependencies: client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: backend/app/api/deps.py, backend/app/schemas/auth.py, backend/app/services/auth_service.py, backend/app/services/github_service.py. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -10951,7 +10951,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -10965,7 +10965,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Badge. Its extracted size is 49 lines and 240 lexical tokens; the source digest begins 1b292cd64608.
+It exists to provide a coherent TypeScript module boundary for Badge. Static inspection found 4 named symbols, 4 import/action references, and 0 explicit route decorators. Its extracted size is 49 lines and 240 lexical tokens; the source digest begins 1b292cd64608.
 
 #### Important symbols
 
@@ -10973,7 +10973,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/chain-of-thought.tsx, client/src/components/chat/index.tsx, client/src/components/diff-viewer.tsx, client/src/components/ide-workspace.tsx. The containing category is Frontend components.
+Static imports or declared workflow actions: react, class-variance-authority, radix-ui, @/lib/utils. Resolved in-repository dependencies: client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: client/src/components/ai-elements/chain-of-thought.tsx, client/src/components/chat/index.tsx, client/src/components/diff-viewer.tsx, client/src/components/ide-workspace.tsx. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -10992,7 +10992,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -11006,7 +11006,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Button Group. Its extracted size is 83 lines and 268 lexical tokens; the source digest begins de73ccc6e10f.
+It exists to provide a coherent TypeScript module boundary for Button Group. Static inspection found 6 named symbols, 4 import/action references, and 0 explicit route decorators. Its extracted size is 83 lines and 268 lexical tokens; the source digest begins de73ccc6e10f.
 
 #### Important symbols
 
@@ -11014,7 +11014,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts, client/src/components/ui/separator.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/message.tsx, client/src/components/ui/button.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend components.
+Static imports or declared workflow actions: class-variance-authority, radix-ui, @/lib/utils, @/components/ui/separator. Resolved in-repository dependencies: client/src/lib/utils.ts, client/src/components/ui/separator.tsx. Potential consumers from bounded textual/import analysis: client/src/components/ai-elements/message.tsx, client/src/components/ui/button.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -11033,7 +11033,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -11047,7 +11047,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Button. Its extracted size is 67 lines and 482 lexical tokens; the source digest begins 6f7d18705d50.
+It exists to provide a coherent TypeScript module boundary for Button. Static inspection found 4 named symbols, 4 import/action references, and 0 explicit route decorators. Its extracted size is 67 lines and 482 lexical tokens; the source digest begins 6f7d18705d50.
 
 #### Important symbols
 
@@ -11055,7 +11055,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, client/src/components/ai-elements/commit.tsx, client/src/components/ai-elements/conversation.tsx, client/src/components/ai-elements/message.tsx. The containing category is Frontend components.
+Static imports or declared workflow actions: react, class-variance-authority, radix-ui, @/lib/utils. Resolved in-repository dependencies: client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, client/src/components/ai-elements/commit.tsx, client/src/components/ai-elements/conversation.tsx, client/src/components/ai-elements/message.tsx. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -11074,7 +11074,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -11088,7 +11088,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Collapsible. Its extracted size is 33 lines and 60 lexical tokens; the source digest begins c6598e5584f4.
+It exists to provide a coherent TypeScript module boundary for Collapsible. Static inspection found 3 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 33 lines and 60 lexical tokens; the source digest begins c6598e5584f4.
 
 #### Important symbols
 
@@ -11096,7 +11096,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/chain-of-thought.tsx, client/src/components/ai-elements/commit.tsx, client/src/components/ai-elements/reasoning.tsx, client/src/components/sidebar/index.tsx. The containing category is Frontend components.
+Static imports or declared workflow actions: radix-ui. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: client/src/components/ai-elements/chain-of-thought.tsx, client/src/components/ai-elements/commit.tsx, client/src/components/ai-elements/reasoning.tsx, client/src/components/sidebar/index.tsx. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -11115,7 +11115,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -11129,7 +11129,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Command. Its extracted size is 195 lines and 515 lexical tokens; the source digest begins a198a562cd86.
+It exists to provide a coherent TypeScript module boundary for Command. Static inspection found 7 named symbols, 6 import/action references, and 0 explicit route decorators. Its extracted size is 195 lines and 515 lexical tokens; the source digest begins a198a562cd86.
 
 #### Important symbols
 
@@ -11137,7 +11137,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts, client/src/components/ui/dialog.tsx, client/src/components/ui/input-group.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/app/agent/graph.py, backend/app/agent/prompts.py. The containing category is Frontend components.
+Static imports or declared workflow actions: react, cmdk, @/lib/utils, @/components/ui/dialog, @/components/ui/input-group, lucide-react. Resolved in-repository dependencies: client/src/lib/utils.ts, client/src/components/ui/dialog.tsx, client/src/components/ui/input-group.tsx. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/app/agent/graph.py, backend/app/agent/prompts.py. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -11156,7 +11156,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -11170,7 +11170,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Dialog. Its extracted size is 168 lines and 443 lexical tokens; the source digest begins 09cb8612db67.
+It exists to provide a coherent TypeScript module boundary for Dialog. Static inspection found 7 named symbols, 5 import/action references, and 0 explicit route decorators. Its extracted size is 168 lines and 443 lexical tokens; the source digest begins 09cb8612db67.
 
 #### Important symbols
 
@@ -11178,7 +11178,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts, client/src/components/ui/button.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/prompt-input.tsx, client/src/components/sidebar/index.tsx, client/src/components/ui/command.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Frontend components.
+Static imports or declared workflow actions: react, radix-ui, @/lib/utils, @/components/ui/button, lucide-react. Resolved in-repository dependencies: client/src/lib/utils.ts, client/src/components/ui/button-group.tsx. Potential consumers from bounded textual/import analysis: client/src/components/ai-elements/prompt-input.tsx, client/src/components/sidebar/index.tsx, client/src/components/ui/command.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -11197,11 +11197,11 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
-In one sentence: client/src/components/ui/dialog.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/lib/utils.ts, client/src/components/ui/button.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/components/ui/dialog.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/lib/utils.ts, client/src/components/ui/button-group.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/components/ui/dropdown-menu.tsx`
 
@@ -11211,7 +11211,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Dropdown Menu. Its extracted size is 267 lines and 983 lexical tokens; the source digest begins 9d6ad4621d33.
+It exists to provide a coherent TypeScript module boundary for Dropdown Menu. Static inspection found 7 named symbols, 4 import/action references, and 0 explicit route decorators. Its extracted size is 267 lines and 983 lexical tokens; the source digest begins 9d6ad4621d33.
 
 #### Important symbols
 
@@ -11219,7 +11219,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/prompt-input.tsx, client/src/components/mode-toggle.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend components.
+Static imports or declared workflow actions: react, radix-ui, @/lib/utils, lucide-react. Resolved in-repository dependencies: client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: client/src/components/ai-elements/prompt-input.tsx, client/src/components/mode-toggle.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -11238,7 +11238,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -11252,7 +11252,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Empty. Its extracted size is 104 lines and 258 lexical tokens; the source digest begins e48ed60b400b.
+It exists to provide a coherent TypeScript module boundary for Empty. Static inspection found 7 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 104 lines and 258 lexical tokens; the source digest begins e48ed60b400b.
 
 #### Important symbols
 
@@ -11260,7 +11260,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, backend/.env.example, backend/app/agent/graph.py, backend/app/git/change_provider.py. The containing category is Frontend components.
+Static imports or declared workflow actions: class-variance-authority, @/lib/utils. Resolved in-repository dependencies: client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, backend/.env.example, backend/app/agent/graph.py, backend/app/git/change_provider.py. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -11279,7 +11279,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -11293,7 +11293,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Hover Card. Its extracted size is 44 lines and 188 lexical tokens; the source digest begins e8166e75e8dd.
+It exists to provide a coherent TypeScript module boundary for Hover Card. Static inspection found 3 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 44 lines and 188 lexical tokens; the source digest begins e8166e75e8dd.
 
 #### Important symbols
 
@@ -11301,7 +11301,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/prompt-input.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components.
+Static imports or declared workflow actions: react, radix-ui, @/lib/utils. Resolved in-repository dependencies: client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: client/src/components/ai-elements/prompt-input.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -11320,7 +11320,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -11334,7 +11334,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Input Group. Its extracted size is 156 lines and 665 lexical tokens; the source digest begins e28122e46635.
+It exists to provide a coherent TypeScript module boundary for Input Group. Static inspection found 7 named symbols, 6 import/action references, and 0 explicit route decorators. Its extracted size is 156 lines and 665 lexical tokens; the source digest begins e28122e46635.
 
 #### Important symbols
 
@@ -11342,7 +11342,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts, client/src/components/ui/button.tsx, client/src/components/ui/input.tsx, client/src/components/ui/textarea.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/prompt-input.tsx, client/src/components/ui/command.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend components.
+Static imports or declared workflow actions: react, class-variance-authority, @/lib/utils, @/components/ui/button, @/components/ui/input, @/components/ui/textarea. Resolved in-repository dependencies: client/src/lib/utils.ts, client/src/components/ui/button-group.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/textarea.tsx. Potential consumers from bounded textual/import analysis: client/src/components/ai-elements/prompt-input.tsx, client/src/components/ui/command.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -11361,11 +11361,11 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
-In one sentence: client/src/components/ui/input-group.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/lib/utils.ts, client/src/components/ui/button.tsx, client/src/components/ui/input.tsx, client/src/components/ui/textarea.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/components/ui/input-group.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/lib/utils.ts, client/src/components/ui/button-group.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/textarea.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/components/ui/input.tsx`
 
@@ -11375,7 +11375,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Input. Its extracted size is 19 lines and 146 lexical tokens; the source digest begins c4902a8c4967.
+It exists to provide a coherent TypeScript module boundary for Input. Static inspection found 1 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 19 lines and 146 lexical tokens; the source digest begins c4902a8c4967.
 
 #### Important symbols
 
@@ -11383,7 +11383,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: .github/workflows/live-evals.yml, backend/app/agent/graph.py, backend/app/api/routes/incidents.py, backend/app/billing/usage_service.py. The containing category is Frontend components.
+Static imports or declared workflow actions: react, @/lib/utils. Resolved in-repository dependencies: client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: .github/workflows/live-evals.yml, backend/app/agent/graph.py, backend/app/api/routes/incidents.py, backend/app/billing/usage_service.py. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -11402,7 +11402,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -11416,7 +11416,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Label. Its extracted size is 24 lines and 75 lexical tokens; the source digest begins a476e41f08b9.
+It exists to provide a coherent TypeScript module boundary for Label. Static inspection found 1 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 24 lines and 75 lexical tokens; the source digest begins a476e41f08b9.
 
 #### Important symbols
 
@@ -11424,7 +11424,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/api/routes/incidents.py, backend/app/memory/memory_service.py, backend/app/memory/models.py. The containing category is Frontend components.
+Static imports or declared workflow actions: react, radix-ui, @/lib/utils. Resolved in-repository dependencies: client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/api/routes/incidents.py, backend/app/memory/memory_service.py, backend/app/memory/models.py. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -11443,7 +11443,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -11457,7 +11457,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Popover. Its extracted size is 87 lines and 267 lexical tokens; the source digest begins 7360e38b1408.
+It exists to provide a coherent TypeScript module boundary for Popover. Static inspection found 7 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 87 lines and 267 lexical tokens; the source digest begins 7360e38b1408.
 
 #### Important symbols
 
@@ -11465,7 +11465,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/chain-of-thought.tsx, client/src/components/chat/chat-input.tsx, client/src/components/product-guide.tsx, client/src/components/ui/command.tsx. The containing category is Frontend components.
+Static imports or declared workflow actions: react, radix-ui, @/lib/utils. Resolved in-repository dependencies: client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: client/src/components/ai-elements/chain-of-thought.tsx, client/src/components/chat/chat-input.tsx, client/src/components/product-guide.tsx, client/src/components/ui/command.tsx. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -11484,7 +11484,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -11498,7 +11498,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Scroll Area. Its extracted size is 55 lines and 173 lexical tokens; the source digest begins c3e7e2201d33.
+It exists to provide a coherent TypeScript module boundary for Scroll Area. Static inspection found 2 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 55 lines and 173 lexical tokens; the source digest begins c3e7e2201d33.
 
 #### Important symbols
 
@@ -11506,7 +11506,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/chat/index.tsx, client/src/components/product-guide.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend components.
+Static imports or declared workflow actions: react, radix-ui, @/lib/utils. Resolved in-repository dependencies: client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: client/src/components/chat/index.tsx, client/src/components/product-guide.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -11525,7 +11525,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -11539,7 +11539,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Select. Its extracted size is 190 lines and 775 lexical tokens; the source digest begins 078c47977974.
+It exists to provide a coherent TypeScript module boundary for Select. Static inspection found 7 named symbols, 4 import/action references, and 0 explicit route decorators. Its extracted size is 190 lines and 775 lexical tokens; the source digest begins 078c47977974.
 
 #### Important symbols
 
@@ -11547,7 +11547,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: backend/.env.example, backend/app/agent/graph.py, backend/app/agent/policy.py, backend/app/agent/state.py. The containing category is Frontend components.
+Static imports or declared workflow actions: react, radix-ui, @/lib/utils, lucide-react. Resolved in-repository dependencies: client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: backend/.env.example, backend/app/agent/graph.py, backend/app/agent/policy.py, backend/app/agent/state.py. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -11566,7 +11566,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -11580,7 +11580,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Separator. Its extracted size is 28 lines and 68 lexical tokens; the source digest begins c924a82e99fd.
+It exists to provide a coherent TypeScript module boundary for Separator. Static inspection found 1 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 28 lines and 68 lexical tokens; the source digest begins c924a82e99fd.
 
 #### Important symbols
 
@@ -11588,7 +11588,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: backend/app/core/access_logging.py, backend/app/core/security.py, backend/app/services/candidate_verification_service.py, backend/app/services/context_budget.py. The containing category is Frontend components.
+Static imports or declared workflow actions: react, radix-ui, @/lib/utils. Resolved in-repository dependencies: client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: backend/app/core/access_logging.py, backend/app/core/security.py, backend/app/services/candidate_verification_service.py, backend/app/services/context_budget.py. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -11607,7 +11607,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -11621,7 +11621,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Sheet. Its extracted size is 145 lines and 561 lexical tokens; the source digest begins f31457aa6bc5.
+It exists to provide a coherent TypeScript module boundary for Sheet. Static inspection found 7 named symbols, 5 import/action references, and 0 explicit route decorators. Its extracted size is 145 lines and 561 lexical tokens; the source digest begins f31457aa6bc5.
 
 #### Important symbols
 
@@ -11629,7 +11629,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts, client/src/components/ui/button.tsx. Potential consumers found through bounded textual/import analysis: client/index.html, client/src/components/ui/sidebar.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend components.
+Static imports or declared workflow actions: react, radix-ui, @/lib/utils, @/components/ui/button, lucide-react. Resolved in-repository dependencies: client/src/lib/utils.ts, client/src/components/ui/button-group.tsx. Potential consumers from bounded textual/import analysis: client/index.html, client/src/components/ui/sidebar.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -11648,11 +11648,11 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
-In one sentence: client/src/components/ui/sheet.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/lib/utils.ts, client/src/components/ui/button.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/components/ui/sheet.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/lib/utils.ts, client/src/components/ui/button-group.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/components/ui/sidebar.tsx`
 
@@ -11662,7 +11662,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Sidebar. Its extracted size is 700 lines and 2393 lexical tokens; the source digest begins 95c343fe4e02.
+It exists to provide a coherent TypeScript module boundary for Sidebar. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 700 lines and 2393 lexical tokens; the source digest begins 95c343fe4e02.
 
 #### Important symbols
 
@@ -11670,7 +11670,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/hooks/use-mobile.ts, client/src/lib/utils.ts, client/src/components/ui/button.tsx, client/src/components/ui/input.tsx, client/src/components/ui/separator.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/sidebar/chat-sessions.tsx, client/src/components/sidebar/index.tsx, client/src/components/sidebar/navitems.tsx, client/src/index.css. The containing category is Frontend components.
+Static imports or declared workflow actions: react, class-variance-authority, radix-ui, @/hooks/use-mobile, @/lib/utils, @/components/ui/button, @/components/ui/input. Resolved in-repository dependencies: client/src/hooks/use-mobile.ts, client/src/lib/utils.ts, client/src/components/ui/button-group.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/separator.tsx. Potential consumers from bounded textual/import analysis: client/src/components/sidebar/chat-sessions.tsx, client/src/components/sidebar/index.tsx, client/src/components/sidebar/navitems.tsx, client/src/index.css. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -11689,11 +11689,11 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
-In one sentence: client/src/components/ui/sidebar.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/hooks/use-mobile.ts, client/src/lib/utils.ts, client/src/components/ui/button.tsx, client/src/components/ui/input.tsx, client/src/components/ui/separator.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/components/ui/sidebar.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/hooks/use-mobile.ts, client/src/lib/utils.ts, client/src/components/ui/button-group.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/separator.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/components/ui/skeleton.tsx`
 
@@ -11703,7 +11703,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Skeleton. Its extracted size is 13 lines and 29 lexical tokens; the source digest begins 8110bba70d0c.
+It exists to provide a coherent TypeScript module boundary for Skeleton. Static inspection found 1 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 13 lines and 29 lexical tokens; the source digest begins 8110bba70d0c.
 
 #### Important symbols
 
@@ -11711,7 +11711,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: backend/app/git/change_provider.py, client/src/components/ui/sidebar.tsx, client/src/pages/incidents/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Frontend components.
+Static imports or declared workflow actions: @/lib/utils. Resolved in-repository dependencies: client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: backend/app/git/change_provider.py, client/src/components/ui/sidebar.tsx, client/src/pages/incidents/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -11730,7 +11730,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -11744,7 +11744,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Sonner. Its extracted size is 47 lines and 97 lexical tokens; the source digest begins 0c729f9f1ada.
+It exists to provide a coherent TypeScript module boundary for Sonner. Static inspection found 2 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 47 lines and 97 lexical tokens; the source digest begins 0c729f9f1ada.
 
 #### Important symbols
 
@@ -11752,7 +11752,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/package.json, client/src/components/chat/chat-input.tsx, client/src/components/chat/index.tsx, client/src/components/diagnostic-dashboard.tsx. The containing category is Frontend components.
+Static imports or declared workflow actions: next-themes, sonner, lucide-react. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: client/package.json, client/src/components/chat/chat-input.tsx, client/src/components/chat/index.tsx, client/src/components/diagnostic-dashboard.tsx. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -11771,7 +11771,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -11785,7 +11785,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Spinner. Its extracted size is 10 lines and 34 lexical tokens; the source digest begins 1aa4cbc4272e.
+It exists to provide a coherent TypeScript module boundary for Spinner. Static inspection found 1 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 10 lines and 34 lexical tokens; the source digest begins 1aa4cbc4272e.
 
 #### Important symbols
 
@@ -11793,7 +11793,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/prompt-input.tsx, client/src/components/chat/chat-input.tsx, client/src/routes/route-guard.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Frontend components.
+Static imports or declared workflow actions: @/lib/utils, lucide-react. Resolved in-repository dependencies: client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: client/src/components/ai-elements/prompt-input.tsx, client/src/components/chat/chat-input.tsx, client/src/routes/route-guard.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -11812,7 +11812,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -11826,7 +11826,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Table. Its extracted size is 116 lines and 251 lexical tokens; the source digest begins a13f55a7c140.
+It exists to provide a coherent TypeScript module boundary for Table. Static inspection found 7 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 116 lines and 251 lexical tokens; the source digest begins a13f55a7c140.
 
 #### Important symbols
 
@@ -11834,7 +11834,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: README.md, backend/app/agent/graph.py, backend/app/agent/policy.py, backend/app/agent/prompts.py. The containing category is Frontend components.
+Static imports or declared workflow actions: react, @/lib/utils. Resolved in-repository dependencies: client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: README.md, backend/app/agent/graph.py, backend/app/agent/policy.py, backend/app/agent/prompts.py. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -11853,7 +11853,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -11867,7 +11867,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Textarea. Its extracted size is 18 lines and 120 lexical tokens; the source digest begins 58b58d84fc54.
+It exists to provide a coherent TypeScript module boundary for Textarea. Static inspection found 1 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 18 lines and 120 lexical tokens; the source digest begins 58b58d84fc54.
 
 #### Important symbols
 
@@ -11875,7 +11875,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/prompt-input.tsx, client/src/components/chat/chat-input.tsx, client/src/components/diagnostic-dashboard.tsx, client/src/components/product-guide.tsx. The containing category is Frontend components.
+Static imports or declared workflow actions: react, @/lib/utils. Resolved in-repository dependencies: client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: client/src/components/ai-elements/prompt-input.tsx, client/src/components/chat/chat-input.tsx, client/src/components/diagnostic-dashboard.tsx, client/src/components/product-guide.tsx. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -11894,7 +11894,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -11908,7 +11908,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Tooltip. Its extracted size is 55 lines and 265 lexical tokens; the source digest begins 81569280cdd3.
+It exists to provide a coherent TypeScript module boundary for Tooltip. Static inspection found 4 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 55 lines and 265 lexical tokens; the source digest begins 81569280cdd3.
 
 #### Important symbols
 
@@ -11916,7 +11916,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/utils.ts. Potential consumers found through bounded textual/import analysis: client/src/components/ai-elements/message.tsx, client/src/components/ai-elements/prompt-input.tsx, client/src/components/sidebar/navitems.tsx, client/src/components/ui/sidebar.tsx. The containing category is Frontend components.
+Static imports or declared workflow actions: react, radix-ui, @/lib/utils. Resolved in-repository dependencies: client/src/lib/utils.ts. Potential consumers from bounded textual/import analysis: client/src/components/ai-elements/message.tsx, client/src/components/ai-elements/prompt-input.tsx, client/src/components/sidebar/navitems.tsx, client/src/components/ui/sidebar.tsx. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -11935,7 +11935,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -11949,7 +11949,7 @@ This frontend module implements part of the frontend components surface. It comp
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Vscode Editor. Its extracted size is 100 lines and 558 lexical tokens; the source digest begins d6bee770a033.
+It exists to provide a coherent TypeScript module boundary for Vscode Editor. Static inspection found 7 named symbols, 4 import/action references, and 0 explicit route decorators. Its extracted size is 100 lines and 558 lexical tokens; the source digest begins d6bee770a033.
 
 #### Important symbols
 
@@ -11957,7 +11957,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/src/components/ide-workspace.tsx, docs/IMPLEMENTATION_GAP_ANALYSIS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend components.
+Static imports or declared workflow actions: @monaco-editor/react, lucide-react, react, sonner. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: client/src/components/ide-workspace.tsx, docs/IMPLEMENTATION_GAP_ANALYSIS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend components; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -11976,7 +11976,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -11990,7 +11990,7 @@ This frontend module implements part of the frontend application surface. It com
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Diagnostic Dashboard. Its extracted size is 7 lines and 33 lexical tokens; the source digest begins 5bb402f8f8d0.
+It exists to provide a coherent TypeScript module boundary for Diagnostic Dashboard. Static inspection found 0 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 7 lines and 33 lexical tokens; the source digest begins 5bb402f8f8d0.
 
 #### Important symbols
 
@@ -11998,7 +11998,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/diagnostic-dashboard.tsx. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend application.
+Static imports or declared workflow actions: @/components/diagnostic-dashboard. Resolved in-repository dependencies: client/src/components/diagnostic-dashboard.tsx. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend application; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12017,7 +12017,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -12031,7 +12031,7 @@ This frontend module implements part of the frontend hooks surface. It composes 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Use Agent Session. Its extracted size is 356 lines and 918 lexical tokens; the source digest begins abd0dc96b986.
+It exists to provide a coherent TypeScript module boundary for Use Agent Session. Static inspection found 7 named symbols, 6 import/action references, and 0 explicit route decorators. Its extracted size is 356 lines and 918 lexical tokens; the source digest begins abd0dc96b986.
 
 #### Important symbols
 
@@ -12039,7 +12039,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/env.ts, client/src/lib/axios-client.ts, client/src/lib/api.ts, client/src/types/agent.type.ts. Potential consumers found through bounded textual/import analysis: client/src/components/chat/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend hooks.
+Static imports or declared workflow actions: @/lib/env, @/lib/axios-client, @/lib/api, @/types/agent.type, react, sonner. Resolved in-repository dependencies: client/src/lib/env.ts, client/src/lib/axios-client.ts, client/src/lib/api.ts, client/src/types/agent.type.ts. Potential consumers from bounded textual/import analysis: client/src/components/chat/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend hooks; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12058,7 +12058,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -12072,7 +12072,7 @@ This frontend module implements part of the frontend hooks surface. It composes 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Use Mobile. Its extracted size is 19 lines and 51 lexical tokens; the source digest begins ad0936f84f1d.
+It exists to provide a coherent TypeScript module boundary for Use Mobile. Static inspection found 4 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 19 lines and 51 lexical tokens; the source digest begins ad0936f84f1d.
 
 #### Important symbols
 
@@ -12080,7 +12080,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/src/components/ui/sidebar.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend hooks.
+Static imports or declared workflow actions: react. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: client/src/components/ui/sidebar.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend hooks; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12099,7 +12099,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -12113,7 +12113,7 @@ This frontend module implements part of the frontend hooks surface. It composes 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Use User. Its extracted size is 28 lines and 153 lexical tokens; the source digest begins 5397bcd28f33.
+It exists to provide a coherent TypeScript module boundary for Use User. Static inspection found 1 named symbols, 4 import/action references, and 0 explicit route decorators. Its extracted size is 28 lines and 153 lexical tokens; the source digest begins 5397bcd28f33.
 
 #### Important symbols
 
@@ -12121,7 +12121,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/lib/api.ts, client/src/components/clerk-token-provider.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/chat/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend hooks.
+Static imports or declared workflow actions: @tanstack/react-query, @clerk/clerk-react, @/lib/api, @/components/clerk-token-provider. Resolved in-repository dependencies: client/src/lib/api.ts, client/src/components/clerk-token-provider.tsx. Potential consumers from bounded textual/import analysis: client/src/components/chat/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend hooks; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12140,7 +12140,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -12154,7 +12154,7 @@ This frontend module implements part of the frontend application surface. It com
 
 #### Key responsibilities
 
-It exists to provide a coherent stylesheet boundary for Index. Its extracted size is 473 lines and 2398 lexical tokens; the source digest begins 83e699d6a936.
+It exists to provide a coherent stylesheet boundary for Index. Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 473 lines and 2398 lexical tokens; the source digest begins 83e699d6a936.
 
 #### Important symbols
 
@@ -12162,7 +12162,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend application.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend application; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12181,7 +12181,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -12195,7 +12195,7 @@ This frontend module implements part of the frontend application surface. It com
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for App Layout. Its extracted size is 30 lines and 81 lexical tokens; the source digest begins 02d2030d82fb.
+It exists to provide a coherent TypeScript module boundary for App Layout. Static inspection found 2 named symbols, 5 import/action references, and 0 explicit route decorators. Its extracted size is 30 lines and 81 lexical tokens; the source digest begins 02d2030d82fb.
 
 #### Important symbols
 
@@ -12203,7 +12203,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/sidebar/navitems.tsx, client/src/components/ui/sidebar.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, client/src/routes/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend application.
+Static imports or declared workflow actions: @/components/sidebar, @/components/ui/sidebar, react-router-dom, react, @/components/product-guide. Resolved in-repository dependencies: client/src/components/sidebar/chat-sessions.tsx, client/src/components/ui/sidebar.tsx. Potential consumers from bounded textual/import analysis: .commandcode/taste/taste.md, client/src/routes/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend application; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12222,11 +12222,11 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
-In one sentence: client/src/layouts/app-layout.tsx is a TypeScript module that owns a focused part of frontend application. Related files: client/src/components/sidebar/navitems.tsx, client/src/components/ui/sidebar.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/layouts/app-layout.tsx is a TypeScript module that owns a focused part of frontend application. Related files: client/src/components/sidebar/chat-sessions.tsx, client/src/components/ui/sidebar.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/layouts/base-layout.tsx`
 
@@ -12236,7 +12236,7 @@ This frontend module implements part of the frontend application surface. It com
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Base Layout. Its extracted size is 15 lines and 46 lexical tokens; the source digest begins 60e071466ff5.
+It exists to provide a coherent TypeScript module boundary for Base Layout. Static inspection found 1 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 15 lines and 46 lexical tokens; the source digest begins 60e071466ff5.
 
 #### Important symbols
 
@@ -12244,7 +12244,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, client/src/routes/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend application.
+Static imports or declared workflow actions: react-router-dom. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/taste.md, client/src/routes/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend application; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12263,7 +12263,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -12277,7 +12277,7 @@ This frontend module implements part of the frontend api and utilities surface. 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Api. Its extracted size is 694 lines and 1952 lexical tokens; the source digest begins b23d1beeb977.
+It exists to provide a coherent TypeScript module boundary for Api. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 694 lines and 1952 lexical tokens; the source digest begins b23d1beeb977.
 
 #### Important symbols
 
@@ -12285,7 +12285,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/types/auth.type.ts, client/src/types/agent.type.ts, client/src/types/session.type.ts, client/src/types/github.type.ts, client/src/types/incident.type.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, backend/.env.example, backend/app/agent/graph.py, backend/app/api/deps.py. The containing category is Frontend API and utilities.
+Static imports or declared workflow actions: @/types/auth.type, ./axios-client, ./env, @/types/agent.type, @/types/session.type, @/types/github.type, @/types/incident.type. Resolved in-repository dependencies: client/src/types/auth.type.ts, client/src/types/agent.type.ts, client/src/types/session.type.ts, client/src/types/github.type.ts, client/src/types/incident.type.ts. Potential consumers from bounded textual/import analysis: .commandcode/taste/taste.md, backend/.env.example, backend/app/agent/graph.py, backend/app/api/deps.py. The containing category is Frontend API and utilities; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12304,7 +12304,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -12318,7 +12318,7 @@ This frontend module implements part of the frontend api and utilities surface. 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Auth Redirect. Its extracted size is 59 lines and 180 lexical tokens; the source digest begins 2326bd97055b.
+It exists to provide a coherent TypeScript module boundary for Auth Redirect. Static inspection found 7 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 59 lines and 180 lexical tokens; the source digest begins 2326bd97055b.
 
 #### Important symbols
 
@@ -12326,7 +12326,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/package.json, client/scripts/check-auth-redirect.mjs, client/src/pages/auth/sign-in.tsx, client/src/pages/auth/sign-up.tsx. The containing category is Frontend API and utilities.
+Static imports or declared workflow actions: react-router-dom. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: client/package.json, client/scripts/check-auth-redirect.mjs, client/src/pages/auth/sign-in.tsx, client/src/pages/auth/sign-up.tsx. The containing category is Frontend API and utilities; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12345,7 +12345,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -12359,7 +12359,7 @@ This frontend module implements part of the frontend api and utilities surface. 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Axios Client. Its extracted size is 89 lines and 375 lexical tokens; the source digest begins 3babecb415fa.
+It exists to provide a coherent TypeScript module boundary for Axios Client. Static inspection found 7 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 89 lines and 375 lexical tokens; the source digest begins 3babecb415fa.
 
 #### Important symbols
 
@@ -12367,7 +12367,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, client/src/components/clerk-token-provider.tsx, client/src/hooks/use-agent-session.ts, client/src/lib/api.ts. The containing category is Frontend API and utilities.
+Static imports or declared workflow actions: axios, ./env. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/taste.md, client/src/components/clerk-token-provider.tsx, client/src/hooks/use-agent-session.ts, client/src/lib/api.ts. The containing category is Frontend API and utilities; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12386,7 +12386,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -12400,7 +12400,7 @@ This frontend module implements part of the frontend api and utilities surface. 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Env. Its extracted size is 30 lines and 157 lexical tokens; the source digest begins 9a9a3eccb593.
+It exists to provide a coherent TypeScript module boundary for Env. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 30 lines and 157 lexical tokens; the source digest begins 9a9a3eccb593.
 
 #### Important symbols
 
@@ -12408,7 +12408,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, .github/workflows/live-evals.yml, README.md. The containing category is Frontend API and utilities.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, .github/workflows/live-evals.yml, README.md. The containing category is Frontend API and utilities; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12427,7 +12427,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -12441,7 +12441,7 @@ This frontend module implements part of the frontend api and utilities surface. 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Utils. Its extracted size is 16 lines and 34 lexical tokens; the source digest begins db7c8da33160.
+It exists to provide a coherent TypeScript module boundary for Utils. Static inspection found 4 named symbols, 3 import/action references, and 0 explicit route decorators. Its extracted size is 16 lines and 34 lexical tokens; the source digest begins db7c8da33160.
 
 #### Important symbols
 
@@ -12449,7 +12449,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, backend/app/agent/graph.py, backend/app/api/deps.py, backend/app/api/routes/incidents.py. The containing category is Frontend API and utilities.
+Static imports or declared workflow actions: clsx, tailwind-merge, nanoid. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, backend/app/agent/graph.py, backend/app/api/deps.py, backend/app/api/routes/incidents.py. The containing category is Frontend API and utilities; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12468,7 +12468,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -12482,7 +12482,7 @@ This frontend module implements part of the frontend application surface. It com
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Main. Its extracted size is 88 lines and 372 lexical tokens; the source digest begins d597c90d70e0.
+It exists to provide a coherent TypeScript module boundary for Main. Static inspection found 6 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 88 lines and 372 lexical tokens; the source digest begins d597c90d70e0.
 
 #### Important symbols
 
@@ -12490,7 +12490,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, .github/workflows/ci.yml, .github/workflows/deployment-readiness.yml, README.md. The containing category is Frontend application.
+Static imports or declared workflow actions: react, react-dom/client, @tanstack/react-query, @clerk/clerk-react, ./App.tsx, ./components/theme-provider.tsx, ./components/ui/sonner.tsx. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/taste.md, .github/workflows/ci.yml, .github/workflows/deployment-readiness.yml, README.md. The containing category is Frontend application; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12509,7 +12509,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -12523,7 +12523,7 @@ This frontend module implements part of the frontend pages surface. It composes 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Sign In. Its extracted size is 86 lines and 466 lexical tokens; the source digest begins 4f0ba4ce4b1d.
+It exists to provide a coherent TypeScript module boundary for Sign In. Static inspection found 6 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 86 lines and 466 lexical tokens; the source digest begins 4f0ba4ce4b1d.
 
 #### Important symbols
 
@@ -12531,7 +12531,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/logo.tsx, client/src/lib/auth-redirect.ts, client/src/lib/api.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, backend/app/api/deps.py, backend/app/api/routes/auth.py, backend/app/main.py. The containing category is Frontend pages.
+Static imports or declared workflow actions: @clerk/clerk-react, react-router-dom, @tanstack/react-query, lucide-react, @/components/logo, @/lib/auth-redirect, @/lib/api. Resolved in-repository dependencies: client/src/components/logo.tsx, client/src/lib/auth-redirect.ts, client/src/lib/api.ts. Potential consumers from bounded textual/import analysis: .commandcode/taste/taste.md, backend/app/api/deps.py, backend/app/api/routes/auth.py, backend/app/main.py. The containing category is Frontend pages; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12550,7 +12550,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -12564,7 +12564,7 @@ This frontend module implements part of the frontend pages surface. It composes 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Sign Up. Its extracted size is 46 lines and 249 lexical tokens; the source digest begins 4cefb181a1d1.
+It exists to provide a coherent TypeScript module boundary for Sign Up. Static inspection found 3 named symbols, 4 import/action references, and 0 explicit route decorators. Its extracted size is 46 lines and 249 lexical tokens; the source digest begins 4cefb181a1d1.
 
 #### Important symbols
 
@@ -12572,7 +12572,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/logo.tsx, client/src/lib/auth-redirect.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, backend/app/api/routes/auth.py, backend/app/main.py, client/scripts/check-auth-redirect.mjs. The containing category is Frontend pages.
+Static imports or declared workflow actions: @clerk/clerk-react, react-router-dom, @/components/logo, @/lib/auth-redirect. Resolved in-repository dependencies: client/src/components/logo.tsx, client/src/lib/auth-redirect.ts. Potential consumers from bounded textual/import analysis: .commandcode/taste/taste.md, backend/app/api/routes/auth.py, backend/app/main.py, client/scripts/check-auth-redirect.mjs. The containing category is Frontend pages; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12591,7 +12591,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -12605,7 +12605,7 @@ This frontend module implements part of the frontend pages surface. It composes 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Index. Its extracted size is 109 lines and 800 lexical tokens; the source digest begins 554d31faef09.
+It exists to provide a coherent TypeScript module boundary for Index. Static inspection found 7 named symbols, 5 import/action references, and 0 explicit route decorators. Its extracted size is 109 lines and 800 lexical tokens; the source digest begins 554d31faef09.
 
 #### Important symbols
 
@@ -12613,7 +12613,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/ui/button.tsx, client/src/components/ui/badge.tsx, client/src/lib/api.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
+Static imports or declared workflow actions: @tanstack/react-query, lucide-react, @/components/ui/button, @/components/ui/badge, @/lib/api. Resolved in-repository dependencies: client/src/components/ui/button-group.tsx, client/src/components/ui/badge.tsx, client/src/lib/api.ts. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12632,11 +12632,11 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
-In one sentence: client/src/pages/billing/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/ui/button.tsx, client/src/components/ui/badge.tsx, client/src/lib/api.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/pages/billing/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/ui/button-group.tsx, client/src/components/ui/badge.tsx, client/src/lib/api.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/pages/demo/index.tsx`
 
@@ -12646,7 +12646,7 @@ This frontend module implements part of the frontend pages surface. It composes 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Index. Its extracted size is 487 lines and 2250 lexical tokens; the source digest begins c936651d3525.
+It exists to provide a coherent TypeScript module boundary for Index. Static inspection found 7 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 487 lines and 2250 lexical tokens; the source digest begins c936651d3525.
 
 #### Important symbols
 
@@ -12654,7 +12654,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
+Static imports or declared workflow actions: lucide-react, react. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12673,7 +12673,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -12687,7 +12687,7 @@ This frontend module implements part of the frontend pages surface. It composes 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Devruninspector. Its extracted size is 1129 lines and 4099 lexical tokens; the source digest begins 4adce300e2d2.
+It exists to provide a coherent TypeScript module boundary for Devruninspector. Static inspection found 7 named symbols, 5 import/action references, and 0 explicit route decorators. Its extracted size is 1129 lines and 4099 lexical tokens; the source digest begins 4adce300e2d2.
 
 #### Important symbols
 
@@ -12695,7 +12695,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/diff-viewer.tsx, client/src/components/loader.tsx, client/src/lib/api.ts. Potential consumers found through bounded textual/import analysis: client/src/routes/route.ts, docs/FEATURE_PARITY_MATRIX.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend pages.
+Static imports or declared workflow actions: react, react-router-dom, @/components/diff-viewer, @/components/loader, @/lib/api. Resolved in-repository dependencies: client/src/components/diff-viewer.tsx, client/src/components/loader.tsx, client/src/lib/api.ts. Potential consumers from bounded textual/import analysis: client/src/routes/route.ts, docs/FEATURE_PARITY_MATRIX.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend pages; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12714,7 +12714,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -12728,7 +12728,7 @@ This frontend module implements part of the frontend pages surface. It composes 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Index. Its extracted size is 51 lines and 313 lexical tokens; the source digest begins 54597b19f5b1.
+It exists to provide a coherent TypeScript module boundary for Index. Static inspection found 4 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 51 lines and 313 lexical tokens; the source digest begins 54597b19f5b1.
 
 #### Important symbols
 
@@ -12736,7 +12736,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
+Static imports or declared workflow actions: lucide-react, react-router-dom. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12755,7 +12755,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -12769,7 +12769,7 @@ This frontend module implements part of the frontend pages surface. It composes 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Index. Its extracted size is 218 lines and 1853 lexical tokens; the source digest begins e14b4679e624.
+It exists to provide a coherent TypeScript module boundary for Index. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 218 lines and 1853 lexical tokens; the source digest begins e14b4679e624.
 
 #### Important symbols
 
@@ -12777,7 +12777,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/logo.tsx, client/src/components/mode-toggle.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/button.tsx, client/src/routes/route-guard.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
+Static imports or declared workflow actions: @/components/logo, @/components/mode-toggle, @/components/ui/badge, @/components/ui/button, @/routes/route, lucide-react, react-router-dom. Resolved in-repository dependencies: client/src/components/logo.tsx, client/src/components/mode-toggle.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/button-group.tsx, client/src/routes/route.ts. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12796,11 +12796,11 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
-In one sentence: client/src/pages/guide/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/logo.tsx, client/src/components/mode-toggle.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/button.tsx, client/src/routes/route-guard.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/pages/guide/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/logo.tsx, client/src/components/mode-toggle.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/button-group.tsx, client/src/routes/route.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/pages/home/index.tsx`
 
@@ -12810,7 +12810,7 @@ This frontend module implements part of the frontend pages surface. It composes 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Index. Its extracted size is 13 lines and 36 lexical tokens; the source digest begins aa9027686e31.
+It exists to provide a coherent TypeScript module boundary for Index. Static inspection found 2 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 13 lines and 36 lexical tokens; the source digest begins aa9027686e31.
 
 #### Important symbols
 
@@ -12818,7 +12818,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/chat/tool-parts.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
+Static imports or declared workflow actions: @/components/chat, react-router-dom. Resolved in-repository dependencies: client/src/components/chat/chat-input.tsx. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12837,11 +12837,11 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
-In one sentence: client/src/pages/home/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/chat/tool-parts.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/pages/home/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/chat/chat-input.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/pages/incidents/index.tsx`
 
@@ -12851,7 +12851,7 @@ This frontend module implements part of the frontend pages surface. It composes 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Index. Its extracted size is 552 lines and 4771 lexical tokens; the source digest begins a7c920cc1888.
+It exists to provide a coherent TypeScript module boundary for Index. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 552 lines and 4771 lexical tokens; the source digest begins a7c920cc1888.
 
 #### Important symbols
 
@@ -12859,7 +12859,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/ui/badge.tsx, client/src/components/ui/button.tsx, client/src/components/ui/input.tsx, client/src/components/ui/textarea.tsx, client/src/components/ui/skeleton.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
+Static imports or declared workflow actions: @/components/ui/badge, @/components/ui/button, @/components/ui/input, @/components/ui/textarea, @/components/ui/skeleton, @/lib/api, @/lib/utils. Resolved in-repository dependencies: client/src/components/ui/badge.tsx, client/src/components/ui/button-group.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/textarea.tsx, client/src/components/ui/skeleton.tsx. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12878,11 +12878,11 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
-In one sentence: client/src/pages/incidents/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/ui/badge.tsx, client/src/components/ui/button.tsx, client/src/components/ui/input.tsx, client/src/components/ui/textarea.tsx, client/src/components/ui/skeleton.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/pages/incidents/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/ui/badge.tsx, client/src/components/ui/button-group.tsx, client/src/components/ui/input-group.tsx, client/src/components/ui/textarea.tsx, client/src/components/ui/skeleton.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/pages/not-found/index.tsx`
 
@@ -12892,7 +12892,7 @@ This frontend module implements part of the frontend pages surface. It composes 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Index. Its extracted size is 26 lines and 174 lexical tokens; the source digest begins b760f45a2c4c.
+It exists to provide a coherent TypeScript module boundary for Index. Static inspection found 1 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 26 lines and 174 lexical tokens; the source digest begins b760f45a2c4c.
 
 #### Important symbols
 
@@ -12900,7 +12900,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
+Static imports or declared workflow actions: lucide-react, react-router-dom. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12919,7 +12919,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -12933,7 +12933,7 @@ This frontend module implements part of the frontend pages surface. It composes 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Index. Its extracted size is 2279 lines and 8846 lexical tokens; the source digest begins 31981de934d3.
+It exists to provide a coherent TypeScript module boundary for Index. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 2279 lines and 8846 lexical tokens; the source digest begins 31981de934d3.
 
 #### Important symbols
 
@@ -12941,7 +12941,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/chat/tool-parts.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/textarea.tsx, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
+Static imports or declared workflow actions: @/components/chat, @/components/ui/badge, @/components/ui/textarea, @/components/ide-workspace, @/lib/api, @/lib/utils, @/types/agent.type. Resolved in-repository dependencies: client/src/components/chat/chat-input.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/textarea.tsx, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -12960,11 +12960,11 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
-In one sentence: client/src/pages/session/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/chat/tool-parts.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/textarea.tsx, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/pages/session/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/chat/chat-input.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/textarea.tsx, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/routes/index.tsx`
 
@@ -12974,7 +12974,7 @@ This frontend module implements part of the frontend routing surface. It compose
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Index. Its extracted size is 50 lines and 120 lexical tokens; the source digest begins 3bd5985a339f.
+It exists to provide a coherent TypeScript module boundary for Index. Static inspection found 2 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 50 lines and 120 lexical tokens; the source digest begins 3bd5985a339f.
 
 #### Important symbols
 
@@ -12982,7 +12982,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/layouts/base-layout.tsx, client/src/layouts/app-layout.tsx, client/src/pages/not-found/index.tsx, client/src/pages/error-boundary/index.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend routing.
+Static imports or declared workflow actions: @/layouts/base-layout, react-router-dom, ./route, @/layouts/app-layout, @/pages/not-found, @/pages/error-boundary, ./route-guard. Resolved in-repository dependencies: client/src/layouts/base-layout.tsx, client/src/layouts/app-layout.tsx, client/src/pages/not-found/index.tsx, client/src/pages/error-boundary/index.tsx. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend routing; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -13001,7 +13001,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -13015,7 +13015,7 @@ This frontend module implements part of the frontend routing surface. It compose
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Route Guard. Its extracted size is 38 lines and 112 lexical tokens; the source digest begins 45bcd8f9ebde.
+It exists to provide a coherent TypeScript module boundary for Route Guard. Static inspection found 4 named symbols, 6 import/action references, and 0 explicit route decorators. Its extracted size is 38 lines and 112 lexical tokens; the source digest begins 45bcd8f9ebde.
 
 #### Important symbols
 
@@ -13023,7 +13023,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/logo.tsx, client/src/components/ui/spinner.tsx, client/src/lib/auth-redirect.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, client/src/routes/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend routing.
+Static imports or declared workflow actions: react-router-dom, ./route, @clerk/clerk-react, @/components/logo, @/components/ui/spinner, @/lib/auth-redirect. Resolved in-repository dependencies: client/src/components/logo.tsx, client/src/components/ui/spinner.tsx, client/src/lib/auth-redirect.ts. Potential consumers from bounded textual/import analysis: .commandcode/taste/taste.md, client/src/routes/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend routing; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -13042,7 +13042,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -13056,7 +13056,7 @@ This frontend module implements part of the frontend routing surface. It compose
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Route. Its extracted size is 106 lines and 291 lexical tokens; the source digest begins 2b2e14f94398.
+It exists to provide a coherent TypeScript module boundary for Route. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 106 lines and 291 lexical tokens; the source digest begins 2b2e14f94398.
 
 #### Important symbols
 
@@ -13064,7 +13064,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/app/api/middleware.py, backend/app/api/routes/assistant.py. The containing category is Frontend routing.
+Static imports or declared workflow actions: react-router-dom, react, @/pages/auth/sign-in, @/pages/auth/sign-up, @/pages/home, @/pages/demo, @/pages/guide. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/app/api/middleware.py, backend/app/api/routes/assistant.py. The containing category is Frontend routing; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -13083,7 +13083,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -13097,7 +13097,7 @@ This frontend module implements part of the frontend contracts surface. It compo
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Agent.Type. Its extracted size is 210 lines and 563 lexical tokens; the source digest begins 22584fa9bc0f.
+It exists to provide a coherent TypeScript module boundary for Agent.Type. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 210 lines and 563 lexical tokens; the source digest begins 22584fa9bc0f.
 
 #### Important symbols
 
@@ -13105,7 +13105,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/src/components/chat/chat-input.tsx, client/src/components/chat/index.tsx, client/src/components/ide-workspace.tsx, client/src/hooks/use-agent-session.ts. The containing category is Frontend contracts.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: client/src/components/chat/chat-input.tsx, client/src/components/chat/index.tsx, client/src/components/ide-workspace.tsx, client/src/hooks/use-agent-session.ts. The containing category is Frontend contracts; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -13124,7 +13124,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -13138,7 +13138,7 @@ This frontend module implements part of the frontend contracts surface. It compo
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Auth.Type. Its extracted size is 14 lines and 25 lexical tokens; the source digest begins 747621458f32.
+It exists to provide a coherent TypeScript module boundary for Auth.Type. Static inspection found 2 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 14 lines and 25 lexical tokens; the source digest begins 747621458f32.
 
 #### Important symbols
 
@@ -13146,7 +13146,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/src/lib/api.ts, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend contracts.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: client/src/lib/api.ts, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend contracts; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -13165,7 +13165,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -13179,7 +13179,7 @@ This frontend module implements part of the frontend contracts surface. It compo
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Github.Type. Its extracted size is 24 lines and 39 lexical tokens; the source digest begins 4471ea384175.
+It exists to provide a coherent TypeScript module boundary for Github.Type. Static inspection found 3 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 24 lines and 39 lexical tokens; the source digest begins 4471ea384175.
 
 #### Important symbols
 
@@ -13187,7 +13187,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/src/components/chat/index.tsx, client/src/lib/api.ts, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend contracts.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: client/src/components/chat/index.tsx, client/src/lib/api.ts, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend contracts; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -13206,7 +13206,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -13220,7 +13220,7 @@ This frontend module implements part of the frontend contracts surface. It compo
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Incident.Type. Its extracted size is 175 lines and 406 lexical tokens; the source digest begins f7c69dfdead6.
+It exists to provide a coherent TypeScript module boundary for Incident.Type. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 175 lines and 406 lexical tokens; the source digest begins f7c69dfdead6.
 
 #### Important symbols
 
@@ -13228,7 +13228,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/src/components/ide-workspace.tsx, client/src/lib/api.ts, client/src/pages/incidents/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Frontend contracts.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: client/src/components/ide-workspace.tsx, client/src/lib/api.ts, client/src/pages/incidents/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Frontend contracts; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -13247,7 +13247,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -13261,7 +13261,7 @@ This frontend module implements part of the frontend contracts surface. It compo
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Session.Type. Its extracted size is 59 lines and 138 lexical tokens; the source digest begins d32abd618910.
+It exists to provide a coherent TypeScript module boundary for Session.Type. Static inspection found 5 named symbols, 1 import/action references, and 0 explicit route decorators. Its extracted size is 59 lines and 138 lexical tokens; the source digest begins d32abd618910.
 
 #### Important symbols
 
@@ -13269,7 +13269,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/src/components/ide-workspace.tsx, client/src/components/sidebar/chat-sessions.tsx, client/src/lib/api.ts, client/src/pages/incidents/index.tsx. The containing category is Frontend contracts.
+Static imports or declared workflow actions: ./agent.type. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: client/src/components/ide-workspace.tsx, client/src/components/sidebar/chat-sessions.tsx, client/src/lib/api.ts, client/src/pages/incidents/index.tsx. The containing category is Frontend contracts; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -13288,7 +13288,7 @@ It participates after browser routing or data hydration selects this UI surface.
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -13302,7 +13302,7 @@ This JSON configuration is part of the project configuration layer. It supplies 
 
 #### Key responsibilities
 
-It exists to provide a coherent JSON configuration boundary for Tsconfig.App. Its extracted size is 32 lines and 51 lexical tokens; the source digest begins f019166937bf.
+It exists to provide a coherent JSON configuration boundary for Tsconfig.App. Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 32 lines and 51 lexical tokens; the source digest begins f019166937bf.
 
 #### Important symbols
 
@@ -13310,7 +13310,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/README.md, client/tsconfig.json, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Project configuration.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: client/README.md, client/tsconfig.json, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Project configuration; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -13329,7 +13329,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -13343,7 +13343,7 @@ This JSON configuration is part of the project configuration layer. It supplies 
 
 #### Key responsibilities
 
-It exists to provide a coherent JSON configuration boundary for Tsconfig. Its extracted size is 14 lines and 17 lexical tokens; the source digest begins 52cf336c2e10.
+It exists to provide a coherent JSON configuration boundary for Tsconfig. Static inspection found 3 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 14 lines and 17 lexical tokens; the source digest begins 52cf336c2e10.
 
 #### Important symbols
 
@@ -13351,7 +13351,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, backend/app/services/ci_investigation_service.py, backend/app/services/patch_engine.py, client/README.md. The containing category is Project configuration.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, backend/app/services/ci_investigation_service.py, backend/app/services/patch_engine.py, client/README.md. The containing category is Project configuration; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -13370,7 +13370,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -13384,7 +13384,7 @@ This JSON configuration is part of the project configuration layer. It supplies 
 
 #### Key responsibilities
 
-It exists to provide a coherent JSON configuration boundary for Tsconfig.Node. Its extracted size is 24 lines and 42 lexical tokens; the source digest begins 90a22c920cbc.
+It exists to provide a coherent JSON configuration boundary for Tsconfig.Node. Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 24 lines and 42 lexical tokens; the source digest begins 90a22c920cbc.
 
 #### Important symbols
 
@@ -13392,7 +13392,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/README.md, client/tsconfig.json, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Project configuration.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: client/README.md, client/tsconfig.json, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Project configuration; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -13411,7 +13411,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -13425,7 +13425,7 @@ This JSON configuration is part of the deployment configuration layer. It suppli
 
 #### Key responsibilities
 
-It exists to provide a coherent JSON configuration boundary for Vercel. Its extracted size is 26 lines and 156 lexical tokens; the source digest begins b1a01827ced9.
+It exists to provide a coherent JSON configuration boundary for Vercel. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 26 lines and 156 lexical tokens; the source digest begins b1a01827ced9.
 
 #### Important symbols
 
@@ -13433,7 +13433,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/services/product_assistant_service.py, backend/tests/test_frontend_deployment_security.py, docs/DEPLOYMENT.md, docs/IMPLEMENTATION_AUDIT.md. The containing category is Deployment configuration.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/services/product_assistant_service.py, backend/tests/test_frontend_deployment_security.py, docs/DEPLOYMENT.md, docs/IMPLEMENTATION_AUDIT.md. The containing category is Deployment configuration; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -13452,7 +13452,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -13466,7 +13466,7 @@ This TypeScript module is part of the repository reference layer. It supplies th
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Vite.Config. Its extracted size is 14 lines and 37 lexical tokens; the source digest begins 89907bc80d29.
+It exists to provide a coherent TypeScript module boundary for Vite.Config. Static inspection found 0 named symbols, 4 import/action references, and 0 explicit route decorators. Its extracted size is 14 lines and 37 lexical tokens; the source digest begins 89907bc80d29.
 
 #### Important symbols
 
@@ -13474,7 +13474,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: client/tsconfig.node.json, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Repository reference.
+Static imports or declared workflow actions: vite, path, @vitejs/plugin-react, @tailwindcss/vite. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: client/tsconfig.node.json, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Repository reference; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -13493,7 +13493,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority.
+The client treats backend responses as the authority for safety state. It can present loading, error, and limitation states but must not mint approval, repository access, or execution authority. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -13507,7 +13507,7 @@ This YAML configuration is part of the deployment configuration layer. It suppli
 
 #### Key responsibilities
 
-It exists to provide a coherent YAML configuration boundary for Docker Compose. Its extracted size is 33 lines and 56 lexical tokens; the source digest begins 669c93e715bb.
+It exists to provide a coherent YAML configuration boundary for Docker Compose. Static inspection found 2 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 33 lines and 56 lexical tokens; the source digest begins 669c93e715bb.
 
 #### Important symbols
 
@@ -13515,7 +13515,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/agent/graph.py, backend/app/services/patch_engine.py, backend/app/services/workspace_service.py, backend/evals/cases/compose-reference.json. The containing category is Deployment configuration.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/agent/graph.py, backend/app/services/patch_engine.py, backend/app/services/workspace_service.py, backend/evals/cases/compose-reference.json. The containing category is Deployment configuration; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -13534,7 +13534,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -13548,7 +13548,7 @@ This documentation file records the repository's current guidance for Agent Safe
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Agent Safety. Its extracted size is 21 lines and 270 lexical tokens; the source digest begins 4db7ad00613a.
+It exists to provide a coherent documentation boundary for Agent Safety. Static inspection found 1 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 21 lines and 270 lexical tokens; the source digest begins 4db7ad00613a.
 
 #### Important symbols
 
@@ -13556,7 +13556,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -13574,7 +13574,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -13588,7 +13588,7 @@ This documentation file records the repository's current guidance for Approval M
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Approval Model. Its extracted size is 35 lines and 239 lexical tokens; the source digest begins 37b7be499866.
+It exists to provide a coherent documentation boundary for Approval Model. Static inspection found 3 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 35 lines and 239 lexical tokens; the source digest begins 37b7be499866.
 
 #### Important symbols
 
@@ -13596,7 +13596,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -13614,7 +13614,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -13628,7 +13628,7 @@ This documentation file records the repository's current guidance for Architectu
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Architecture. Its extracted size is 131 lines and 1098 lexical tokens; the source digest begins c45b4dca9404.
+It exists to provide a coherent documentation boundary for Architecture. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 131 lines and 1098 lexical tokens; the source digest begins c45b4dca9404.
 
 #### Important symbols
 
@@ -13636,7 +13636,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -13654,7 +13654,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -13668,7 +13668,7 @@ This documentation file records the repository's current guidance for Candidate 
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Candidate Verification. Its extracted size is 139 lines and 1022 lexical tokens; the source digest begins c4a358522deb.
+It exists to provide a coherent documentation boundary for Candidate Verification. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 139 lines and 1022 lexical tokens; the source digest begins c4a358522deb.
 
 #### Important symbols
 
@@ -13676,7 +13676,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: README.md, backend/.env.example, backend/app/core/config.py, client/src/pages/incidents/index.tsx. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: README.md, backend/.env.example, backend/app/core/config.py, client/src/pages/incidents/index.tsx. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -13694,7 +13694,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -13708,7 +13708,7 @@ This documentation file records the repository's current guidance for Delivery W
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Delivery Workflow. Its extracted size is 13 lines and 139 lexical tokens; the source digest begins 75cb9d59e8b1.
+It exists to provide a coherent documentation boundary for Delivery Workflow. Static inspection found 1 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 13 lines and 139 lexical tokens; the source digest begins 75cb9d59e8b1.
 
 #### Important symbols
 
@@ -13716,7 +13716,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -13734,7 +13734,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -13748,7 +13748,7 @@ This documentation file records the repository's current guidance for Demo Scrip
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Demo Script. Its extracted size is 65 lines and 484 lexical tokens; the source digest begins a746c0a8f266.
+It exists to provide a coherent documentation boundary for Demo Script. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 65 lines and 484 lexical tokens; the source digest begins a746c0a8f266.
 
 #### Important symbols
 
@@ -13756,7 +13756,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: README.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: README.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -13774,7 +13774,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -13788,7 +13788,7 @@ This documentation file records the repository's current guidance for Deployment
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Deployment. Its extracted size is 110 lines and 1454 lexical tokens; the source digest begins aacdc2e7f8bc.
+It exists to provide a coherent documentation boundary for Deployment. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 110 lines and 1454 lexical tokens; the source digest begins aacdc2e7f8bc.
 
 #### Important symbols
 
@@ -13796,7 +13796,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/git/actions.py, docs/IMPLEMENTATION_AUDIT.md, docs/PRODUCTION_READINESS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/app/git/actions.py, docs/IMPLEMENTATION_AUDIT.md, docs/PRODUCTION_READINESS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -13814,7 +13814,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -13828,7 +13828,7 @@ This documentation file records the repository's current guidance for Diagnostic
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Diagnostic Dashboard. Its extracted size is 67 lines and 398 lexical tokens; the source digest begins 8edb1f2ca9b5.
+It exists to provide a coherent documentation boundary for Diagnostic Dashboard. Static inspection found 6 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 67 lines and 398 lexical tokens; the source digest begins 8edb1f2ca9b5.
 
 #### Important symbols
 
@@ -13836,7 +13836,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -13854,7 +13854,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -13868,7 +13868,7 @@ This documentation file records the repository's current guidance for Engineerin
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Engineering Graph. Its extracted size is 94 lines and 674 lexical tokens; the source digest begins baf63d814d90.
+It exists to provide a coherent documentation boundary for Engineering Graph. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 94 lines and 674 lexical tokens; the source digest begins baf63d814d90.
 
 #### Important symbols
 
@@ -13876,7 +13876,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/ARCHITECTURE.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/ARCHITECTURE.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -13894,7 +13894,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -13908,7 +13908,7 @@ This documentation file records the repository's current guidance for Evaluation
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Evaluation. Its extracted size is 42 lines and 422 lexical tokens; the source digest begins 12c5dbd49d3d.
+It exists to provide a coherent documentation boundary for Evaluation. Static inspection found 1 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 42 lines and 422 lexical tokens; the source digest begins 12c5dbd49d3d.
 
 #### Important symbols
 
@@ -13916,7 +13916,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: README.md, docs/FEATURE_PARITY_MATRIX.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: README.md, docs/FEATURE_PARITY_MATRIX.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -13934,7 +13934,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -13948,7 +13948,7 @@ This documentation file records the repository's current guidance for Execution 
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Execution Sandbox. Its extracted size is 59 lines and 397 lexical tokens; the source digest begins 7b6dba126e40.
+It exists to provide a coherent documentation boundary for Execution Sandbox. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 59 lines and 397 lexical tokens; the source digest begins 7b6dba126e40.
 
 #### Important symbols
 
@@ -13956,7 +13956,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -13974,7 +13974,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -13988,7 +13988,7 @@ This documentation file records the repository's current guidance for Failure Ha
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Failure Handling. Its extracted size is 5 lines and 79 lexical tokens; the source digest begins 3ff6d618d3bd.
+It exists to provide a coherent documentation boundary for Failure Handling. Static inspection found 1 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 5 lines and 79 lexical tokens; the source digest begins 3ff6d618d3bd.
 
 #### Important symbols
 
@@ -13996,7 +13996,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -14014,7 +14014,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -14028,7 +14028,7 @@ This documentation file records the repository's current guidance for Feature Pa
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Feature Parity Matrix. Its extracted size is 76 lines and 1262 lexical tokens; the source digest begins e24a0e9bcf7d.
+It exists to provide a coherent documentation boundary for Feature Parity Matrix. Static inspection found 4 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 76 lines and 1262 lexical tokens; the source digest begins e24a0e9bcf7d.
 
 #### Important symbols
 
@@ -14036,7 +14036,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -14054,7 +14054,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -14068,7 +14068,7 @@ This documentation file records the repository's current guidance for Github Act
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Github Actions Intelligence. Its extracted size is 113 lines and 1088 lexical tokens; the source digest begins 5a9c35f1bc4d.
+It exists to provide a coherent documentation boundary for Github Actions Intelligence. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 113 lines and 1088 lexical tokens; the source digest begins 5a9c35f1bc4d.
 
 #### Important symbols
 
@@ -14076,7 +14076,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -14094,7 +14094,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -14108,7 +14108,7 @@ This documentation file records the repository's current guidance for Implementa
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Implementation Audit. Its extracted size is 96 lines and 1010 lexical tokens; the source digest begins bb11fbaa47d7.
+It exists to provide a coherent documentation boundary for Implementation Audit. Static inspection found 6 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 96 lines and 1010 lexical tokens; the source digest begins bb11fbaa47d7.
 
 #### Important symbols
 
@@ -14116,7 +14116,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/FEATURE_PARITY_MATRIX.md, docs/IMPLEMENTATION_STATUS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/FEATURE_PARITY_MATRIX.md, docs/IMPLEMENTATION_STATUS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -14134,7 +14134,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -14148,7 +14148,7 @@ This documentation file records the repository's current guidance for Implementa
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Implementation Gap Analysis. Its extracted size is 103 lines and 1309 lexical tokens; the source digest begins 20e8677409bf.
+It exists to provide a coherent documentation boundary for Implementation Gap Analysis. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 103 lines and 1309 lexical tokens; the source digest begins 20e8677409bf.
 
 #### Important symbols
 
@@ -14156,7 +14156,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_PROGRESS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/IMPLEMENTATION_PROGRESS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -14174,7 +14174,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -14188,7 +14188,7 @@ This documentation file records the repository's current guidance for Implementa
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Implementation Progress. Its extracted size is 168 lines and 1335 lexical tokens; the source digest begins 84659e986fbb.
+It exists to provide a coherent documentation boundary for Implementation Progress. Static inspection found 6 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 168 lines and 1335 lexical tokens; the source digest begins 84659e986fbb.
 
 #### Important symbols
 
@@ -14196,7 +14196,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -14214,7 +14214,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -14228,7 +14228,7 @@ This documentation file records the repository's current guidance for Implementa
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Implementation Status. Its extracted size is 178 lines and 4040 lexical tokens; the source digest begins b8f8ab6b7101.
+It exists to provide a coherent documentation boundary for Implementation Status. Static inspection found 3 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 180 lines and 4063 lexical tokens; the source digest begins d3e01394e8e6.
 
 #### Important symbols
 
@@ -14236,7 +14236,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_AUDIT.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/IMPLEMENTATION_AUDIT.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -14254,7 +14254,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -14268,7 +14268,7 @@ This documentation file records the repository's current guidance for Interview 
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Interview Talk Track. Its extracted size is 33 lines and 251 lexical tokens; the source digest begins fa2595fd1ebe.
+It exists to provide a coherent documentation boundary for Interview Talk Track. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 33 lines and 251 lexical tokens; the source digest begins fa2595fd1ebe.
 
 #### Important symbols
 
@@ -14276,7 +14276,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: README.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: README.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -14294,7 +14294,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -14308,7 +14308,7 @@ This documentation file records the repository's current guidance for Live Evalu
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Live Evaluation. Its extracted size is 48 lines and 288 lexical tokens; the source digest begins 9c322f8a2dad.
+It exists to provide a coherent documentation boundary for Live Evaluation. Static inspection found 4 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 48 lines and 288 lexical tokens; the source digest begins 9c322f8a2dad.
 
 #### Important symbols
 
@@ -14316,7 +14316,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/FEATURE_PARITY_MATRIX.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/FEATURE_PARITY_MATRIX.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -14334,7 +14334,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -14348,7 +14348,7 @@ This documentation file records the repository's current guidance for Observabil
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Observability. Its extracted size is 44 lines and 787 lexical tokens; the source digest begins 4c7005246e19.
+It exists to provide a coherent documentation boundary for Observability. Static inspection found 2 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 44 lines and 787 lexical tokens; the source digest begins 4c7005246e19.
 
 #### Important symbols
 
@@ -14356,7 +14356,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -14374,7 +14374,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -14388,7 +14388,7 @@ This documentation file records the repository's current guidance for Operationa
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Operational Memory. Its extracted size is 157 lines and 967 lexical tokens; the source digest begins e2966ff25edf.
+It exists to provide a coherent documentation boundary for Operational Memory. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 157 lines and 967 lexical tokens; the source digest begins e2966ff25edf.
 
 #### Important symbols
 
@@ -14396,7 +14396,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -14414,7 +14414,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -14428,7 +14428,7 @@ This documentation file records the repository's current guidance for Patch Engi
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Patch Engine. Its extracted size is 141 lines and 675 lexical tokens; the source digest begins bd5a97d55683.
+It exists to provide a coherent documentation boundary for Patch Engine. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 141 lines and 675 lexical tokens; the source digest begins bd5a97d55683.
 
 #### Important symbols
 
@@ -14436,7 +14436,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -14454,7 +14454,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -14468,7 +14468,7 @@ This documentation file records the repository's current guidance for Production
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Production Readiness. Its extracted size is 89 lines and 663 lexical tokens; the source digest begins fbca1c331c64.
+It exists to provide a coherent documentation boundary for Production Readiness. Static inspection found 5 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 89 lines and 663 lexical tokens; the source digest begins fbca1c331c64.
 
 #### Important symbols
 
@@ -14476,7 +14476,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -14494,7 +14494,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -14508,7 +14508,7 @@ This documentation file records the repository's current guidance for Production
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Production Readiness Audit. Its extracted size is 115 lines and 2069 lexical tokens; the source digest begins af2a82754e7f.
+It exists to provide a coherent documentation boundary for Production Readiness Audit. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 115 lines and 2069 lexical tokens; the source digest begins af2a82754e7f.
 
 #### Important symbols
 
@@ -14516,7 +14516,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md, docs/PRODUCTION_READINESS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md, docs/PRODUCTION_READINESS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -14534,7 +14534,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -14548,7 +14548,7 @@ This documentation file records the repository's current guidance for Product St
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Product Strategy. Its extracted size is 48 lines and 559 lexical tokens; the source digest begins 3cf8fde97650.
+It exists to provide a coherent documentation boundary for Product Strategy. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 48 lines and 559 lexical tokens; the source digest begins 3cf8fde97650.
 
 #### Important symbols
 
@@ -14556,7 +14556,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -14574,7 +14574,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -14588,7 +14588,7 @@ This documentation file records the repository's current guidance for Saas Secur
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Saas Security And Scale. Its extracted size is 109 lines and 2491 lexical tokens; the source digest begins f559e56d780d.
+It exists to provide a coherent documentation boundary for Saas Security And Scale. Static inspection found 7 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 109 lines and 2491 lexical tokens; the source digest begins f559e56d780d.
 
 #### Important symbols
 
@@ -14596,7 +14596,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/SYSTEM_DESIGN.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/SYSTEM_DESIGN.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -14614,7 +14614,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -14628,7 +14628,7 @@ This documentation file records the repository's current guidance for System Des
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for System Design. Its extracted size is 33 lines and 560 lexical tokens; the source digest begins 0f61fe276d43.
+It exists to provide a coherent documentation boundary for System Design. Static inspection found 5 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 33 lines and 560 lexical tokens; the source digest begins 0f61fe276d43.
 
 #### Important symbols
 
@@ -14636,7 +14636,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: README.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: README.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -14654,7 +14654,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -14668,7 +14668,7 @@ This documentation file records the repository's current guidance for Threat Mod
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Threat Model. Its extracted size is 13 lines and 189 lexical tokens; the source digest begins 31552c138bd4.
+It exists to provide a coherent documentation boundary for Threat Model. Static inspection found 1 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 13 lines and 189 lexical tokens; the source digest begins 31552c138bd4.
 
 #### Important symbols
 
@@ -14676,7 +14676,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: README.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: README.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Architecture documentation; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -14694,7 +14694,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -14708,7 +14708,7 @@ This documentation file records the repository's current guidance for Readme. It
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Readme. Its extracted size is 46 lines and 452 lexical tokens; the source digest begins 5a8aaca01d0d.
+It exists to provide a coherent documentation boundary for Readme. Static inspection found 4 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 46 lines and 452 lexical tokens; the source digest begins 5a8aaca01d0d.
 
 #### Important symbols
 
@@ -14716,7 +14716,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/docs/CONTEXT_ENGINEERING.md, backend/evals/cases/prompt-injection.json, backend/evals/cases/stale-readme.json, backend/tests/test_load_harness_safety.py. The containing category is Developer and operational tooling.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/docs/CONTEXT_ENGINEERING.md, backend/evals/cases/prompt-injection.json, backend/evals/cases/stale-readme.json, backend/tests/test_load_harness_safety.py. The containing category is Developer and operational tooling; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -14734,7 +14734,7 @@ It participates in developer onboarding and operator decision making. Executable
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -14748,7 +14748,7 @@ This configuration is part of the developer and operational tooling layer. It su
 
 #### Key responsibilities
 
-It exists to provide a coherent configuration boundary for Authenticated Session Read. Its extracted size is 48 lines and 194 lexical tokens; the source digest begins 99231a3b2e22.
+It exists to provide a coherent configuration boundary for Authenticated Session Read. Static inspection found 4 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 48 lines and 194 lexical tokens; the source digest begins 99231a3b2e22.
 
 #### Important symbols
 
@@ -14756,7 +14756,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/tests/test_load_harness_safety.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Developer and operational tooling.
+Static imports or declared workflow actions: k6/http, k6. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/tests/test_load_harness_safety.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Developer and operational tooling; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -14775,7 +14775,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -14789,7 +14789,7 @@ This configuration is part of the developer and operational tooling layer. It su
 
 #### Key responsibilities
 
-It exists to provide a coherent configuration boundary for Public Health. Its extracted size is 41 lines and 159 lexical tokens; the source digest begins 5e34ca26c33a.
+It exists to provide a coherent configuration boundary for Public Health. Static inspection found 3 named symbols, 2 import/action references, and 0 explicit route decorators. Its extracted size is 41 lines and 159 lexical tokens; the source digest begins 5e34ca26c33a.
 
 #### Important symbols
 
@@ -14797,7 +14797,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/tests/test_load_harness_safety.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Developer and operational tooling.
+Static imports or declared workflow actions: k6/http, k6. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/tests/test_load_harness_safety.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Developer and operational tooling; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -14816,7 +14816,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -14830,7 +14830,7 @@ This YAML configuration is part of the deployment configuration layer. It suppli
 
 #### Key responsibilities
 
-It exists to provide a coherent YAML configuration boundary for Render.Free. Its extracted size is 103 lines and 341 lexical tokens; the source digest begins fe9fe8e13d29.
+It exists to provide a coherent YAML configuration boundary for Render.Free. Static inspection found 1 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 103 lines and 341 lexical tokens; the source digest begins fe9fe8e13d29.
 
 #### Important symbols
 
@@ -14838,7 +14838,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/tests/test_deployment_blueprints.py, backend/tests/test_render_blueprint.py, docs/DEPLOYMENT.md, docs/IMPLEMENTATION_PROGRESS.md. The containing category is Deployment configuration.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/tests/test_deployment_blueprints.py, backend/tests/test_render_blueprint.py, docs/DEPLOYMENT.md, docs/IMPLEMENTATION_PROGRESS.md. The containing category is Deployment configuration; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -14857,7 +14857,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -14871,7 +14871,7 @@ This YAML configuration is part of the deployment configuration layer. It suppli
 
 #### Key responsibilities
 
-It exists to provide a coherent YAML configuration boundary for Render.Mvp. Its extracted size is 121 lines and 417 lexical tokens; the source digest begins 745c677c50e4.
+It exists to provide a coherent YAML configuration boundary for Render.Mvp. Static inspection found 1 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 121 lines and 417 lexical tokens; the source digest begins 745c677c50e4.
 
 #### Important symbols
 
@@ -14879,7 +14879,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/tests/test_deployment_blueprints.py, backend/tests/test_render_blueprint.py, docs/DEPLOYMENT.md, docs/IMPLEMENTATION_AUDIT.md. The containing category is Deployment configuration.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: backend/tests/test_deployment_blueprints.py, backend/tests/test_render_blueprint.py, docs/DEPLOYMENT.md, docs/IMPLEMENTATION_AUDIT.md. The containing category is Deployment configuration; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -14898,7 +14898,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -14912,7 +14912,7 @@ This YAML configuration is part of the deployment configuration layer. It suppli
 
 #### Key responsibilities
 
-It exists to provide a coherent YAML configuration boundary for Render. Its extracted size is 242 lines and 969 lexical tokens; the source digest begins 013e7b95e56c.
+It exists to provide a coherent YAML configuration boundary for Render. Static inspection found 1 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 242 lines and 969 lexical tokens; the source digest begins 013e7b95e56c.
 
 #### Important symbols
 
@@ -14920,7 +14920,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .github/workflows/deployment-readiness.yml, backend/app/agent/graph.py, backend/app/core/access_logging.py, backend/app/services/product_assistant_service.py. The containing category is Deployment configuration.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .github/workflows/deployment-readiness.yml, backend/app/agent/graph.py, backend/app/core/access_logging.py, backend/app/services/product_assistant_service.py. The containing category is Deployment configuration; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -14939,7 +14939,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -14953,7 +14953,7 @@ This automation script is part of the developer and operational tooling layer. I
 
 #### Key responsibilities
 
-It exists to provide a coherent automation script boundary for Capture Demo Screenshot. Its extracted size is 86 lines and 348 lexical tokens; the source digest begins a6f22ad1f6bc.
+It exists to provide a coherent automation script boundary for Capture Demo Screenshot. Static inspection found 6 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 86 lines and 348 lexical tokens; the source digest begins a6f22ad1f6bc.
 
 #### Important symbols
 
@@ -14961,7 +14961,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/DEMO_SCRIPT.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Developer and operational tooling.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/DEMO_SCRIPT.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Developer and operational tooling; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -14980,7 +14980,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -14994,7 +14994,7 @@ This automation script is part of the developer and operational tooling layer. I
 
 #### Key responsibilities
 
-It exists to provide a coherent automation script boundary for Demo. Its extracted size is 7 lines and 88 lexical tokens; the source digest begins 414c1a47c98b.
+It exists to provide a coherent automation script boundary for Demo. Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 7 lines and 88 lexical tokens; the source digest begins 414c1a47c98b.
 
 #### Important symbols
 
@@ -15002,7 +15002,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, README.md, backend/app/services/product_assistant_service.py, backend/tests/test_github_repository_boundary.py. The containing category is Developer and operational tooling.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, README.md, backend/app/services/product_assistant_service.py, backend/tests/test_github_repository_boundary.py. The containing category is Developer and operational tooling; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -15021,7 +15021,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -15035,7 +15035,7 @@ This automation script is part of the developer and operational tooling layer. I
 
 #### Key responsibilities
 
-It exists to provide a coherent automation script boundary for Demo. Its extracted size is 10 lines and 94 lexical tokens; the source digest begins 4fbe949ff2e1.
+It exists to provide a coherent automation script boundary for Demo. Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 10 lines and 94 lexical tokens; the source digest begins 4fbe949ff2e1.
 
 #### Important symbols
 
@@ -15043,7 +15043,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, README.md, backend/app/services/product_assistant_service.py, backend/tests/test_github_repository_boundary.py. The containing category is Developer and operational tooling.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, README.md, backend/app/services/product_assistant_service.py, backend/tests/test_github_repository_boundary.py. The containing category is Developer and operational tooling; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -15062,7 +15062,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -15076,7 +15076,7 @@ This Python module is part of the developer and operational tooling layer. It su
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Generate Engineering Book. Its extracted size is 1037 lines and 11147 lexical tokens; the source digest begins e2fee11ef338.
+It exists to provide a coherent Python module boundary for Generate Engineering Book. Static inspection found 7 named symbols, 7 import/action references, and 0 explicit route decorators. Its extracted size is 1085 lines and 11466 lexical tokens; the source digest begins f95ae11cbeef.
 
 #### Important symbols
 
@@ -15084,7 +15084,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/DEMO_SCRIPT.md, docs/IMPLEMENTATION_STATUS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Developer and operational tooling.
+Static imports or declared workflow actions: __future__, argparse, ast, hashlib, json, math, re. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/DEMO_SCRIPT.md, docs/IMPLEMENTATION_STATUS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Developer and operational tooling; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -15103,7 +15103,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -15117,7 +15117,7 @@ This configuration is part of the developer and operational tooling layer. It su
 
 #### Key responsibilities
 
-It exists to provide a coherent configuration boundary for Requirements Engineering Book. Its extracted size is 6 lines and 34 lexical tokens; the source digest begins 6c079715ae41.
+It exists to provide a coherent configuration boundary for Requirements Engineering Book. Static inspection found 0 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 6 lines and 34 lexical tokens; the source digest begins 6c079715ae41.
 
 #### Important symbols
 
@@ -15125,7 +15125,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Developer and operational tooling.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Developer and operational tooling; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -15144,7 +15144,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -15158,7 +15158,7 @@ This automation script is part of the developer and operational tooling layer. I
 
 #### Key responsibilities
 
-It exists to provide a coherent automation script boundary for Verify. Its extracted size is 19 lines and 104 lexical tokens; the source digest begins 500decb9ad3c.
+It exists to provide a coherent automation script boundary for Verify. Static inspection found 1 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 19 lines and 104 lexical tokens; the source digest begins 500decb9ad3c.
 
 #### Important symbols
 
@@ -15166,7 +15166,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, .github/workflows/ci.yml, README.md. The containing category is Developer and operational tooling.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, .github/workflows/ci.yml, README.md. The containing category is Developer and operational tooling; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -15185,7 +15185,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 
@@ -15199,7 +15199,7 @@ This automation script is part of the developer and operational tooling layer. I
 
 #### Key responsibilities
 
-It exists to provide a coherent automation script boundary for Verify. Its extracted size is 7 lines and 86 lexical tokens; the source digest begins 078c0b7e2127.
+It exists to provide a coherent automation script boundary for Verify. Static inspection found 1 named symbols, 0 import/action references, and 0 explicit route decorators. Its extracted size is 7 lines and 86 lexical tokens; the source digest begins 078c0b7e2127.
 
 #### Important symbols
 
@@ -15207,7 +15207,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, .github/workflows/ci.yml, README.md. The containing category is Developer and operational tooling.
+Static imports or declared workflow actions: no static import or workflow action reference was extracted. Resolved in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers from bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, .github/workflows/ci.yml, README.md. The containing category is Developer and operational tooling; dynamic imports and framework discovery are intentionally not inferred.
 
 #### Simplified pseudocode
 
@@ -15226,7 +15226,7 @@ It participates as a focused building block in the larger investigation, deliver
 
 #### Engineering details
 
-The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live. The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers.
 
 #### Brief summary
 

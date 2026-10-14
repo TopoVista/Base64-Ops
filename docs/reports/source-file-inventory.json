@@ -1,8 +1,8 @@
 {
   "schemaVersion": "base64-ops-source-inventory-v1",
-  "generatedAt": "2026-10-14T04:13:09.000358+00:00",
-  "analyzedCommit": "b4f8d8c719632279f3210e62f6a4da9cec6f9322",
-  "repositoryState": "M backend/.gitignore\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
+  "generatedAt": "2026-10-14T04:23:42.281713+00:00",
+  "analyzedCommit": "40614de947f947aa5b92d06d36c4baf10de43f8b",
+  "repositoryState": "M backend/.gitignore\n M docs/IMPLEMENTATION_STATUS.md\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf\n M docs/reports/document-generation-report.md\n M docs/reports/file-coverage-report.md\n M docs/reports/source-file-inventory.json",
   "totalTrackedFiles": 389,
   "includedCount": 368,
   "excludedCount": 21,
@@ -19,6 +19,11 @@
         "concurrency",
         "jobs"
       ],
+      "imports": [
+        "actions/setup-python@v5",
+        "actions/setup-node@v4"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -41,6 +46,8 @@
         "permissions",
         "jobs"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -63,6 +70,10 @@
         "concurrency",
         "jobs"
       ],
+      "imports": [
+        "actions/setup-python@v5"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/IMPLEMENTATION_STATUS.md",
@@ -88,6 +99,8 @@
         "Quick start",
         "Evaluation and verification"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/docs/CONTEXT_ENGINEERING.md",
@@ -105,6 +118,8 @@
       "kind": "configuration",
       "summary": "This configuration is part of the project configuration layer. It supplies the repository behavior or operational contract associated with its declared configuration and content structure.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -122,6 +137,8 @@
       "kind": "configuration",
       "summary": "This configuration is part of the deployment configuration layer. It supplies the repository behavior or operational contract associated with its declared configuration and content structure.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/execution/docker_runtime.py",
@@ -144,6 +161,8 @@
         "RAG",
         "DevOps safety"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/docs/CONTEXT_ENGINEERING.md",
@@ -161,6 +180,8 @@
       "kind": "Python module",
       "summary": "This Python module contributes to the backend platform subsystem. It defines focused behavior around its declared configuration and content structure and is composed by higher-level application, service, or worker code.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/agent/graph.py",
@@ -182,6 +203,16 @@
         "_extract_memory_candidates",
         "AgentGraph"
       ],
+      "imports": [
+        "re",
+        "time",
+        "pathlib",
+        "typing",
+        "httpx",
+        "langchain_openai",
+        "langgraph.checkpoint.memory"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/agent/policy.py",
         "backend/app/agent/prompts.py",
@@ -211,6 +242,11 @@
         "choose_action",
         "action_requires_approval"
       ],
+      "imports": [
+        "app.agent.state",
+        "app.policy"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/agent/state.py"
       ],
@@ -233,6 +269,8 @@
         "SYSTEM_PROMPT",
         "build_answer_prompt"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/agent/graph.py",
@@ -253,6 +291,10 @@
         "AgentAction",
         "AgentState"
       ],
+      "imports": [
+        "typing"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/taste.md",
@@ -272,6 +314,12 @@
       "symbols": [
         "DevOpsToolbox"
       ],
+      "imports": [
+        "pathlib",
+        "typing",
+        "app.services.workspace_service"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/services/workspace_service.py"
       ],
@@ -299,6 +347,16 @@
         "get_current_user",
         "get_current_user_id"
       ],
+      "imports": [
+        "typing",
+        "jwt",
+        "fastapi",
+        "pymongo.errors",
+        "app.core.config",
+        "app.db.mongo",
+        "app.utils.datetime"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py",
         "backend/app/db/mongo.py",
@@ -329,6 +387,16 @@
         "is_expensive_path",
         "RequestBodyTooLarge"
       ],
+      "imports": [
+        "__future__",
+        "logging",
+        "ipaddress",
+        "fastapi",
+        "fastapi.responses",
+        "starlette.middleware.base",
+        "starlette.types"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py",
         "backend/app/core/rate_limit.py"
@@ -351,6 +419,18 @@
       "symbols": [
         "starter_prompts",
         "chat"
+      ],
+      "imports": [
+        "fastapi",
+        "app.api.deps",
+        "app.billing.usage_service",
+        "app.core.agent_run_guard",
+        "app.schemas.assistant",
+        "app.services.product_assistant_service"
+      ],
+      "endpoints": [
+        "GET /starter-prompts",
+        "POST /chat"
       ],
       "dependencies": [
         "backend/app/api/deps.py",
@@ -379,6 +459,16 @@
         "sync_user",
         "get_me"
       ],
+      "imports": [
+        "fastapi",
+        "app.api.deps",
+        "app.db.mongo",
+        "app.services.serializers"
+      ],
+      "endpoints": [
+        "POST /me",
+        "GET /me"
+      ],
       "dependencies": [
         "backend/app/api/deps.py",
         "backend/app/db/mongo.py",
@@ -403,6 +493,20 @@
         "entitlement",
         "checkout",
         "razorpay_webhook"
+      ],
+      "imports": [
+        "__future__",
+        "json",
+        "fastapi",
+        "app.api.deps",
+        "app.billing.billing_service",
+        "app.billing.razorpay",
+        "app.core.config"
+      ],
+      "endpoints": [
+        "GET /entitlement",
+        "POST /checkout",
+        "POST /webhooks/razorpay"
       ],
       "dependencies": [
         "backend/app/api/deps.py",
@@ -429,6 +533,15 @@
       "symbols": [
         "get_dev_run_inspector"
       ],
+      "imports": [
+        "fastapi",
+        "app.api.deps",
+        "app.schemas.replay",
+        "app.services.session_service"
+      ],
+      "endpoints": [
+        "GET /runs/{run_id}"
+      ],
       "dependencies": [
         "backend/app/api/deps.py",
         "backend/app/schemas/replay.py",
@@ -452,6 +565,19 @@
       "symbols": [
         "stream",
         "apply_approved_patch"
+      ],
+      "imports": [
+        "fastapi",
+        "fastapi.responses",
+        "app.api.deps",
+        "app.billing.usage_service",
+        "app.core.agent_run_guard",
+        "app.schemas.session",
+        "app.services.diagnostic_stream_service"
+      ],
+      "endpoints": [
+        "POST /stream-diagnostic",
+        "POST /apply-patch"
       ],
       "dependencies": [
         "backend/app/api/deps.py",
@@ -482,6 +608,20 @@
         "repos",
         "disconnect"
       ],
+      "imports": [
+        "fastapi",
+        "fastapi.responses",
+        "app.api.deps",
+        "app.services.github_service",
+        "app.services.incident_service"
+      ],
+      "endpoints": [
+        "GET /connect",
+        "GET /callback",
+        "POST /webhooks",
+        "GET /repos",
+        "DELETE /disconnect"
+      ],
       "dependencies": [
         "backend/app/api/deps.py",
         "backend/app/services/github_service.py",
@@ -510,6 +650,23 @@
         "_flaky_observation_response",
         "_prevention_rule_response",
         "configure_automation"
+      ],
+      "imports": [
+        "__future__",
+        "typing",
+        "fastapi",
+        "fastapi.encoders",
+        "fastapi.responses",
+        "app.api.deps",
+        "app.db.mongo"
+      ],
+      "endpoints": [
+        "PUT /sessions/{slug_id}/automation",
+        "GET /sessions/{slug_id}/automation",
+        "PUT /sessions/{slug_id}/candidate-verification",
+        "GET /sessions/{slug_id}/candidate-verification",
+        "GET /sessions/{slug_id}/candidate-verification/latest-run",
+        "GET /sessions/{slug_id}/prevention-rules"
       ],
       "dependencies": [
         "backend/app/api/deps.py",
@@ -542,6 +699,23 @@
         "promote_memory_entry",
         "list_memory_entries"
       ],
+      "imports": [
+        "typing",
+        "fastapi",
+        "app.api.routes.auth",
+        "app.core.config",
+        "app.memory.memory_service",
+        "app.services.workspace_service",
+        "app.db.mongo"
+      ],
+      "endpoints": [
+        "GET /{repository_id:path}/staleness",
+        "POST /{repository_id:path}/check-staleness",
+        "DELETE /entry/{entry_id}",
+        "POST /{repository_id:path}/entry/{entry_id}/refresh",
+        "POST /{repository_id:path}/entry/{entry_id}/promote",
+        "GET /{repository_id:path}"
+      ],
       "dependencies": [
         "backend/app/api/routes/auth.py",
         "backend/app/core/config.py",
@@ -573,6 +747,23 @@
         "evidence",
         "refresh_ci"
       ],
+      "imports": [
+        "fastapi",
+        "fastapi.responses",
+        "app.api.deps",
+        "app.billing.usage_service",
+        "app.core.agent_run_guard",
+        "app.schemas.intelligence",
+        "app.schemas.replay"
+      ],
+      "endpoints": [
+        "GET /all",
+        "POST /chat",
+        "POST /{slug_id}/approval/{approval_id}",
+        "POST /{slug_id}/rag/reindex",
+        "GET /{slug_id}/rag/sources",
+        "GET /{slug_id}/evidence"
+      ],
       "dependencies": [
         "backend/app/api/deps.py",
         "backend/app/billing/usage_service.py",
@@ -598,6 +789,16 @@
       "symbols": [
         "get_system_capabilities"
       ],
+      "imports": [
+        "typing",
+        "fastapi",
+        "app.core.config",
+        "app.execution.docker_runtime",
+        "app.services.github_service"
+      ],
+      "endpoints": [
+        "GET /capabilities"
+      ],
       "dependencies": [
         "backend/app/core/config.py",
         "backend/app/execution/docker_runtime.py",
@@ -619,6 +820,8 @@
       "kind": "Python module",
       "summary": "This Python module contributes to the backend platform subsystem. It defines focused behavior around its declared configuration and content structure and is composed by higher-level application, service, or worker code.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/agent/graph.py",
@@ -639,6 +842,16 @@
         "provider_event_created_at",
         "BillingService"
       ],
+      "imports": [
+        "__future__",
+        "hashlib",
+        "typing",
+        "fastapi",
+        "pymongo.errors",
+        "app.billing.models",
+        "app.billing.razorpay"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/billing/models.py",
         "backend/app/billing/razorpay.py",
@@ -666,6 +879,12 @@
         "SubscriptionStatus",
         "UsageEntitlement"
       ],
+      "imports": [
+        "__future__",
+        "enum",
+        "pydantic"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -690,6 +909,16 @@
         "HostedSubscription",
         "RazorpayClient"
       ],
+      "imports": [
+        "__future__",
+        "hashlib",
+        "hmac",
+        "dataclasses",
+        "urllib.parse",
+        "httpx",
+        "fastapi"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/billing/models.py",
         "backend/app/core/config.py"
@@ -718,6 +947,16 @@
         "reported_token_count",
         "UsageService"
       ],
+      "imports": [
+        "__future__",
+        "datetime",
+        "hashlib",
+        "typing",
+        "fastapi",
+        "pymongo",
+        "pymongo.errors"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/billing/models.py",
         "backend/app/core/config.py",
@@ -744,6 +983,11 @@
         "AccessLogQueryRedactionFilter",
         "configure_access_log_redaction"
       ],
+      "imports": [
+        "logging",
+        "typing"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/main.py",
@@ -768,6 +1012,16 @@
         "AgentRunLease",
         "AgentRunGuard"
       ],
+      "imports": [
+        "__future__",
+        "asyncio",
+        "secrets",
+        "time",
+        "dataclasses",
+        "hashlib",
+        "typing"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py"
       ],
@@ -791,6 +1045,15 @@
         "Settings",
         "get_settings"
       ],
+      "imports": [
+        "functools",
+        "pathlib",
+        "urllib.parse",
+        "cryptography.fernet",
+        "pydantic",
+        "pydantic_settings"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -811,6 +1074,10 @@
         "FailureType",
         "is_retryable"
       ],
+      "imports": [
+        "enum"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "README.md",
@@ -834,6 +1101,16 @@
         "RedisRateLimitStore",
         "rate_limit_key"
       ],
+      "imports": [
+        "__future__",
+        "asyncio",
+        "time",
+        "collections",
+        "dataclasses",
+        "hashlib",
+        "typing"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/api/middleware.py",
@@ -859,6 +1136,16 @@
         "_legacy_fernet",
         "_fernet"
       ],
+      "imports": [
+        "base64",
+        "hashlib",
+        "hmac",
+        "json",
+        "datetime",
+        "typing",
+        "urllib.parse"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py"
       ],
@@ -884,6 +1171,13 @@
         "get_db",
         "mongo_is_connected"
       ],
+      "imports": [
+        "asyncio",
+        "motor.motor_asyncio",
+        "pymongo.errors",
+        "app.core.config"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py"
       ],
@@ -903,6 +1197,8 @@
       "kind": "Python module",
       "summary": "This Python module contributes to the execution safety subsystem. It defines focused behavior around its declared configuration and content structure and is composed by higher-level application, service, or worker code.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/agent/graph.py",
@@ -922,6 +1218,15 @@
       "symbols": [
         "DockerSandboxRuntime"
       ],
+      "imports": [
+        "shutil",
+        "subprocess",
+        "time",
+        "pathlib",
+        "app.execution.models",
+        "app.services.redaction_service"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/execution/models.py",
         "backend/app/services/redaction_service.py"
@@ -944,6 +1249,16 @@
       "symbols": [
         "RestrictedLocalRuntime"
       ],
+      "imports": [
+        "os",
+        "signal",
+        "subprocess",
+        "time",
+        "pathlib",
+        "app.execution.models",
+        "app.execution.policy"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/execution/models.py",
         "backend/app/execution/policy.py",
@@ -969,6 +1284,11 @@
         "ExecutionResult",
         "ValidatorDefinition"
       ],
+      "imports": [
+        "typing",
+        "pydantic"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -989,6 +1309,13 @@
         "ExecutionPolicyError",
         "ExecutionPolicy"
       ],
+      "imports": [
+        "os",
+        "re",
+        "pathlib",
+        "app.services.delivery_service"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/services/delivery_service.py"
       ],
@@ -1010,6 +1337,10 @@
       "symbols": [
         "get_validator"
       ],
+      "imports": [
+        "app.execution.models"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/execution/models.py"
       ],
@@ -1031,6 +1362,16 @@
       "symbols": [
         "ExecutionRuntimeManager"
       ],
+      "imports": [
+        "pathlib",
+        "app.core.config",
+        "app.execution.docker_runtime",
+        "app.execution.local_runtime",
+        "app.execution.models",
+        "app.execution.policy",
+        "app.execution.registry"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py",
         "backend/app/execution/docker_runtime.py",
@@ -1054,6 +1395,8 @@
       "kind": "Python module",
       "summary": "This Python module contributes to the backend platform subsystem. It defines focused behavior around its declared configuration and content structure and is composed by higher-level application, service, or worker code.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/agent/graph.py",
@@ -1079,6 +1422,16 @@
         "CIInvestigationContext",
         "_SIGNAL"
       ],
+      "imports": [
+        "__future__",
+        "re",
+        "datetime",
+        "enum",
+        "typing",
+        "pydantic",
+        "app.core.config"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py",
         "backend/app/services/redaction_service.py",
@@ -1106,6 +1459,16 @@
         "_normalize",
         "GitChangeProvider"
       ],
+      "imports": [
+        "__future__",
+        "logging",
+        "re",
+        "shutil",
+        "subprocess",
+        "pathlib",
+        "typing"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/services/github_service.py"
       ],
@@ -1128,6 +1491,16 @@
         "PullRequestStatus",
         "PullRequestStatusProvider"
       ],
+      "imports": [
+        "__future__",
+        "logging",
+        "datetime",
+        "typing",
+        "pydantic",
+        "re",
+        "app.services.github_service"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/services/github_service.py"
       ],
@@ -1147,6 +1520,8 @@
       "kind": "Python module",
       "summary": "This Python module contributes to the engineering intelligence subsystem. It defines focused behavior around its declared configuration and content structure and is composed by higher-level application, service, or worker code.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/agent/graph.py",
@@ -1164,6 +1539,10 @@
       "kind": "Python module",
       "summary": "This Python module contributes to the engineering intelligence subsystem. It defines focused behavior around its declared configuration and content structure and is composed by higher-level application, service, or worker code.",
       "symbols": [],
+      "imports": [
+        "app.intelligence.graph.models"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/intelligence/graph/models.py"
       ],
@@ -1191,6 +1570,16 @@
         "_WORKFLOW_PREFIX",
         "_IMPORT_RE"
       ],
+      "imports": [
+        "__future__",
+        "ast",
+        "hashlib",
+        "json",
+        "re",
+        "collections.abc",
+        "pathlib"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/intelligence/graph/models.py",
         "backend/app/utils/datetime.py",
@@ -1220,6 +1609,14 @@
         "GraphEdge",
         "GraphCoverage"
       ],
+      "imports": [
+        "__future__",
+        "datetime",
+        "enum",
+        "typing",
+        "pydantic"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -1242,6 +1639,16 @@
         "MAX_NEIGHBORHOOD_DEPTH",
         "EngineeringGraphService"
       ],
+      "imports": [
+        "__future__",
+        "collections",
+        "pathlib",
+        "fastapi",
+        "app.intelligence.graph.builder",
+        "app.intelligence.graph.models",
+        "app.intelligence.graph.store"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/intelligence/graph/builder.py",
         "backend/app/intelligence/graph/models.py",
@@ -1266,6 +1673,13 @@
       "symbols": [
         "EngineeringGraphStore"
       ],
+      "imports": [
+        "__future__",
+        "typing",
+        "app.db.mongo",
+        "app.intelligence.graph.models"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/db/mongo.py",
         "backend/app/intelligence/graph/models.py"
@@ -1286,6 +1700,11 @@
       "kind": "Python module",
       "summary": "This Python module contributes to the engineering intelligence subsystem. It defines focused behavior around its declared configuration and content structure and is composed by higher-level application, service, or worker code.",
       "symbols": [],
+      "imports": [
+        "app.intelligence.impact.models",
+        "app.intelligence.impact.service"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/intelligence/impact/models.py",
         "backend/app/intelligence/impact/service.py"
@@ -1312,6 +1731,14 @@
         "ChangeImpactAnalysis",
         "ChangeImpactResponse"
       ],
+      "imports": [
+        "__future__",
+        "datetime",
+        "enum",
+        "pydantic",
+        "app.intelligence.graph.models"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/intelligence/graph/models.py"
       ],
@@ -1337,6 +1764,16 @@
         "MAX_IMPACT_LIMIT",
         "ChangeImpactService"
       ],
+      "imports": [
+        "__future__",
+        "collections",
+        "app.intelligence.graph.models",
+        "app.intelligence.impact.models",
+        "app.intelligence.impact.store",
+        "app.schemas.delivery",
+        "app.utils.datetime"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/intelligence/graph/models.py",
         "backend/app/intelligence/impact/models.py",
@@ -1362,6 +1799,13 @@
       "symbols": [
         "ChangeImpactStore"
       ],
+      "imports": [
+        "__future__",
+        "typing",
+        "app.db.mongo",
+        "app.intelligence.impact.models"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/db/mongo.py",
         "backend/app/intelligence/impact/models.py"
@@ -1389,6 +1833,21 @@
         "readiness",
         "app_exception_handler"
       ],
+      "imports": [
+        "asyncio",
+        "logging",
+        "collections.abc",
+        "contextlib",
+        "fastapi",
+        "fastapi.middleware.cors",
+        "fastapi.responses"
+      ],
+      "endpoints": [
+        "GET /api/health",
+        "GET /health",
+        "GET /api/ready",
+        "GET /ready"
+      ],
       "dependencies": [
         "backend/app/api/deps.py",
         "backend/app/api/middleware.py",
@@ -1412,6 +1871,8 @@
       "kind": "Python module",
       "summary": "This Python module contributes to the operational memory subsystem. It defines focused behavior around its declared configuration and content structure and is composed by higher-level application, service, or worker code.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/agent/graph.py",
@@ -1433,6 +1894,16 @@
         "_cache_key",
         "MemoryFreshnessService"
       ],
+      "imports": [
+        "__future__",
+        "logging",
+        "pathlib",
+        "typing",
+        "pydantic",
+        "app.git.change_provider",
+        "app.memory.models"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/git/change_provider.py",
         "backend/app/memory/models.py",
@@ -1463,6 +1934,16 @@
         "_to_document",
         "_freshness_from_status"
       ],
+      "imports": [
+        "__future__",
+        "fnmatch",
+        "logging",
+        "pathlib",
+        "typing",
+        "app.db.mongo",
+        "app.memory.models"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/db/mongo.py",
         "backend/app/memory/models.py",
@@ -1494,6 +1975,13 @@
         "MemorySummary",
         "MemoryEntryCandidate"
       ],
+      "imports": [
+        "datetime",
+        "enum",
+        "typing",
+        "pydantic"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -1511,6 +1999,10 @@
       "kind": "Python module",
       "summary": "This Python module contributes to the backend platform subsystem. It defines focused behavior around its declared configuration and content structure and is composed by higher-level application, service, or worker code.",
       "symbols": [],
+      "imports": [
+        "app.observability.recorder"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/observability/recorder.py"
       ],
@@ -1533,6 +2025,12 @@
         "RunTrace",
         "TraceSpan"
       ],
+      "imports": [
+        "datetime",
+        "typing",
+        "pydantic"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -1555,6 +2053,16 @@
         "MongoTraceExporter",
         "TraceRecorder"
       ],
+      "imports": [
+        "time",
+        "collections.abc",
+        "contextlib",
+        "typing",
+        "app.db.mongo",
+        "app.observability.models",
+        "app.services.redaction_service"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/db/mongo.py",
         "backend/app/observability/models.py",
@@ -1578,6 +2086,12 @@
       "kind": "Python module",
       "summary": "This Python module contributes to the backend platform subsystem. It defines focused behavior around its declared configuration and content structure and is composed by higher-level application, service, or worker code.",
       "symbols": [],
+      "imports": [
+        "app.policy.evaluator",
+        "app.policy.models",
+        "app.policy.registry"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/policy/evaluator.py",
         "backend/app/policy/models.py",
@@ -1601,6 +2115,10 @@
       "symbols": [
         "requires_approval"
       ],
+      "imports": [
+        "app.policy.registry"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/policy/registry.py"
       ],
@@ -1623,6 +2141,11 @@
         "ToolRisk",
         "ToolPolicy"
       ],
+      "imports": [
+        "enum",
+        "pydantic"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -1642,6 +2165,10 @@
       "symbols": [
         "get_policy"
       ],
+      "imports": [
+        "app.policy.models"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/policy/models.py"
       ],
@@ -1664,6 +2191,10 @@
         "AssistantChatRequest",
         "AssistantChatResponse"
       ],
+      "imports": [
+        "pydantic"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/agent/graph.py",
@@ -1686,6 +2217,10 @@
         "UserResponse",
         "AuthResponse"
       ],
+      "imports": [
+        "pydantic"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -1707,6 +2242,11 @@
         "CheckoutResponse",
         "EntitlementResponse"
       ],
+      "imports": [
+        "pydantic",
+        "app.billing.models"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/billing/models.py"
       ],
@@ -1733,6 +2273,12 @@
         "ApprovalRecord",
         "DeliveryResult"
       ],
+      "imports": [
+        "datetime",
+        "typing",
+        "pydantic"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "README.md",
@@ -1758,6 +2304,14 @@
         "CandidateVerificationSettingsRequest",
         "CandidateVerificationSettingsResponse"
       ],
+      "imports": [
+        "__future__",
+        "datetime",
+        "enum",
+        "typing",
+        "pydantic"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "README.md",
@@ -1780,6 +2334,14 @@
         "GraphSnapshotStatus",
         "GraphNodeDetailResponse"
       ],
+      "imports": [
+        "__future__",
+        "datetime",
+        "pydantic",
+        "app.intelligence.graph.models",
+        "app.intelligence.impact.models"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/intelligence/graph/models.py",
         "backend/app/intelligence/impact/models.py"
@@ -1805,6 +2367,12 @@
         "ActionProposal",
         "InvestigationResult"
       ],
+      "imports": [
+        "datetime",
+        "typing",
+        "pydantic"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "README.md",
@@ -1827,6 +2395,11 @@
         "ChangeSurface",
         "RepositoryCapability"
       ],
+      "imports": [
+        "typing",
+        "pydantic"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".github/workflows/live-evals.yml",
@@ -1848,6 +2421,13 @@
         "RegressionPreventionReport",
         "PreventionRuleSummary"
       ],
+      "imports": [
+        "__future__",
+        "datetime",
+        "typing",
+        "pydantic"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/api/routes/incidents.py",
@@ -1873,6 +2453,11 @@
         "ReplayToolResult",
         "ReplayTrace"
       ],
+      "imports": [
+        "typing",
+        "pydantic"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "README.md",
@@ -1898,6 +2483,11 @@
         "ApprovalDecisionRequest",
         "CreatePullRequestRequest"
       ],
+      "imports": [
+        "typing",
+        "pydantic"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -1919,6 +2509,16 @@
         "login_user",
         "get_me"
       ],
+      "imports": [
+        "fastapi",
+        "app.core.security",
+        "app.db.mongo",
+        "app.schemas.auth",
+        "app.services.serializers",
+        "app.utils.datetime",
+        "app.utils.ids"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/security.py",
         "backend/app/db/mongo.py",
@@ -1944,6 +2544,16 @@
       "symbols": [
         "BackgroundJobService"
       ],
+      "imports": [
+        "__future__",
+        "datetime",
+        "typing",
+        "pymongo",
+        "pymongo.errors",
+        "app.core.config",
+        "app.db.mongo"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py",
         "backend/app/db/mongo.py",
@@ -1974,6 +2584,16 @@
         "_diff_hash",
         "candidate_branch_name"
       ],
+      "imports": [
+        "__future__",
+        "hashlib",
+        "json",
+        "re",
+        "datetime",
+        "typing",
+        "urllib.parse"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/db/mongo.py",
         "backend/app/schemas/delivery.py",
@@ -2003,6 +2623,12 @@
         "workflow_path_applicability",
         "assess_workflow_path"
       ],
+      "imports": [
+        "re",
+        "enum",
+        "pydantic"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/agent/graph.py",
@@ -2028,6 +2654,16 @@
         "compare_workflow_versions",
         "_same_workflow"
       ],
+      "imports": [
+        "__future__",
+        "re",
+        "pathlib",
+        "typing",
+        "app.git.actions",
+        "app.git.change_provider",
+        "app.services.ci_applicability"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/git/actions.py",
         "backend/app/git/change_provider.py",
@@ -2058,6 +2694,12 @@
         "_PR",
         "extract_ci_request_intent"
       ],
+      "imports": [
+        "__future__",
+        "re",
+        "pydantic"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/agent/graph.py",
@@ -2078,6 +2720,13 @@
         "ResolvedCIRun",
         "CIRunResolutionService"
       ],
+      "imports": [
+        "__future__",
+        "pydantic",
+        "app.git.actions",
+        "app.services.ci_request_intent"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/git/actions.py",
         "backend/app/services/ci_request_intent.py"
@@ -2104,6 +2753,13 @@
         "build_bounded_answer_context",
         "build_bounded_patch_candidates"
       ],
+      "imports": [
+        "__future__",
+        "json",
+        "dataclasses",
+        "typing"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/agent/graph.py",
@@ -2124,6 +2780,13 @@
         "DeliveryCIVerdict",
         "evaluate_delivery_ci"
       ],
+      "imports": [
+        "__future__",
+        "collections.abc",
+        "dataclasses",
+        "app.git.actions"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/git/actions.py"
       ],
@@ -2148,6 +2811,16 @@
         "canonical_json",
         "DeliveryService"
       ],
+      "imports": [
+        "hashlib",
+        "json",
+        "time",
+        "pathlib",
+        "typing",
+        "fastapi",
+        "pymongo"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/db/mongo.py",
         "backend/app/schemas/delivery.py",
@@ -2179,6 +2852,16 @@
         "stream_diagnostic",
         "_stream_repository_backed_proposal"
       ],
+      "imports": [
+        "__future__",
+        "json",
+        "collections.abc",
+        "app.db.mongo",
+        "app.git.actions",
+        "app.schemas.session",
+        "app.services.redaction_service"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/db/mongo.py",
         "backend/app/git/actions.py",
@@ -2204,6 +2887,16 @@
       "symbols": [
         "EvidenceService"
       ],
+      "imports": [
+        "hashlib",
+        "typing",
+        "app.db.mongo",
+        "app.schemas.investigation",
+        "app.services.redaction_service",
+        "app.utils.datetime",
+        "app.utils.ids"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/db/mongo.py",
         "backend/app/schemas/investigation.py",
@@ -2232,6 +2925,16 @@
         "build_flaky_test_observations",
         "FlakyTestObservationService"
       ],
+      "imports": [
+        "__future__",
+        "hashlib",
+        "enum",
+        "typing",
+        "pydantic",
+        "app.db.mongo",
+        "app.utils.datetime"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/db/mongo.py",
         "backend/app/utils/datetime.py",
@@ -2261,6 +2964,16 @@
         "is_safe_actions_log_download_url",
         "external_log_download_headers"
       ],
+      "imports": [
+        "hashlib",
+        "re",
+        "secrets",
+        "datetime",
+        "typing",
+        "urllib.parse",
+        "httpx"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py",
         "backend/app/core/security.py",
@@ -2288,6 +3001,12 @@
         "build_incident_export",
         "incident_export_markdown"
       ],
+      "imports": [
+        "__future__",
+        "typing",
+        "app.services.redaction_service"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/services/redaction_service.py"
       ],
@@ -2309,6 +3028,16 @@
       "symbols": [
         "IncidentReportingService"
       ],
+      "imports": [
+        "__future__",
+        "typing",
+        "urllib.parse",
+        "app.core.config",
+        "app.services.github_service",
+        "app.services.redaction_service",
+        "app.utils.datetime"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py",
         "backend/app/services/github_service.py",
@@ -2339,6 +3068,16 @@
         "build_incident_diagnosis",
         "build_structured_incident_diagnosis"
       ],
+      "imports": [
+        "__future__",
+        "hashlib",
+        "hmac",
+        "json",
+        "re",
+        "datetime",
+        "typing"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py",
         "backend/app/db/mongo.py",
@@ -2366,6 +3105,16 @@
         "RepositoryPathPolicy",
         "PatchEngine"
       ],
+      "imports": [
+        "difflib",
+        "re",
+        "shutil",
+        "tempfile",
+        "pathlib",
+        "typing",
+        "app.core.config"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py",
         "backend/app/schemas/delivery.py",
@@ -2397,6 +3146,16 @@
         "_strings",
         "_rule_id"
       ],
+      "imports": [
+        "__future__",
+        "hashlib",
+        "json",
+        "collections",
+        "typing",
+        "app.db.mongo",
+        "app.utils.datetime"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/db/mongo.py",
         "backend/app/utils/datetime.py"
@@ -2424,6 +3183,16 @@
         "SYSTEM_PROMPT",
         "ProductAssistantService"
       ],
+      "imports": [
+        "typing",
+        "fastapi",
+        "langchain_openai",
+        "app.core.config",
+        "app.db.mongo",
+        "app.services.redaction_service",
+        "app.utils.datetime"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py",
         "backend/app/db/mongo.py",
@@ -2449,6 +3218,16 @@
       "symbols": [
         "RagService"
       ],
+      "imports": [
+        "asyncio",
+        "hashlib",
+        "re",
+        "collections",
+        "pathlib",
+        "typing",
+        "langchain_core.documents"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py",
         "backend/app/db/mongo.py",
@@ -2474,6 +3253,10 @@
       "symbols": [
         "RedactionService"
       ],
+      "imports": [
+        "re"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/agent/graph.py",
@@ -2499,6 +3282,16 @@
         "_strings",
         "RegressionPreventionService"
       ],
+      "imports": [
+        "__future__",
+        "collections",
+        "collections.abc",
+        "datetime",
+        "typing",
+        "app.db.mongo",
+        "app.schemas.delivery"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/db/mongo.py",
         "backend/app/schemas/delivery.py",
@@ -2523,6 +3316,11 @@
         "serialize_doc",
         "public_user"
       ],
+      "imports": [
+        "datetime",
+        "typing"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/api/routes/auth.py",
@@ -2548,6 +3346,16 @@
         "_string_items",
         "_safe_replay_text"
       ],
+      "imports": [
+        "asyncio",
+        "logging",
+        "math",
+        "re",
+        "collections.abc",
+        "datetime",
+        "typing"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/agent/graph.py",
         "backend/app/billing/usage_service.py",
@@ -2577,6 +3385,16 @@
         "branch_name_from_prompt",
         "WorkspaceService"
       ],
+      "imports": [
+        "asyncio",
+        "os",
+        "re",
+        "shutil",
+        "subprocess",
+        "pathlib",
+        "typing"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py",
         "backend/app/services/github_service.py"
@@ -2599,6 +3417,8 @@
       "symbols": [
         "chunk_text"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/services/rag_service.py",
@@ -2619,6 +3439,10 @@
         "utc_now",
         "iso_now"
       ],
+      "imports": [
+        "datetime"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/agent/graph.py",
@@ -2638,6 +3462,10 @@
       "symbols": [
         "new_id"
       ],
+      "imports": [
+        "uuid"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/.env.example",
@@ -2658,6 +3486,12 @@
         "sse_event",
         "heartbeat"
       ],
+      "imports": [
+        "json",
+        "collections.abc",
+        "typing"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -2675,6 +3509,8 @@
       "kind": "Python module",
       "summary": "This Python module contributes to the backend platform subsystem. It defines focused behavior around its declared configuration and content structure and is composed by higher-level application, service, or worker code.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/agent/graph.py",
@@ -2698,6 +3534,16 @@
         "run",
         "main"
       ],
+      "imports": [
+        "argparse",
+        "asyncio",
+        "os",
+        "signal",
+        "datetime",
+        "app.core.config",
+        "app.db.mongo"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py",
         "backend/app/db/mongo.py",
@@ -2721,6 +3567,8 @@
       "kind": "Python module",
       "summary": "This Python module is part of the repository reference layer. It supplies the repository behavior or operational contract associated with its declared configuration and content structure.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/agent/graph.py",
@@ -2740,6 +3588,12 @@
       "symbols": [
         "DiagnosticAgent"
       ],
+      "imports": [
+        "collections.abc",
+        "app.schemas.session",
+        "app.services.diagnostic_stream_service"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/schemas/session.py",
         "backend/app/services/diagnostic_stream_service.py"
@@ -2760,6 +3614,10 @@
       "kind": "Python module",
       "summary": "This Python module is part of the repository reference layer. It supplies the repository behavior or operational contract associated with its declared configuration and content structure.",
       "symbols": [],
+      "imports": [
+        "app.main"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/main.py"
       ],
@@ -2787,6 +3645,8 @@
         "Path Security",
         "Secret Handling"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -2811,6 +3671,8 @@
         "Retrieval Telemetry",
         "Policy Boundary"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/IMPLEMENTATION_STATUS.md",
@@ -2836,6 +3698,8 @@
         "Verification Lifecycle",
         "Provenance Model"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -2852,6 +3716,8 @@
       "kind": "evaluation",
       "summary": "This evaluation artifact defines deterministic inputs or grading behavior for deterministic evaluations. It provides repeatable evidence for its declared configuration and content structure without representing live-provider execution.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/agent/graph.py",
@@ -2877,6 +3743,8 @@
         "expected_evidence_paths",
         "expected_tools"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/evals/cases/ci-current-workflow-unavailable.json",
@@ -2902,6 +3770,8 @@
         "expected_evidence_paths",
         "expected_tools"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -2925,6 +3795,8 @@
         "repository_fixture",
         "metadata"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -2948,6 +3820,8 @@
         "repository_fixture",
         "metadata"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/DEMO_SCRIPT.md",
@@ -2972,6 +3846,8 @@
         "repository_fixture",
         "metadata"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -2995,6 +3871,8 @@
         "repository_fixture",
         "metadata"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -3018,6 +3896,8 @@
         "repository_fixture",
         "metadata"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -3041,6 +3921,8 @@
         "repository_fixture",
         "metadata"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -3064,6 +3946,8 @@
         "repository_fixture",
         "metadata"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -3087,6 +3971,8 @@
         "repository_fixture",
         "metadata"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -3110,6 +3996,8 @@
         "repository_fixture",
         "metadata"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/DEMO_SCRIPT.md",
@@ -3134,6 +4022,8 @@
         "repository_fixture",
         "metadata"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -3157,6 +4047,8 @@
         "repository_fixture",
         "metadata"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -3180,6 +4072,8 @@
         "repository_fixture",
         "metadata"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -3204,6 +4098,8 @@
         "expected_evidence_paths",
         "expected_tools"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -3228,6 +4124,8 @@
         "expected_evidence_paths",
         "expected_changed_files"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -3252,6 +4150,8 @@
         "expected_evidence_paths",
         "expected_tools"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/EVALUATION.md",
@@ -3277,6 +4177,8 @@
         "expected_evidence_paths",
         "expected_tools"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/api/routes/session.py",
@@ -3302,6 +4204,8 @@
         "expected_evidence_paths",
         "expected_changed_files"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -3326,6 +4230,8 @@
         "expected_evidence_paths",
         "expected_tools"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -3350,6 +4256,8 @@
         "expected_evidence_paths",
         "expected_changed_files"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -3374,6 +4282,8 @@
         "expected_evidence_paths",
         "expected_tools"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -3398,6 +4308,8 @@
         "expected_evidence_paths",
         "should_reject"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/evals/runner.py",
@@ -3423,6 +4335,8 @@
         "expected_evidence_paths",
         "expected_tools"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/tests/test_evals_and_tracing.py",
@@ -3448,6 +4362,8 @@
         "expected_evidence_paths",
         "expected_tools"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -3472,6 +4388,8 @@
         "expected_evidence_paths",
         "expected_changed_files"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -3496,6 +4414,8 @@
         "expected_evidence_paths",
         "expected_tools"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -3520,6 +4440,8 @@
         "expected_evidence_paths",
         "expected_changed_files"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -3538,6 +4460,8 @@
       "symbols": [
         "working-directory"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -3555,6 +4479,8 @@
       "kind": "evaluation",
       "summary": "This evaluation artifact defines deterministic inputs or grading behavior for deterministic evaluations. It provides repeatable evidence for its declared configuration and content structure without representing live-provider execution.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/taste.md",
@@ -3574,6 +4500,8 @@
       "symbols": [
         "HOST"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -3593,6 +4521,8 @@
       "symbols": [
         "services"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/agent/graph.py",
@@ -3613,6 +4543,8 @@
         "version",
         "services"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/agent/graph.py",
@@ -3632,6 +4564,8 @@
       "symbols": [
         "HOST"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -3649,6 +4583,8 @@
       "kind": "evaluation",
       "summary": "This evaluation artifact defines deterministic inputs or grading behavior for deterministic evaluations. It provides repeatable evidence for its declared configuration and content structure without representing live-provider execution.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -3670,6 +4606,8 @@
         "on",
         "jobs"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -3687,6 +4625,8 @@
       "kind": "evaluation",
       "summary": "This evaluation artifact defines deterministic inputs or grading behavior for deterministic evaluations. It provides repeatable evidence for its declared configuration and content structure without representing live-provider execution.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/docs/CONTEXT_ENGINEERING.md",
@@ -3704,6 +4644,8 @@
       "kind": "evaluation",
       "summary": "This evaluation artifact defines deterministic inputs or grading behavior for deterministic evaluations. It provides repeatable evidence for its declared configuration and content structure without representing live-provider execution.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -3724,6 +4666,8 @@
         "PORT",
         "SERVICE"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/taste.md",
@@ -3743,6 +4687,8 @@
       "symbols": [
         "services"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/agent/graph.py",
@@ -3762,6 +4708,8 @@
       "symbols": [
         "MONGO_URI"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -3781,6 +4729,8 @@
       "symbols": [
         "services"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".github/workflows/deployment-readiness.yml",
@@ -3800,6 +4750,8 @@
       "symbols": [
         "API_KEY"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -3817,6 +4769,8 @@
       "kind": "evaluation",
       "summary": "This evaluation artifact defines deterministic inputs or grading behavior for deterministic evaluations. It provides repeatable evidence for its declared configuration and content structure without representing live-provider execution.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -3836,6 +4790,8 @@
       "symbols": [
         "check_port"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -3853,6 +4809,8 @@
       "kind": "evaluation",
       "summary": "This evaluation artifact defines deterministic inputs or grading behavior for deterministic evaluations. It provides repeatable evidence for its declared configuration and content structure without representing live-provider execution.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/docs/CONTEXT_ENGINEERING.md",
@@ -3872,6 +4830,8 @@
       "symbols": [
         "PORT"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/taste.md",
@@ -3892,6 +4852,8 @@
         "getSession",
         "res"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/taste.md",
@@ -3914,6 +4876,10 @@
         "unsupported_claim_count",
         "tool_selection"
       ],
+      "imports": [
+        "app.schemas.investigation"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/schemas/investigation.py"
       ],
@@ -3938,6 +4904,11 @@
         "LiveDeliveryTestResult",
         "LiveEvalReport"
       ],
+      "imports": [
+        "typing",
+        "pydantic"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -3963,6 +4934,16 @@
         "summarize",
         "main"
       ],
+      "imports": [
+        "argparse",
+        "json",
+        "os",
+        "shutil",
+        "tempfile",
+        "time",
+        "pathlib"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/agent/policy.py",
         "backend/app/core/config.py",
@@ -3986,6 +4967,8 @@
       "kind": "configuration",
       "summary": "This configuration is part of the project configuration layer. It supplies the repository behavior or operational contract associated with its declared configuration and content structure.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/agent/graph.py",
@@ -4003,6 +4986,8 @@
       "kind": "configuration",
       "summary": "This configuration is part of the repository reference layer. It supplies the repository behavior or operational contract associated with its declared configuration and content structure.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".github/workflows/ci.yml",
@@ -4024,6 +5009,10 @@
         "test_mutating_prompt_requires_approval",
         "test_docker_build_check_is_read_only_diagnostic"
       ],
+      "imports": [
+        "app.agent.policy"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/agent/policy.py"
       ],
@@ -4046,6 +5035,14 @@
         "test_agent_run_guard_isolated_between_tenants",
         "test_in_memory_lease_expires_after_its_ttl"
       ],
+      "imports": [
+        "pytest",
+        "fastapi",
+        "app.core",
+        "app.core.agent_run_guard",
+        "app.core.config"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/agent_run_guard.py",
         "backend/app/core/config.py"
@@ -4067,6 +5064,12 @@
       "symbols": [
         "test_model_backed_guide_request_uses_the_browser_idempotency_key"
       ],
+      "imports": [
+        "app.api.routes",
+        "app.core.agent_run_guard",
+        "app.schemas.assistant"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/agent_run_guard.py",
         "backend/app/schemas/assistant.py"
@@ -4094,6 +5097,15 @@
         "test_oversized_bearer_token_is_rejected_before_jwt_processing",
         "test_clerk_subject_must_be_a_bounded_string"
       ],
+      "imports": [
+        "jwt",
+        "pytest",
+        "fastapi",
+        "pymongo.errors",
+        "app.api",
+        "app.core.config"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py"
       ],
@@ -4120,6 +5132,14 @@
         "test_background_job_claim_uses_a_reclaimable_lease",
         "test_stale_worker_cannot_renew_a_reclaimed_job"
       ],
+      "imports": [
+        "types",
+        "pymongo.errors",
+        "app.core.config",
+        "app.services",
+        "app.services.background_job_service"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py",
         "backend/app/services/background_job_service.py"
@@ -4143,6 +5163,15 @@
         "test_old_subscription_cancellation_cannot_downgrade_newer_provider_subscription",
         "test_stale_provider_event_cannot_downgrade_a_newer_subscription_state"
       ],
+      "imports": [
+        "types",
+        "pymongo.errors",
+        "app.billing",
+        "app.billing.billing_service",
+        "app.billing.models",
+        "app.core.config"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/billing/billing_service.py",
         "backend/app/billing/models.py",
@@ -4171,6 +5200,16 @@
         "test_dispatch_creates_exact_candidate_ref_then_dispatches_reviewed_workflow",
         "test_observer_records_targeted_success_without_claiming_full_ci"
       ],
+      "imports": [
+        "datetime",
+        "types",
+        "pytest",
+        "app.schemas.delivery",
+        "app.services",
+        "app.services.candidate_verification_service",
+        "app.services.delivery_service"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/schemas/delivery.py",
         "backend/app/services/candidate_verification_service.py",
@@ -4201,6 +5240,16 @@
         "_Collection",
         "test_impact_store_is_idempotent_and_tenant_scoped"
       ],
+      "imports": [
+        "__future__",
+        "datetime",
+        "pathlib",
+        "types",
+        "app.intelligence.graph.builder",
+        "app.intelligence.impact.models",
+        "app.intelligence.impact.service"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/intelligence/graph/builder.py",
         "backend/app/intelligence/impact/models.py",
@@ -4228,6 +5277,10 @@
         "test_unrelated_workflow_edit_does_not_mark_path_failure_fixed",
         "test_missing_current_state_fails_safe"
       ],
+      "imports": [
+        "app.services.ci_applicability"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/services/ci_applicability.py"
       ],
@@ -4254,6 +5307,16 @@
         "test_ci_service_preserves_failed_test_identity_as_untrusted_evidence",
         "test_ci_service_includes_existing_manifest_for_dependency_failures"
       ],
+      "imports": [
+        "datetime",
+        "pathlib",
+        "pytest",
+        "app.agent.graph",
+        "app.git.actions",
+        "app.git.change_provider",
+        "app.services.ci_investigation_service"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/agent/graph.py",
         "backend/app/git/actions.py",
@@ -4278,6 +5341,10 @@
         "test_ci_failure_request_is_detected_with_explicit_run",
         "test_workflow_explanation_is_not_a_live_ci_request"
       ],
+      "imports": [
+        "app.services.ci_request_intent"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/services/ci_request_intent.py"
       ],
@@ -4304,6 +5371,15 @@
         "test_expired_github_actions_access_is_a_partial_investigation",
         "test_code_workbench_forces_proposal_not_log_selected_diagnostic"
       ],
+      "imports": [
+        "httpx",
+        "pytest",
+        "app.agent.graph",
+        "app.git.actions",
+        "app.services.ci_request_intent",
+        "app.services.ci_run_resolution_service"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/agent/graph.py",
         "backend/app/git/actions.py",
@@ -4329,6 +5405,10 @@
         "test_context_budget_never_exceeds_source_cap_or_discards_provenance_silently",
         "test_patch_candidate_budget_preserves_paths_and_hashes_within_limit"
       ],
+      "imports": [
+        "app.services.context_budget"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/services/context_budget.py"
       ],
@@ -4352,6 +5432,11 @@
         "test_delivery_ci_reports_running_and_failed_without_claiming_success",
         "test_delivery_ci_reports_pass_only_for_completed_successful_matching_runs"
       ],
+      "imports": [
+        "app.git.actions",
+        "app.services.delivery_ci_service"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/git/actions.py",
         "backend/app/services/delivery_ci_service.py"
@@ -4379,6 +5464,16 @@
         "test_commit_message_is_part_of_the_delivery_approval_binding",
         "test_changed_head_invalidates_approval"
       ],
+      "imports": [
+        "datetime",
+        "pathlib",
+        "pytest",
+        "fastapi",
+        "app.policy",
+        "app.schemas.delivery",
+        "app.schemas.patch"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/schemas/delivery.py",
         "backend/app/schemas/patch.py",
@@ -4410,6 +5505,13 @@
         "test_free_blueprint_is_isolated_and_never_claims_an_always_on_worker",
         "test_scaled_render_blueprint_keeps_long_running_work_off_the_public_api"
       ],
+      "imports": [
+        "pathlib",
+        "typing",
+        "yaml",
+        "app.core.config"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py"
       ],
@@ -4436,6 +5538,16 @@
         "test_repository_backed_proposal_bounds_untrusted_context_before_graph",
         "test_generated_proposal_uses_the_same_quota_and_tenant_lease"
       ],
+      "imports": [
+        "json",
+        "app.api.routes",
+        "app.schemas.session",
+        "app.services",
+        "app.services.diagnostic_stream_service",
+        "devops.agent",
+        "devops.server"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/schemas/session.py",
         "backend/app/services/diagnostic_stream_service.py"
@@ -4462,6 +5574,18 @@
         "test_neighborhood_is_bidirectional_bounded_and_deterministic",
         "test_invalid_python_is_reported_as_a_coverage_limitation_not_an_exception",
         "FakeSnapshotCollection"
+      ],
+      "imports": [
+        "__future__",
+        "pathlib",
+        "types",
+        "app.intelligence.graph.builder",
+        "app.intelligence.graph.models",
+        "app.intelligence.graph.service",
+        "app.intelligence.graph.store"
+      ],
+      "endpoints": [
+        "GET /health"
       ],
       "dependencies": [
         "backend/app/intelligence/graph/builder.py",
@@ -4490,6 +5614,15 @@
         "test_trace_span_is_nested_safe_and_redacted",
         "test_failure_retry_taxonomy"
       ],
+      "imports": [
+        "asyncio",
+        "app.core.failures",
+        "app.observability.recorder",
+        "evals.graders",
+        "evals.models",
+        "evals.runner"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/failures.py",
         "backend/app/observability/recorder.py"
@@ -4517,6 +5650,15 @@
         "test_runtime_manager_rejects_unregistered_validator",
         "test_disabled_runtime_never_falls_back_to_local_repository_execution"
       ],
+      "imports": [
+        "pathlib",
+        "pytest",
+        "app.execution.docker_runtime",
+        "app.execution.policy",
+        "app.execution.runtime",
+        "app.services.delivery_service"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/execution/docker_runtime.py",
         "backend/app/execution/policy.py",
@@ -4545,6 +5687,15 @@
         "test_flaky_observation_list_is_tenant_scoped",
         "test_observation_persistence_keeps_only_bounded_safe_fields"
       ],
+      "imports": [
+        "__future__",
+        "datetime",
+        "types",
+        "pytest",
+        "app.api.routes",
+        "app.services.flaky_test_service"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/services/flaky_test_service.py"
       ],
@@ -4565,6 +5716,11 @@
       "symbols": [
         "test_vercel_configuration_has_browser_security_headers_and_hashed_asset_caching"
       ],
+      "imports": [
+        "json",
+        "pathlib"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -4585,6 +5741,10 @@
         "test_ci_log_is_evidence_not_execution_instruction",
         "test_ci_log_prefers_the_specific_failed_test_window_over_generic_progress"
       ],
+      "imports": [
+        "app.git.actions"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/git/actions.py"
       ],
@@ -4611,6 +5771,13 @@
         "test_actions_log_redirect_is_limited_to_github_actions_download_hosts",
         "test_repository_resolution_requires_github_api_access"
       ],
+      "imports": [
+        "pytest",
+        "fastapi",
+        "app.core.config",
+        "app.services"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py"
       ],
@@ -4637,6 +5804,16 @@
         "_signature",
         "webhook_db"
       ],
+      "imports": [
+        "hashlib",
+        "hmac",
+        "json",
+        "types",
+        "pytest",
+        "fastapi",
+        "pymongo.errors"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py",
         "backend/app/services/incident_service.py"
@@ -4658,6 +5835,14 @@
       "symbols": [
         "test_queued_indexing_never_runs_inside_the_agent_api_path"
       ],
+      "imports": [
+        "pathlib",
+        "types",
+        "app.agent",
+        "app.agent.graph",
+        "app.core.config"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/agent/graph.py",
         "backend/app/core/config.py"
@@ -4685,6 +5870,16 @@
         "test_rate_limit_key_does_not_include_raw_ip_address",
         "test_trusted_client_ip_accepts_only_a_single_valid_edge_address"
       ],
+      "imports": [
+        "pytest",
+        "cryptography.fernet",
+        "pydantic",
+        "app.api.middleware",
+        "app.core.access_logging",
+        "app.core.config",
+        "app.core.rate_limit"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/api/middleware.py",
         "backend/app/core/access_logging.py",
@@ -4715,6 +5910,16 @@
         "test_incident_dispatch_retries_an_ungrouped_collected_record",
         "test_flaky_signal_requires_a_test_identity_and_mixed_same_sha_history"
       ],
+      "imports": [
+        "json",
+        "types",
+        "app.api.routes",
+        "app.api.routes.incidents",
+        "app.git.actions",
+        "app.schemas.incident",
+        "app.services"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/api/routes/incidents.py",
         "backend/app/git/actions.py",
@@ -4742,6 +5947,13 @@
         "test_native_incident_report_requires_existing_verified_app_binding",
         "test_native_incident_report_updates_an_existing_check"
       ],
+      "imports": [
+        "types",
+        "pytest",
+        "app.services",
+        "app.services.incident_reporting_service"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/services/incident_reporting_service.py"
       ],
@@ -4764,6 +5976,11 @@
         "test_non_allowlisted_delivery_target_is_aborted",
         "test_live_report_defaults_to_no_external_checks"
       ],
+      "imports": [
+        "evals.models",
+        "evals.runner"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -4785,6 +6002,10 @@
         "test_load_harness_only_targets_non_billable_read_surfaces",
         "test_load_harness_requires_staging_https_and_disposable_authentication"
       ],
+      "imports": [
+        "pathlib"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -4809,6 +6030,13 @@
         "test_readiness_refuses_customer_traffic_when_database_is_unavailable",
         "test_readiness_accepts_traffic_only_after_database_connection"
       ],
+      "imports": [
+        "datetime",
+        "app",
+        "app.db.mongo",
+        "app.services.session_service"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/db/mongo.py",
         "backend/app/services/session_service.py"
@@ -4836,6 +6064,16 @@
         "test_deleted_repository_fact_is_invalidated",
         "test_rename_is_retained_as_history"
       ],
+      "imports": [
+        "__future__",
+        "subprocess",
+        "datetime",
+        "pathlib",
+        "unittest.mock",
+        "pytest",
+        "app.git.pr_status"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/git/pr_status.py",
         "backend/app/memory/freshness.py",
@@ -4860,6 +6098,11 @@
         "test_memory_routes_register_specific_staleness_before_greedy_repository_path",
         "test_memory_list_uses_the_authenticated_internal_user_id"
       ],
+      "imports": [
+        "app.api.routes",
+        "app.core.config"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py"
       ],
@@ -4881,6 +6124,11 @@
         "test_provider_usage_event_keeps_only_provider_reported_counts",
         "test_provider_usage_event_does_not_invent_missing_usage"
       ],
+      "imports": [
+        "types",
+        "app.agent.graph"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/agent/graph.py"
       ],
@@ -4901,6 +6149,11 @@
       "symbols": [
         "test_mongo_connection_uses_a_bounded_pool"
       ],
+      "imports": [
+        "app.core.config",
+        "app.db"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py"
       ],
@@ -4924,6 +6177,16 @@
         "test_oauth_connect_persists_only_a_hashed_one_time_challenge",
         "test_oauth_callback_consumes_the_challenge_before_linking_an_account"
       ],
+      "imports": [
+        "datetime",
+        "urllib.parse",
+        "pytest",
+        "cryptography.fernet",
+        "fastapi",
+        "app.core",
+        "app.core.config"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py"
       ],
@@ -4950,6 +6213,15 @@
         "TestRedaction",
         "TestDeduplication"
       ],
+      "imports": [
+        "datetime",
+        "typing",
+        "unittest.mock",
+        "pytest",
+        "app.memory.memory_service",
+        "app.memory.models"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/memory/memory_service.py",
         "backend/app/memory/models.py"
@@ -4977,6 +6249,16 @@
         "TestWritePolicyGate",
         "TestDeliveredVsMerged"
       ],
+      "imports": [
+        "datetime",
+        "typing",
+        "unittest.mock",
+        "pytest",
+        "app.memory.memory_service",
+        "app.memory.models",
+        "enum"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/memory/memory_service.py",
         "backend/app/memory/models.py"
@@ -5004,6 +6286,14 @@
         "test_patch_engine_rejects_binary_files",
         "test_workflow_change_has_deterministic_high_risk"
       ],
+      "imports": [
+        "pathlib",
+        "pytest",
+        "app.schemas.patch",
+        "app.services.delivery_service",
+        "app.services.patch_engine"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/schemas/patch.py",
         "backend/app/services/delivery_service.py",
@@ -5033,6 +6323,14 @@
         "_ReadableRules",
         "test_rule_refresh_is_scoped_and_persists_only_advisory_metadata"
       ],
+      "imports": [
+        "__future__",
+        "types",
+        "pytest",
+        "app.services.prevention_rule_service",
+        "app.services"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/services/prevention_rule_service.py"
       ],
@@ -5059,6 +6357,15 @@
         "test_product_guide_redacts_secrets_before_history_persistence",
         "test_default_guide_preserves_approval_boundary"
       ],
+      "imports": [
+        "pytest",
+        "pydantic",
+        "app.core.config",
+        "app.schemas.assistant",
+        "app.services",
+        "app.services.product_assistant_service"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py",
         "backend/app/schemas/assistant.py",
@@ -5087,6 +6394,16 @@
         "test_repository_index_uses_aggregate_file_and_byte_limits",
         "test_repository_index_stops_at_the_chunk_ceiling"
       ],
+      "imports": [
+        "asyncio",
+        "pytest",
+        "fastapi",
+        "langchain_core.documents",
+        "app.services",
+        "app.services.rag_service",
+        "app.services.workspace_service"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/services/rag_service.py",
         "backend/app/services/workspace_service.py",
@@ -5112,6 +6429,16 @@
         "test_hosted_checkout_url_cannot_be_an_open_redirect",
         "test_hosted_checkout_url_accepts_only_https_razorpay_domains"
       ],
+      "imports": [
+        "hashlib",
+        "hmac",
+        "pytest",
+        "fastapi",
+        "app.billing.models",
+        "app.billing.razorpay",
+        "app.core.config"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/billing/models.py",
         "backend/app/billing/razorpay.py",
@@ -5140,6 +6467,16 @@
         "test_session_hydration_uses_the_canonical_pending_delivery_approval",
         "test_request_delivery_approval_reuses_a_plan_bound_pending_record"
       ],
+      "imports": [
+        "asyncio",
+        "datetime",
+        "pathlib",
+        "types",
+        "app.agent.graph",
+        "app.schemas.investigation",
+        "app.services"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/agent/graph.py",
         "backend/app/schemas/investigation.py",
@@ -5168,6 +6505,16 @@
         "_Cursor",
         "_Incidents"
       ],
+      "imports": [
+        "__future__",
+        "datetime",
+        "types",
+        "pytest",
+        "fastapi",
+        "app.schemas.delivery",
+        "app.services.regression_prevention_service"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/schemas/delivery.py",
         "backend/app/services/regression_prevention_service.py"
@@ -5192,6 +6539,11 @@
         "test_mvp_blueprint_keeps_the_100_to_500_user_default_to_one_api_service",
         "test_free_blueprint_uses_distinct_free_service_names"
       ],
+      "imports": [
+        "pathlib",
+        "yaml"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/tests/test_deployment_blueprints.py",
@@ -5217,6 +6569,16 @@
         "test_trace_less_persisted_run_is_replayable_with_an_honest_limitation",
         "test_replay_degrades_a_legacy_trace_without_an_identifier"
       ],
+      "imports": [
+        "json",
+        "datetime",
+        "typing",
+        "pytest",
+        "fastapi",
+        "fastapi.testclient",
+        "app.api.deps"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/api/deps.py",
         "backend/app/schemas/replay.py",
@@ -5239,6 +6601,10 @@
       "symbols": [
         "test_clerk_jwks_runtime_dependency_is_pinned"
       ],
+      "imports": [
+        "pathlib"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/PRODUCTION_READINESS_AUDIT.md",
@@ -5259,6 +6625,13 @@
         "test_concurrent_session_insert_returns_existing_tenant_session",
         "test_session_index_setup_contains_tenant_unique_constraint"
       ],
+      "imports": [
+        "types",
+        "pymongo.errors",
+        "app.schemas.session",
+        "app.services"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/schemas/session.py"
       ],
@@ -5279,6 +6652,10 @@
       "symbols": [
         "test_mongo_recovery_reinstalls_indexes_before_reporting_success"
       ],
+      "imports": [
+        "app"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -5300,6 +6677,12 @@
         "test_restricted_local_execution_is_only_advertised_outside_production",
         "test_candidate_verification_never_advertises_unconfigured_remote_ci"
       ],
+      "imports": [
+        "pytest",
+        "app.api.routes",
+        "app.core.config"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/core/config.py"
       ],
@@ -5326,6 +6709,16 @@
         "test_provider_usage_normalization_rejects_invalid_or_negative_counts",
         "test_duplicate_agent_request_does_not_consume_a_second_entitlement"
       ],
+      "imports": [
+        "types",
+        "pytest",
+        "fastapi",
+        "pymongo.errors",
+        "app.billing",
+        "app.billing.models",
+        "app.billing.usage_service"
+      ],
+      "endpoints": [],
       "dependencies": [
         "backend/app/billing/models.py",
         "backend/app/billing/usage_service.py",
@@ -5348,6 +6741,11 @@
       "symbols": [
         "test_worker_drain_does_not_claim_a_new_job_after_shutdown"
       ],
+      "imports": [
+        "asyncio",
+        "app.workers"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -5364,6 +6762,8 @@
       "kind": "configuration",
       "summary": "This configuration is part of the project configuration layer. It supplies the repository behavior or operational contract associated with its declared configuration and content structure.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -5381,6 +6781,8 @@
       "kind": "configuration",
       "summary": "This configuration is part of the deployment configuration layer. It supplies the repository behavior or operational contract associated with its declared configuration and content structure.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/execution/docker_runtime.py",
@@ -5402,6 +6804,8 @@
         "React Compiler",
         "Expanding the ESLint configuration"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/docs/CONTEXT_ENGINEERING.md",
@@ -5427,6 +6831,8 @@
         "iconLibrary",
         "rtl"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "client/eslint.config.js",
@@ -5444,6 +6850,15 @@
       "kind": "configuration",
       "summary": "This configuration is part of the repository reference layer. It supplies the repository behavior or operational contract associated with its declared configuration and content structure.",
       "symbols": [],
+      "imports": [
+        "@eslint/js",
+        "globals",
+        "eslint-plugin-react-hooks",
+        "eslint-plugin-react-refresh",
+        "typescript-eslint",
+        "eslint/config"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "client/README.md",
@@ -5461,6 +6876,8 @@
       "kind": "configuration",
       "summary": "This configuration is part of the repository reference layer. It supplies the repository behavior or operational contract associated with its declared configuration and content structure.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -5478,6 +6895,8 @@
       "kind": "configuration",
       "summary": "This configuration is part of the repository reference layer. It supplies the repository behavior or operational contract associated with its declared configuration and content structure.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "client/Dockerfile",
@@ -5503,6 +6922,8 @@
         "scripts",
         "dependencies"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -5525,6 +6946,10 @@
         "test",
         "actual"
       ],
+      "imports": [
+        "vite"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "client/package.json",
@@ -5550,6 +6975,11 @@
         "totalBytes",
         "largestChunk"
       ],
+      "imports": [
+        "node:fs/promises",
+        "node:path"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "client/package.json",
@@ -5569,6 +6999,12 @@
       "symbols": [
         "App"
       ],
+      "imports": [
+        "react-router-dom",
+        "react",
+        "./routes"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -5594,6 +7030,15 @@
         "ChainOfThought",
         "chainOfThoughtContext"
       ],
+      "imports": [
+        "@radix-ui/react-use-controllable-state",
+        "@/components/ui/badge",
+        "@/components/ui/collapsible",
+        "@/lib/utils",
+        "lucide-react",
+        "react"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/components/ui/badge.tsx",
         "client/src/components/ui/collapsible.tsx",
@@ -5623,9 +7068,18 @@
         "CommitHash",
         "CommitMessageProps"
       ],
+      "imports": [
+        "@/components/ui/avatar",
+        "@/components/ui/button",
+        "@/components/ui/collapsible",
+        "@/lib/utils",
+        "lucide-react",
+        "react"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/components/ui/avatar.tsx",
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/collapsible.tsx",
         "client/src/lib/utils.ts"
       ],
@@ -5653,8 +7107,17 @@
         "ConversationEmptyState",
         "ConversationScrollButtonProps"
       ],
+      "imports": [
+        "@/components/ui/button",
+        "@/lib/utils",
+        "ai",
+        "lucide-react",
+        "react",
+        "use-stick-to-bottom"
+      ],
+      "endpoints": [],
       "dependencies": [
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/lib/utils.ts"
       ],
       "dependents": [
@@ -5681,8 +7144,17 @@
         "MessageActions",
         "MessageActionProps"
       ],
+      "imports": [
+        "@/components/ui/button",
+        "@/components/ui/button-group",
+        "@/components/ui/tooltip",
+        "@/lib/utils",
+        "@streamdown/cjk",
+        "ai",
+        "lucide-react"
+      ],
+      "endpoints": [],
       "dependencies": [
-        "client/src/components/ui/button.tsx",
         "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/tooltip.tsx",
         "client/src/lib/utils.ts"
@@ -5711,6 +7183,16 @@
         "video",
         "width"
       ],
+      "imports": [
+        "@/components/ui/command",
+        "@/components/ui/dropdown-menu",
+        "@/components/ui/hover-card",
+        "@/components/ui/input-group",
+        "@/components/ui/select",
+        "@/components/ui/spinner",
+        "@/components/ui/tooltip"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/components/ui/command.tsx",
         "client/src/components/ui/dropdown-menu.tsx",
@@ -5742,6 +7224,16 @@
         "AUTO_CLOSE_DELAY",
         "MS_IN_S"
       ],
+      "imports": [
+        "@radix-ui/react-use-controllable-state",
+        "@/components/ui/collapsible",
+        "@/lib/utils",
+        "@streamdown/cjk",
+        "lucide-react",
+        "react",
+        "streamdown"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/components/ui/collapsible.tsx",
         "client/src/lib/utils.ts"
@@ -5770,6 +7262,12 @@
         "MotionComponent",
         "dynamicSpread"
       ],
+      "imports": [
+        "@/lib/utils",
+        "motion/react",
+        "react"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts"
       ],
@@ -5797,6 +7295,16 @@
         "canConnectGithub",
         "handleConnect"
       ],
+      "imports": [
+        "@/types/agent.type",
+        "@/lib/api",
+        "@/assets/github.svg",
+        "../ui/button",
+        "../ui/textarea",
+        "../ui/spinner",
+        "../ai-elements/prompt-input"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/types/agent.type.ts",
         "client/src/lib/api.ts",
@@ -5827,6 +7335,16 @@
         "isUser",
         "TimelinePanel"
       ],
+      "imports": [
+        "@/hooks/use-agent-session",
+        "@/hooks/use-user",
+        "@/components/clerk-token-provider",
+        "@/lib/api",
+        "@/lib/utils",
+        "@/types/agent.type",
+        "@/types/github.type"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/hooks/use-agent-session.ts",
         "client/src/hooks/use-user.ts",
@@ -5858,6 +7376,16 @@
         "ListContent",
         "output"
       ],
+      "imports": [
+        "@/components/diff-viewer",
+        "@/components/ai-elements/commit",
+        "@/components/ai-elements/chain-of-thought",
+        "@/lib/utils",
+        "lucide-react",
+        "ai",
+        "react"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/components/diff-viewer.tsx",
         "client/src/components/ai-elements/commit.tsx",
@@ -5885,6 +7413,12 @@
         "useClerkApiToken",
         "ClerkTokenProvider"
       ],
+      "imports": [
+        "react",
+        "@clerk/clerk-react",
+        "@/lib/axios-client"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/axios-client.ts"
       ],
@@ -5912,9 +7446,19 @@
         "proposalRequestId",
         "activePatch"
       ],
+      "imports": [
+        "react",
+        "motion/react",
+        "react-simple-code-editor",
+        "lucide-react",
+        "sonner",
+        "@/components/diff-viewer",
+        "@/components/ui/button"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/components/diff-viewer.tsx",
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/lib/api.ts"
       ],
@@ -5942,6 +7486,15 @@
         "parsePatch",
         "lines"
       ],
+      "imports": [
+        "react",
+        "@assistant-ui/react-markdown",
+        "class-variance-authority",
+        "diff",
+        "parse-diff",
+        "@/lib/utils"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts"
       ],
@@ -5969,6 +7522,16 @@
         "CodeFile",
         "BottomPanel"
       ],
+      "imports": [
+        "@/components/diff-viewer",
+        "@/components/vscode-editor",
+        "@/lib/api",
+        "@/lib/utils",
+        "@/components/theme-provider",
+        "@/types/agent.type",
+        "@/types/session.type"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/components/diff-viewer.tsx",
         "client/src/components/vscode-editor.tsx",
@@ -5997,6 +7560,10 @@
         "dotSizes",
         "containerSizes"
       ],
+      "imports": [
+        "@/lib/utils"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts"
       ],
@@ -6018,6 +7585,12 @@
       "symbols": [
         "Logo"
       ],
+      "imports": [
+        "react-router-dom",
+        "@/assets/logo.png",
+        "@/lib/utils"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/assets/logo.png",
         "client/src/lib/utils.ts"
@@ -6040,8 +7613,15 @@
       "symbols": [
         "ModeToggle"
       ],
+      "imports": [
+        "lucide-react",
+        "@/components/ui/button",
+        "@/components/ui/dropdown-menu",
+        "@/components/theme-provider"
+      ],
+      "endpoints": [],
       "dependencies": [
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/dropdown-menu.tsx",
         "client/src/components/theme-provider.tsx"
       ],
@@ -6069,9 +7649,19 @@
         "message",
         "response"
       ],
+      "imports": [
+        "@/lib/api",
+        "@/components/ui/button",
+        "@/components/ui/scroll-area",
+        "@/components/ui/textarea",
+        "lucide-react",
+        "streamdown",
+        "react"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/api.ts",
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/scroll-area.tsx",
         "client/src/components/ui/textarea.tsx"
       ],
@@ -6099,6 +7689,16 @@
         "ChatSessions",
         "sessions"
       ],
+      "imports": [
+        "@/lib/api",
+        "@/components/clerk-token-provider",
+        "@clerk/clerk-react",
+        "@tanstack/react-query",
+        "react",
+        "react-router-dom",
+        "@/types/session.type"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/api.ts",
         "client/src/components/clerk-token-provider.tsx",
@@ -6129,6 +7729,16 @@
         "email",
         "avatar"
       ],
+      "imports": [
+        "../ui/sidebar",
+        "../logo",
+        "./navitems",
+        "./chat-sessions",
+        "@clerk/clerk-react",
+        "@tanstack/react-query",
+        "react-router-dom"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts"
       ],
@@ -6151,8 +7761,15 @@
         "navItems",
         "NavItems"
       ],
+      "imports": [
+        "@/routes/route",
+        "lucide-react",
+        "../ui/sidebar",
+        "react-router-dom"
+      ],
+      "endpoints": [],
       "dependencies": [
-        "client/src/routes/route-guard.tsx"
+        "client/src/routes/route.ts"
       ],
       "dependents": [
         "client/src/components/sidebar/index.tsx",
@@ -6177,6 +7794,16 @@
         "sessions",
         "isActive"
       ],
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@tanstack/react-query",
+        "@/components/ui/command",
+        "@/lib/api",
+        "@/components/clerk-token-provider",
+        "@clerk/clerk-react"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/components/ui/command.tsx",
         "client/src/lib/api.ts",
@@ -6207,6 +7834,10 @@
         "ThemeProvider",
         "root"
       ],
+      "imports": [
+        "react"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "client/src/components/ide-workspace.tsx",
@@ -6231,6 +7862,12 @@
         "AlertDescription",
         "AlertAction"
       ],
+      "imports": [
+        "react",
+        "class-variance-authority",
+        "@/lib/utils"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts"
       ],
@@ -6257,6 +7894,12 @@
         "AvatarGroup",
         "AvatarGroupCount"
       ],
+      "imports": [
+        "react",
+        "radix-ui",
+        "@/lib/utils"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts"
       ],
@@ -6281,6 +7924,13 @@
         "Badge",
         "Comp"
       ],
+      "imports": [
+        "react",
+        "class-variance-authority",
+        "radix-ui",
+        "@/lib/utils"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts"
       ],
@@ -6307,6 +7957,13 @@
         "Comp",
         "ButtonGroupSeparator"
       ],
+      "imports": [
+        "class-variance-authority",
+        "radix-ui",
+        "@/lib/utils",
+        "@/components/ui/separator"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts",
         "client/src/components/ui/separator.tsx"
@@ -6332,6 +7989,13 @@
         "Button",
         "Comp"
       ],
+      "imports": [
+        "react",
+        "class-variance-authority",
+        "radix-ui",
+        "@/lib/utils"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts"
       ],
@@ -6355,6 +8019,10 @@
         "CollapsibleTrigger",
         "CollapsibleContent"
       ],
+      "imports": [
+        "radix-ui"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "client/src/components/ai-elements/chain-of-thought.tsx",
@@ -6380,6 +8048,15 @@
         "CommandGroup",
         "CommandSeparator"
       ],
+      "imports": [
+        "react",
+        "cmdk",
+        "@/lib/utils",
+        "@/components/ui/dialog",
+        "@/components/ui/input-group",
+        "lucide-react"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts",
         "client/src/components/ui/dialog.tsx",
@@ -6409,9 +8086,17 @@
         "DialogContent",
         "DialogHeader"
       ],
+      "imports": [
+        "react",
+        "radix-ui",
+        "@/lib/utils",
+        "@/components/ui/button",
+        "lucide-react"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button.tsx"
+        "client/src/components/ui/button-group.tsx"
       ],
       "dependents": [
         "client/src/components/ai-elements/prompt-input.tsx",
@@ -6437,6 +8122,13 @@
         "DropdownMenuItem",
         "DropdownMenuCheckboxItem"
       ],
+      "imports": [
+        "react",
+        "radix-ui",
+        "@/lib/utils",
+        "lucide-react"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts"
       ],
@@ -6464,6 +8156,11 @@
         "EmptyTitle",
         "EmptyDescription"
       ],
+      "imports": [
+        "class-variance-authority",
+        "@/lib/utils"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts"
       ],
@@ -6487,6 +8184,12 @@
         "HoverCardTrigger",
         "HoverCardContent"
       ],
+      "imports": [
+        "react",
+        "radix-ui",
+        "@/lib/utils"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts"
       ],
@@ -6514,10 +8217,19 @@
         "InputGroupButton",
         "InputGroupText"
       ],
+      "imports": [
+        "react",
+        "class-variance-authority",
+        "@/lib/utils",
+        "@/components/ui/button",
+        "@/components/ui/input",
+        "@/components/ui/textarea"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button.tsx",
-        "client/src/components/ui/input.tsx",
+        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/input-group.tsx",
         "client/src/components/ui/textarea.tsx"
       ],
       "dependents": [
@@ -6538,6 +8250,11 @@
       "symbols": [
         "Input"
       ],
+      "imports": [
+        "react",
+        "@/lib/utils"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts"
       ],
@@ -6559,6 +8276,12 @@
       "symbols": [
         "Label"
       ],
+      "imports": [
+        "react",
+        "radix-ui",
+        "@/lib/utils"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts"
       ],
@@ -6586,6 +8309,12 @@
         "PopoverTitle",
         "PopoverDescription"
       ],
+      "imports": [
+        "react",
+        "radix-ui",
+        "@/lib/utils"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts"
       ],
@@ -6608,6 +8337,12 @@
         "ScrollArea",
         "ScrollBar"
       ],
+      "imports": [
+        "react",
+        "radix-ui",
+        "@/lib/utils"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts"
       ],
@@ -6635,6 +8370,13 @@
         "SelectLabel",
         "SelectItem"
       ],
+      "imports": [
+        "react",
+        "radix-ui",
+        "@/lib/utils",
+        "lucide-react"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts"
       ],
@@ -6656,6 +8398,12 @@
       "symbols": [
         "Separator"
       ],
+      "imports": [
+        "react",
+        "radix-ui",
+        "@/lib/utils"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts"
       ],
@@ -6683,9 +8431,17 @@
         "SheetContent",
         "SheetHeader"
       ],
+      "imports": [
+        "react",
+        "radix-ui",
+        "@/lib/utils",
+        "@/components/ui/button",
+        "lucide-react"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button.tsx"
+        "client/src/components/ui/button-group.tsx"
       ],
       "dependents": [
         "client/index.html",
@@ -6711,11 +8467,21 @@
         "SIDEBAR_WIDTH_ICON",
         "SIDEBAR_KEYBOARD_SHORTCUT"
       ],
+      "imports": [
+        "react",
+        "class-variance-authority",
+        "radix-ui",
+        "@/hooks/use-mobile",
+        "@/lib/utils",
+        "@/components/ui/button",
+        "@/components/ui/input"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/hooks/use-mobile.ts",
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button.tsx",
-        "client/src/components/ui/input.tsx",
+        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/input-group.tsx",
         "client/src/components/ui/separator.tsx"
       ],
       "dependents": [
@@ -6736,6 +8502,10 @@
       "symbols": [
         "Skeleton"
       ],
+      "imports": [
+        "@/lib/utils"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts"
       ],
@@ -6758,6 +8528,12 @@
         "ToasterProps",
         "Toaster"
       ],
+      "imports": [
+        "next-themes",
+        "sonner",
+        "lucide-react"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "client/package.json",
@@ -6777,6 +8553,11 @@
       "symbols": [
         "Spinner"
       ],
+      "imports": [
+        "@/lib/utils",
+        "lucide-react"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts"
       ],
@@ -6804,6 +8585,11 @@
         "TableHead",
         "TableCell"
       ],
+      "imports": [
+        "react",
+        "@/lib/utils"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts"
       ],
@@ -6825,6 +8611,11 @@
       "symbols": [
         "Textarea"
       ],
+      "imports": [
+        "react",
+        "@/lib/utils"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts"
       ],
@@ -6849,6 +8640,12 @@
         "TooltipTrigger",
         "TooltipContent"
       ],
+      "imports": [
+        "react",
+        "radix-ui",
+        "@/lib/utils"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/utils.ts"
       ],
@@ -6876,6 +8673,13 @@
         "languageLabel",
         "language"
       ],
+      "imports": [
+        "@monaco-editor/react",
+        "lucide-react",
+        "react",
+        "sonner"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "client/src/components/ide-workspace.tsx",
@@ -6893,6 +8697,10 @@
       "kind": "TypeScript module",
       "summary": "This frontend module implements part of the frontend application surface. It composes typed data, route state, and design-system primitives into a user-facing interaction without directly acquiring backend credentials.",
       "symbols": [],
+      "imports": [
+        "@/components/diagnostic-dashboard"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/components/diagnostic-dashboard.tsx"
       ],
@@ -6919,6 +8727,15 @@
         "block",
         "eventLine"
       ],
+      "imports": [
+        "@/lib/env",
+        "@/lib/axios-client",
+        "@/lib/api",
+        "@/types/agent.type",
+        "react",
+        "sonner"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/env.ts",
         "client/src/lib/axios-client.ts",
@@ -6946,6 +8763,10 @@
         "mql",
         "onChange"
       ],
+      "imports": [
+        "react"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "client/src/components/ui/sidebar.tsx",
@@ -6965,6 +8786,13 @@
       "symbols": [
         "useBackendUser"
       ],
+      "imports": [
+        "@tanstack/react-query",
+        "@clerk/clerk-react",
+        "@/lib/api",
+        "@/components/clerk-token-provider"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/lib/api.ts",
         "client/src/components/clerk-token-provider.tsx"
@@ -6985,6 +8813,8 @@
       "kind": "stylesheet",
       "summary": "This frontend module implements part of the frontend application surface. It composes typed data, route state, and design-system primitives into a user-facing interaction without directly acquiring backend credentials.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -7005,8 +8835,16 @@
         "ProductGuide",
         "AppLayout"
       ],
+      "imports": [
+        "@/components/sidebar",
+        "@/components/ui/sidebar",
+        "react-router-dom",
+        "react",
+        "@/components/product-guide"
+      ],
+      "endpoints": [],
       "dependencies": [
-        "client/src/components/sidebar/navitems.tsx",
+        "client/src/components/sidebar/chat-sessions.tsx",
         "client/src/components/ui/sidebar.tsx"
       ],
       "dependents": [
@@ -7027,6 +8865,10 @@
       "symbols": [
         "BaseLayout"
       ],
+      "imports": [
+        "react-router-dom"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/taste.md",
@@ -7052,6 +8894,16 @@
         "startSubscriptionCheckout",
         "getBackendHealth"
       ],
+      "imports": [
+        "@/types/auth.type",
+        "./axios-client",
+        "./env",
+        "@/types/agent.type",
+        "@/types/session.type",
+        "@/types/github.type",
+        "@/types/incident.type"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/types/auth.type.ts",
         "client/src/types/agent.type.ts",
@@ -7083,6 +8935,10 @@
         "from",
         "prior"
       ],
+      "imports": [
+        "react-router-dom"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "client/package.json",
@@ -7108,6 +8964,11 @@
         "TokenOptions",
         "setTokenGetter"
       ],
+      "imports": [
+        "axios",
+        "./env"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/taste.md",
@@ -7133,6 +8994,8 @@
         "BASE_API_URL",
         "CLERK_PUBLISHABLE_KEY"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -7155,6 +9018,12 @@
         "nanoid",
         "generateSlugId"
       ],
+      "imports": [
+        "clsx",
+        "tailwind-merge",
+        "nanoid"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -7179,6 +9048,16 @@
         "ConfigurationRequired",
         "PublicDemoRoot"
       ],
+      "imports": [
+        "react",
+        "react-dom/client",
+        "@tanstack/react-query",
+        "@clerk/clerk-react",
+        "./App.tsx",
+        "./components/theme-provider.tsx",
+        "./components/ui/sonner.tsx"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/taste.md",
@@ -7203,6 +9082,16 @@
         "location",
         "postAuthRedirect"
       ],
+      "imports": [
+        "@clerk/clerk-react",
+        "react-router-dom",
+        "@tanstack/react-query",
+        "lucide-react",
+        "@/components/logo",
+        "@/lib/auth-redirect",
+        "@/lib/api"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/components/logo.tsx",
         "client/src/lib/auth-redirect.ts",
@@ -7228,6 +9117,13 @@
         "location",
         "postAuthRedirect"
       ],
+      "imports": [
+        "@clerk/clerk-react",
+        "react-router-dom",
+        "@/components/logo",
+        "@/lib/auth-redirect"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/components/logo.tsx",
         "client/src/lib/auth-redirect.ts"
@@ -7256,8 +9152,16 @@
         "current",
         "plan"
       ],
+      "imports": [
+        "@tanstack/react-query",
+        "lucide-react",
+        "@/components/ui/button",
+        "@/components/ui/badge",
+        "@/lib/api"
+      ],
+      "endpoints": [],
       "dependencies": [
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/badge.tsx",
         "client/src/lib/api.ts"
       ],
@@ -7285,6 +9189,11 @@
         "value",
         "ExactDiff"
       ],
+      "imports": [
+        "lucide-react",
+        "react"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -7310,6 +9219,14 @@
         "ReplayTab",
         "replayLoadMessage"
       ],
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@/components/diff-viewer",
+        "@/components/loader",
+        "@/lib/api"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/components/diff-viewer.tsx",
         "client/src/components/loader.tsx",
@@ -7336,6 +9253,11 @@
         "status",
         "missing"
       ],
+      "imports": [
+        "lucide-react",
+        "react-router-dom"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -7361,12 +9283,22 @@
         "activeStep",
         "activeFeature"
       ],
+      "imports": [
+        "@/components/logo",
+        "@/components/mode-toggle",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/routes/route",
+        "lucide-react",
+        "react-router-dom"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/components/logo.tsx",
         "client/src/components/mode-toggle.tsx",
         "client/src/components/ui/badge.tsx",
-        "client/src/components/ui/button.tsx",
-        "client/src/routes/route-guard.tsx"
+        "client/src/components/ui/button-group.tsx",
+        "client/src/routes/route.ts"
       ],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -7387,8 +9319,13 @@
         "HomePage",
         "location"
       ],
+      "imports": [
+        "@/components/chat",
+        "react-router-dom"
+      ],
+      "endpoints": [],
       "dependencies": [
-        "client/src/components/chat/tool-parts.tsx"
+        "client/src/components/chat/chat-input.tsx"
       ],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -7414,10 +9351,20 @@
         "dateTime",
         "parsed"
       ],
+      "imports": [
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/input",
+        "@/components/ui/textarea",
+        "@/components/ui/skeleton",
+        "@/lib/api",
+        "@/lib/utils"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/components/ui/badge.tsx",
-        "client/src/components/ui/button.tsx",
-        "client/src/components/ui/input.tsx",
+        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/input-group.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/components/ui/skeleton.tsx"
       ],
@@ -7439,6 +9386,11 @@
       "symbols": [
         "NotFoundPage"
       ],
+      "imports": [
+        "lucide-react",
+        "react-router-dom"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -7464,8 +9416,18 @@
         "parsed",
         "pathsReferToSameFile"
       ],
+      "imports": [
+        "@/components/chat",
+        "@/components/ui/badge",
+        "@/components/ui/textarea",
+        "@/components/ide-workspace",
+        "@/lib/api",
+        "@/lib/utils",
+        "@/types/agent.type"
+      ],
+      "endpoints": [],
       "dependencies": [
-        "client/src/components/chat/tool-parts.tsx",
+        "client/src/components/chat/chat-input.tsx",
         "client/src/components/ui/badge.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/components/ide-workspace.tsx",
@@ -7490,6 +9452,16 @@
         "RootLayout",
         "router"
       ],
+      "imports": [
+        "@/layouts/base-layout",
+        "react-router-dom",
+        "./route",
+        "@/layouts/app-layout",
+        "@/pages/not-found",
+        "@/pages/error-boundary",
+        "./route-guard"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/layouts/base-layout.tsx",
         "client/src/layouts/app-layout.tsx",
@@ -7517,6 +9489,15 @@
         "location",
         "_isAuthRoute"
       ],
+      "imports": [
+        "react-router-dom",
+        "./route",
+        "@clerk/clerk-react",
+        "@/components/logo",
+        "@/components/ui/spinner",
+        "@/lib/auth-redirect"
+      ],
+      "endpoints": [],
       "dependencies": [
         "client/src/components/logo.tsx",
         "client/src/components/ui/spinner.tsx",
@@ -7546,6 +9527,16 @@
         "BillingPage",
         "SessionPage"
       ],
+      "imports": [
+        "react-router-dom",
+        "react",
+        "@/pages/auth/sign-in",
+        "@/pages/auth/sign-up",
+        "@/pages/home",
+        "@/pages/demo",
+        "@/pages/guide"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -7571,6 +9562,8 @@
         "CIInvestigationSummary",
         "RepositoryContext"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "client/src/components/chat/chat-input.tsx",
@@ -7591,6 +9584,8 @@
         "AuthUser",
         "AuthResponse"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "client/src/lib/api.ts",
@@ -7612,6 +9607,8 @@
         "GithubReposResponse",
         "GithubConnectResponse"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "client/src/components/chat/index.tsx",
@@ -7637,6 +9634,8 @@
         "RepositoryAutomationSettings",
         "RepositoryAutomationSettingsInput"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "client/src/components/ide-workspace.tsx",
@@ -7660,6 +9659,10 @@
         "HistoricalRun",
         "SessionRunHistoryResponse"
       ],
+      "imports": [
+        "./agent.type"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "client/src/components/ide-workspace.tsx",
@@ -7677,6 +9680,8 @@
       "kind": "JSON configuration",
       "summary": "This JSON configuration is part of the project configuration layer. It supplies the repository behavior or operational contract associated with its declared configuration and content structure.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "client/README.md",
@@ -7698,6 +9703,8 @@
         "references",
         "compilerOptions"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -7715,6 +9722,8 @@
       "kind": "JSON configuration",
       "summary": "This JSON configuration is part of the project configuration layer. It supplies the repository behavior or operational contract associated with its declared configuration and content structure.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "client/README.md",
@@ -7740,6 +9749,8 @@
         "rewrites",
         "headers"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/services/product_assistant_service.py",
@@ -7757,6 +9768,13 @@
       "kind": "TypeScript module",
       "summary": "This TypeScript module is part of the repository reference layer. It supplies the repository behavior or operational contract associated with its declared configuration and content structure.",
       "symbols": [],
+      "imports": [
+        "vite",
+        "path",
+        "@vitejs/plugin-react",
+        "@tailwindcss/vite"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "client/tsconfig.node.json",
@@ -7777,6 +9795,8 @@
         "services",
         "volumes"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/agent/graph.py",
@@ -7796,6 +9816,8 @@
       "symbols": [
         "Agent safety boundary"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -7816,6 +9838,8 @@
         "Approval hash",
         "Optional candidate-verification approval"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -7840,6 +9864,8 @@
         "Optional candidate-verification boundary",
         "Historical regression-prevention advisory"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -7864,6 +9890,8 @@
         "Authorization and lifecycle",
         "Safety and known limitations"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "README.md",
@@ -7883,6 +9911,8 @@
       "symbols": [
         "Delivery workflow"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -7907,6 +9937,8 @@
         "5. Close",
         "Safety notes"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "README.md",
@@ -7932,6 +9964,8 @@
         "Optional GitHub App candidate verification",
         "Operating model"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/app/git/actions.py",
@@ -7956,6 +9990,8 @@
         "Bounds and redaction",
         "Verification"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -7980,6 +10016,8 @@
         "Current limits",
         "Change impact analysis"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/ARCHITECTURE.md",
@@ -7999,6 +10037,8 @@
       "symbols": [
         "Evaluation"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "README.md",
@@ -8024,6 +10064,8 @@
         "Active Validation",
         "Workspace Integrity & Side-Effect Detection"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -8042,6 +10084,8 @@
       "symbols": [
         "Failure handling"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -8063,6 +10107,8 @@
         "Completion evidence",
         "Deterministic rendered fixture"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -8087,6 +10133,8 @@
         "Candidate verification (optional GitHub App authority)",
         "Verification status"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -8110,6 +10158,8 @@
         "Remaining gaps and intentionally unsupported behavior",
         "Verification snapshot"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/FEATURE_PARITY_MATRIX.md",
@@ -8135,6 +10185,8 @@
         "Proposed incremental implementation",
         "P0.1 - intake and ledger"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/IMPLEMENTATION_PROGRESS.md",
@@ -8159,6 +10211,8 @@
         "Current external blockers",
         "Deployment profile update"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -8179,6 +10233,8 @@
         "External requirements",
         "Operational Memory DONE criteria"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/IMPLEMENTATION_AUDIT.md",
@@ -8186,9 +10242,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
         "docs/reports/source-file-inventory.json"
       ],
-      "lines": 178,
-      "sha256": "b8f8ab6b710162f23c4076e986e163e15ed29026a05d99e508380d076cec31e1",
-      "word_count": 4040
+      "lines": 180,
+      "sha256": "d3e01394e8e625cfeac608173b80cba5f8fec92237ee69a728837432d5ae6eed",
+      "word_count": 4063
     },
     {
       "path": "docs/INTERVIEW_TALK_TRACK.md",
@@ -8204,6 +10260,8 @@
         "How are stale CI failures handled?",
         "How does memory avoid becoming truth?"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "README.md",
@@ -8226,6 +10284,8 @@
         "Manually enabled evaluation mode",
         "What is required for a real external test"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/FEATURE_PARITY_MATRIX.md",
@@ -8246,6 +10306,8 @@
         "Observability and replay",
         "GitHub Actions spans"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -8270,6 +10332,8 @@
         "Provenance Model",
         "Commit-Aware Staleness"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -8294,6 +10358,8 @@
         "4. Sensitive File Policy",
         "5. Patch Size Limits"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -8316,6 +10382,8 @@
         "Release acceptance",
         "Latest verification and status"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/IMPLEMENTATION_STATUS.md",
@@ -8341,6 +10409,8 @@
         "Corrected production-profile issue",
         "Exact external gates and local substitutes"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/IMPLEMENTATION_STATUS.md",
@@ -8366,6 +10436,8 @@
         "Guardrails",
         "Research sources"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
@@ -8390,6 +10462,8 @@
         "Cost and accuracy rules",
         "Security invariants"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/SYSTEM_DESIGN.md",
@@ -8413,6 +10487,8 @@
         "Failure and scaling considerations",
         "Production SaaS controls"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "README.md",
@@ -8432,6 +10508,8 @@
       "symbols": [
         "Threat model"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "README.md",
@@ -8454,6 +10532,8 @@
         "Run progressively",
         "10,000-user evidence gate"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/docs/CONTEXT_ENGINEERING.md",
@@ -8476,6 +10556,11 @@
         "options",
         "response"
       ],
+      "imports": [
+        "k6/http",
+        "k6"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/tests/test_load_harness_safety.py",
@@ -8497,6 +10582,11 @@
         "options",
         "response"
       ],
+      "imports": [
+        "k6/http",
+        "k6"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/tests/test_load_harness_safety.py",
@@ -8516,6 +10606,8 @@
       "symbols": [
         "services"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/tests/test_deployment_blueprints.py",
@@ -8535,6 +10627,8 @@
       "symbols": [
         "services"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "backend/tests/test_deployment_blueprints.py",
@@ -8554,6 +10648,8 @@
       "symbols": [
         "services"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".github/workflows/deployment-readiness.yml",
@@ -8578,6 +10674,8 @@
         "do",
         "catch"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/DEMO_SCRIPT.md",
@@ -8595,6 +10693,8 @@
       "kind": "automation script",
       "summary": "This automation script is part of the developer and operational tooling layer. It supplies the repository behavior or operational contract associated with its declared configuration and content structure.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -8612,6 +10712,8 @@
       "kind": "automation script",
       "summary": "This automation script is part of the developer and operational tooling layer. It supplies the repository behavior or operational contract associated with its declared configuration and content structure.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -8637,6 +10739,16 @@
         "COVERAGE_PATH",
         "GENERATION_REPORT_PATH"
       ],
+      "imports": [
+        "__future__",
+        "argparse",
+        "ast",
+        "hashlib",
+        "json",
+        "math",
+        "re"
+      ],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/DEMO_SCRIPT.md",
@@ -8644,9 +10756,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf"
       ],
-      "lines": 1037,
-      "sha256": "e2fee11ef33841ef24af2b65fef3b75bc8317f153ea902833f3f77e41649c8f4",
-      "word_count": 11147
+      "lines": 1085,
+      "sha256": "f95ae11cbeef5e3429f37285c5a4353688c079c80cd16bc421ca67446e16e822",
+      "word_count": 11466
     },
     {
       "path": "scripts/requirements-engineering-book.txt",
@@ -8654,6 +10766,8 @@
       "kind": "configuration",
       "summary": "This configuration is part of the developer and operational tooling layer. It supplies the repository behavior or operational contract associated with its declared configuration and content structure.",
       "symbols": [],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         "docs/IMPLEMENTATION_STATUS.md",
@@ -8673,6 +10787,8 @@
       "symbols": [
         "AgentGraph"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -8692,6 +10808,8 @@
       "symbols": [
         "AgentGraph"
       ],
+      "imports": [],
+      "endpoints": [],
       "dependencies": [],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",

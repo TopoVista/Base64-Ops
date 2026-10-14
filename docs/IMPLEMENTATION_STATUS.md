@@ -87,8 +87,10 @@
 > source/documentation/test/configuration files, 368 dedicated reference pages,
 > and 425 PDF pages. It embeds one genuine, reproducibly captured,
 > mutation-disabled Safe Repair demo screenshot. Structural validation found
-> zero missing or duplicate file pages; representative rendered pages were
-> manually inspected. The documented
+> zero missing or duplicate file pages; source pages use bounded static facts
+> (symbols, imports/actions, route decorators, source digests, and resolved
+> in-repository relationships) rather than invented runtime claims; representative
+> rendered pages were manually inspected. The documented
 > install command is now `backend/venv/Scripts/python.exe -m pip install -r
 > scripts/requirements-engineering-book.txt`. Live GitHub, Atlas, Clerk,
 > OpenAI, Render, Vercel, Redis, and GitHub App verification remains `BLOCKED`
@@ -154,7 +156,7 @@ Status reflects executable code in this repository as of 2026-10-14. `BLOCKED` m
 | 27. Configuration cleanup | DONE | Configurable patch limits and memory settings (`memory_max_context_entries=5`, `memory_learning_enabled`). |
 | 28. GitHub auth hardening | DONE | OAuth state signing and encrypted token storage implemented. |
 | 29. Security hardening | DONE | Tenant-scoped queries, strict `RepositoryPathPolicy`, allowlisted commands, redaction, memory-cannot-authorize invariant. |
-| 30. Testing | DONE | 367 backend tests passed, 28/28 deterministic evals, clean Ruff, frontend TypeScript, LangGraph initialization, and Vite build passed in the latest local verification. The production bundle and npm-audit results are recorded in prior verification updates. Live provider and load tests remain blocked pending authorized external environments. |
+| 30. Testing | DONE | 369 backend tests passed, 28/28 deterministic evals, clean Ruff, frontend TypeScript, LangGraph initialization, and Vite build passed in the latest local verification. The production bundle and npm-audit results are recorded in prior verification updates. Live provider and load tests remain blocked pending authorized external environments. |
 | 31. Documentation | DONE | Core architecture, safety, evaluation, observability, memory, deployment, and implementation-status documents are maintained; the reproducible complete technical engineering book and its inventory/coverage/generation artifacts are in `docs/reports/`. |
 | 32. CI Regression Gate | DONE | `.github/workflows/ci.yml` runs backend tests, Ruff, deterministic evals, frontend build, a JavaScript bundle budget, and high-severity npm advisory gating. |
 | 33. Execution Runtime Sandbox | DONE | Subsystem `app.execution` implemented with request/result models, command registry, environment sanitization, process tree termination, output bounding, candidate workspace integrity checks, Docker sandbox runtime (`--network none`), and `GET /api/system/capabilities` API. |

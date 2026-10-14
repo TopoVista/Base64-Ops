@@ -1,6 +1,6 @@
 # Source-file coverage report
 
-- Analyzed Git commit: `b4f8d8c719632279f3210e62f6a4da9cec6f9322`
+- Analyzed Git commit: `40614de947f947aa5b92d06d36c4baf10de43f8b`
 - Total tracked files considered: **389**
 - Included source/documentation/test/configuration files: **368**
 - Excluded files: **21**
