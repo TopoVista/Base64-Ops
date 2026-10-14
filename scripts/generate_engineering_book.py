@@ -428,6 +428,8 @@ DIAGRAMS: list[tuple[str, tuple[str, ...], tuple[tuple[int, int], ...]]] = [
     ("Memory and retrieval", ("Repository index", "Lexical retrieval", "Optional vector", "Operational memory", "Current evidence", "Bounded context"), ((0, 1), (0, 2), (3, 5), (1, 5), (2, 5), (4, 5))),
     ("Deployment topology", ("Vercel client", "Render API", "MongoDB Atlas", "Redis optional", "Render workers", "GitHub and Clerk"), ((0, 1), (1, 2), (1, 3), (1, 4), (1, 5))),
     ("Trust boundaries", ("Untrusted browser and repository data", "API validation", "Policy and redaction", "Sandbox and approval", "GitHub delivery"), ((0, 1), (1, 2), (2, 3), (3, 4))),
+    ("Candidate verification boundary", ("Exact DeliveryPlan", "Separate approval", "GitHub App installation binding", "Candidate ref", "Reviewed workflow dispatch", "Bounded observer", "Read-only UI status"), ((0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6))),
+    ("Historical replay", ("Persisted run snapshot", "Redacted evidence IDs", "Safe trace spans", "Plan and approval state", "Browser-safe projection", "Read-only inspector"), ((0, 1), (0, 2), (0, 3), (1, 4), (2, 4), (3, 4), (4, 5))),
     ("Incident to delivery workflow", ("Signed failure event", "Incident evidence", "Diagnosis", "Patch proposal", "Approval", "Draft PR", "CI observation"), ((0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6))),
 ]
 

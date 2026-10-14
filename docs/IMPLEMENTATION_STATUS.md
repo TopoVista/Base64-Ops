@@ -85,7 +85,7 @@
 > Markdown source, source inventory, coverage report, and generation report.
 > The current edition contains 368 relevant tracked
 > source/documentation/test/configuration files, 368 dedicated reference pages,
-> and 425 PDF pages. It embeds one genuine, reproducibly captured,
+> and 427 PDF pages. It embeds one genuine, reproducibly captured,
 > mutation-disabled Safe Repair demo screenshot. Structural validation found
 > zero missing or duplicate file pages; source pages use bounded static facts
 > (symbols, imports/actions, route decorators, source digests, and resolved
