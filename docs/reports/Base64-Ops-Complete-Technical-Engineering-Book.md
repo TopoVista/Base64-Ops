@@ -4,8 +4,8 @@
 *An Evidence First AI DevOps Engineering System From Product Problem to Individual Source Files*
 
 - Repository: https://github.com/TopoVista/Base64-Ops
-- Generated: 2026-10-13 23:46 UTC
-- Analyzed commit: `465873407e4b33280d379d672568765c2ff6a40a`
+- Generated: 2026-10-14 00:01 UTC
+- Analyzed commit: `c31bc987b465133056049790dd9917af0a5c0fc9`
 - Scope: Git-tracked source at the recorded commit. Generated outputs, secrets, ignored environment files, decorative assets, and lockfiles are excluded by the accompanying inventory.
 - Verification statement: architecture claims are derived from checked-in code and local deterministic tests. External providers and deployed environments are called out as unverified when no live evidence was available.
 
@@ -177,7 +177,7 @@ A signed completed workflow_run webhook is verified against an exact raw-body HM
 
 ## Source file reference
 
-The PDF source reference begins on page 37. It contains 361 dedicated file pages. The PDF index spans 8 page(s).
+The PDF source reference begins on page 37. It contains 365 dedicated file pages. The PDF index spans 8 page(s).
 
 ### File reference: `.github/workflows/ci.yml`
 
@@ -1054,7 +1054,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/api/deps.py, backend/app/db/mongo.py, backend/app/schemas/incident.py, backend/app/services/candidate_verification_service.py, backend/app/services/github_service.py. Potential consumers found through bounded textual/import analysis: README.md, backend/app/main.py, backend/app/schemas/incident.py, backend/app/services/incident_reporting_service.py. The containing category is Backend API routes.
+Static in-repository dependencies: backend/app/api/deps.py, backend/app/db/mongo.py, backend/app/schemas/incident.py, backend/app/services/candidate_verification_service.py, backend/app/services/github_service.py. Potential consumers found through bounded textual/import analysis: README.md, backend/app/main.py, backend/app/schemas/incident.py, backend/app/schemas/regression_prevention.py. The containing category is Backend API routes.
 
 #### Simplified pseudocode
 
@@ -1128,7 +1128,7 @@ This router exposes a tenant-aware FastAPI boundary for Session. It validates th
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Session. Its extracted size is 275 lines and 925 lexical tokens; the source digest begins 87a675edf9d2.
+It exists to provide a coherent Python module boundary for Session. Its extracted size is 287 lines and 968 lexical tokens; the source digest begins 3ad2ececd84b.
 
 #### Important symbols
 
@@ -2563,7 +2563,7 @@ This Python module contributes to the backend platform subsystem. It defines foc
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Main. Its extracted size is 241 lines and 1087 lexical tokens; the source digest begins 965d5610bfb4.
+It exists to provide a coherent Python module boundary for Main. Its extracted size is 245 lines and 1104 lexical tokens; the source digest begins 71dda9707f0d.
 
 #### Important symbols
 
@@ -3375,6 +3375,47 @@ The implementation is reviewed in the context of tenant isolation, bounded input
 
 In one sentence: backend/app/schemas/patch.py is a Python module that owns a focused part of backend domain contracts. Related files: no direct in-repository import was statically resolved. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
+### File reference: `backend/app/schemas/regression_prevention.py`
+
+#### Purpose
+
+This Python module contributes to the backend domain contracts subsystem. It defines focused behavior around RegressionPreventionAdvisory, RegressionPreventionReport and is composed by higher-level application, service, or worker code.
+
+#### Key responsibilities
+
+It exists to provide a coherent Python module boundary for Regression Prevention. Its extracted size is 43 lines and 165 lexical tokens; the source digest begins ad167aabf115.
+
+#### Important symbols
+
+Important exported or declared symbols/sections identified by static inspection: RegressionPreventionAdvisory, RegressionPreventionReport. These names are a navigation aid, not a claim that every symbol is externally public.
+
+#### Connections
+
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: backend/app/api/routes/session.py, backend/app/services/regression_prevention_service.py, backend/app/services/session_service.py, backend/tests/test_regression_prevention_service.py. The containing category is Backend domain contracts.
+
+#### Simplified pseudocode
+
+```text
+READ backend/app/schemas/regression_prevention.py from its owning layer
+ACCEPT typed inputs or declared configuration
+APPLY the file's focused responsibility
+USE only its declared collaborators and boundaries
+RETURN typed data, rendered UI, a test assertion, or an operational contract
+SURFACE limitations rather than granting new authority
+```
+
+#### Workflow role
+
+It participates as a focused building block in the larger investigation, delivery, deployment, or verification flow described by its containing subsystem.
+
+#### Engineering details
+
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+
+#### Brief summary
+
+In one sentence: backend/app/schemas/regression_prevention.py is a Python module that owns a focused part of backend domain contracts. Related files: no direct in-repository import was statically resolved. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+
 ### File reference: `backend/app/schemas/replay.py`
 
 #### Purpose
@@ -4088,7 +4129,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: backend/app/core/config.py, backend/app/services/github_service.py, backend/app/services/redaction_service.py, backend/app/utils/datetime.py. Potential consumers found through bounded textual/import analysis: backend/app/services/incident_service.py, backend/tests/test_incident_reporting.py. The containing category is Backend services.
+Static in-repository dependencies: backend/app/core/config.py, backend/app/services/github_service.py, backend/app/services/redaction_service.py, backend/app/utils/datetime.py. Potential consumers found through bounded textual/import analysis: backend/app/services/incident_service.py, backend/tests/test_incident_reporting.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Backend services.
 
 #### Simplified pseudocode
 
@@ -4318,6 +4359,47 @@ The implementation is reviewed in the context of tenant isolation, bounded input
 
 In one sentence: backend/app/services/redaction_service.py is a Python module that owns a focused part of backend services. Related files: no direct in-repository import was statically resolved. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
+### File reference: `backend/app/services/regression_prevention_service.py`
+
+#### Purpose
+
+This service coordinates the Regression Prevention Service domain boundary. It combines typed inputs, persistence or provider access, and safety checks while leaving API authentication and UI presentation to adjacent layers.
+
+#### Key responsibilities
+
+It exists to provide a coherent Python module boundary for Regression Prevention Service. Its extracted size is 190 lines and 720 lexical tokens; the source digest begins 468a17e984fc.
+
+#### Important symbols
+
+Important exported or declared symbols/sections identified by static inspection: _HISTORY_LIMIT, _MAX_ADVISORIES, _MAX_OCCURRENCES_PER_ADVISORY, _THRESHOLD_DESCRIPTION, _normalise_path, _strings, RegressionPreventionService. These names are a navigation aid, not a claim that every symbol is externally public.
+
+#### Connections
+
+Static in-repository dependencies: backend/app/db/mongo.py, backend/app/schemas/delivery.py, backend/app/schemas/regression_prevention.py. Potential consumers found through bounded textual/import analysis: backend/app/services/session_service.py, backend/tests/test_regression_prevention_service.py, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Backend services.
+
+#### Simplified pseudocode
+
+```text
+READ backend/app/services/regression_prevention_service.py from its owning layer
+ACCEPT typed inputs or declared configuration
+APPLY the file's focused responsibility
+USE only its declared collaborators and boundaries
+RETURN typed data, rendered UI, a test assertion, or an operational contract
+SURFACE limitations rather than granting new authority
+```
+
+#### Workflow role
+
+It participates as a focused building block in the larger investigation, delivery, deployment, or verification flow described by its containing subsystem.
+
+#### Engineering details
+
+The implementation is reviewed in the context of tenant isolation, bounded inputs, centralized redaction, and fail-closed behavior where a durable or authorization-dependent resource is absent.
+
+#### Brief summary
+
+In one sentence: backend/app/services/regression_prevention_service.py is a Python module that owns a focused part of backend services. Related files: backend/app/db/mongo.py, backend/app/schemas/delivery.py, backend/app/schemas/regression_prevention.py. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+
 ### File reference: `backend/app/services/serializers.py`
 
 #### Purpose
@@ -4367,7 +4449,7 @@ This service coordinates the Session Service domain boundary. It combines typed 
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Session Service. Its extracted size is 2385 lines and 9901 lexical tokens; the source digest begins 2b0cd56eccfc.
+It exists to provide a coherent Python module boundary for Session Service. Its extracted size is 2391 lines and 10041 lexical tokens; the source digest begins be8feee76808.
 
 #### Important symbols
 
@@ -8300,15 +8382,15 @@ This test module protects the behavior of the backend tests area by arranging co
 
 #### Key responsibilities
 
-It exists to provide a coherent test boundary for Test Incident Reporting. Its extracted size is 71 lines and 247 lexical tokens; the source digest begins 808f95f8ddc5.
+It exists to provide a coherent test boundary for Test Incident Reporting. Its extracted size is 97 lines and 354 lexical tokens; the source digest begins 18e8f1c99d19.
 
 #### Important symbols
 
-Important exported or declared symbols/sections identified by static inspection: _incident, test_native_incident_report_is_a_neutral_redacted_check, test_native_incident_report_requires_existing_verified_app_binding. These names are a navigation aid, not a claim that every symbol is externally public.
+Important exported or declared symbols/sections identified by static inspection: _incident, test_native_incident_report_is_a_neutral_redacted_check, test_native_incident_report_requires_existing_verified_app_binding, test_native_incident_report_updates_an_existing_check. These names are a navigation aid, not a claim that every symbol is externally public.
 
 #### Connections
 
-Static in-repository dependencies: backend/app/services/incident_reporting_service.py. Potential consumers found through bounded textual/import analysis: no simple textual dependent was resolved; framework registration or runtime discovery may still use it. The containing category is Backend tests.
+Static in-repository dependencies: backend/app/services/incident_reporting_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
 
 #### Simplified pseudocode
 
@@ -8947,6 +9029,47 @@ The file is a deterministic regression guard. Its result is evidence about check
 #### Brief summary
 
 In one sentence: backend/tests/test_redaction_and_investigation.py is a test that owns a focused part of backend tests. Related files: backend/app/agent/graph.py, backend/app/schemas/investigation.py, backend/app/services/redaction_service.py. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+
+### File reference: `backend/tests/test_regression_prevention_service.py`
+
+#### Purpose
+
+This test module protects the behavior of the backend tests area by arranging controlled inputs, exercising the public or service boundary, and asserting its safety or correctness contract. Its visible symbols include _plan, _incident, test_prevention_requires_two_independent_supported_run_shas.
+
+#### Key responsibilities
+
+It exists to provide a coherent test boundary for Test Regression Prevention Service. Its extracted size is 189 lines and 518 lexical tokens; the source digest begins 339834c0b5ed.
+
+#### Important symbols
+
+Important exported or declared symbols/sections identified by static inspection: _plan, _incident, test_prevention_requires_two_independent_supported_run_shas, test_prevention_requires_exact_path_overlap_and_excludes_base_sha, _Cursor, _Incidents, _AutomationSettings. These names are a navigation aid, not a claim that every symbol is externally public.
+
+#### Connections
+
+Static in-repository dependencies: backend/app/schemas/delivery.py, backend/app/services/regression_prevention_service.py. Potential consumers found through bounded textual/import analysis: docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Backend tests.
+
+#### Simplified pseudocode
+
+```text
+READ backend/tests/test_regression_prevention_service.py from its owning layer
+ACCEPT typed inputs or declared configuration
+APPLY the file's focused responsibility
+USE only its declared collaborators and boundaries
+RETURN typed data, rendered UI, a test assertion, or an operational contract
+SURFACE limitations rather than granting new authority
+```
+
+#### Workflow role
+
+It participates when the verification suite exercises this subsystem. The file protects a behavior contract rather than serving an end-user request directly.
+
+#### Engineering details
+
+The file is a deterministic regression guard. Its result is evidence about checked behavior, not proof that a live provider, deployment, or production integration was exercised.
+
+#### Brief summary
+
+In one sentence: backend/tests/test_regression_prevention_service.py is a test that owns a focused part of backend tests. Related files: backend/app/schemas/delivery.py, backend/app/services/regression_prevention_service.py. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `backend/tests/test_render_blueprint.py`
 
@@ -10562,7 +10685,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/routes/route-guard.tsx. Potential consumers found through bounded textual/import analysis: client/src/components/sidebar/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components.
+Static in-repository dependencies: client/src/routes/route.ts. Potential consumers found through bounded textual/import analysis: client/src/components/sidebar/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Frontend components.
 
 #### Simplified pseudocode
 
@@ -10585,7 +10708,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/components/sidebar/navitems.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/routes/route-guard.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/components/sidebar/navitems.tsx is a TypeScript module that owns a focused part of frontend components. Related files: client/src/routes/route.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/components/sidebar/session-search-dialog.tsx`
 
@@ -11997,7 +12120,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/sidebar/session-search-dialog.tsx, client/src/components/ui/sidebar.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, client/src/routes/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend application.
+Static in-repository dependencies: client/src/components/sidebar/index.tsx, client/src/components/ui/sidebar.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/taste.md, client/src/routes/index.tsx, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf. The containing category is Frontend application.
 
 #### Simplified pseudocode
 
@@ -12020,7 +12143,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/layouts/app-layout.tsx is a TypeScript module that owns a focused part of frontend application. Related files: client/src/components/sidebar/session-search-dialog.tsx, client/src/components/ui/sidebar.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/layouts/app-layout.tsx is a TypeScript module that owns a focused part of frontend application. Related files: client/src/components/sidebar/index.tsx, client/src/components/ui/sidebar.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/layouts/base-layout.tsx`
 
@@ -12071,7 +12194,7 @@ This frontend module implements part of the frontend api and utilities surface. 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Api. Its extracted size is 647 lines and 1830 lexical tokens; the source digest begins f4bd6aff1473.
+It exists to provide a coherent TypeScript module boundary for Api. Its extracted size is 681 lines and 1919 lexical tokens; the source digest begins 63a968e9a6f8.
 
 #### Important symbols
 
@@ -12571,7 +12694,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/logo.tsx, client/src/components/mode-toggle.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/button.tsx, client/src/routes/route-guard.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
+Static in-repository dependencies: client/src/components/logo.tsx, client/src/components/mode-toggle.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/button.tsx, client/src/routes/route.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
 
 #### Simplified pseudocode
 
@@ -12594,7 +12717,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/pages/guide/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/logo.tsx, client/src/components/mode-toggle.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/button.tsx, client/src/routes/route-guard.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/pages/guide/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/logo.tsx, client/src/components/mode-toggle.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/button.tsx, client/src/routes/route.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/pages/home/index.tsx`
 
@@ -12612,7 +12735,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/chat/chat-input.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
+Static in-repository dependencies: client/src/components/chat/index.tsx. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
 
 #### Simplified pseudocode
 
@@ -12635,7 +12758,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/pages/home/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/chat/chat-input.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/pages/home/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/chat/index.tsx. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/pages/incidents/index.tsx`
 
@@ -12727,7 +12850,7 @@ This frontend module implements part of the frontend pages surface. It composes 
 
 #### Key responsibilities
 
-It exists to provide a coherent TypeScript module boundary for Index. Its extracted size is 2203 lines and 8379 lexical tokens; the source digest begins e198cf18b151.
+It exists to provide a coherent TypeScript module boundary for Index. Its extracted size is 2262 lines and 8777 lexical tokens; the source digest begins 1bc89d07e29b.
 
 #### Important symbols
 
@@ -12735,7 +12858,7 @@ Important exported or declared symbols/sections identified by static inspection:
 
 #### Connections
 
-Static in-repository dependencies: client/src/components/chat/chat-input.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/textarea.tsx, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
+Static in-repository dependencies: client/src/components/chat/index.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/textarea.tsx, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. Potential consumers found through bounded textual/import analysis: .commandcode/taste/node.js-scaffolding/taste.md, .commandcode/taste/taste.md, backend/.env.example, backend/README.md. The containing category is Frontend pages.
 
 #### Simplified pseudocode
 
@@ -12758,7 +12881,7 @@ The client treats backend responses as the authority for safety state. It can pr
 
 #### Brief summary
 
-In one sentence: client/src/pages/session/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/chat/chat-input.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/textarea.tsx, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+In one sentence: client/src/pages/session/index.tsx is a TypeScript module that owns a focused part of frontend pages. Related files: client/src/components/chat/index.tsx, client/src/components/ui/badge.tsx, client/src/components/ui/textarea.tsx, client/src/components/ide-workspace.tsx, client/src/lib/api.ts. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `client/src/routes/index.tsx`
 
@@ -13422,11 +13545,11 @@ This documentation file records the repository's current guidance for Architectu
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Architecture. Its extracted size is 88 lines and 710 lexical tokens; the source digest begins 43ebae548798.
+It exists to provide a coherent documentation boundary for Architecture. Its extracted size is 104 lines and 849 lexical tokens; the source digest begins 5d2463d1cd64.
 
 #### Important symbols
 
-Important exported or declared symbols/sections identified by static inspection: Architecture, Engineering Intelligence graph, Session workspace, Safety boundary, Optional GitHub-native incident reporting, Optional candidate-verification boundary. These names are a navigation aid, not a claim that every symbol is externally public.
+Important exported or declared symbols/sections identified by static inspection: Architecture, Engineering Intelligence graph, Session workspace, Safety boundary, Optional GitHub-native incident reporting, Optional candidate-verification boundary, Historical regression-prevention advisory. These names are a navigation aid, not a claim that every symbol is externally public.
 
 #### Connections
 
@@ -13702,7 +13825,7 @@ This documentation file records the repository's current guidance for Evaluation
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Evaluation. Its extracted size is 24 lines and 263 lexical tokens; the source digest begins 141596d9f817.
+It exists to provide a coherent documentation boundary for Evaluation. Its extracted size is 31 lines and 324 lexical tokens; the source digest begins 3400bb8fb0fe.
 
 #### Important symbols
 
@@ -13942,7 +14065,7 @@ This documentation file records the repository's current guidance for Implementa
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Implementation Gap Analysis. Its extracted size is 103 lines and 1215 lexical tokens; the source digest begins ae6c14a869da.
+It exists to provide a coherent documentation boundary for Implementation Gap Analysis. Its extracted size is 103 lines and 1237 lexical tokens; the source digest begins 1a2d1139908f.
 
 #### Important symbols
 
@@ -13982,7 +14105,7 @@ This documentation file records the repository's current guidance for Implementa
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Implementation Progress. Its extracted size is 157 lines and 1228 lexical tokens; the source digest begins 9909f5c79f5f.
+It exists to provide a coherent documentation boundary for Implementation Progress. Its extracted size is 161 lines and 1267 lexical tokens; the source digest begins a04fd168cea3.
 
 #### Important symbols
 
@@ -14022,7 +14145,7 @@ This documentation file records the repository's current guidance for Implementa
 
 #### Key responsibilities
 
-It exists to provide a coherent documentation boundary for Implementation Status. Its extracted size is 84 lines and 3080 lexical tokens; the source digest begins 0a15a603b08a.
+It exists to provide a coherent documentation boundary for Implementation Status. Its extracted size is 131 lines and 3489 lexical tokens; the source digest begins debcc92854e2.
 
 #### Important symbols
 
@@ -14829,7 +14952,7 @@ This Python module is part of the developer and operational tooling layer. It su
 
 #### Key responsibilities
 
-It exists to provide a coherent Python module boundary for Generate Engineering Book. Its extracted size is 971 lines and 10796 lexical tokens; the source digest begins 3ff79534ae7b.
+It exists to provide a coherent Python module boundary for Generate Engineering Book. Its extracted size is 972 lines and 10806 lexical tokens; the source digest begins b1b819567f16.
 
 #### Important symbols
 
@@ -14861,6 +14984,47 @@ The file is part of the operational contract. Its details should be interpreted 
 #### Brief summary
 
 In one sentence: scripts/generate_engineering_book.py is a Python module that owns a focused part of developer and operational tooling. Related files: no direct in-repository import was statically resolved. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
+
+### File reference: `scripts/requirements-engineering-book.txt`
+
+#### Purpose
+
+This configuration is part of the developer and operational tooling layer. It supplies the repository behavior or operational contract associated with its declared configuration and content structure.
+
+#### Key responsibilities
+
+It exists to provide a coherent configuration boundary for Requirements Engineering Book. Its extracted size is 6 lines and 34 lexical tokens; the source digest begins 6c079715ae41.
+
+#### Important symbols
+
+Important exported or declared symbols/sections identified by static inspection: no public symbol list was extracted from this file format. These names are a navigation aid, not a claim that every symbol is externally public.
+
+#### Connections
+
+Static in-repository dependencies: no direct in-repository import was statically resolved. Potential consumers found through bounded textual/import analysis: docs/IMPLEMENTATION_STATUS.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md, docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf, docs/reports/source-file-inventory.json. The containing category is Developer and operational tooling.
+
+#### Simplified pseudocode
+
+```text
+READ scripts/requirements-engineering-book.txt from its owning layer
+ACCEPT typed inputs or declared configuration
+APPLY the file's focused responsibility
+USE only its declared collaborators and boundaries
+RETURN typed data, rendered UI, a test assertion, or an operational contract
+SURFACE limitations rather than granting new authority
+```
+
+#### Workflow role
+
+It participates as a focused building block in the larger investigation, delivery, deployment, or verification flow described by its containing subsystem.
+
+#### Engineering details
+
+The file is part of the operational contract. Its details should be interpreted with the matching runtime/configuration conditions rather than as evidence that an external environment is live.
+
+#### Brief summary
+
+In one sentence: scripts/requirements-engineering-book.txt is a configuration that owns a focused part of developer and operational tooling. Related files: no direct in-repository import was statically resolved. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module.
 
 ### File reference: `scripts/verify.ps1`
 

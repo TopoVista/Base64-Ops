@@ -1,10 +1,10 @@
 {
   "schemaVersion": "base64-ops-source-inventory-v1",
-  "generatedAt": "2026-10-13T23:46:24.319855+00:00",
-  "analyzedCommit": "465873407e4b33280d379d672568765c2ff6a40a",
-  "repositoryState": "M backend/.gitignore\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
-  "totalTrackedFiles": 381,
-  "includedCount": 361,
+  "generatedAt": "2026-10-14T00:02:01.674665+00:00",
+  "analyzedCommit": "c31bc987b465133056049790dd9917af0a5c0fc9",
+  "repositoryState": "M backend/.gitignore\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf\n M docs/reports/document-generation-report.md\n M docs/reports/file-coverage-report.md\n M docs/reports/source-file-inventory.json",
+  "totalTrackedFiles": 385,
+  "includedCount": 365,
   "excludedCount": 20,
   "included": [
     {
@@ -522,7 +522,7 @@
         "README.md",
         "backend/app/main.py",
         "backend/app/schemas/incident.py",
-        "backend/app/services/incident_reporting_service.py"
+        "backend/app/schemas/regression_prevention.py"
       ],
       "lines": 363,
       "sha256": "8dffa2b3cb4edafbea3ba496bd33fe24d5dc3769e8cc8122313e475f6d41cdae",
@@ -586,9 +586,9 @@
         "backend/.env.example",
         "backend/app/agent/graph.py"
       ],
-      "lines": 275,
-      "sha256": "87a675edf9d2c0b76b54bbd775639905378d4572682ca3f0955501bc487fcdf9",
-      "word_count": 925
+      "lines": 287,
+      "sha256": "3ad2ececd84bcb1ff4fdfc8000e68b833b738fdbd39704de4ff7767148712c51",
+      "word_count": 968
     },
     {
       "path": "backend/app/api/routes/system.py",
@@ -1402,9 +1402,9 @@
         ".github/workflows/deployment-readiness.yml",
         "README.md"
       ],
-      "lines": 241,
-      "sha256": "965d5610bfb411bb906989ea6ec6570a0ee310ae2b6cf5552495ccf0ae2c650e",
-      "word_count": 1087
+      "lines": 245,
+      "sha256": "71dda9707f0da16a1fb6619d6572163e20adde64bfbfbae515a39beac3178e32",
+      "word_count": 1104
     },
     {
       "path": "backend/app/memory/__init__.py",
@@ -1837,6 +1837,26 @@
       "lines": 33,
       "sha256": "2ec73457ffbc9c94d565a32e9038954b35cdbf36212c31237e3571d0719449bc",
       "word_count": 87
+    },
+    {
+      "path": "backend/app/schemas/regression_prevention.py",
+      "category": "Backend domain contracts",
+      "kind": "Python module",
+      "summary": "This Python module contributes to the backend domain contracts subsystem. It defines focused behavior around RegressionPreventionAdvisory, RegressionPreventionReport and is composed by higher-level application, service, or worker code.",
+      "symbols": [
+        "RegressionPreventionAdvisory",
+        "RegressionPreventionReport"
+      ],
+      "dependencies": [],
+      "dependents": [
+        "backend/app/api/routes/session.py",
+        "backend/app/services/regression_prevention_service.py",
+        "backend/app/services/session_service.py",
+        "backend/tests/test_regression_prevention_service.py"
+      ],
+      "lines": 43,
+      "sha256": "ad167aabf115de6b0646dab58a110ce90e776af399078f2c1f215c22d96fd151",
+      "word_count": 165
     },
     {
       "path": "backend/app/schemas/replay.py",
@@ -2296,7 +2316,9 @@
       ],
       "dependents": [
         "backend/app/services/incident_service.py",
-        "backend/tests/test_incident_reporting.py"
+        "backend/tests/test_incident_reporting.py",
+        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
+        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf"
       ],
       "lines": 133,
       "sha256": "c78865592e9dadfb8a6ca48619fcf100961e8dc044fc252109c259f794b9dc51",
@@ -2435,6 +2457,35 @@
       "word_count": 171
     },
     {
+      "path": "backend/app/services/regression_prevention_service.py",
+      "category": "Backend services",
+      "kind": "Python module",
+      "summary": "This service coordinates the Regression Prevention Service domain boundary. It combines typed inputs, persistence or provider access, and safety checks while leaving API authentication and UI presentation to adjacent layers.",
+      "symbols": [
+        "_HISTORY_LIMIT",
+        "_MAX_ADVISORIES",
+        "_MAX_OCCURRENCES_PER_ADVISORY",
+        "_THRESHOLD_DESCRIPTION",
+        "_normalise_path",
+        "_strings",
+        "RegressionPreventionService"
+      ],
+      "dependencies": [
+        "backend/app/db/mongo.py",
+        "backend/app/schemas/delivery.py",
+        "backend/app/schemas/regression_prevention.py"
+      ],
+      "dependents": [
+        "backend/app/services/session_service.py",
+        "backend/tests/test_regression_prevention_service.py",
+        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
+        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf"
+      ],
+      "lines": 190,
+      "sha256": "468a17e984fc1eefcf37e60b1df7536825fe7a5bef6dfc5bec8fc3a832c54450",
+      "word_count": 720
+    },
+    {
       "path": "backend/app/services/serializers.py",
       "category": "Backend services",
       "kind": "Python module",
@@ -2481,9 +2532,9 @@
         "backend/app/api/routes/session.py",
         "backend/app/main.py"
       ],
-      "lines": 2385,
-      "sha256": "2b0cd56eccfcdbf821db1f9b3bccc08f3067696d63c437db2fe27a091539ade6",
-      "word_count": 9901
+      "lines": 2391,
+      "sha256": "be8feee76808b12cf7303fab2879b5899a19b60a7fc3ef9e02991efd264768af",
+      "word_count": 10041
     },
     {
       "path": "backend/app/services/workspace_service.py",
@@ -4659,15 +4710,20 @@
       "symbols": [
         "_incident",
         "test_native_incident_report_is_a_neutral_redacted_check",
-        "test_native_incident_report_requires_existing_verified_app_binding"
+        "test_native_incident_report_requires_existing_verified_app_binding",
+        "test_native_incident_report_updates_an_existing_check"
       ],
       "dependencies": [
         "backend/app/services/incident_reporting_service.py"
       ],
-      "dependents": [],
-      "lines": 71,
-      "sha256": "808f95f8ddc56f884705494467e7b4b4f2eee183a8f195bba0489dcc66b3eb91",
-      "word_count": 247
+      "dependents": [
+        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
+        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
+        "docs/reports/source-file-inventory.json"
+      ],
+      "lines": 97,
+      "sha256": "18e8f1c99d19ab05047143fdb71fe0f35121e0425252c053d0886a32770a8323",
+      "word_count": 354
     },
     {
       "path": "backend/tests/test_live_eval_truthfulness.py",
@@ -5042,6 +5098,33 @@
       "lines": 342,
       "sha256": "fb4e3be71106bec5af19e3160a14edc1f154ec332b95e17910ab828e13544f32",
       "word_count": 1071
+    },
+    {
+      "path": "backend/tests/test_regression_prevention_service.py",
+      "category": "Backend tests",
+      "kind": "test",
+      "summary": "This test module protects the behavior of the backend tests area by arranging controlled inputs, exercising the public or service boundary, and asserting its safety or correctness contract. Its visible symbols include _plan, _incident, test_prevention_requires_two_independent_supported_run_shas.",
+      "symbols": [
+        "_plan",
+        "_incident",
+        "test_prevention_requires_two_independent_supported_run_shas",
+        "test_prevention_requires_exact_path_overlap_and_excludes_base_sha",
+        "_Cursor",
+        "_Incidents",
+        "_AutomationSettings"
+      ],
+      "dependencies": [
+        "backend/app/schemas/delivery.py",
+        "backend/app/services/regression_prevention_service.py"
+      ],
+      "dependents": [
+        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
+        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
+        "docs/reports/source-file-inventory.json"
+      ],
+      "lines": 189,
+      "sha256": "339834c0b5edc7501b7ed83ffe70aec4860e086d4cbaeb27067e7559d0060f11",
+      "word_count": 518
     },
     {
       "path": "backend/tests/test_render_blueprint.py",
@@ -6014,7 +6097,7 @@
         "NavItems"
       ],
       "dependencies": [
-        "client/src/routes/route-guard.tsx"
+        "client/src/routes/route.ts"
       ],
       "dependents": [
         "client/src/components/sidebar/index.tsx",
@@ -6868,7 +6951,7 @@
         "AppLayout"
       ],
       "dependencies": [
-        "client/src/components/sidebar/session-search-dialog.tsx",
+        "client/src/components/sidebar/index.tsx",
         "client/src/components/ui/sidebar.tsx"
       ],
       "dependents": [
@@ -6927,9 +7010,9 @@
         "backend/app/agent/graph.py",
         "backend/app/api/deps.py"
       ],
-      "lines": 647,
-      "sha256": "f4bd6aff147324ef831d21fe5d12a5c2f1085305a0dd6e8f883132500e4da2b6",
-      "word_count": 1830
+      "lines": 681,
+      "sha256": "63a968e9a6f87dcf685822cbd031130cd337607e1d2fb2688de9f2975a4f9090",
+      "word_count": 1919
     },
     {
       "path": "client/src/lib/auth-redirect.ts",
@@ -7228,7 +7311,7 @@
         "client/src/components/mode-toggle.tsx",
         "client/src/components/ui/badge.tsx",
         "client/src/components/ui/button.tsx",
-        "client/src/routes/route-guard.tsx"
+        "client/src/routes/route.ts"
       ],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -7250,7 +7333,7 @@
         "location"
       ],
       "dependencies": [
-        "client/src/components/chat/chat-input.tsx"
+        "client/src/components/chat/index.tsx"
       ],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -7327,7 +7410,7 @@
         "pathsReferToSameFile"
       ],
       "dependencies": [
-        "client/src/components/chat/chat-input.tsx",
+        "client/src/components/chat/index.tsx",
         "client/src/components/ui/badge.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/components/ide-workspace.tsx",
@@ -7339,9 +7422,9 @@
         "backend/.env.example",
         "backend/README.md"
       ],
-      "lines": 2203,
-      "sha256": "e198cf18b151fa9fc94dafc5c08042d908be1ebf4ae036b757f462c3131ae0ab",
-      "word_count": 8379
+      "lines": 2262,
+      "sha256": "1bc89d07e29ba0686dd8761030a3cf09e872fe63555ad3fa826c7cf59360f51b",
+      "word_count": 8777
     },
     {
       "path": "client/src/routes/index.tsx",
@@ -7699,7 +7782,8 @@
         "Session workspace",
         "Safety boundary",
         "Optional GitHub-native incident reporting",
-        "Optional candidate-verification boundary"
+        "Optional candidate-verification boundary",
+        "Historical regression-prevention advisory"
       ],
       "dependencies": [],
       "dependents": [
@@ -7707,9 +7791,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
         "docs/reports/source-file-inventory.json"
       ],
-      "lines": 88,
-      "sha256": "43ebae5487988b37b16c9090cafeb9e17354aa61b652c4f62265a72d586da47c",
-      "word_count": 710
+      "lines": 104,
+      "sha256": "5d2463d1cd641928c7c8442dcef758577fa027c8a5279b60dac93c39ddc8737b",
+      "word_count": 849
     },
     {
       "path": "docs/CANDIDATE_VERIFICATION.md",
@@ -7867,9 +7951,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf"
       ],
-      "lines": 24,
-      "sha256": "141596d9f8171b8e64a112f48a1acdf45f6ae6c91ac0bbc88e14e43c8350c7c0",
-      "word_count": 263
+      "lines": 31,
+      "sha256": "3400bb8fb0fe4e77a055e5cb75d3e433f9f95918617de8e78f31115c666942e4",
+      "word_count": 324
     },
     {
       "path": "docs/EXECUTION_SANDBOX.md",
@@ -8004,8 +8088,8 @@
         "docs/reports/source-file-inventory.json"
       ],
       "lines": 103,
-      "sha256": "ae6c14a869da25b2d5e44d0423a7444b1853d928cd53af225775bc2e99e5d5ce",
-      "word_count": 1215
+      "sha256": "1a2d1139908f821c272cc2c5307c49575f334dc6d9b08f07713ad7933d57bdf6",
+      "word_count": 1237
     },
     {
       "path": "docs/IMPLEMENTATION_PROGRESS.md",
@@ -8026,9 +8110,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
         "docs/reports/source-file-inventory.json"
       ],
-      "lines": 157,
-      "sha256": "9909f5c79f5f39e1c83c44bbb9d3e350ffc4456f623070dbcd38cc61f64e845a",
-      "word_count": 1228
+      "lines": 161,
+      "sha256": "a04fd168cea3b6d8e1e683d067c3c834d1de74d80a68ff3d76dfba55ca4e058c",
+      "word_count": 1267
     },
     {
       "path": "docs/IMPLEMENTATION_STATUS.md",
@@ -8046,9 +8130,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
         "docs/reports/source-file-inventory.json"
       ],
-      "lines": 84,
-      "sha256": "0a15a603b08ac32e3dd95bfc3c0e6a3bf039bc8a99604c8faa55e3d0b6279452",
-      "word_count": 3080
+      "lines": 131,
+      "sha256": "debcc92854e22ea5b2834025e946d939c01351b7124ba3db104fa5a2cfeddd7b",
+      "word_count": 3489
     },
     {
       "path": "docs/INTERVIEW_TALK_TRACK.md",
@@ -8480,9 +8564,26 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
         "docs/reports/document-generation-report.md"
       ],
-      "lines": 971,
-      "sha256": "3ff79534ae7bbe8c1a0a2af71110f537e1a52fe578e83608d97236c36d2917bd",
-      "word_count": 10796
+      "lines": 972,
+      "sha256": "b1b819567f168ca74633883184b36c1958e2c23464e989e38d5ee1c103620155",
+      "word_count": 10806
+    },
+    {
+      "path": "scripts/requirements-engineering-book.txt",
+      "category": "Developer and operational tooling",
+      "kind": "configuration",
+      "summary": "This configuration is part of the developer and operational tooling layer. It supplies the repository behavior or operational contract associated with its declared configuration and content structure.",
+      "symbols": [],
+      "dependencies": [],
+      "dependents": [
+        "docs/IMPLEMENTATION_STATUS.md",
+        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
+        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
+        "docs/reports/source-file-inventory.json"
+      ],
+      "lines": 6,
+      "sha256": "6c079715ae4151399cb0e09e8f8553d25028fc5f4e4edfb18d294a6e611077d5",
+      "word_count": 34
     },
     {
       "path": "scripts/verify.ps1",

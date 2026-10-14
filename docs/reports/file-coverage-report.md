@@ -1,13 +1,13 @@
 # Source-file coverage report
 
-- Analyzed Git commit: `465873407e4b33280d379d672568765c2ff6a40a`
-- Total tracked files considered: **381**
-- Included source/documentation/test/configuration files: **361**
+- Analyzed Git commit: `c31bc987b465133056049790dd9917af0a5c0fc9`
+- Total tracked files considered: **385**
+- Included source/documentation/test/configuration files: **365**
 - Excluded files: **20**
-- Dedicated source-file reference pages: **361**
+- Dedicated source-file reference pages: **365**
 - Source reference start page: **37**
 - Source index pages: **8**
-- Total PDF pages: **417**
+- Total PDF pages: **421**
 - Documented source-file pages equal included files: **True**
 - Missing file pages: **0**
 - Duplicate file pages: **0**
