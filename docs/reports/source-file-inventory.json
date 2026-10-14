@@ -1,11 +1,11 @@
 {
   "schemaVersion": "base64-ops-source-inventory-v1",
-  "generatedAt": "2026-10-14T00:29:56.433811+00:00",
-  "analyzedCommit": "30e4c72f4bb7e5ec5f8a21335b15ef49cdd4b969",
-  "repositoryState": "M backend/.gitignore\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
-  "totalTrackedFiles": 387,
-  "includedCount": 367,
-  "excludedCount": 20,
+  "generatedAt": "2026-10-14T03:42:54.489185+00:00",
+  "analyzedCommit": "11cdb9494571cba52f527d66c46daccab63b04e9",
+  "repositoryState": "M backend/.gitignore\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf\n M docs/reports/document-generation-report.md\n M docs/reports/file-coverage-report.md\n M docs/reports/source-file-inventory.json",
+  "totalTrackedFiles": 389,
+  "includedCount": 368,
+  "excludedCount": 21,
   "included": [
     {
       "path": ".github/workflows/ci.yml",
@@ -5624,7 +5624,7 @@
       ],
       "dependencies": [
         "client/src/components/ui/avatar.tsx",
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/collapsible.tsx",
         "client/src/lib/utils.ts"
       ],
@@ -5653,7 +5653,7 @@
         "ConversationScrollButtonProps"
       ],
       "dependencies": [
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/lib/utils.ts"
       ],
       "dependents": [
@@ -5681,7 +5681,6 @@
         "MessageActionProps"
       ],
       "dependencies": [
-        "client/src/components/ui/button.tsx",
         "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/tooltip.tsx",
         "client/src/lib/utils.ts"
@@ -5913,7 +5912,7 @@
       ],
       "dependencies": [
         "client/src/components/diff-viewer.tsx",
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/lib/api.ts"
       ],
@@ -6040,7 +6039,7 @@
         "ModeToggle"
       ],
       "dependencies": [
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/dropdown-menu.tsx",
         "client/src/components/theme-provider.tsx"
       ],
@@ -6070,7 +6069,7 @@
       ],
       "dependencies": [
         "client/src/lib/api.ts",
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/scroll-area.tsx",
         "client/src/components/ui/textarea.tsx"
       ],
@@ -6151,7 +6150,7 @@
         "NavItems"
       ],
       "dependencies": [
-        "client/src/routes/route.ts"
+        "client/src/routes/route-guard.tsx"
       ],
       "dependents": [
         "client/src/components/sidebar/index.tsx",
@@ -6410,7 +6409,7 @@
       ],
       "dependencies": [
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button.tsx"
+        "client/src/components/ui/button-group.tsx"
       ],
       "dependents": [
         "client/src/components/ai-elements/prompt-input.tsx",
@@ -6515,7 +6514,7 @@
       ],
       "dependencies": [
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/input.tsx",
         "client/src/components/ui/textarea.tsx"
       ],
@@ -6684,7 +6683,7 @@
       ],
       "dependencies": [
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button.tsx"
+        "client/src/components/ui/button-group.tsx"
       ],
       "dependents": [
         "client/index.html",
@@ -6713,7 +6712,7 @@
       "dependencies": [
         "client/src/hooks/use-mobile.ts",
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/input.tsx",
         "client/src/components/ui/separator.tsx"
       ],
@@ -7005,7 +7004,7 @@
         "AppLayout"
       ],
       "dependencies": [
-        "client/src/components/sidebar/index.tsx",
+        "client/src/components/sidebar/session-search-dialog.tsx",
         "client/src/components/ui/sidebar.tsx"
       ],
       "dependents": [
@@ -7256,7 +7255,7 @@
         "plan"
       ],
       "dependencies": [
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/badge.tsx",
         "client/src/lib/api.ts"
       ],
@@ -7364,8 +7363,8 @@
         "client/src/components/logo.tsx",
         "client/src/components/mode-toggle.tsx",
         "client/src/components/ui/badge.tsx",
-        "client/src/components/ui/button.tsx",
-        "client/src/routes/route.ts"
+        "client/src/components/ui/button-group.tsx",
+        "client/src/routes/route-guard.tsx"
       ],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -7387,7 +7386,7 @@
         "location"
       ],
       "dependencies": [
-        "client/src/components/chat/chat-input.tsx"
+        "client/src/components/chat/tool-parts.tsx"
       ],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -7415,7 +7414,7 @@
       ],
       "dependencies": [
         "client/src/components/ui/badge.tsx",
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/input.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/components/ui/skeleton.tsx"
@@ -7464,7 +7463,7 @@
         "pathsReferToSameFile"
       ],
       "dependencies": [
-        "client/src/components/chat/chat-input.tsx",
+        "client/src/components/chat/tool-parts.tsx",
         "client/src/components/ui/badge.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/components/ide-workspace.tsx",
@@ -7911,11 +7910,11 @@
         "README.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
-        "docs/reports/source-file-inventory.json"
+        "docs/reports/document-generation-report.md"
       ],
-      "lines": 46,
-      "sha256": "9bf51d819008fae5ea29155ef338fc52a09118d68cea7ff874b1dd2e198fe18c",
-      "word_count": 371
+      "lines": 65,
+      "sha256": "a746c0a8f26664970cd45962d8e8b3119cc1c4eb10bacfc2fca44691f7ca05ad",
+      "word_count": 484
     },
     {
       "path": "docs/DEPLOYMENT.md",
@@ -8066,10 +8065,11 @@
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
+        "docs/reports/document-generation-report.md",
         "docs/reports/source-file-inventory.json"
       ],
-      "lines": 75,
-      "sha256": "31f23873203639bb8586721579127943f636fec2efe6fac9f218dfa022afd03e",
+      "lines": 76,
+      "sha256": "e24a0e9bcf7d5f4d750c0ffcdb7ecc51f826ac878417d0ecbce11e9dcbb914cf",
       "word_count": 1262
     },
     {
@@ -8182,11 +8182,12 @@
       "dependents": [
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
+        "docs/reports/document-generation-report.md",
         "docs/reports/source-file-inventory.json"
       ],
       "lines": 156,
-      "sha256": "58d28b8e146266eb0647ac1d5d8ba20833cab1db32920de7b2dc1c2ba053e761",
-      "word_count": 3736
+      "sha256": "016e846ef286c95dec04655dad57064f4fc89afb172202e3286e5850c468be0f",
+      "word_count": 3779
     },
     {
       "path": "docs/INTERVIEW_TALK_TRACK.md",
@@ -8564,6 +8565,30 @@
       "word_count": 969
     },
     {
+      "path": "scripts/capture_demo_screenshot.ps1",
+      "category": "Developer and operational tooling",
+      "kind": "automation script",
+      "summary": "This automation script is part of the developer and operational tooling layer. It supplies the repository behavior or operational contract associated with CmdletBinding, try, finally.",
+      "symbols": [
+        "CmdletBinding",
+        "try",
+        "finally",
+        "NewGuid",
+        "do",
+        "catch"
+      ],
+      "dependencies": [],
+      "dependents": [
+        "docs/DEMO_SCRIPT.md",
+        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
+        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
+        "docs/reports/document-generation-report.md"
+      ],
+      "lines": 86,
+      "sha256": "a6f22ad1f6bc1007991cdb124e97391986bb691859405474e7cdc9bcc3f7c7c8",
+      "word_count": 348
+    },
+    {
       "path": "scripts/demo.ps1",
       "category": "Developer and operational tooling",
       "kind": "automation script",
@@ -8613,14 +8638,14 @@
       ],
       "dependencies": [],
       "dependents": [
+        "docs/DEMO_SCRIPT.md",
         "docs/IMPLEMENTATION_STATUS.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
-        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
-        "docs/reports/document-generation-report.md"
+        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf"
       ],
-      "lines": 972,
-      "sha256": "b1b819567f168ca74633883184b36c1958e2c23464e989e38d5ee1c103620155",
-      "word_count": 10806
+      "lines": 1032,
+      "sha256": "ac1618005fa4c1f2f197941cae12c862a25ddbee85bbaf16356566d2aa7f3d9b",
+      "word_count": 11119
     },
     {
       "path": "scripts/requirements-engineering-book.txt",
@@ -8737,6 +8762,10 @@
     },
     {
       "path": "client/src/assets/vite.svg",
+      "reason": "Decorative asset, lockfile, runtime-version pin, or routine ignore configuration; it has no dedicated architecture behavior."
+    },
+    {
+      "path": "docs/assets/screenshots/safe-repair-demo.png",
       "reason": "Decorative asset, lockfile, runtime-version pin, or routine ignore configuration; it has no dedicated architecture behavior."
     },
     {
