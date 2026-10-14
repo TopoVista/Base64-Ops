@@ -34,7 +34,18 @@
 > verification is `BLOCKED` until an authorized non-production environment is
 > configured.
 
-> Engineering-book update (2026-10-14): `DONE`. The reproducible `scripts/generate_engineering_book.py` generator produced `docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf` and its Markdown source, source inventory, coverage report, and generation report. The edition is bound to commit `465873407e4b33280d379d672568765c2ff6a40a`, includes 361 relevant tracked source/documentation/test/configuration files, and gives each included file exactly one dedicated reference page. Structural validation found zero missing or duplicate file pages; representative rendered pages were manually inspected. Live GitHub, Atlas, Clerk, OpenAI, Render, Vercel, Redis, and GitHub App verification remains `BLOCKED` because no authorized live-provider exercise was performed.
+> Engineering-book update (2026-10-14): `DONE`. The reproducible
+> `scripts/generate_engineering_book.py` generator produced
+> `docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf` and its
+> Markdown source, source inventory, coverage report, and generation report.
+> The current edition contains 365 relevant tracked
+> source/documentation/test/configuration files, 365 dedicated reference pages,
+> and 421 PDF pages. Structural validation found zero missing or duplicate file
+> pages; representative rendered pages were manually inspected. The documented
+> install command is now `backend/venv/Scripts/python.exe -m pip install -r
+> scripts/requirements-engineering-book.txt`. Live GitHub, Atlas, Clerk,
+> OpenAI, Render, Vercel, Redis, and GitHub App verification remains `BLOCKED`
+> because no authorized live-provider exercise was performed.
 
 > Production-readiness hardening update (2026-10-12): `PARTIAL`. The full Render Blueprint is now a fixed four-role profile—API, maintenance, indexer, and read-only CI observer—with **every** role on the requested `0.5c-512mb` tier (2 vCPUs total), rather than an understated profile whose API/workers could provision 2–8 GB plans. The compact MVP remains a separate one-service 512 MB profile. Active repository-code validation fails closed whenever the requested Docker isolation is unavailable and is never redirected to the Render/API host; the capability response reports that state as unavailable. The API declares PyJWT, production validates an operator-supplied Fernet key instead of trusting generic host secret generation, and direct Docker sandbox callers now default to the same Python 3.13.5 image as CI and production. `PRODUCTION_READINESS.md` and `PRODUCTION_READINESS_AUDIT.md` record the verified boundaries and manual release gates. Python 3.13 backend tests (**314 passed**), deterministic evals (28/28), Ruff, Docker Compose static validation, and a clean Node 22 lockfile install with frontend auth-route verification, TypeScript production build, bundle budget, and high-severity audit gate passed. Browser Use attempted the local demo but its isolated runtime could not reach this machine's loopback server; direct local `/demo` and `/ready` checks returned 200. Render/Vercel/Atlas/Redis/Clerk/GitHub/OpenAI live verification remains `BLOCKED`.
 
