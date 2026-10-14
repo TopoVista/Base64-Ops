@@ -93,6 +93,8 @@ class FileRecord:
     kind: str
     summary: str
     symbols: tuple[str, ...]
+    imports: tuple[str, ...]
+    endpoints: tuple[str, ...]
     dependencies: tuple[str, ...]
     dependents: tuple[str, ...]
     lines: int
@@ -260,6 +262,46 @@ def extract_symbols(path: str, text: str) -> tuple[str, ...]:
     return tuple(dict.fromkeys(cleaned))[:7]
 
 
+def extract_imports(path: str, text: str) -> tuple[str, ...]:
+    """Return a bounded, source-derived import summary for a reference page.
+
+    This is deliberately a navigation aid rather than a resolver: dynamic
+    imports, framework registration, and runtime discovery are documented as
+    limitations instead of being guessed from text.
+    """
+
+    imports: list[str] = []
+    if path.endswith(".py"):
+        try:
+            tree = ast.parse(text)
+            for node in ast.walk(tree):
+                if isinstance(node, ast.Import):
+                    imports.extend(alias.name for alias in node.names)
+                elif isinstance(node, ast.ImportFrom) and node.module:
+                    imports.append(node.module)
+        except SyntaxError:
+            pass
+    elif path.endswith((".ts", ".tsx", ".js", ".mjs")):
+        imports.extend(re.findall(r"(?:from\s+|import\s*\()[\"']([^\"']+)[\"']", text))
+    elif path.endswith((".yml", ".yaml")):
+        imports.extend(re.findall(r"^\s*uses:\s*([^\s#]+)", text, flags=re.M))
+    cleaned = [safe_ascii(value).strip() for value in imports if safe_ascii(value).strip()]
+    return tuple(dict.fromkeys(cleaned))[:7]
+
+
+def extract_endpoints(path: str, text: str) -> tuple[str, ...]:
+    """Find explicit HTTP route decorators without interpreting route code."""
+
+    if not path.endswith(".py"):
+        return ()
+    matches = re.findall(
+        r"@(?:router|app)\.(get|post|put|patch|delete)\(\s*[\"']([^\"']+)[\"']",
+        text,
+        flags=re.I,
+    )
+    return tuple(f"{method.upper()} {route}" for method, route in matches[:6])
+
+
 def extract_dependencies(path: str, text: str, known: set[str]) -> tuple[str, ...]:
     candidates: list[str] = []
     if path.endswith(".py"):
@@ -315,6 +357,8 @@ def build_records(files: list[str]) -> tuple[list[FileRecord], list[dict[str, st
         category = category_for(path)
         kind = kind_for(path)
         symbols = extract_symbols(path, text)
+        imports = extract_imports(path, text)
+        endpoints = extract_endpoints(path, text)
         dependencies = extract_dependencies(path, text, known)
         dependents = tuple(
             candidate
@@ -328,6 +372,8 @@ def build_records(files: list[str]) -> tuple[list[FileRecord], list[dict[str, st
                 kind=kind,
                 summary=summary_for(path, category, kind, symbols),
                 symbols=symbols,
+                imports=imports,
+                endpoints=endpoints,
                 dependencies=dependencies,
                 dependents=dependents,
                 lines=len(text.splitlines()),
@@ -388,6 +434,8 @@ DIAGRAMS: list[tuple[str, tuple[str, ...], tuple[tuple[int, int], ...]]] = [
 
 def file_sections(record: FileRecord) -> list[tuple[str, str]]:
     symbols = ", ".join(record.symbols) if record.symbols else "no public symbol list was extracted from this file format"
+    imports = ", ".join(record.imports) if record.imports else "no static import or workflow action reference was extracted"
+    endpoints = ", ".join(record.endpoints) if record.endpoints else "no explicit HTTP route decorator was found"
     dependencies = ", ".join(record.dependencies) if record.dependencies else "no direct in-repository import was statically resolved"
     dependents = ", ".join(record.dependents) if record.dependents else "no simple textual dependent was resolved; framework registration or runtime discovery may still use it"
     role = ""
@@ -398,7 +446,7 @@ def file_sections(record: FileRecord) -> list[tuple[str, str]]:
     elif record.category.startswith("Frontend"):
         role = "It participates after browser routing or data hydration selects this UI surface. Server-side authorization and repository mutation checks remain in the backend."
     elif record.category.startswith("Backend API"):
-        role = "It participates at the authenticated HTTP boundary, before service coordination and after browser-safe response projection."
+        role = f"It participates at the authenticated HTTP boundary, before service coordination and after browser-safe response projection. Static decorator inspection found: {endpoints}."
     elif record.category == "Continuous integration configuration":
         role = "It participates when GitHub Actions evaluates repository automation. Base64 Ops may inspect it as untrusted repository evidence but never promotes its run commands to local validators."
     else:
@@ -423,12 +471,12 @@ def file_sections(record: FileRecord) -> list[tuple[str, str]]:
     sentence = f"{record.path} is a {record.kind} that owns a focused part of {record.category.lower()}."
     return [
         ("Purpose", record.summary),
-        ("Key responsibilities", f"It exists to provide a coherent {record.kind} boundary for {friendly_path(record.path)}. Its extracted size is {record.lines} lines and {record.word_count} lexical tokens; the source digest begins {record.sha256[:12]}."),
+        ("Key responsibilities", f"It exists to provide a coherent {record.kind} boundary for {friendly_path(record.path)}. Static inspection found {len(record.symbols)} named symbols, {len(record.imports)} import/action references, and {len(record.endpoints)} explicit route decorators. Its extracted size is {record.lines} lines and {record.word_count} lexical tokens; the source digest begins {record.sha256[:12]}."),
         ("Important symbols", f"Important exported or declared symbols/sections identified by static inspection: {symbols}. These names are a navigation aid, not a claim that every symbol is externally public."),
-        ("Connections", f"Static in-repository dependencies: {dependencies}. Potential consumers found through bounded textual/import analysis: {dependents}. The containing category is {record.category}."),
+        ("Connections", f"Static imports or declared workflow actions: {imports}. Resolved in-repository dependencies: {dependencies}. Potential consumers from bounded textual/import analysis: {dependents}. The containing category is {record.category}; dynamic imports and framework discovery are intentionally not inferred."),
         ("Simplified pseudocode", "\n".join(pseudo) if record.kind != "documentation" else "READ documented topic\nORGANIZE implementation-grounded guidance\nLINK related source paths and constraints\nDISTINGUISH verified behavior from limitations\nGUIDE operator or contributor decisions"),
         ("Workflow role", role),
-        ("Engineering details", engineering),
+        ("Engineering details", f"{engineering} The reference is tied to the checked source digest above; the analysis reports static facts only and does not execute this file, its imports, workflow commands, or external providers."),
         ("Brief summary", f"In one sentence: {sentence} Related files: {dependencies}. Why it matters: it supplies one explicit, reviewable boundary rather than hiding this responsibility in an unrelated module."),
     ]
 
