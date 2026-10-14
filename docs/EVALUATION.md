@@ -34,6 +34,9 @@ redacted and tenant-scoped; prevention maintenance can flag only rules that
 reference that corrected incident, then recomputes from remaining supported
 history. The live DeliveryPlan recurrence calculation uses the same exclusion,
 so it cannot retain a corrected incident while durable rule maintenance is
-pending. Feedback never upgrades evidence strength or makes an approval.
+pending. A correction with an explanation is also verified to use the existing
+tenant-scoped `USER_CORRECTION` memory flow with central redaction and only
+server-owned session repository provenance. Feedback never upgrades evidence
+strength or makes an approval.
 
 Use `python -m evals.runner --mode deterministic --output ../artifacts/eval-summary.json --format json` from `backend` to generate a machine-readable report containing only measured case results and summary metrics.

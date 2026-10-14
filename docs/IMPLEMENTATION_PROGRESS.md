@@ -119,7 +119,9 @@ Still required in this stage:
   item flags its referenced rules for review and recomputes from remaining
   supported history; feedback itself is not evidence. The live DeliveryPlan
   recurrence review excludes the same corrected record, including during a
-  delayed durable-rule refresh.
+  delayed durable-rule refresh. When the correction includes an explanation,
+  it also creates a redacted, tenant-scoped `USER_CORRECTION` through the
+  existing memory lifecycle using the incident's server-owned session context.
   Dependency/lockfile and
   declared-runner workflow comparisons are now bounded correlation signals;
   optional neutral GitHub Check reporting has a separate opt-in and App

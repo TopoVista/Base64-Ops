@@ -405,6 +405,80 @@ async def test_incident_feedback_is_tenant_scoped_redacted_and_not_a_diagnosis_m
     assert response["feedback"]["untrusted"] is True
 
 
+async def test_incorrect_incident_feedback_records_redacted_user_correction_memory(monkeypatch) -> None:  # noqa: ANN001
+    from app.schemas.incident import IncidentFeedbackRequest
+
+    class _Incidents:
+        def __init__(self) -> None:
+            self.record = {
+                "_id": "inc_1",
+                "userId": "user_a",
+                "sessionId": "ses_1",
+                "repositoryId": "repo_a",
+                "workflowRunId": 42,
+                "branch": "main",
+                "headSha": "a" * 40,
+                "failureCategories": ["test_failure"],
+                "relevantPaths": ["backend/app/auth.py"],
+                "limitations": [],
+                "createdAt": None,
+                "updatedAt": None,
+            }
+
+        async def update_one(self, _query, update):  # noqa: ANN001, ANN201
+            self.record.update(update["$set"])
+            return SimpleNamespace(matched_count=1)
+
+        async def find_one(self, query):  # noqa: ANN001, ANN201
+            return dict(self.record) if query.get("userId") == self.record["userId"] else None
+
+    class _Sessions:
+        async def find_one(self, query, _projection):  # noqa: ANN001, ANN201
+            if query == {"_id": "ses_1", "userId": "user_a"}:
+                return {"repoUrl": "https://github.com/acme/base64.git", "defaultBranch": "main"}
+            return None
+
+    class _Rules:
+        async def invalidate_for_incident(self, **_kwargs):  # noqa: ANN003, ANN201
+            return 1
+
+        async def refresh_for_repository(self, **_kwargs):  # noqa: ANN003, ANN201
+            return ["prv_1"]
+
+    class _Memory:
+        def __init__(self) -> None:
+            self.calls: list[dict] = []
+
+        async def record_user_correction(self, **kwargs):  # noqa: ANN003, ANN201
+            self.calls.append(kwargs)
+            return ["mem_correction"]
+
+    records = _Incidents()
+    memory = _Memory()
+    monkeypatch.setattr(
+        incident_routes,
+        "get_db",
+        lambda: SimpleNamespace(incidents=records, sessions=_Sessions()),
+    )
+    monkeypatch.setattr(incident_routes, "PreventionRuleService", _Rules)
+    monkeypatch.setattr(incident_routes, "MemoryService", lambda: memory)
+
+    await incident_routes.submit_incident_feedback(
+        "inc_1",
+        IncidentFeedbackRequest(disposition="incorrect", correction="Authorization: Bearer feedback-secret"),
+        {"_id": "user_a"},
+    )
+
+    assert len(memory.calls) == 1
+    call = memory.calls[0]
+    assert call["repository_id"] == "https://github.com/acme/base64.git"
+    candidate = call["candidates"][0]
+    assert candidate.kind.value == "user_correction"
+    assert candidate.metadata["incidentId"] == "inc_1"
+    assert "feedback-secret" not in candidate.value
+    assert candidate.metadata["untrusted"] is True
+
+
 async def test_incident_dispatch_records_only_a_policy_gated_memory_summary(monkeypatch) -> None:  # noqa: ANN001
     class _Memory:
         def __init__(self) -> None:

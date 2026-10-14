@@ -121,3 +121,11 @@ when other independent supported incidents still meet the threshold. Feedback
 does not itself create evidence or a rule. The live DeliveryPlan advisory
 calculation excludes the same corrected incidents, so delayed rule refreshes
 cannot reintroduce a corrected incident as historical support.
+
+When a correction includes an explanation, the same route also uses the
+existing `MemoryService.record_user_correction` lifecycle. It resolves the
+repository URL and branch only from the owned session that created the
+incident, stores the already-redacted explanation as an explicitly untrusted
+`USER_CORRECTION`, and retains the incident/run/path provenance. A memory
+write failure is a visible incident limitation, not a failed correction or a
+reason to bypass any delivery control.

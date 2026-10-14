@@ -10,6 +10,8 @@ from fastapi.responses import JSONResponse, PlainTextResponse
 
 from app.api.deps import get_current_user
 from app.db.mongo import get_db
+from app.memory.memory_service import MemoryService
+from app.memory.models import MemoryEntryCandidate, OperationalMemoryKind
 from app.schemas.incident import (
     CandidateVerificationSettingsRequest,
     CandidateVerificationSettingsResponse,
@@ -113,6 +115,56 @@ def _incident_response(document: dict) -> dict:
     response = {key: value for key, value in document.items() if key in allowed}
     response["id"] = str(response.pop("_id"))
     return response
+
+
+async def _record_incorrect_feedback_memory(*, user_id: str, incident_id: str, incident: dict, correction: str) -> None:
+    """Persist an explicit correction through the existing memory lifecycle.
+
+    The browser never supplies the repository identity used by memory.  It is
+    resolved from the owned session that produced the incident, and the saved
+    value has already gone through the central redactor.
+    """
+
+    session_id = incident.get("sessionId")
+    if not isinstance(session_id, str) or not session_id:
+        return
+    session = await get_db().sessions.find_one(
+        {"_id": session_id, "userId": user_id},
+        {"repoUrl": 1, "defaultBranch": 1},
+    )
+    if not isinstance(session, dict):
+        return
+    repository_id = session.get("repoUrl")
+    if not isinstance(repository_id, str) or not repository_id:
+        return
+
+    categories = [item for item in incident.get("failureCategories", []) if isinstance(item, str)][:8]
+    paths = [item for item in incident.get("relevantPaths", []) if isinstance(item, str)][:30]
+    workflow_run_id = incident.get("workflowRunId")
+    run_label = str(workflow_run_id) if isinstance(workflow_run_id, int | str) else incident_id
+    await MemoryService().record_user_correction(
+        user_id=user_id,
+        repository_id=repository_id,
+        branch=str(incident.get("branch") or session.get("defaultBranch") or "unknown"),
+        commit_sha=str(incident.get("headSha") or "unknown"),
+        run_id=f"incident:{incident_id}",
+        candidates=[
+            MemoryEntryCandidate(
+                kind=OperationalMemoryKind.USER_CORRECTION,
+                key=f"ci-incident-correction:{incident_id}",
+                value=f"User marked CI incident run {run_label} incorrect: {correction}",
+                tags=["ci", "github-actions", "user-correction", *categories],
+                confidence=1.0,
+                affected_paths=paths,
+                metadata={
+                    "schemaVersion": "incident-feedback-memory-v1",
+                    "incidentId": incident_id,
+                    "workflowRunId": workflow_run_id,
+                    "untrusted": True,
+                },
+            )
+        ],
+    )
 
 
 def _flaky_observation_response(document: dict) -> FlakyTestObservationSummary:
@@ -324,6 +376,7 @@ async def submit_incident_feedback(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Incident not found")
     session_id = incident.get("sessionId")
     repository_id = incident.get("repositoryId")
+    maintenance_limitations: list[str] = []
     if payload.disposition == "incorrect" and isinstance(session_id, str) and isinstance(repository_id, str):
         try:
             rules = PreventionRuleService()
@@ -342,16 +395,24 @@ async def submit_incident_feedback(
             # Feedback is valuable even when optional historical maintenance is
             # temporarily unavailable. Preserve the correction and surface a
             # bounded limitation instead of failing the browser request.
-            limitations = list(incident.get("limitations") or [])
-            limitation = "Prevention rules could not be reevaluated after this correction."
-            if limitation not in limitations:
-                limitations.append(limitation)
-            await get_db().incidents.update_one(
-                {"_id": incident_id, "userId": user["_id"]},
-                {
-                    "$set": {"limitations": limitations, "updatedAt": utc_now()}
-                },
+            maintenance_limitations.append("Prevention rules could not be reevaluated after this correction.")
+    if payload.disposition == "incorrect":
+        try:
+            await _record_incorrect_feedback_memory(
+                user_id=str(user["_id"]),
+                incident_id=incident_id,
+                incident=incident,
+                correction=correction,
             )
+        except Exception:
+            maintenance_limitations.append("The correction could not be recorded in historical memory.")
+    if maintenance_limitations:
+        limitations = list(incident.get("limitations") or [])
+        limitations.extend(item for item in maintenance_limitations if item not in limitations)
+        await get_db().incidents.update_one(
+            {"_id": incident_id, "userId": user["_id"]},
+            {"$set": {"limitations": limitations, "updatedAt": utc_now()}},
+        )
     return _incident_response(incident)
 
 
