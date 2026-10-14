@@ -1,8 +1,8 @@
 {
   "schemaVersion": "base64-ops-source-inventory-v1",
-  "generatedAt": "2026-10-14T04:23:42.281713+00:00",
-  "analyzedCommit": "40614de947f947aa5b92d06d36c4baf10de43f8b",
-  "repositoryState": "M backend/.gitignore\n M docs/IMPLEMENTATION_STATUS.md\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf\n M docs/reports/document-generation-report.md\n M docs/reports/file-coverage-report.md\n M docs/reports/source-file-inventory.json",
+  "generatedAt": "2026-10-14T04:24:34.379157+00:00",
+  "analyzedCommit": "316fa8d6498623a6659eb240de1050aa44021bb5",
+  "repositoryState": "M backend/.gitignore\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
   "totalTrackedFiles": 389,
   "includedCount": 368,
   "excludedCount": 21,
@@ -7769,7 +7769,7 @@
       ],
       "endpoints": [],
       "dependencies": [
-        "client/src/routes/route.ts"
+        "client/src/routes/route-guard.tsx"
       ],
       "dependents": [
         "client/src/components/sidebar/index.tsx",
@@ -8229,7 +8229,7 @@
       "dependencies": [
         "client/src/lib/utils.ts",
         "client/src/components/ui/button-group.tsx",
-        "client/src/components/ui/input-group.tsx",
+        "client/src/components/ui/input.tsx",
         "client/src/components/ui/textarea.tsx"
       ],
       "dependents": [
@@ -8481,7 +8481,7 @@
         "client/src/hooks/use-mobile.ts",
         "client/src/lib/utils.ts",
         "client/src/components/ui/button-group.tsx",
-        "client/src/components/ui/input-group.tsx",
+        "client/src/components/ui/input.tsx",
         "client/src/components/ui/separator.tsx"
       ],
       "dependents": [
@@ -8844,7 +8844,7 @@
       ],
       "endpoints": [],
       "dependencies": [
-        "client/src/components/sidebar/chat-sessions.tsx",
+        "client/src/components/sidebar/index.tsx",
         "client/src/components/ui/sidebar.tsx"
       ],
       "dependents": [
@@ -9298,7 +9298,7 @@
         "client/src/components/mode-toggle.tsx",
         "client/src/components/ui/badge.tsx",
         "client/src/components/ui/button-group.tsx",
-        "client/src/routes/route.ts"
+        "client/src/routes/route-guard.tsx"
       ],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -9325,7 +9325,7 @@
       ],
       "endpoints": [],
       "dependencies": [
-        "client/src/components/chat/chat-input.tsx"
+        "client/src/components/chat/tool-parts.tsx"
       ],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -9364,7 +9364,7 @@
       "dependencies": [
         "client/src/components/ui/badge.tsx",
         "client/src/components/ui/button-group.tsx",
-        "client/src/components/ui/input-group.tsx",
+        "client/src/components/ui/input.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/components/ui/skeleton.tsx"
       ],
@@ -9427,7 +9427,7 @@
       ],
       "endpoints": [],
       "dependencies": [
-        "client/src/components/chat/chat-input.tsx",
+        "client/src/components/chat/tool-parts.tsx",
         "client/src/components/ui/badge.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/components/ide-workspace.tsx",
@@ -10240,7 +10240,7 @@
         "docs/IMPLEMENTATION_AUDIT.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
-        "docs/reports/source-file-inventory.json"
+        "docs/reports/document-generation-report.md"
       ],
       "lines": 180,
       "sha256": "d3e01394e8e625cfeac608173b80cba5f8fec92237ee69a728837432d5ae6eed",
