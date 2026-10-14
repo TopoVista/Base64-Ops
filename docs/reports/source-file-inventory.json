@@ -1,7 +1,7 @@
 {
   "schemaVersion": "base64-ops-source-inventory-v1",
-  "generatedAt": "2026-10-14T00:26:19.783258+00:00",
-  "analyzedCommit": "bc9e448459bbf5544e02eaf1e89fdb5421f9357d",
+  "generatedAt": "2026-10-14T00:27:36.001460+00:00",
+  "analyzedCommit": "23e19e9113746427b994b7665889b8d3ca2da3a5",
   "repositoryState": "M backend/.gitignore\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
   "totalTrackedFiles": 387,
   "includedCount": 367,
@@ -5624,7 +5624,7 @@
       ],
       "dependencies": [
         "client/src/components/ui/avatar.tsx",
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/collapsible.tsx",
         "client/src/lib/utils.ts"
       ],
@@ -5653,7 +5653,7 @@
         "ConversationScrollButtonProps"
       ],
       "dependencies": [
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/lib/utils.ts"
       ],
       "dependents": [
@@ -5681,6 +5681,7 @@
         "MessageActionProps"
       ],
       "dependencies": [
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/tooltip.tsx",
         "client/src/lib/utils.ts"
@@ -5912,7 +5913,7 @@
       ],
       "dependencies": [
         "client/src/components/diff-viewer.tsx",
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/lib/api.ts"
       ],
@@ -6039,7 +6040,7 @@
         "ModeToggle"
       ],
       "dependencies": [
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/dropdown-menu.tsx",
         "client/src/components/theme-provider.tsx"
       ],
@@ -6069,7 +6070,7 @@
       ],
       "dependencies": [
         "client/src/lib/api.ts",
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/scroll-area.tsx",
         "client/src/components/ui/textarea.tsx"
       ],
@@ -6409,7 +6410,7 @@
       ],
       "dependencies": [
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button-group.tsx"
+        "client/src/components/ui/button.tsx"
       ],
       "dependents": [
         "client/src/components/ai-elements/prompt-input.tsx",
@@ -6514,8 +6515,8 @@
       ],
       "dependencies": [
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button-group.tsx",
-        "client/src/components/ui/input-group.tsx",
+        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/input.tsx",
         "client/src/components/ui/textarea.tsx"
       ],
       "dependents": [
@@ -6683,7 +6684,7 @@
       ],
       "dependencies": [
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button-group.tsx"
+        "client/src/components/ui/button.tsx"
       ],
       "dependents": [
         "client/index.html",
@@ -6712,8 +6713,8 @@
       "dependencies": [
         "client/src/hooks/use-mobile.ts",
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button-group.tsx",
-        "client/src/components/ui/input-group.tsx",
+        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/input.tsx",
         "client/src/components/ui/separator.tsx"
       ],
       "dependents": [
@@ -7004,7 +7005,7 @@
         "AppLayout"
       ],
       "dependencies": [
-        "client/src/components/sidebar/session-search-dialog.tsx",
+        "client/src/components/sidebar/chat-sessions.tsx",
         "client/src/components/ui/sidebar.tsx"
       ],
       "dependents": [
@@ -7255,7 +7256,7 @@
         "plan"
       ],
       "dependencies": [
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/components/ui/badge.tsx",
         "client/src/lib/api.ts"
       ],
@@ -7363,7 +7364,7 @@
         "client/src/components/logo.tsx",
         "client/src/components/mode-toggle.tsx",
         "client/src/components/ui/badge.tsx",
-        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
         "client/src/routes/route-guard.tsx"
       ],
       "dependents": [
@@ -7414,8 +7415,8 @@
       ],
       "dependencies": [
         "client/src/components/ui/badge.tsx",
-        "client/src/components/ui/button-group.tsx",
-        "client/src/components/ui/input-group.tsx",
+        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/input.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/components/ui/skeleton.tsx"
       ],
@@ -8184,8 +8185,8 @@
         "docs/reports/source-file-inventory.json"
       ],
       "lines": 156,
-      "sha256": "71828d04f15d9dcf7729d1b19478887cf62b4b335f9f7dbab8d57fd6c5db1208",
-      "word_count": 3704
+      "sha256": "222da0304cefbbe4f582ca507ddc3111fa487543719d426591b5afdb2132786d",
+      "word_count": 3730
     },
     {
       "path": "docs/INTERVIEW_TALK_TRACK.md",
