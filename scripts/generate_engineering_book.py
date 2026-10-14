@@ -1062,8 +1062,21 @@ def main() -> int:
     validation = validate_pdf(records, source_start, expected_pages)
     samples: list[str] = []
     if args.render_samples:
-        diagrams_start = source_start + len(records) + len(CHAPTERS[23:])
-        candidates = [1, 3, 6, 12, source_start, source_start + min(20, len(records) - 1), source_start + min(120, len(records) - 1), source_start + len(records) - 1, diagrams_start, expected_pages]
+        screenshot_pages = 1 if DEMO_SCREENSHOT_PATH.is_file() else 0
+        diagrams_start = source_start + len(records) + len(CHAPTERS[23:]) + screenshot_pages
+        candidates = [
+            1,
+            3,
+            6,
+            12,
+            source_start,
+            source_start + min(20, len(records) - 1),
+            source_start + min(120, len(records) - 1),
+            source_start + len(records) - 1,
+            diagrams_start,
+            diagrams_start + len(DIAGRAMS) - 1,
+            expected_pages,
+        ]
         samples = render_samples(PDF_PATH, list(dict.fromkeys(candidates)))
     write_reports(
         all_files=all_files,
