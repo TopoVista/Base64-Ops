@@ -1,11 +1,10 @@
 # Document generation report
 
-- Generated at: 2026-10-14T00:12:21.648743+00:00
-- Repository commit: `323fde8ca8f7419177b0233f1b48f53d625b6de4`
+- Generated at: 2026-10-14T00:18:14.224032+00:00
+- Repository commit: `6a66bf564be6a822d53247bf31411b2ea6639304`
 - Repository state at generation: `M backend/.gitignore
  M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md
  M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf
- M docs/reports/document-generation-report.md
  M docs/reports/file-coverage-report.md
  M docs/reports/source-file-inventory.json`
 - Generator: `scripts/generate_engineering_book.py`

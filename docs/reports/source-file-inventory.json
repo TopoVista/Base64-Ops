@@ -1,8 +1,8 @@
 {
   "schemaVersion": "base64-ops-source-inventory-v1",
-  "generatedAt": "2026-10-14T00:12:21.570808+00:00",
-  "analyzedCommit": "323fde8ca8f7419177b0233f1b48f53d625b6de4",
-  "repositoryState": "M backend/.gitignore\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf\n M docs/reports/document-generation-report.md\n M docs/reports/file-coverage-report.md\n M docs/reports/source-file-inventory.json",
+  "generatedAt": "2026-10-14T00:18:14.154456+00:00",
+  "analyzedCommit": "6a66bf564be6a822d53247bf31411b2ea6639304",
+  "repositoryState": "M backend/.gitignore\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md\n M docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
   "totalTrackedFiles": 387,
   "includedCount": 367,
   "excludedCount": 20,
@@ -524,9 +524,9 @@
         "backend/app/schemas/incident.py",
         "backend/app/schemas/regression_prevention.py"
       ],
-      "lines": 363,
-      "sha256": "8dffa2b3cb4edafbea3ba496bd33fe24d5dc3769e8cc8122313e475f6d41cdae",
-      "word_count": 1161
+      "lines": 394,
+      "sha256": "90597bfb81603eb838153c7bbc5d0fdbdb5c919c8bade3d9b6dc4dfa66f29164",
+      "word_count": 1279
     },
     {
       "path": "backend/app/api/routes/memory.py",
@@ -2401,14 +2401,14 @@
         "backend/app/utils/datetime.py"
       ],
       "dependents": [
+        "backend/app/api/routes/incidents.py",
         "backend/app/main.py",
         "backend/app/services/incident_service.py",
-        "backend/tests/test_prevention_rule_service.py",
-        "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md"
+        "backend/tests/test_prevention_rule_service.py"
       ],
-      "lines": 179,
-      "sha256": "6307db6851cf2c36e19cadc4a46f4e7789f6dbfa95d309bd3277c0c6551d97eb",
-      "word_count": 629
+      "lines": 225,
+      "sha256": "d2ce44ca483c8cfa103e29d98a77aedf189fbc5b3936e64283a2ba5a56c3206c",
+      "word_count": 756
     },
     {
       "path": "backend/app/services/product_assistant_service.py",
@@ -5029,7 +5029,8 @@
         "_Cursor",
         "_Incidents",
         "_Rules",
-        "test_rule_refresh_is_scoped_and_persists_only_advisory_metadata"
+        "test_rule_refresh_is_scoped_and_persists_only_advisory_metadata",
+        "test_rule_invalidation_is_scoped_to_a_corrected_incident"
       ],
       "dependencies": [
         "backend/app/services/prevention_rule_service.py"
@@ -5039,9 +5040,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
         "docs/reports/source-file-inventory.json"
       ],
-      "lines": 108,
-      "sha256": "16a64b81d0a2ba416e94e4433d1eafaeedc7d2ef14424f47df024ce0a66fc57e",
-      "word_count": 330
+      "lines": 146,
+      "sha256": "b6fcff885c5155e128b7f547e6c9a12c8b770f3d28f0d5a5ddd3cffebc63e278",
+      "word_count": 437
     },
     {
       "path": "backend/tests/test_product_assistant.py",
@@ -5623,7 +5624,7 @@
       ],
       "dependencies": [
         "client/src/components/ui/avatar.tsx",
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/collapsible.tsx",
         "client/src/lib/utils.ts"
       ],
@@ -5652,7 +5653,7 @@
         "ConversationScrollButtonProps"
       ],
       "dependencies": [
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/lib/utils.ts"
       ],
       "dependents": [
@@ -5680,7 +5681,6 @@
         "MessageActionProps"
       ],
       "dependencies": [
-        "client/src/components/ui/button.tsx",
         "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/tooltip.tsx",
         "client/src/lib/utils.ts"
@@ -5912,7 +5912,7 @@
       ],
       "dependencies": [
         "client/src/components/diff-viewer.tsx",
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/lib/api.ts"
       ],
@@ -6039,7 +6039,7 @@
         "ModeToggle"
       ],
       "dependencies": [
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/dropdown-menu.tsx",
         "client/src/components/theme-provider.tsx"
       ],
@@ -6069,7 +6069,7 @@
       ],
       "dependencies": [
         "client/src/lib/api.ts",
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/scroll-area.tsx",
         "client/src/components/ui/textarea.tsx"
       ],
@@ -6409,7 +6409,7 @@
       ],
       "dependencies": [
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button.tsx"
+        "client/src/components/ui/button-group.tsx"
       ],
       "dependents": [
         "client/src/components/ai-elements/prompt-input.tsx",
@@ -6514,7 +6514,7 @@
       ],
       "dependencies": [
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/input-group.tsx",
         "client/src/components/ui/textarea.tsx"
       ],
@@ -6683,7 +6683,7 @@
       ],
       "dependencies": [
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button.tsx"
+        "client/src/components/ui/button-group.tsx"
       ],
       "dependents": [
         "client/index.html",
@@ -6712,7 +6712,7 @@
       "dependencies": [
         "client/src/hooks/use-mobile.ts",
         "client/src/lib/utils.ts",
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/input-group.tsx",
         "client/src/components/ui/separator.tsx"
       ],
@@ -7004,7 +7004,7 @@
         "AppLayout"
       ],
       "dependencies": [
-        "client/src/components/sidebar/navitems.tsx",
+        "client/src/components/sidebar/index.tsx",
         "client/src/components/ui/sidebar.tsx"
       ],
       "dependents": [
@@ -7255,7 +7255,7 @@
         "plan"
       ],
       "dependencies": [
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/badge.tsx",
         "client/src/lib/api.ts"
       ],
@@ -7363,7 +7363,7 @@
         "client/src/components/logo.tsx",
         "client/src/components/mode-toggle.tsx",
         "client/src/components/ui/badge.tsx",
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/routes/route.ts"
       ],
       "dependents": [
@@ -7386,7 +7386,7 @@
         "location"
       ],
       "dependencies": [
-        "client/src/components/chat/tool-parts.tsx"
+        "client/src/components/chat/chat-input.tsx"
       ],
       "dependents": [
         ".commandcode/taste/node.js-scaffolding/taste.md",
@@ -7414,7 +7414,7 @@
       ],
       "dependencies": [
         "client/src/components/ui/badge.tsx",
-        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/button-group.tsx",
         "client/src/components/ui/input-group.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/components/ui/skeleton.tsx"
@@ -7463,7 +7463,7 @@
         "pathsReferToSameFile"
       ],
       "dependencies": [
-        "client/src/components/chat/tool-parts.tsx",
+        "client/src/components/chat/chat-input.tsx",
         "client/src/components/ui/badge.tsx",
         "client/src/components/ui/textarea.tsx",
         "client/src/components/ide-workspace.tsx",
@@ -7844,9 +7844,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
         "docs/reports/source-file-inventory.json"
       ],
-      "lines": 113,
-      "sha256": "9e4e5a39b46ed17a94db2f7911350d3096a0acbd59d8e862f0ea2f05d4569d8b",
-      "word_count": 933
+      "lines": 121,
+      "sha256": "d0ab98e582390226a5e97523fc4aefef9e7a28a0588c3eb37a1d6d0c82370b3c",
+      "word_count": 1006
     },
     {
       "path": "docs/CANDIDATE_VERIFICATION.md",
@@ -8004,9 +8004,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.md",
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf"
       ],
-      "lines": 32,
-      "sha256": "ebb462bc85dbf4811538d42b32bf8ce5e00fb90d4ac655035dbc18649118a2b7",
-      "word_count": 333
+      "lines": 37,
+      "sha256": "16c133493909d2b24558a8635b0fce7a0e05b49adfd00278e640bc0a3c9df093",
+      "word_count": 373
     },
     {
       "path": "docs/EXECUTION_SANDBOX.md",
@@ -8141,8 +8141,8 @@
         "docs/reports/source-file-inventory.json"
       ],
       "lines": 103,
-      "sha256": "792b90ec25737fa38c595d2505d761e907ef4a5e64f4da8ffbf16360d56321d6",
-      "word_count": 1238
+      "sha256": "420e470724e8dfe150273a768f1d4ef6b1bfe4d965d69ec4a23917ff91f82ea9",
+      "word_count": 1261
     },
     {
       "path": "docs/IMPLEMENTATION_PROGRESS.md",
@@ -8163,9 +8163,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
         "docs/reports/source-file-inventory.json"
       ],
-      "lines": 162,
-      "sha256": "db3ad86ee53968ccb890e1739e5b01ccfa9655b44dcc5d3d1f50d433f3a1c55d",
-      "word_count": 1268
+      "lines": 164,
+      "sha256": "ec90e7437cfc141a67c1c7d38db14a0ca456bf2cf85cdfc3b51584f6f385f055",
+      "word_count": 1291
     },
     {
       "path": "docs/IMPLEMENTATION_STATUS.md",
@@ -8183,9 +8183,9 @@
         "docs/reports/Base64-Ops-Complete-Technical-Engineering-Book.pdf",
         "docs/reports/source-file-inventory.json"
       ],
-      "lines": 143,
-      "sha256": "3ad4e993922180682d9a6427b770dc1aeb4d908ee2ed1d972fbcfe0da41ae491",
-      "word_count": 3596
+      "lines": 154,
+      "sha256": "2cbec5834b1ca6f88734eab8c6f69c35ca86d936ec55169a492734466e7ddede",
+      "word_count": 3684
     },
     {
       "path": "docs/INTERVIEW_TALK_TRACK.md",
