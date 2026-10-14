@@ -63,8 +63,30 @@ def test_index_workspace_persists_lexical_chunks_without_vector_search(tmp_path,
         async def create_index(self, fields: list[tuple[str, int]]) -> None:
             self.indexes.append(fields)
 
+        def find(self, query: dict, _projection: dict):
+            rows = [
+                row for row in self.rows
+                if all(row.get(key) == value for key, value in query.items())
+            ]
+
+            class Cursor:
+                def __init__(self, value: list[dict]) -> None:
+                    self.value = value
+
+                def limit(self, _value: int):
+                    return self
+
+                async def to_list(self, _value: int) -> list[dict]:
+                    return list(self.value)
+
+            return Cursor(rows)
+
         async def delete_many(self, query: dict) -> None:
             self.deleted.append(query)
+            self.rows = [
+                row for row in self.rows
+                if not all(row.get(key) == value for key, value in query.items())
+            ]
 
         async def insert_many(self, rows: list[dict]) -> None:
             self.rows.extend(rows)
@@ -72,8 +94,7 @@ def test_index_workspace_persists_lexical_chunks_without_vector_search(tmp_path,
     class Database:
         rag_chunks = Chunks()
 
-    original_get_db = rag_service.get_db
-    rag_service.get_db = lambda: Database()  # type: ignore[assignment]
+    monkeypatch.setattr(rag_service, "get_db", lambda: Database())
     # This is a lexical-storage test. It must remain offline even when a
     # developer has valid OpenAI/Atlas settings in their local .env file.
     settings = rag_service.get_settings()
@@ -84,17 +105,44 @@ def test_index_workspace_persists_lexical_chunks_without_vector_search(tmp_path,
             update={"rag_vector_enabled": False, "openai_api_key": None}
         ),
     )
-    try:
-        result = asyncio.run(
-            RagService().index_workspace({"_id": "ses_1", "repoName": "fixture"}, tmp_path)
-        )
-    finally:
-        rag_service.get_db = original_get_db
+    result = asyncio.run(
+        RagService().index_workspace({"_id": "ses_1", "repoName": "fixture"}, tmp_path)
+    )
 
     assert result["indexed"] == 1
     assert result["storage"] == "lexical"
     assert Database.rag_chunks.rows[0]["source"] == "backend/main.py"
-    assert Database.rag_chunks.indexes == [[("sessionId", 1), ("searchTerms", 1)]]
+    assert Database.rag_chunks.rows[0]["contentHash"]
+    assert result["indexMode"] == "incremental_lexical"
+    assert result["chunksInserted"] == 1
+    assert Database.rag_chunks.indexes == [
+        [("sessionId", 1), ("searchTerms", 1)],
+        [("sessionId", 1), ("kind", 1), ("source", 1), ("contentHash", 1)],
+    ]
+
+    unchanged = asyncio.run(
+        RagService().index_workspace({"_id": "ses_1", "repoName": "fixture"}, tmp_path)
+    )
+    assert unchanged["chunksInserted"] == 0
+    assert unchanged["chunksReused"] == 1
+
+    source.write_text("app = FastAPI(title='changed')\n", encoding="utf-8")
+    changed = asyncio.run(
+        RagService().index_workspace({"_id": "ses_1", "repoName": "fixture"}, tmp_path)
+    )
+    assert changed["chunksInserted"] == 1
+    assert changed["chunksReused"] == 0
+    assert "changed" in Database.rag_chunks.rows[0]["text"]
+
+    # Old rows without a trustworthy source hash must not be reused as though
+    # their source contents were current.
+    Database.rag_chunks.rows[0].pop("contentHash")
+    Database.rag_chunks.rows[0]["metadata"].pop("contentHash")
+    migrated = asyncio.run(
+        RagService().index_workspace({"_id": "ses_1", "repoName": "fixture"}, tmp_path)
+    )
+    assert migrated["indexMode"] == "full_replace_untrusted_existing_corpus"
+    assert migrated["chunksInserted"] == 1
 
 
 def test_repository_index_uses_aggregate_file_and_byte_limits(tmp_path) -> None:

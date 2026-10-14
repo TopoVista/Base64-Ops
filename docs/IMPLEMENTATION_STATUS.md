@@ -49,6 +49,15 @@
 > tests, Ruff, and frontend TypeScript passed locally. Live provider
 > verification remains `BLOCKED`.
 
+> Incremental lexical indexing update (2026-10-14): `PARTIAL`. Reindexing now
+> hashes every bounded repository source file and reconciles only changed or
+> stale lexical chunks; unchanged files reuse their existing deterministic
+> chunks. Legacy rows without a trustworthy hash fail closed to a full lexical
+> replacement, and an over-bound prior corpus is replaced rather than partially
+> reused. The optional Atlas-vector path deliberately keeps full replacement:
+> Base64 does not claim deletion/reconciliation of an external vector index it
+> cannot verify. Focused chunking tests and local backend checks passed.
+
 > CI recovery and candidate-verification update (2026-10-14): `PARTIAL`.
 > The repository now has an explicit GitHub App candidate-verification boundary
 > for immutable exact delivery plans: an owner binds one reviewed workflow to
@@ -121,7 +130,7 @@ Status reflects executable code in this repository as of 2026-10-14. `BLOCKED` m
 | 3. Context engineering | DONE | Trusted policy + request + repository map context pack built with candidate file boundaries. Documented in `CONTEXT_ENGINEERING.md`. |
 | 4. Repository map | DONE | Repository maps are built deterministically and persisted by session/commit. |
 | 5. Hybrid RAG | DONE | Lexical-first chunk persistence and retrieval work on every supported Mongo deployment. Atlas vector search is an optional configured accelerator; its absence cannot empty the repository index. |
-| 6. Incremental indexing | NOT STARTED | Indexing currently replaces session repository chunks. |
+| 6. Incremental indexing | PARTIAL | The bounded lexical corpus now uses source content hashes and deterministic chunk counts to reuse unchanged files while replacing changed/stale ones. Legacy/untrusted rows and oversized prior corpora fail closed to full lexical replacement. Optional vector indexing remains full-replace pending a verified external deletion/reconciliation contract. |
 | 7. Explicit investigation graph | DONE | LangGraph flow executes load_context -> repo_map -> retrieve -> plan -> investigate -> generate_delivery -> approval -> execute -> respond. |
 | 8. Read-only diagnostic tools | DONE | Git status, Docker build, and Compose validation implemented with capability detection. |
 | 9. Hypothesis-driven investigation | DONE | Evidence-linked provisional hypothesis and structured proposals implemented. |

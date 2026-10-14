@@ -70,9 +70,11 @@ command or a mutation authority.
   environment and is not implied by local tests.
 - Candidate workflow log/artifact ingestion and automatic candidate cleanup are
   not implemented. A targeted candidate status is not equivalent to full CI.
-- Repository indexing currently replaces the bounded lexical corpus for a
-  session; incremental chunk reuse and graph-to-graph diffing remain future
-  work.
+- Lexical indexing now reuses chunks only when a source file's content hash and
+  deterministic chunk count match; changed and stale sources are reconciled.
+  The optional vector-backed mode intentionally remains full-replace until its
+  external deletion/reconciliation behavior can be independently verified.
+  Graph-to-graph diffing remains future work.
 - Static graph extraction is intentionally bounded and does not prove runtime
   calls, deployment topology, or causality. Broader extractors and
   graph-aware retrieval remain partial.

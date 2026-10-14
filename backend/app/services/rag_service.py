@@ -1,5 +1,7 @@
 import asyncio
+import hashlib
 import re
+from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
@@ -31,9 +33,6 @@ class RagService:
             max_total_bytes=settings.rag_index_max_total_bytes,
             max_chunks=settings.rag_index_max_chunks,
         )
-        if not documents:
-            return {"indexed": 0, "storage": "lexical", **index_stats}
-
         # Persist usable lexical chunks before optional external embedding work.
         # This prevents an unavailable Atlas Search index, embeddings outage, or
         # unsupported Mongo deployment from turning a successful repository scan
@@ -41,15 +40,36 @@ class RagService:
         # A compound multikey index keeps lexical retrieval bounded even for
         # repositories with far more chunks than a process should scan.
         await db.rag_chunks.create_index([("sessionId", 1), ("searchTerms", 1)])
-        await db.rag_chunks.delete_many({"sessionId": session["_id"], "kind": "repo"})
-        await db.rag_chunks.insert_many(self._document_rows(documents))
+        await db.rag_chunks.create_index([("sessionId", 1), ("kind", 1), ("source", 1), ("contentHash", 1)])
+        rows = self._document_rows(documents)
+        vector_requested = bool(settings.rag_vector_enabled and settings.openai_api_key)
+        if vector_requested:
+            # The external vector collection cannot safely prove that a
+            # document deletion/replacement succeeded through the lexical
+            # collection alone. Preserve the prior full-replace behavior when
+            # the optional accelerator is enabled rather than leaving stale
+            # embeddings behind.
+            await db.rag_chunks.delete_many({"sessionId": session["_id"], "kind": "repo"})
+            if rows:
+                await db.rag_chunks.insert_many(rows)
+            persistence = {
+                "indexMode": "full_replace_vector_enabled",
+                "chunksInserted": len(rows),
+                "chunksReused": 0,
+                "chunksRemoved": 0,
+            }
+        else:
+            persistence = await self._persist_incremental_lexical_rows(
+                session_id=str(session["_id"]), rows=rows, max_chunks=settings.rag_index_max_chunks
+            )
         result: dict[str, Any] = {
             "indexed": len(documents),
             "storage": "lexical",
             "vectorIndexed": False,
             **index_stats,
+            **persistence,
         }
-        if settings.rag_vector_enabled and settings.openai_api_key:
+        if vector_requested and documents:
             try:
                 await self._index_with_vector_store(documents)
                 result["vectorIndexed"] = True
@@ -57,6 +77,96 @@ class RagService:
                 # The canonical lexical corpus is already safely persisted.
                 result["vectorWarning"] = "Atlas vector indexing is unavailable; lexical retrieval remains active."
         return result
+
+    async def _persist_incremental_lexical_rows(
+        self,
+        *,
+        session_id: str,
+        rows: list[dict[str, Any]],
+        max_chunks: int,
+    ) -> dict[str, int | str]:
+        """Reconcile a bounded lexical corpus by source content hash.
+
+        A source is reused only when its persisted chunk count and exact file
+        content hash match the freshly built deterministic chunks. If an older
+        corpus exceeds the configured bound or lacks trustworthy source/hash
+        fields, the method fails closed to a lexical full replacement instead
+        of silently retaining stale context.
+        """
+
+        collection = get_db().rag_chunks
+        query = {"sessionId": session_id, "kind": "repo"}
+        cursor = collection.find(query, {"source": 1, "contentHash": 1, "metadata.contentHash": 1})
+        existing_rows = await cursor.limit(max_chunks + 1).to_list(max_chunks + 1)
+        has_untrusted_existing_row = any(
+            not isinstance(row.get("source"), str)
+            or not row.get("source")
+            or not isinstance(
+                row.get("contentHash")
+                or (row.get("metadata", {}).get("contentHash") if isinstance(row.get("metadata"), dict) else None),
+                str,
+            )
+            for row in existing_rows
+        )
+        if len(existing_rows) > max_chunks or has_untrusted_existing_row:
+            await collection.delete_many(query)
+            if rows:
+                await collection.insert_many(rows)
+            return {
+                "indexMode": (
+                    "full_replace_existing_corpus_exceeded_bound"
+                    if len(existing_rows) > max_chunks
+                    else "full_replace_untrusted_existing_corpus"
+                ),
+                "chunksInserted": len(rows),
+                "chunksReused": 0,
+                "chunksRemoved": len(existing_rows),
+            }
+
+        existing_by_source: dict[str, list[dict[str, Any]]] = defaultdict(list)
+        for row in existing_rows:
+            source = row.get("source")
+            if isinstance(source, str) and source:
+                existing_by_source[source].append(row)
+
+        fresh_by_source: dict[str, list[dict[str, Any]]] = defaultdict(list)
+        for row in rows:
+            fresh_by_source[row["source"]].append(row)
+
+        unchanged_sources: set[str] = set()
+        for source, fresh_rows in fresh_by_source.items():
+            existing_for_source = existing_by_source.get(source, [])
+            fresh_hashes = {str(row.get("contentHash") or "") for row in fresh_rows}
+            existing_hashes = {
+                str(row.get("contentHash") or row.get("metadata", {}).get("contentHash") or "")
+                for row in existing_for_source
+            }
+            if (
+                len(fresh_hashes) == 1
+                and fresh_hashes == existing_hashes
+                and "" not in fresh_hashes
+                and len(fresh_rows) == len(existing_for_source)
+            ):
+                unchanged_sources.add(source)
+
+        changed_sources = set(fresh_by_source) - unchanged_sources
+        stale_sources = set(existing_by_source) - set(fresh_by_source)
+        chunks_removed = 0
+        for source in sorted(changed_sources | stale_sources):
+            chunks_removed += len(existing_by_source.get(source, []))
+            await collection.delete_many({**query, "source": source})
+
+        rows_to_insert = [
+            row for source in sorted(changed_sources) for row in fresh_by_source[source]
+        ]
+        if rows_to_insert:
+            await collection.insert_many(rows_to_insert)
+        return {
+            "indexMode": "incremental_lexical",
+            "chunksInserted": len(rows_to_insert),
+            "chunksReused": sum(len(fresh_by_source[source]) for source in unchanged_sources),
+            "chunksRemoved": chunks_removed,
+        }
 
     def _build_repository_documents(
         self,
@@ -102,6 +212,7 @@ class RagService:
             selected_files += 1
             selected_bytes += file_bytes
             relative = str(file_path.relative_to(repo_path)).replace("\\", "/")
+            content_hash = hashlib.sha256(text.encode("utf-8")).hexdigest()
             for chunk_index, chunk in enumerate(splitter.split_text(text)):
                 if len(documents) >= max_chunks:
                     truncated = True
@@ -121,6 +232,7 @@ class RagService:
                             "lineStart": line_start,
                             "lineEnd": line_end,
                             "createdAt": utc_now().isoformat(),
+                            "contentHash": content_hash,
                         },
                     )
                 )
@@ -230,23 +342,30 @@ class RagService:
 
     @staticmethod
     def _document_rows(documents: list[Document]) -> list[dict[str, Any]]:
-        return [
-            {
-                "_id": new_id("rag_"),
-                "text": doc.page_content,
-                "metadata": doc.metadata,
-                "sessionId": doc.metadata["sessionId"],
-                "kind": doc.metadata["kind"],
-                "source": doc.metadata["source"],
-                "lineStart": doc.metadata.get("lineStart"),
-                "lineEnd": doc.metadata.get("lineEnd"),
-                "createdAt": utc_now(),
-                "searchTerms": RagService._search_terms(
-                    f"{doc.metadata.get('source', '')}\n{doc.page_content}"
-                ),
-            }
-            for doc in documents
-        ]
+        rows: list[dict[str, Any]] = []
+        for doc in documents:
+            content_hash = doc.metadata.get("contentHash")
+            if not isinstance(content_hash, str) or not content_hash:
+                content_hash = hashlib.sha256(doc.page_content.encode("utf-8")).hexdigest()
+            metadata = {**doc.metadata, "contentHash": content_hash}
+            rows.append(
+                {
+                    "_id": new_id("rag_"),
+                    "text": doc.page_content,
+                    "metadata": metadata,
+                    "sessionId": metadata["sessionId"],
+                    "kind": metadata["kind"],
+                    "source": metadata["source"],
+                    "contentHash": content_hash,
+                    "lineStart": metadata.get("lineStart"),
+                    "lineEnd": metadata.get("lineEnd"),
+                    "createdAt": utc_now(),
+                    "searchTerms": RagService._search_terms(
+                        f"{metadata.get('source', '')}\n{doc.page_content}"
+                    ),
+                }
+            )
+        return rows
 
     @staticmethod
     def _search_terms(value: str) -> list[str]:
