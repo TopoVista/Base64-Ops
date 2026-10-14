@@ -1029,6 +1029,20 @@ function Changes({ data }: { data: SingleSessionResponse }) {
                             </div>
                             <p className="mt-2 text-xs leading-5 text-muted-foreground">{advisory.message}</p>
                             <p className="mt-1 text-xs leading-5 text-muted-foreground">{advisory.recommendation}</p>
+                            {advisory.historical_incident_ids.length ? (
+                              <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
+                                <span className="text-muted-foreground">Supporting incidents:</span>
+                                {advisory.historical_incident_ids.map((incidentId) => (
+                                  <Link
+                                    key={incidentId}
+                                    to={`/incidents/${encodeURIComponent(incidentId)}`}
+                                    className="font-mono text-primary underline-offset-4 hover:underline"
+                                  >
+                                    {incidentId.slice(0, 12)}
+                                  </Link>
+                                ))}
+                              </div>
+                            ) : null}
                           </article>
                         ))}
                       </div>
