@@ -913,4 +913,3 @@ class CandidateVerificationService:
             "verificationLevel": "not_independently_tested",
             "reason": safe_detail,
         }
-

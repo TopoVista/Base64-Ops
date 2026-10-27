@@ -386,4 +386,3 @@ def test_public_candidate_verification_is_allowlisted() -> None:
     assert verification["candidatePatchHash"] == "safe-hash"
     assert "commands" not in verification
     assert "dispatchToken" not in verification
-

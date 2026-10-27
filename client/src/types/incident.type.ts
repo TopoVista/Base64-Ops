@@ -176,4 +176,3 @@ export type CandidateVerificationRun = {
   createdAt?: string | null;
   updatedAt?: string | null;
 };
-

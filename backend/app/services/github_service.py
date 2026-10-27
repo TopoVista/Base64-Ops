@@ -588,4 +588,3 @@ async def _github_api_bytes_for_token(token: str, path: str, *, max_bytes: int) 
                         truncated = True
                         break
     return bytes(data), truncated
-

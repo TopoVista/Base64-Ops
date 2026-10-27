@@ -11,4 +11,3 @@ const Logo = ({className, showText = true}: {className?: string, showText?: bool
 }
 
 export default Logo
-

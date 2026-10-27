@@ -111,4 +111,3 @@ Product voice is specific, evidence-led, and human-in-control: “Review exact c
 - **Do:** Use the public landing page to lead directly into a working, mutation-disabled demo or the sign-in flow.
 - **Don't:** Use verified lime outside approval/verification semantics.
 - **Don't:** turn the product into a generic AI chat or an ungrounded autonomous-code claim.
-
