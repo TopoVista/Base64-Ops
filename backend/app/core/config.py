@@ -148,6 +148,12 @@ class Settings(BaseSettings):
     github_webhook_max_body_bytes: int = Field(
         default=250_000, ge=1_024, le=1_500_000, alias="GITHUB_WEBHOOK_MAX_BODY_BYTES"
     )
+    # Disabled by default: enabling this opt-in makes a verified failed
+    # workflow run queue a bounded RAG refresh at that run's immutable commit.
+    # It never runs in the webhook request itself.
+    github_webhook_reindex_on_failure: bool = Field(
+        default=False, alias="GITHUB_WEBHOOK_REINDEX_ON_FAILURE"
+    )
     github_incident_event_retention_days: int = Field(
         default=90, ge=7, le=365, alias="GITHUB_INCIDENT_EVENT_RETENTION_DAYS"
     )

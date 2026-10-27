@@ -155,6 +155,39 @@ async def test_signed_workflow_failure_is_durably_recorded_before_dispatch(monke
     assert saved["dispatchJobId"] == "job_1"
 
 
+async def test_failure_can_queue_a_commit_specific_rag_refresh(monkeypatch, webhook_db) -> None:
+    revision_jobs: list[tuple[str, str, str]] = []
+
+    async def enqueue_revision(self, *, user_id: str, session_id: str, commit_sha: str):  # noqa: ANN001, ANN202
+        revision_jobs.append((user_id, session_id, commit_sha))
+        return {"id": "job_revision", "status": "queued", "deduplicated": False}
+
+    async def enqueue_dispatch(self, *, event_id: str):  # noqa: ANN001, ANN202
+        return {"id": "job_dispatch", "status": "queued", "deduplicated": False}
+
+    monkeypatch.setattr(incident_service.BackgroundJobService, "enqueue_revision_reindex", enqueue_revision)
+    monkeypatch.setattr(incident_service.BackgroundJobService, "enqueue_incident_dispatch", enqueue_dispatch)
+    monkeypatch.setattr(
+        incident_service,
+        "get_settings",
+        lambda: Settings(github_webhook_secret="webhook-secret", github_webhook_reindex_on_failure=True),
+    )
+    body = _payload()
+
+    await GitHubWebhookService().accept_delivery(
+        body=body,
+        event_name="workflow_run",
+        action=None,
+        delivery_id="delivery-reindex",
+        signature=_signature(body),
+    )
+
+    assert revision_jobs == [("user_a", "ses_1", "a" * 40)]
+    assert webhook_db.github_webhook_events.records[0]["revisionReindexJobs"] == [
+        {"automationId": "aut_1", "jobId": "job_revision"}
+    ]
+
+
 async def test_invalid_signature_cannot_persist_or_dispatch(monkeypatch, webhook_db) -> None:
     called = False
 

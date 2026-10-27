@@ -19,7 +19,9 @@ class RagService:
     def __init__(self) -> None:
         self.workspace = WorkspaceService()
 
-    async def index_workspace(self, session: dict[str, Any], repo_path: Path) -> dict[str, Any]:
+    async def index_workspace(
+        self, session: dict[str, Any], repo_path: Path, *, revision: str | None = None
+    ) -> dict[str, Any]:
         db = get_db()
         settings = get_settings()
         # Reading/splitting a repository is synchronous filesystem/CPU work.
@@ -72,6 +74,8 @@ class RagService:
             **index_stats,
             **persistence,
         }
+        if revision:
+            result["revision"] = revision
         if vector_requested and documents:
             try:
                 await self._index_with_vector_store(documents)

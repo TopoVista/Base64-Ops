@@ -238,6 +238,25 @@ class GitHubWebhookService:
             }
         if not targets:
             return {"accepted": True, "eventId": event["_id"], "status": "ignored", "targets": 0}
+        if settings.github_webhook_reindex_on_failure:
+            revision_jobs = []
+            for target in targets:
+                try:
+                    job = await BackgroundJobService().enqueue_revision_reindex(
+                        user_id=str(target["userId"]),
+                        session_id=str(target["sessionId"]),
+                        commit_sha=str(envelope["headSha"]),
+                    )
+                    revision_jobs.append({"automationId": target["_id"], "jobId": job["id"]})
+                except Exception:
+                    # Investigation remains possible with direct CI evidence;
+                    # retain only a safe operational status, never an error
+                    # from Git, Mongo, or a provider in the webhook ledger.
+                    revision_jobs.append({"automationId": target["_id"], "status": "queue_failed"})
+            await get_db().github_webhook_events.update_one(
+                {"_id": event["_id"]},
+                {"$set": {"revisionReindexJobs": revision_jobs, "updatedAt": utc_now()}},
+            )
         try:
             queued = await BackgroundJobService().enqueue_incident_dispatch(event_id=event["_id"])
         except Exception:
@@ -534,20 +553,47 @@ class IncidentDispatchService:
         self.flaky_observations = flaky_observations or FlakyTestObservationService()
         self.prevention_rules = prevention_rules or PreventionRuleService()
 
-    async def dispatch(self, *, event_id: str) -> None:
+    async def dispatch(self, *, event_id: str) -> bool:
+        """Dispatch an event once any requested revision index has settled.
+
+        A queued revision index is a dependency, not an invitation to inspect
+        whatever branch happens to be checked out when a worker starts.
+        Failed indexing does not hide the CI incident: evidence collection
+        continues with an explicit limitation.
+        """
+
         db = get_db()
         event = await db.github_webhook_events.find_one({"_id": event_id})
         if not event or event.get("status") in {"completed", "ignored"}:
-            return
+            return True
         await db.github_webhook_events.update_one(
             {"_id": event_id}, {"$set": {"status": "processing", "updatedAt": utc_now()}}
         )
         completed_targets = 0
+        waiting_for_reindex = False
         async for automation in db.repository_automation_settings.find(
             {"_id": {"$in": list(event.get("targetAutomationIds") or [])}, "enabled": True}
         ):
-            await self._dispatch_target(event=event, automation=automation)
+            reindex_state = await self._revision_reindex_state(event=event, automation_id=str(automation["_id"]))
+            if reindex_state == "pending":
+                waiting_for_reindex = True
+                continue
+            await self._dispatch_target(
+                event=event,
+                automation=automation,
+                indexing_limitation=(
+                    "The repository snapshot at the failing commit could not be indexed; "
+                    "CI evidence was collected without a refreshed RAG corpus."
+                    if reindex_state == "failed"
+                    else None
+                ),
+            )
             completed_targets += 1
+        if waiting_for_reindex:
+            await db.github_webhook_events.update_one(
+                {"_id": event_id}, {"$set": {"status": "waiting_for_reindex", "updatedAt": utc_now()}}
+            )
+            return False
         await db.github_webhook_events.update_one(
             {"_id": event_id},
             {
@@ -559,6 +605,33 @@ class IncidentDispatchService:
                 }
             },
         )
+        return True
+
+    @staticmethod
+    async def _revision_reindex_state(*, event: dict[str, Any], automation_id: str) -> str:
+        """Return whether the target's verified revision corpus is usable."""
+
+        jobs = event.get("revisionReindexJobs")
+        if not isinstance(jobs, list):
+            return "not_requested"
+        record = next(
+            (
+                item for item in jobs
+                if isinstance(item, dict) and str(item.get("automationId")) == automation_id
+            ),
+            None,
+        )
+        if not record or record.get("status") == "queue_failed":
+            return "failed"
+        job_id = record.get("jobId")
+        if not isinstance(job_id, str) or not job_id:
+            return "failed"
+        job = await get_db().background_jobs.find_one({"_id": job_id}, {"status": 1})
+        if not job or job.get("status") in {"failed", "cancelled"}:
+            return "failed"
+        if job.get("status") == "completed":
+            return "ready"
+        return "pending"
 
     async def mark_dispatch_failure(self, *, event_id: str, error: str, terminal: bool) -> None:
         """Record bounded retry/terminal state without leaking provider details."""
@@ -575,7 +648,13 @@ class IncidentDispatchService:
             },
         )
 
-    async def _dispatch_target(self, *, event: dict[str, Any], automation: dict[str, Any]) -> None:
+    async def _dispatch_target(
+        self,
+        *,
+        event: dict[str, Any],
+        automation: dict[str, Any],
+        indexing_limitation: str | None = None,
+    ) -> None:
         db = get_db()
         now = utc_now()
         incident_id = new_id("inc_")
@@ -602,7 +681,7 @@ class IncidentDispatchService:
             "workflowEvidenceIds": [],
             "changedFileEvidenceIds": [],
             "relevantPaths": [],
-            "limitations": [],
+            "limitations": [indexing_limitation] if indexing_limitation else [],
             "incomplete": False,
             "createdAt": now,
             "updatedAt": now,
@@ -660,22 +739,23 @@ class IncidentDispatchService:
 
         # The clone is a normal read-only workspace operation executed by the
         # worker. The webhook payload never supplies this path or a command.
-        repo_path, _ = await self.workspace.ensure_workspace(
+        async with self.workspace.revision_workspace(
             str(automation["userId"]),
             str(session["slugId"]),
             str(session["repoUrl"]),
             str(session.get("defaultBranch") or "main"),
-        )
-        current_head_sha = self.workspace.head_commit(repo_path)
-        context = await self.ci_investigation.investigate_actions_run(
-            user_id=str(automation["userId"]),
-            repository_id=str(session["repoUrl"]),
-            run_id=int(event["workflowRunId"]),
-            session=session,
-            graph_run_id=incident_id,
-            current_head_sha=current_head_sha,
-            repo_path=repo_path,
-        )
+            str(event["headSha"]),
+        ) as repo_path:
+            current_head_sha = self.workspace.head_commit(repo_path)
+            context = await self.ci_investigation.investigate_actions_run(
+                user_id=str(automation["userId"]),
+                repository_id=str(session["repoUrl"]),
+                run_id=int(event["workflowRunId"]),
+                session=session,
+                graph_run_id=incident_id,
+                current_head_sha=current_head_sha,
+                repo_path=repo_path,
+            )
         diagnosis = build_structured_incident_diagnosis(context)
         flaky_observations = await self._record_flaky_observations(
             incident_id=incident_id,
@@ -707,7 +787,10 @@ class IncidentDispatchService:
                     "applicabilityReason": context.applicability_reason,
                     "history": context.history.model_dump(mode="json") if context.history else None,
                     "incomplete": context.incomplete,
-                    "limitations": context.limitations,
+                    "limitations": [
+                        *([indexing_limitation] if indexing_limitation else []),
+                        *context.limitations,
+                    ],
                     "updatedAt": utc_now(),
                 }
             },

@@ -21,6 +21,19 @@ from app.utils.datetime import utc_now
 redactor = RedactionService()
 
 
+async def _build_graph_snapshot(
+    workspace: WorkspaceService, session: dict, repo_path
+):
+    """Keep RAG indexing useful if optional graph construction fails."""
+
+    try:
+        return await EngineeringGraphService(workspace=workspace).build_and_store(
+            session=session, repo_path=repo_path
+        )
+    except Exception as exc:  # Caller persists only the redacted failure class.
+        return exc
+
+
 class DeferredJob(Exception):
     """A safe polling result; it is not a worker error or a CI verdict."""
 
@@ -48,32 +61,36 @@ async def run_job(job: dict) -> None:
         return
     if job.get("type") == "reindex_repository":
         session_id = str((job.get("payload") or {}).get("sessionId", ""))
+        commit_sha = str((job.get("payload") or {}).get("commitSha", "")) or None
         session = await get_db().sessions.find_one({"_id": session_id, "userId": job.get("userId")})
         if not session:
             # The session may have been deleted while this job waited. It is
             # not an error and must not make a worker inspect another tenant.
             return
         workspace = WorkspaceService()
-        repo_path, _ = await workspace.ensure_workspace(
-            str(job["userId"]), session["slugId"], session["repoUrl"], session.get("defaultBranch") or "main"
-        )
-        result = await RagService().index_workspace(session, repo_path)
+        if commit_sha:
+            async with workspace.revision_workspace(
+                str(job["userId"]), session["slugId"], session["repoUrl"],
+                session.get("defaultBranch") or "main", commit_sha,
+            ) as repo_path:
+                result = await RagService().index_workspace(session, repo_path, revision=commit_sha)
+                snapshot = await _build_graph_snapshot(workspace, session, repo_path)
+        else:
+            repo_path, _ = await workspace.ensure_workspace(
+                str(job["userId"]), session["slugId"], session["repoUrl"], session.get("defaultBranch") or "main"
+            )
+            result = await RagService().index_workspace(session, repo_path)
+            snapshot = await _build_graph_snapshot(workspace, session, repo_path)
         index_status = "ready" if result.get("indexed") else "empty"
         index_error = None if result.get("indexed") else "Repository contains no supported indexable files."
-        graph_status = "not_built"
+        graph_status = "ready" if not isinstance(snapshot, Exception) else "failed"
         graph_error = None
-        try:
-            snapshot = await EngineeringGraphService(workspace=workspace).build_and_store(
-                session=session, repo_path=repo_path
-            )
-            graph_status = "ready"
-        except Exception as exc:
+        if isinstance(snapshot, Exception):
             # Indexing and the graph are complementary evidence products. A
             # parser/storage failure must not discard an otherwise usable RAG
             # index or expose an implementation detail to the browser.
+            graph_error = redactor.redact(f"{type(snapshot).__name__}: {snapshot}")[:300]
             snapshot = None
-            graph_status = "failed"
-            graph_error = redactor.redact(f"{type(exc).__name__}: {exc}")[:300]
         await get_db().sessions.update_one(
             {"_id": session_id, "userId": job["userId"]},
             {
@@ -84,6 +101,7 @@ async def run_job(job: dict) -> None:
                     # not mistake it for a complete repository index.
                     "indexTruncated": bool(result.get("truncated")),
                     "indexedAt": utc_now(),
+                    "indexedRevision": commit_sha,
                     "indexJobId": job["_id"],
                     "graphStatus": graph_status,
                     "graphError": graph_error,
@@ -157,7 +175,9 @@ async def run_job(job: dict) -> None:
         event_id = str((job.get("payload") or {}).get("eventId", ""))
         if not event_id:
             raise ValueError("Missing incident event ID")
-        await IncidentDispatchService().dispatch(event_id=event_id)
+        complete = await IncidentDispatchService().dispatch(event_id=event_id)
+        if not complete:
+            raise DeferredJob(10)
         return
     raise ValueError(f"Unsupported background job type: {job.get('type')}")
 

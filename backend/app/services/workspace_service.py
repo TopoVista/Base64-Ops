@@ -3,6 +3,8 @@ import os
 import re
 import shutil
 import subprocess
+import tempfile
+from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any
 from urllib.parse import quote, urlparse, urlunparse
@@ -87,6 +89,56 @@ class WorkspaceService:
                 detail=f"Failed to clone repository: {result['output']}",
             )
         return repo_path, repo_name
+
+    @asynccontextmanager
+    async def revision_workspace(
+        self,
+        user_id: str,
+        slug_id: str,
+        repo_url: str,
+        default_branch: str | None,
+        commit_sha: str,
+    ):
+        """Yield a disposable, detached worktree at a verified commit.
+
+        The ordinary workspace remains untouched, which prevents a delayed CI
+        event from changing the files used by an interactive repair session.
+        Only the GitHub-derived full SHA is fetched and checked out.
+        """
+
+        if not re.fullmatch(r"[0-9a-f]{40}", commit_sha):
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid repository revision")
+        repo_path, _ = await self.ensure_workspace(user_id, slug_id, repo_url, default_branch)
+        if self.head_commit(repo_path) == commit_sha:
+            yield repo_path
+            return
+        fetched = await asyncio.to_thread(
+            self._run, ["git", "fetch", "--depth", "1", "origin", commit_sha], repo_path
+        )
+        if not fetched["success"]:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Repository revision is unavailable")
+        parent = repo_path.parent.resolve()
+        temporary_path = Path(tempfile.mkdtemp(prefix="base64-revision-", dir=parent))
+        # git worktree requires a non-existent destination. The directory was
+        # just created under the managed workspace parent, so this removal is
+        # constrained to a known empty temporary target.
+        temporary_path.rmdir()
+        added = await asyncio.to_thread(
+            self._run,
+            ["git", "worktree", "add", "--detach", str(temporary_path), commit_sha],
+            repo_path,
+        )
+        if not added["success"]:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Repository revision is unavailable")
+        try:
+            yield temporary_path
+        finally:
+            await asyncio.to_thread(
+                self._run, ["git", "worktree", "remove", "--force", str(temporary_path)], repo_path
+            )
+            # A failed worktree removal may leave only this generated path.
+            if temporary_path.exists() and temporary_path.parent.resolve() == parent:
+                shutil.rmtree(temporary_path, ignore_errors=True)
 
     async def ensure_branch(self, repo_path: Path, branch_name: str) -> dict[str, Any]:
         result = self._run(["git", "checkout", "-B", branch_name], cwd=repo_path)

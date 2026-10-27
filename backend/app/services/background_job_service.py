@@ -73,6 +73,50 @@ class BackgroundJobService:
             raise
         return {"id": job["_id"], "status": job["status"], "deduplicated": False}
 
+    async def enqueue_revision_reindex(
+        self, *, user_id: str, session_id: str, commit_sha: str
+    ) -> dict[str, Any]:
+        """Queue an index for one immutable Git commit.
+
+        The SHA comes only from a verified, persisted GitHub workflow event.
+        Keeping it in the server-created payload lets the indexer obtain the
+        exact failing tree without accepting a repository URL or path.
+        """
+
+        db = get_db()
+        dedupe_key = f"reindex-revision:{user_id}:{session_id}:{commit_sha}"
+        existing = await db.background_jobs.find_one(
+            {"dedupeKey": dedupe_key, "status": {"$in": ["queued", "running"]}},
+            projection={"_id": 1, "status": 1},
+        )
+        if existing:
+            return {"id": existing["_id"], "status": existing["status"], "deduplicated": True}
+        now = utc_now()
+        job = {
+            "_id": new_id("job_"),
+            "role": "indexer",
+            "type": "reindex_repository",
+            "status": "queued",
+            "dedupeKey": dedupe_key,
+            "userId": user_id,
+            "payload": {"sessionId": session_id, "commitSha": commit_sha},
+            "attempts": 0,
+            "availableAt": now,
+            "createdAt": now,
+            "updatedAt": now,
+            "activeDedupeKey": dedupe_key,
+        }
+        try:
+            await db.background_jobs.insert_one(job)
+        except DuplicateKeyError:
+            existing = await db.background_jobs.find_one(
+                {"activeDedupeKey": dedupe_key}, projection={"_id": 1, "status": 1}
+            )
+            if existing:
+                return {"id": existing["_id"], "status": existing["status"], "deduplicated": True}
+            raise
+        return {"id": job["_id"], "status": job["status"], "deduplicated": False}
+
     async def enqueue_delivery_ci_verification(self, *, user_id: str, delivery_result_id: str) -> dict[str, Any]:
         db = get_db()
         dedupe_key = f"delivery-ci:{user_id}:{delivery_result_id}"

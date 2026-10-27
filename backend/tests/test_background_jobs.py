@@ -36,6 +36,27 @@ async def test_reindex_jobs_are_deduplicated_and_contain_no_repository_input(mon
     assert "repoUrl" not in fake_db.background_jobs.rows[0]["payload"]
 
 
+async def test_revision_reindex_is_deduplicated_per_immutable_commit(monkeypatch) -> None:
+    fake_db = SimpleNamespace(background_jobs=FakeJobsCollection())
+    monkeypatch.setattr("app.services.background_job_service.get_db", lambda: fake_db)
+    jobs = BackgroundJobService()
+
+    first = await jobs.enqueue_revision_reindex(
+        user_id="user-a", session_id="session-a", commit_sha="a" * 40
+    )
+    duplicate = await jobs.enqueue_revision_reindex(
+        user_id="user-a", session_id="session-a", commit_sha="a" * 40
+    )
+    next_revision = await jobs.enqueue_revision_reindex(
+        user_id="user-a", session_id="session-a", commit_sha="b" * 40
+    )
+
+    assert not first["deduplicated"]
+    assert duplicate["deduplicated"]
+    assert not next_revision["deduplicated"]
+    assert fake_db.background_jobs.rows[0]["payload"] == {"sessionId": "session-a", "commitSha": "a" * 40}
+
+
 class FakeSessionsCollection:
     def __init__(self) -> None:
         self.session = {
