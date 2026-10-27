@@ -518,7 +518,29 @@ async def github_api(user_id: str, method: str, path: str, **kwargs: Any) -> Any
 
 async def github_api_bytes(user_id: str, path: str, *, max_bytes: int) -> tuple[bytes, bool]:
     """Read bounded non-JSON GitHub content through the existing OAuth service."""
+
     token = await get_github_access_token(user_id)
+    return await _github_api_bytes_for_token(token, path, max_bytes=max_bytes)
+
+
+async def github_installation_api_bytes(
+    installation_id: str, path: str, *, max_bytes: int
+) -> tuple[bytes, bool]:
+    """Read bounded GitHub Actions content with an ephemeral App token.
+
+    Candidate verification uses a distinct GitHub App boundary.  This helper
+    deliberately shares the same strict signed-log redirect policy as the
+    OAuth reader without ever accepting a browser-provided token or forwarding
+    an installation token to a signed external download URL.
+    """
+
+    token = await create_github_installation_token(installation_id)
+    return await _github_api_bytes_for_token(token, path, max_bytes=max_bytes)
+
+
+async def _github_api_bytes_for_token(token: str, path: str, *, max_bytes: int) -> tuple[bytes, bool]:
+    """Download only a bounded Actions response using a caller-owned token."""
+
     data = bytearray()
     truncated = False
     api_url = f"https://api.github.com{path}"
@@ -566,3 +588,4 @@ async def github_api_bytes(user_id: str, path: str, *, max_bytes: int) -> tuple[
                         truncated = True
                         break
     return bytes(data), truncated
+

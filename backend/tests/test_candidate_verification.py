@@ -4,7 +4,7 @@ from types import SimpleNamespace
 import pytest
 
 from app.schemas.delivery import DeliveryPlan, ProposedFileChange
-from app.services import candidate_verification_service
+from app.services import candidate_verification_service, evidence_service
 from app.services.candidate_verification_service import (
     CandidateVerificationService,
     candidate_branch_name,
@@ -242,6 +242,124 @@ async def test_observer_records_targeted_success_without_claiming_full_ci(monkey
     assert runs.record["githubRunId"] == 991
 
 
+@pytest.mark.asyncio
+async def test_failed_candidate_records_bounded_redacted_evidence_without_command_execution(monkeypatch) -> None:
+    run = {
+        "_id": "vrf_failure",
+        "id": "vrf_failure",
+        "userId": "user_1",
+        "sessionId": "ses_1",
+        "repositoryId": "https://github.com/acme/base64.git",
+        "status": "dispatched",
+        "verificationLevel": "dispatched_not_completed",
+        "workflowPath": ".github/workflows/base64-verify.yml",
+        "candidateBranch": "base64-verify/candidate-123456",
+        "candidateCommitSha": "d" * 40,
+        "limitations": [],
+    }
+
+    class _Runs:
+        def __init__(self) -> None:
+            self.record = dict(run)
+
+        async def find_one(self, query):  # noqa: ANN001, ANN201
+            return self.record if query == {"_id": "vrf_failure", "userId": "user_1"} else None
+
+        async def update_one(self, _query, update):  # noqa: ANN001, ANN201
+            self.record.update(update["$set"])
+
+    class _Sessions:
+        async def find_one(self, query):  # noqa: ANN001, ANN201
+            assert query == {"_id": "ses_1", "userId": "user_1"}
+            return {"_id": "ses_1", "repoUrl": run["repositoryId"], "defaultBranch": "main"}
+
+    class _Evidence:
+        def __init__(self) -> None:
+            self.records: list[dict] = []
+
+        async def find_one(self, _query):  # noqa: ANN001, ANN201
+            return None
+
+        async def insert_one(self, document):  # noqa: ANN001, ANN201
+            self.records.append(dict(document))
+
+    runs = _Runs()
+    evidence = _Evidence()
+    database = SimpleNamespace(verification_runs=runs, sessions=_Sessions(), evidence=evidence)
+    monkeypatch.setattr(
+        candidate_verification_service,
+        "get_db",
+        lambda: database,
+    )
+    monkeypatch.setattr(evidence_service, "get_db", lambda: database)
+    calls: list[str] = []
+
+    async def github_call(_installation_id, method, path, **kwargs):  # noqa: ANN001, ANN202
+        assert method == "GET"
+        calls.append(path)
+        if path.endswith("/runs"):
+            return {
+                "workflow_runs": [
+                    {
+                        "id": 992,
+                        "head_sha": "d" * 40,
+                        "status": "completed",
+                        "conclusion": "failure",
+                        "html_url": "https://github.com/acme/base64/actions/runs/992",
+                    }
+                ]
+            }
+        assert path.endswith("/actions/runs/992/jobs")
+        assert kwargs["params"]["per_page"] > 0
+        return {
+            "jobs": [
+                {
+                    "id": 431,
+                    "name": "backend tests",
+                    "status": "completed",
+                    "conclusion": "failure",
+                    "html_url": "https://github.com/acme/base64/actions/jobs/431",
+                    "steps": [{"name": "Run pytest", "conclusion": "failure"}],
+                }
+            ]
+        }
+
+    async def github_bytes(_installation_id, path, *, max_bytes):  # noqa: ANN001, ANN202
+        assert path.endswith("/actions/jobs/431/logs")
+        assert max_bytes > 0
+        return (
+            b"Authorization: Bearer ghp_secret_should_not_survive\n"
+            b"ModuleNotFoundError: No module named 'httpx'\n",
+            False,
+        )
+
+    monkeypatch.setattr(candidate_verification_service, "github_installation_api", github_call)
+    monkeypatch.setattr(candidate_verification_service, "github_installation_api_bytes", github_bytes)
+    service = CandidateVerificationService()
+
+    async def settings(*, user_id: str, session_id: str):  # noqa: ANN202
+        assert (user_id, session_id) == ("user_1", "ses_1")
+        return {
+            "enabled": True,
+            "installationId": "123",
+            "repositoryFullName": "acme/base64",
+        }
+
+    monkeypatch.setattr(service, "get_repository_settings", settings)
+    outcome = await service.observe_run(user_id="user_1", verification_run_id="vrf_failure")
+
+    assert outcome["status"] == "failed"
+    assert outcome["verificationLevel"] == "targeted_verification_failed"
+    assert outcome["failureEvidenceCount"] == 1
+    assert outcome["failureCategories"] == ["dependency_failure"]
+    assert calls[-1].endswith("/actions/runs/992/jobs")
+    assert len(evidence.records) == 1
+    assert evidence.records[0]["sourceType"] == "ci_log"
+    assert evidence.records[0]["metadata"]["untrusted"] is True
+    assert "ghp_secret_should_not_survive" not in evidence.records[0]["excerpt"]
+    assert "ModuleNotFoundError" in evidence.records[0]["excerpt"]
+
+
 def test_public_candidate_verification_is_allowlisted() -> None:
     from app.services.session_service import _public_delivery_plan
 
@@ -268,3 +386,4 @@ def test_public_candidate_verification_is_allowlisted() -> None:
     assert verification["candidatePatchHash"] == "safe-hash"
     assert "commands" not in verification
     assert "dispatchToken" not in verification
+

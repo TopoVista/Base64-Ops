@@ -13,7 +13,7 @@ const SignUpPage = () => {
         <div className="mx-auto flex w-full max-w-sm flex-1 items-center justify-center">
           <SignUp
             routing="hash"
-            signInUrl={`/${postAuthRedirectQuery(postAuthRedirect)}`}
+            signInUrl={`/sign-in${postAuthRedirectQuery(postAuthRedirect)}`}
             fallbackRedirectUrl={postAuthRedirect}
             appearance={{
               elements: {
@@ -44,3 +44,4 @@ const SignUpPage = () => {
 };
 
 export default SignUpPage;
+

@@ -169,7 +169,11 @@ export type CandidateVerificationRun = {
   githubRunId?: number | null;
   githubUrl?: string | null;
   message?: string | null;
+  failureEvidenceCount?: number;
+  failureCategories?: string[];
+  logsTruncated?: boolean;
   limitations: string[];
   createdAt?: string | null;
   updatedAt?: string | null;
 };
+

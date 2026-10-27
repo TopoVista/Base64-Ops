@@ -17,11 +17,15 @@ from urllib.parse import quote
 
 from fastapi import HTTPException, status
 
+from app.core.config import get_settings
 from app.db.mongo import get_db
+from app.git.actions import CIFailureCategory, WorkflowJobSummary, extract_failure_excerpts
 from app.schemas.delivery import DeliveryPlan
+from app.services.evidence_service import EvidenceService
 from app.services.github_service import (
     github_app_is_configured,
     github_installation_api,
+    github_installation_api_bytes,
     normalize_github_repository_url,
     validate_github_app_installation_repository,
 )
@@ -136,6 +140,7 @@ class CandidateVerificationService:
 
     def __init__(self) -> None:
         self.redactor = RedactionService()
+        self.evidence = EvidenceService()
 
     @staticmethod
     def _settings_identity(*, user_id: str, session_id: str) -> dict[str, str]:
@@ -597,13 +602,32 @@ class CandidateVerificationService:
                 github_url=safe_url,
             )
         if conclusion in {"failure", "timed_out", "cancelled", "startup_failure", "action_required"}:
+            failure_context = await self._collect_failure_evidence(
+                user_id=user_id,
+                run=run,
+                installation_id=installation_id,
+                owner=owner,
+                repository=repository,
+                github_run_id=safe_run_id,
+            )
+            message = "Configured targeted candidate verification did not pass."
+            evidence_count = len(failure_context["evidence_ids"])
+            if evidence_count:
+                message += (
+                    f" Captured {evidence_count} bounded, redacted failure "
+                    f"{'excerpt' if evidence_count == 1 else 'excerpts'} for review."
+                )
             return await self._update_observed_state(
                 run,
                 status="failed",
                 verification_level="targeted_verification_failed",
-                message="Configured targeted candidate verification did not pass.",
+                message=message,
                 github_run_id=safe_run_id,
                 github_url=safe_url,
+                failure_evidence_ids=failure_context["evidence_ids"],
+                failure_categories=failure_context["categories"],
+                logs_truncated=failure_context["truncated"],
+                observed_limitations=failure_context["limitations"],
             )
         return await self._update_observed_state(
             run,
@@ -621,6 +645,169 @@ class CandidateVerificationService:
         if not run:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Verification run not found")
         return self._public_run_state(run)
+
+    async def _collect_failure_evidence(
+        self,
+        *,
+        user_id: str,
+        run: dict[str, Any],
+        installation_id: str,
+        owner: str,
+        repository: str,
+        github_run_id: int | None,
+    ) -> dict[str, Any]:
+        """Persist bounded, redacted failed-job evidence for one exact candidate.
+
+        Candidate workflow commands and raw logs are untrusted data. This
+        helper never invokes them, never reads successful-job logs, and never
+        lets evidence alter approval, delivery, or command policy. A failure
+        to fetch metadata or logs is a limitation of the observation, not a
+        reason to change its terminal GitHub conclusion.
+        """
+
+        result: dict[str, Any] = {
+            "evidence_ids": [],
+            "categories": [],
+            "truncated": False,
+            "limitations": [],
+        }
+        if github_run_id is None:
+            result["limitations"].append(
+                "GitHub did not provide a workflow-run identifier for failed-job evidence."
+            )
+            return result
+        try:
+            session = await get_db().sessions.find_one(
+                {"_id": run["sessionId"], "userId": user_id}
+            )
+        except Exception:
+            session = None
+        if not session:
+            result["limitations"].append(
+                "The owned session was unavailable, so candidate failure excerpts were not persisted."
+            )
+            return result
+        try:
+            response = await github_installation_api(
+                installation_id,
+                "GET",
+                f"/repos/{owner}/{repository}/actions/runs/{github_run_id}/jobs",
+                params={"per_page": get_settings().ci_log_max_jobs_per_run},
+            )
+        except HTTPException:
+            result["limitations"].append(
+                "GitHub did not permit access to candidate job metadata."
+            )
+            return result
+        except Exception:
+            result["limitations"].append(
+                "Candidate job metadata is temporarily unavailable."
+            )
+            return result
+
+        source_records: list[dict[str, Any]] = []
+        categories: set[CIFailureCategory] = set()
+        jobs = response.get("jobs", []) if isinstance(response, dict) else []
+        for item in jobs[: get_settings().ci_log_max_jobs_per_run]:
+            if not isinstance(item, dict) or item.get("conclusion") not in {
+                "failure",
+                "timed_out",
+                "cancelled",
+                "startup_failure",
+                "action_required",
+            }:
+                continue
+            job_id = item.get("id")
+            if not isinstance(job_id, int):
+                continue
+            failed_step = next(
+                (
+                    str(step.get("name"))
+                    for step in item.get("steps", [])
+                    if isinstance(step, dict) and step.get("conclusion") == "failure"
+                ),
+                None,
+            )
+            job = WorkflowJobSummary(
+                id=job_id,
+                run_id=github_run_id,
+                name=str(item.get("name") or "candidate job"),
+                status=str(item.get("status") or "") or None,
+                conclusion=str(item.get("conclusion") or "") or None,
+                failed_step=failed_step,
+                html_url=str(item.get("html_url") or "") or None,
+            )
+            try:
+                payload, truncated = await github_installation_api_bytes(
+                    installation_id,
+                    f"/repos/{owner}/{repository}/actions/jobs/{job.id}/logs",
+                    max_bytes=get_settings().ci_log_max_download_bytes,
+                )
+            except HTTPException:
+                result["limitations"].append(
+                    f"GitHub did not permit access to logs for candidate job {job.name}."
+                )
+                continue
+            except Exception:
+                result["limitations"].append(
+                    f"Candidate logs for job {job.name} are temporarily unavailable."
+                )
+                continue
+            excerpts = extract_failure_excerpts(
+                text=payload.decode("utf-8", errors="replace"),
+                run_id=github_run_id,
+                job=job,
+                truncated=truncated,
+            )
+            result["truncated"] = bool(result["truncated"] or truncated)
+            for excerpt in excerpts:
+                categories.update(excerpt.categories)
+                source_records.append(
+                    {
+                        "kind": "ci_log",
+                        "source": (
+                            f"github-actions/candidate/{run['id']}/"
+                            f"run/{github_run_id}/job/{job.id}"
+                        ),
+                        "excerpt": excerpt.excerpt,
+                        "lineStart": excerpt.line_start,
+                        "lineEnd": excerpt.line_end,
+                        "metadata": {
+                            "candidate_verification_id": str(run["id"]),
+                            "workflow_run_id": github_run_id,
+                            "workflow_path": str(run.get("workflowPath") or ""),
+                            "job_id": job.id,
+                            "job_name": job.name,
+                            "failed_step": job.failed_step,
+                            "head_sha": str(run.get("candidateCommitSha") or ""),
+                            "branch": str(run.get("candidateBranch") or ""),
+                            "conclusion": job.conclusion,
+                            "html_url": job.html_url,
+                            "categories": [str(category) for category in excerpt.categories],
+                            "failed_test_identifiers": excerpt.failed_test_identifiers,
+                            "truncated": excerpt.truncated,
+                            "untrusted": True,
+                            "verification_scope": "targeted_candidate",
+                        },
+                    }
+                )
+        if source_records:
+            try:
+                records = await self.evidence.record_sources(
+                    user_id=user_id,
+                    session=session,
+                    run_id=str(run["id"]),
+                    sources=source_records,
+                    commit_sha=str(run.get("candidateCommitSha") or "") or None,
+                )
+                result["evidence_ids"] = [str(record["id"]) for record in records]
+            except Exception:
+                result["limitations"].append(
+                    "Candidate failure excerpts could not be persisted."
+                )
+        result["categories"] = sorted(str(category) for category in categories)
+        result["limitations"] = list(dict.fromkeys(result["limitations"]))[:10]
+        return result
 
     async def get_latest_run(self, *, user_id: str, session_id: str) -> dict[str, Any] | None:
         """Return the most recent verification state for one owned session.
@@ -652,6 +839,10 @@ class CandidateVerificationService:
         message: str,
         github_run_id: int | None = None,
         github_url: str | None = None,
+        failure_evidence_ids: list[str] | None = None,
+        failure_categories: list[str] | None = None,
+        logs_truncated: bool = False,
+        observed_limitations: list[str] | None = None,
     ) -> dict[str, Any]:
         updates: dict[str, Any] = {
             "status": status,
@@ -664,6 +855,19 @@ class CandidateVerificationService:
             updates["githubRunId"] = github_run_id
         if github_url is not None:
             updates["githubUrl"] = github_url
+        if failure_evidence_ids:
+            updates["failureEvidenceIds"] = failure_evidence_ids[:50]
+        if failure_categories:
+            updates["failureCategories"] = failure_categories[:20]
+        if logs_truncated:
+            updates["logsTruncated"] = True
+        if observed_limitations:
+            existing_limitations = [
+                str(item) for item in run.get("limitations", []) if isinstance(item, str)
+            ]
+            updates["limitations"] = list(
+                dict.fromkeys([*existing_limitations, *observed_limitations])
+            )[:20]
         await get_db().verification_runs.update_one(
             {"_id": run["_id"], "userId": run["userId"]}, {"$set": updates}
         )
@@ -678,6 +882,13 @@ class CandidateVerificationService:
             "message": str(run.get("message") or run.get("failureReason") or ""),
             "githubRunId": run.get("githubRunId") if isinstance(run.get("githubRunId"), int) else None,
             "githubUrl": str(run["githubUrl"]) if run.get("githubUrl") else None,
+            "failureEvidenceCount": len(
+                [item for item in run.get("failureEvidenceIds", []) if isinstance(item, str)]
+            ),
+            "failureCategories": [
+                str(item) for item in run.get("failureCategories", []) if isinstance(item, str)
+            ][:20],
+            "logsTruncated": bool(run.get("logsTruncated")),
             "limitations": [
                 str(item) for item in run.get("limitations", []) if isinstance(item, str)
             ],
@@ -702,3 +913,4 @@ class CandidateVerificationService:
             "verificationLevel": "not_independently_tested",
             "reason": safe_detail,
         }
+

@@ -22,7 +22,7 @@ const queryClient = new QueryClient({
 })
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
-const isPublicDemo = window.location.pathname === "/demo"
+const isPublicSurface = ["/", "/demo", "/guide"].includes(window.location.pathname)
 
 const root = createRoot(document.getElementById('root')!)
 
@@ -43,7 +43,7 @@ const ConfigurationRequired = () => (
   </main>
 )
 
-const PublicDemoRoot = () => (
+const PublicSurfaceRoot = () => (
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
@@ -60,8 +60,8 @@ const PublicDemoRoot = () => (
 // before Clerk so an unavailable auth SDK cannot turn a reproducible product
 // walkthrough into an indefinite loading screen. Every protected route still
 // follows the existing ClerkProvider path below.
-if (isPublicDemo) {
-  root.render(<PublicDemoRoot />)
+if (isPublicSurface) {
+  root.render(<PublicSurfaceRoot />)
 } else if (!PUBLISHABLE_KEY) {
   root.render(
     <StrictMode>
@@ -86,3 +86,4 @@ if (isPublicDemo) {
   </StrictMode>,
 )
 }
+

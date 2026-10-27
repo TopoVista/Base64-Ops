@@ -982,6 +982,13 @@ function ReviewPanel({ file, draft, deliveryPlan, ci, stagedForCommit, reviewedF
             </button>
             {candidateVerificationRun.githubUrl ? <a href={candidateVerificationRun.githubUrl} target="_blank" rel="noreferrer" className="underline" style={{ color: "var(--ide-blue)" }}>Open GitHub ↗</a> : null}
             {candidateVerificationRun.message ? <span className="basis-full" style={{ color: "var(--ide-fg-dim)" }}>{candidateVerificationRun.message}</span> : null}
+            {candidateVerificationRun.failureEvidenceCount ? (
+              <span className="basis-full" style={{ color: "var(--ide-warning-fg)" }}>
+                {candidateVerificationRun.failureEvidenceCount} bounded, redacted failure {candidateVerificationRun.failureEvidenceCount === 1 ? "excerpt" : "excerpts"} captured
+                {candidateVerificationRun.failureCategories?.length ? ` · ${candidateVerificationRun.failureCategories.join(", ").replaceAll("_", " ")}` : ""}
+                {candidateVerificationRun.logsTruncated ? " · source log truncated" : ""}.
+              </span>
+            ) : null}
           </div>
         ) : null}
       </div>
@@ -1519,3 +1526,4 @@ export function IDEWorkspace({
     </div>
   );
 }
+

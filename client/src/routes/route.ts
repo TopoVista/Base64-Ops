@@ -5,6 +5,7 @@ import { createElement, lazy } from "react";
 // route on demand so one surface does not force its tooling into another.
 const SignInPage = lazy(() => import("@/pages/auth/sign-in"));
 const SignUpPage = lazy(() => import("@/pages/auth/sign-up"));
+const LandingPage = lazy(() => import("@/pages/landing"));
 const HomePage = lazy(() => import("@/pages/home"));
 const DemoPage = lazy(() => import("@/pages/demo"));
 const GuidePage = lazy(() => import("@/pages/guide"));
@@ -19,10 +20,7 @@ export const isAuthRoute = (pathname: string): boolean => {
 };
 
 export const AUTH_ROUTES = {
-  SIGN_IN: "/",
-  // Keep the root as the primary sign-in screen while supporting the
-  // conventional direct-link path used by bookmarks and external links.
-  SIGN_IN_ALIAS: "/sign-in",
+  SIGN_IN: "/sign-in",
   SIGN_UP: "/sign-up",
 };
 
@@ -42,6 +40,7 @@ const SessionRedirect = () => {
 };
 
 export const PUBLIC_ROUTES = {
+  LANDING: "/",
   DEMO: "/demo",
   GUIDE: "/guide",
 };
@@ -49,10 +48,6 @@ export const PUBLIC_ROUTES = {
 export const authRouthsPaths = [
   {
     path: AUTH_ROUTES.SIGN_IN,
-    element: SignInPage,
-  },
-  {
-    path: AUTH_ROUTES.SIGN_IN_ALIAS,
     element: SignInPage,
   },
   {
@@ -96,6 +91,10 @@ export const protectedRoutesPaths = [
 // Keeping it public makes the safety/demo story inspectable without credentials.
 export const publicRoutesPaths = [
   {
+    path: PUBLIC_ROUTES.LANDING,
+    element: LandingPage,
+  },
+  {
     path: PUBLIC_ROUTES.DEMO,
     element: DemoPage,
   },
@@ -104,3 +103,4 @@ export const publicRoutesPaths = [
     element: GuidePage,
   },
 ];
+
