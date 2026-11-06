@@ -437,8 +437,11 @@ class AgentGraph:
         # A connected repository should be useful on its first real question.
         # Build the lexical corpus only when none exists for this session; later
         # requests reuse it and select evidence dynamically from that corpus.
+        index_query = {"sessionId": state["session_id"], "kind": "repo"}
+        if state.get("repo_commit_sha"):
+            index_query["validAt"] = state["repo_commit_sha"]
         has_index = await db.rag_chunks.find_one(
-            {"sessionId": state["session_id"], "kind": "repo"},
+            index_query,
             projection={"_id": 1},
         )
         if not has_index:
@@ -471,8 +474,13 @@ class AgentGraph:
             else:
                 try:
                     result = await self.rag.index_workspace(
-                        {"_id": state["session_id"], "repoName": state.get("repo_name", "repository")},
+                        {
+                            "_id": state["session_id"],
+                            "repoName": state.get("repo_name", "repository"),
+                            "repoUrl": state.get("repo_url"),
+                        },
                         Path(state["repo_path"]),
+                        revision=state.get("repo_commit_sha"),
                     )
                     index_created = bool(result.get("indexed"))
                     await db.sessions.update_one(
@@ -493,7 +501,10 @@ class AgentGraph:
                         "Repository indexing was unavailable; bounded direct repository evidence was used instead."
                     )
         sources = await self.rag.retrieve(
-            state["session_id"], state["prompt"], limit=get_settings().rag_retrieval_limit
+            state["session_id"],
+            state["prompt"],
+            limit=get_settings().rag_retrieval_limit,
+            valid_at=state.get("repo_commit_sha"),
         )
         fallback_used = False
         if not sources:

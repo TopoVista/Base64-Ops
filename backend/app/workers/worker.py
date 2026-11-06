@@ -79,7 +79,8 @@ async def run_job(job: dict) -> None:
             repo_path, _ = await workspace.ensure_workspace(
                 str(job["userId"]), session["slugId"], session["repoUrl"], session.get("defaultBranch") or "main"
             )
-            result = await RagService().index_workspace(session, repo_path)
+            commit_sha = workspace.head_commit(repo_path)
+            result = await RagService().index_workspace(session, repo_path, revision=commit_sha)
             snapshot = await _build_graph_snapshot(workspace, session, repo_path)
         index_status = "ready" if result.get("indexed") else "empty"
         index_error = None if result.get("indexed") else "Repository contains no supported indexable files."
@@ -91,6 +92,22 @@ async def run_job(job: dict) -> None:
             # index or expose an implementation detail to the browser.
             graph_error = redactor.redact(f"{type(snapshot).__name__}: {snapshot}")[:300]
             snapshot = None
+        # A completed queue job is not sufficient evidence for an incident
+        # freshness gate. Persist the exact commit-scoped RAG result so the
+        # dispatcher can require a snapshot for the failing SHA.
+        await get_db().background_jobs.update_one(
+            {"_id": job["_id"], "status": "running"},
+            {
+                "$set": {
+                    "result": {
+                        "indexedRevision": commit_sha,
+                        "snapshotStatus": result.get("snapshotStatus"),
+                        "indexed": int(result.get("indexed", 0)),
+                        "truncated": bool(result.get("truncated")),
+                    }
+                }
+            },
+        )
         await get_db().sessions.update_one(
             {"_id": session_id, "userId": job["userId"]},
             {

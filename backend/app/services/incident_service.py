@@ -627,11 +627,17 @@ class IncidentDispatchService:
         job_id = record.get("jobId")
         if not isinstance(job_id, str) or not job_id:
             return "failed"
-        job = await get_db().background_jobs.find_one({"_id": job_id}, {"status": 1})
+        job = await get_db().background_jobs.find_one({"_id": job_id}, {"status": 1, "result": 1})
         if not job or job.get("status") in {"failed", "cancelled"}:
             return "failed"
         if job.get("status") == "completed":
-            return "ready"
+            result = job.get("result") if isinstance(job.get("result"), dict) else {}
+            if (
+                result.get("indexedRevision") == event.get("headSha")
+                and result.get("snapshotStatus") == "ready"
+            ):
+                return "ready"
+            return "failed"
         return "pending"
 
     async def mark_dispatch_failure(self, *, event_id: str, error: str, terminal: bool) -> None:

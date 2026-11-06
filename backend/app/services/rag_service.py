@@ -2,6 +2,7 @@ import asyncio
 import hashlib
 import re
 from collections import defaultdict
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -31,6 +32,7 @@ class RagService:
             self._build_repository_documents,
             session,
             repo_path,
+            revision=revision,
             max_files=settings.rag_index_max_files,
             max_total_bytes=settings.rag_index_max_total_bytes,
             max_chunks=settings.rag_index_max_chunks,
@@ -43,9 +45,21 @@ class RagService:
         # repositories with far more chunks than a process should scan.
         await db.rag_chunks.create_index([("sessionId", 1), ("searchTerms", 1)])
         await db.rag_chunks.create_index([("sessionId", 1), ("kind", 1), ("source", 1), ("contentHash", 1)])
+        await db.rag_chunks.create_index(
+            [("repositoryId", 1), ("kind", 1), ("validAt", 1), ("knownAt", 1), ("searchTerms", 1)],
+            name="rag_temporal_lexical",
+        )
         rows = self._document_rows(documents)
         vector_requested = bool(settings.rag_vector_enabled and settings.openai_api_key)
-        if vector_requested:
+        if revision:
+            persistence = await self._persist_revision_rows(
+                collection=db.rag_chunks,
+                session_id=str(session["_id"]),
+                revision=revision,
+                rows=rows,
+            )
+            await self._record_snapshot(session=session, revision=revision, rows=rows, index_stats=index_stats)
+        elif vector_requested:
             # The external vector collection cannot safely prove that a
             # document deletion/replacement succeeded through the lexical
             # collection alone. Preserve the prior full-replace behavior when
@@ -76,6 +90,8 @@ class RagService:
         }
         if revision:
             result["revision"] = revision
+            result["freshness"] = "exact_revision"
+            result["snapshotStatus"] = "ready" if rows else "empty"
         if vector_requested and documents:
             try:
                 await self._index_with_vector_store(documents)
@@ -84,6 +100,84 @@ class RagService:
                 # The canonical lexical corpus is already safely persisted.
                 result["vectorWarning"] = "Atlas vector indexing is unavailable; lexical retrieval remains active."
         return result
+
+    async def _persist_revision_rows(
+        self,
+        *,
+        collection: Any,
+        session_id: str,
+        revision: str,
+        rows: list[dict[str, Any]],
+    ) -> dict[str, int | str]:
+        """Replace only one immutable commit snapshot, never the latest corpus."""
+
+        query = {"sessionId": session_id, "kind": "repo", "validAt": revision}
+        existing = await collection.find(query, {"_id": 1}).to_list(20_001)
+        await collection.delete_many(query)
+        if rows:
+            await collection.insert_many(rows)
+        return {
+            "indexMode": "commit_snapshot_replace",
+            "chunksInserted": len(rows),
+            "chunksReused": 0,
+            "chunksRemoved": len(existing),
+        }
+
+    async def _record_snapshot(
+        self,
+        *,
+        session: dict[str, Any],
+        revision: str,
+        rows: list[dict[str, Any]],
+        index_stats: dict[str, int | bool],
+    ) -> None:
+        """Publish the temporal snapshot only after its chunk set is durable."""
+
+        known_at = utc_now()
+        corpus_hash = hashlib.sha256(
+            "\n".join(f"{row['source']}:{row['contentHash']}" for row in rows).encode("utf-8")
+        ).hexdigest()
+        session_id = str(session["_id"])
+        repository_id = str(session.get("repositoryId") or session.get("repoUrl") or session_id)
+        await get_db().rag_snapshots.update_one(
+            {"sessionId": session_id, "repositoryId": repository_id, "commitSha": revision},
+            {
+                "$set": {
+                    "sessionId": session_id,
+                    "userId": session.get("userId"),
+                    "repositoryId": repository_id,
+                    "commitSha": revision,
+                    "validAt": revision,
+                    "knownAt": known_at,
+                    "status": "ready" if rows else "empty",
+                    "chunkCount": len(rows),
+                    "corpusHash": corpus_hash,
+                    "truncated": bool(index_stats.get("truncated")),
+                    "updatedAt": known_at,
+                },
+                "$setOnInsert": {"_id": new_id("rgs_"), "createdAt": known_at},
+            },
+            upsert=True,
+        )
+
+    async def snapshot_freshness(
+        self,
+        *,
+        session_id: str,
+        repository_id: str,
+        valid_at: str,
+        known_at: datetime | None = None,
+    ) -> dict[str, Any] | None:
+        """Return one exact revision snapshot, never a nearest/latest substitute."""
+
+        query: dict[str, Any] = {
+            "sessionId": session_id,
+            "repositoryId": repository_id,
+            "commitSha": valid_at,
+        }
+        if known_at is not None:
+            query["knownAt"] = {"$lte": known_at}
+        return await get_db().rag_snapshots.find_one(query)
 
     async def _persist_incremental_lexical_rows(
         self,
@@ -180,6 +274,7 @@ class RagService:
         session: dict[str, Any],
         repo_path: Path,
         *,
+        revision: str | None = None,
         max_files: int,
         max_total_bytes: int,
         max_chunks: int,
@@ -240,6 +335,13 @@ class RagService:
                             "lineEnd": line_end,
                             "createdAt": utc_now().isoformat(),
                             "contentHash": content_hash,
+                            **(
+                                {"validAt": revision, "commitSha": revision, "knownAt": utc_now()}
+                                if revision
+                                else {}
+                            ),
+                            "repositoryId": session.get("repositoryId") or session.get("repoUrl"),
+                            "parserVersion": "base64-rag-parser-v1",
                         },
                     )
                 )
@@ -276,15 +378,28 @@ class RagService:
     async def list_runbooks(self, user_id: str) -> list[dict[str, Any]]:
         return await get_db().runbooks.find({"userId": user_id}).sort("createdAt", -1).to_list(100)
 
-    async def retrieve(self, session_id: str, query: str, limit: int = 6) -> list[dict[str, Any]]:
+    async def retrieve(
+        self,
+        session_id: str,
+        query: str,
+        limit: int = 6,
+        *,
+        valid_at: str | None = None,
+        known_at: datetime | None = None,
+    ) -> list[dict[str, Any]]:
         settings = get_settings()
         if settings.rag_vector_enabled and settings.openai_api_key:
             try:
                 vector_store = self._vector_store()
+                pre_filter: dict[str, Any] = {"sessionId": {"$eq": session_id}}
+                if valid_at:
+                    pre_filter["validAt"] = {"$eq": valid_at}
+                if known_at:
+                    pre_filter["knownAt"] = {"$lte": known_at}
                 results = vector_store.similarity_search(
                     query,
                     k=limit,
-                    pre_filter={"sessionId": {"$eq": session_id}},
+                    pre_filter=pre_filter,
                 )
                 return [
                     {
@@ -293,6 +408,9 @@ class RagService:
                         "excerpt": doc.page_content[:700],
                         "lineStart": doc.metadata.get("lineStart"),
                         "lineEnd": doc.metadata.get("lineEnd"),
+                        "validAt": doc.metadata.get("validAt"),
+                        "knownAt": doc.metadata.get("knownAt"),
+                        "freshness": "valid_at" if valid_at else "current",
                     }
                     for doc in results
                 ]
@@ -305,12 +423,19 @@ class RagService:
         terms = self._lexical_terms(query)
         candidate_limit = max(100, min(500, limit * 25))
         db = get_db()
+        base_query: dict[str, Any] = {"sessionId": session_id}
+        if valid_at:
+            # Historical retrieval must not silently fall back to a newer
+            # corpus.  A missing exact snapshot is an honest empty result.
+            base_query["validAt"] = valid_at
+        if known_at:
+            base_query["knownAt"] = {"$lte": known_at}
         if terms:
             # `searchTerms` is generated server-side during indexing. It
             # narrows the candidate set before scoring full text and avoids a
             # first-N-chunks bias for large repositories.
             docs = await (
-                db.rag_chunks.find({"sessionId": session_id, "searchTerms": {"$in": terms}})
+                db.rag_chunks.find({**base_query, "searchTerms": {"$in": terms}})
                 .limit(candidate_limit)
                 .to_list(candidate_limit)
             )
@@ -321,7 +446,7 @@ class RagService:
         # fallback keeps them usable until the next reindex.
         if not docs:
             docs = await (
-                db.rag_chunks.find({"sessionId": session_id})
+                db.rag_chunks.find(base_query)
                 .sort("source", 1)
                 .limit(candidate_limit)
                 .to_list(candidate_limit)
@@ -343,6 +468,9 @@ class RagService:
                 "excerpt": doc.get("text", "")[:700],
                 "lineStart": doc.get("lineStart") or doc.get("metadata", {}).get("lineStart"),
                 "lineEnd": doc.get("lineEnd") or doc.get("metadata", {}).get("lineEnd"),
+                "validAt": doc.get("validAt") or doc.get("metadata", {}).get("validAt"),
+                "knownAt": doc.get("knownAt") or doc.get("metadata", {}).get("knownAt"),
+                "freshness": "valid_at" if valid_at else "current",
             }
             for doc in docs
         ]
@@ -364,6 +492,11 @@ class RagService:
                     "kind": metadata["kind"],
                     "source": metadata["source"],
                     "contentHash": content_hash,
+                    "validAt": metadata.get("validAt"),
+                    "knownAt": metadata.get("knownAt"),
+                    "commitSha": metadata.get("commitSha"),
+                    "repositoryId": metadata.get("repositoryId"),
+                    "parserVersion": metadata.get("parserVersion"),
                     "lineStart": metadata.get("lineStart"),
                     "lineEnd": metadata.get("lineEnd"),
                     "createdAt": utc_now(),

@@ -1,4 +1,5 @@
 import asyncio
+from datetime import UTC, datetime
 
 import pytest
 from fastapi import HTTPException
@@ -60,7 +61,7 @@ def test_index_workspace_persists_lexical_chunks_without_vector_search(tmp_path,
             self.rows: list[dict] = []
             self.indexes: list[list[tuple[str, int]]] = []
 
-        async def create_index(self, fields: list[tuple[str, int]]) -> None:
+        async def create_index(self, fields: list[tuple[str, int]], **_kwargs) -> None:  # noqa: ANN003
             self.indexes.append(fields)
 
         def find(self, query: dict, _projection: dict):
@@ -74,6 +75,9 @@ def test_index_workspace_persists_lexical_chunks_without_vector_search(tmp_path,
                     self.value = value
 
                 def limit(self, _value: int):
+                    return self
+
+                def sort(self, _field: str, _direction: int):  # noqa: ANN201
                     return self
 
                 async def to_list(self, _value: int) -> list[dict]:
@@ -118,6 +122,7 @@ def test_index_workspace_persists_lexical_chunks_without_vector_search(tmp_path,
     assert Database.rag_chunks.indexes == [
         [("sessionId", 1), ("searchTerms", 1)],
         [("sessionId", 1), ("kind", 1), ("source", 1), ("contentHash", 1)],
+        [("repositoryId", 1), ("kind", 1), ("validAt", 1), ("knownAt", 1), ("searchTerms", 1)],
     ]
 
     unchanged = asyncio.run(
@@ -143,6 +148,114 @@ def test_index_workspace_persists_lexical_chunks_without_vector_search(tmp_path,
     )
     assert migrated["indexMode"] == "full_replace_untrusted_existing_corpus"
     assert migrated["chunksInserted"] == 1
+
+
+def test_commit_scoped_rag_keeps_historical_chunks_and_retrieves_only_the_requested_sha(tmp_path, monkeypatch) -> None:
+    source = tmp_path / "backend" / "main.py"
+    source.parent.mkdir()
+    source.write_text("FAILED_SHA_TOKEN = 'historical'\n", encoding="utf-8")
+
+    class Cursor:
+        def __init__(self, rows: list[dict]) -> None:
+            self.rows = rows
+
+        def limit(self, value: int):  # noqa: ANN201
+            self.rows = self.rows[:value]
+            return self
+
+        def sort(self, field: str, direction: int):  # noqa: ANN201
+            self.rows.sort(key=lambda row: str(row.get(field, "")), reverse=direction < 0)
+            return self
+
+        async def to_list(self, value: int) -> list[dict]:
+            return self.rows[:value]
+
+    def matches(row: dict, query: dict) -> bool:
+        for key, value in query.items():
+            actual = row.get(key)
+            if isinstance(value, dict):
+                if "$in" in value and not (
+                    any(item in value["$in"] for item in actual) if isinstance(actual, list) else actual in value["$in"]
+                ):
+                    return False
+                if "$lte" in value and (actual is None or actual > value["$lte"]):
+                    return False
+            elif actual != value:
+                return False
+        return True
+
+    class Chunks:
+        def __init__(self) -> None:
+            self.rows: list[dict] = []
+
+        async def create_index(self, *_args, **_kwargs) -> None:  # noqa: ANN002, ANN003
+            return None
+
+        def find(self, query: dict, *_args) -> Cursor:  # noqa: ANN002
+            return Cursor([row for row in self.rows if matches(row, query)])
+
+        async def delete_many(self, query: dict) -> None:
+            self.rows = [row for row in self.rows if not matches(row, query)]
+
+        async def insert_many(self, rows: list[dict]) -> None:
+            self.rows.extend(rows)
+
+    class Snapshots:
+        def __init__(self) -> None:
+            self.rows: list[dict] = []
+
+        async def update_one(self, query: dict, update: dict, *, upsert: bool) -> None:
+            existing = next((row for row in self.rows if matches(row, query)), None)
+            if existing is None:
+                assert upsert
+                existing = {**query, **update.get("$setOnInsert", {})}
+                self.rows.append(existing)
+            existing.update(update["$set"])
+
+        async def find_one(self, query: dict) -> dict | None:
+            return next((row for row in self.rows if matches(row, query)), None)
+
+    class Database:
+        rag_chunks = Chunks()
+        rag_snapshots = Snapshots()
+
+    monkeypatch.setattr(rag_service, "get_db", lambda: Database())
+    settings = rag_service.get_settings()
+    monkeypatch.setattr(
+        rag_service,
+        "get_settings",
+        lambda: settings.model_copy(update={"rag_vector_enabled": False, "openai_api_key": None}),
+    )
+    service = RagService()
+    session = {"_id": "ses_1", "repoName": "fixture", "repoUrl": "https://github.com/acme/fixture.git"}
+    sha_a, sha_b = "a" * 40, "b" * 40
+
+    first = asyncio.run(service.index_workspace(session, tmp_path, revision=sha_a))
+    source.write_text("CURRENT_SHA_TOKEN = 'current'\n", encoding="utf-8")
+    second = asyncio.run(service.index_workspace(session, tmp_path, revision=sha_b))
+
+    historical = asyncio.run(service.retrieve("ses_1", "FAILED_SHA_TOKEN", valid_at=sha_a))
+    current = asyncio.run(service.retrieve("ses_1", "CURRENT_SHA_TOKEN", valid_at=sha_b))
+    missing = asyncio.run(service.retrieve("ses_1", "CURRENT_SHA_TOKEN", valid_at="c" * 40))
+    not_yet_known = asyncio.run(
+        service.retrieve("ses_1", "FAILED_SHA_TOKEN", valid_at=sha_a, known_at=datetime(2000, 1, 1, tzinfo=UTC))
+    )
+    snapshot = asyncio.run(
+        service.snapshot_freshness(
+            session_id="ses_1",
+            repository_id="https://github.com/acme/fixture.git",
+            valid_at=sha_a,
+            known_at=datetime.now(UTC),
+        )
+    )
+
+    assert first["freshness"] == second["freshness"] == "exact_revision"
+    assert {row["validAt"] for row in Database.rag_chunks.rows} == {sha_a, sha_b}
+    assert "historical" in historical[0]["excerpt"] and historical[0]["freshness"] == "valid_at"
+    assert "current" in current[0]["excerpt"] and current[0]["validAt"] == sha_b
+    assert missing == []
+    assert not_yet_known == []
+    assert snapshot and snapshot["status"] == "ready" and snapshot["commitSha"] == sha_a
 
 
 def test_repository_index_uses_aggregate_file_and_byte_limits(tmp_path) -> None:

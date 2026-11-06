@@ -1554,7 +1554,9 @@ async def reindex_session(
             session["repoUrl"],
             session.get("defaultBranch") or "main",
         )
-        result = await RagService().index_workspace(session, repo_path)
+        result = await RagService().index_workspace(
+            session, repo_path, revision=WorkspaceService().head_commit(repo_path)
+        )
         reason = "Repository contains no supported indexable files." if not result.get("indexed") else None
         index_status = "ready" if result.get("indexed") else "empty"
         graph_status = "not_built"
