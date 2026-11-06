@@ -14,7 +14,10 @@ import json
 from collections import defaultdict
 from typing import Any
 
+from pymongo.errors import DuplicateKeyError
+
 from app.db.mongo import get_db
+from app.services.assurance_ledger_service import AssuranceLedgerService
 from app.utils.datetime import utc_now
 
 _SCAN_LIMIT = 200
@@ -59,6 +62,14 @@ class PreventionRuleService:
         await collection.create_index(
             [("userId", 1), ("sessionId", 1), ("updatedAt", -1)], name="prevention_rule_tenant_recent"
         )
+        await get_db().prevention_policy_events.create_index(
+            [("ruleId", 1), ("policyVersion", 1)], unique=True, name="prevention_policy_version_once"
+        )
+        await get_db().prevention_policy_observations.create_index(
+            [("ruleId", 1), ("policyVersion", 1), ("incidentId", 1)],
+            unique=True,
+            name="prevention_policy_observation_once",
+        )
 
     async def list_for_session(
         self,
@@ -90,6 +101,11 @@ class PreventionRuleService:
                     "status": 1,
                     "applicabilityLimitations": 1,
                     "invalidationReason": 1,
+                    "governanceStatus": 1,
+                    "policyVersion": 1,
+                    "deploymentScope": 1,
+                    "ledgerReceiptId": 1,
+                    "effectivenessMetrics": 1,
                     "createdAt": 1,
                     "updatedAt": 1,
                 },
@@ -224,11 +240,218 @@ class PreventionRuleService:
                     "affectedPath": candidate["affectedPath"],
                     "failureCategory": candidate["failureCategory"],
                 },
-                {"$set": document, "$setOnInsert": {"createdAt": now}},
+                {
+                    "$set": document,
+                    # Promotion to a recurrence advisory is automatic;
+                    # promotion to policy is not. These lifecycle fields must
+                    # be set only on creation so refreshes cannot undo a human
+                    # approval or rollback.
+                    "$setOnInsert": {
+                        "createdAt": now,
+                        "governanceStatus": "proposed",
+                        "policyVersion": 0,
+                        "deploymentScope": "advisory_only",
+                        "effectivenessMetrics": {
+                            "status": "not_measurable",
+                            "observedRecurrenceCount": 0,
+                            "violationEventCount": 0,
+                            "limitations": [
+                                "An advisory-only policy has no enforcement signal, so effectiveness "
+                                "cannot be inferred.",
+                                "Observed recurrence is tracked separately from causation and policy violations.",
+                            ],
+                        },
+                    },
+                },
                 upsert=True,
             )
             rule_ids.append(rule_id)
         return rule_ids
+
+    async def govern_rule(
+        self,
+        *,
+        user_id: str,
+        session_id: str,
+        rule_id: str,
+        action: str,
+    ) -> dict[str, Any]:
+        """Approve or roll back an advisory-only prevention policy.
+
+        There is no hidden GitHub write or merge gate here. Approval creates
+        an immutable signed policy event, while rollback makes the policy
+        inactive before any future enforcement adapter could consult it.
+        """
+
+        if action not in {"approve", "rollback"}:
+            raise ValueError("Unsupported prevention policy action.")
+        db = get_db()
+        rule = await db.prevention_rules.find_one({"_id": rule_id, "userId": user_id, "sessionId": session_id})
+        if not rule:
+            raise LookupError("Prevention rule not found.")
+        current = str(rule.get("governanceStatus") or "proposed")
+        if action == "approve" and current == "approved":
+            return self._governance_response(rule)
+        if action == "rollback" and current != "approved":
+            raise ValueError("Only an approved prevention policy can be rolled back.")
+        version = int(rule.get("policyVersion") or 0) + 1
+        limitations = [
+            "Deployment scope is advisory only; this policy does not block merges or modify GitHub configuration.",
+            "Effectiveness requires enforcement or violation telemetry and is not inferred "
+            "from historical correlation.",
+        ]
+        policy_updated_at = utc_now()
+        event = {
+            "_id": f"{rule_id}:v{version}",
+            "ruleId": rule_id,
+            "policyVersion": version,
+            "userId": user_id,
+            "sessionId": session_id,
+            # Policy events are not artifacts of a single CI run.  A stable
+            # per-rule ledger scope preserves an append-only chain across
+            # approval and rollback without misrepresenting it as run data.
+            "runId": f"prevention-policy:{rule_id}",
+            "repositoryId": str(rule["repositoryId"]),
+            "action": action,
+            "deploymentScope": "advisory_only",
+            "supportingIncidentIds": list(rule.get("historicalIncidentIds") or []),
+            "supportingRunShas": list(rule.get("historicalRunShas") or []),
+            "limitations": limitations,
+            "createdAt": policy_updated_at,
+        }
+        receipt = await AssuranceLedgerService().record_prevention_policy_receipt(event)
+        event["ledgerReceiptId"] = receipt["id"]
+        event["ledgerManifestHash"] = receipt["manifestHash"]
+        await db.prevention_policy_events.insert_one(event)
+        next_status = "approved" if action == "approve" else "rolled_back"
+        await db.prevention_rules.update_one(
+            {"_id": rule_id, "userId": user_id, "sessionId": session_id},
+            {
+                "$set": {
+                    "governanceStatus": next_status,
+                    "policyVersion": version,
+                    "deploymentScope": "advisory_only",
+                    "ledgerReceiptId": receipt["id"],
+                    "ledgerManifestHash": receipt["manifestHash"],
+                    "policyUpdatedAt": policy_updated_at,
+                    "updatedAt": policy_updated_at,
+                    "effectivenessMetrics": {
+                        "status": "not_measurable",
+                        "observedRecurrenceCount": 0,
+                        "violationEventCount": 0,
+                        "limitations": [
+                            "An advisory-only policy has no enforcement signal, so effectiveness cannot be inferred.",
+                            "Observed recurrence is tracked separately from causation and policy violations.",
+                        ],
+                    },
+                }
+            },
+        )
+        return {
+            "rule_id": rule_id,
+            "governance_status": next_status,
+            "policy_version": version,
+            "deployment_scope": "advisory_only",
+            "ledger_receipt_id": receipt["id"],
+            "limitations": limitations,
+        }
+
+    @staticmethod
+    def _governance_response(rule: dict[str, Any]) -> dict[str, Any]:
+        receipt_id = rule.get("ledgerReceiptId")
+        if not isinstance(receipt_id, str) or not receipt_id:
+            raise ValueError("Approved prevention policy is missing its signed receipt.")
+        return {
+            "rule_id": str(rule["_id"]),
+            "governance_status": "approved",
+            "policy_version": int(rule.get("policyVersion") or 1),
+            "deployment_scope": "advisory_only",
+            "ledger_receipt_id": receipt_id,
+            "limitations": [
+                "Deployment scope is advisory only; this policy does not block merges or modify GitHub configuration.",
+                            "Effectiveness requires enforcement or violation telemetry and is not inferred "
+                            "from historical correlation.",
+            ],
+        }
+
+    async def observe_recurrence(
+        self,
+        *,
+        user_id: str,
+        session_id: str,
+        repository_id: str,
+        incident_id: str,
+        relevant_paths: list[str],
+        failure_categories: list[str],
+    ) -> int:
+        """Record a post-approval recurrence observation without causal claims.
+
+        Advisory policies do not enforce a check, so an incident cannot be
+        called a policy violation. The immutable observation lets reviewers
+        see recurrence after approval while the metric remains explicitly
+        ``not_measurable`` for effectiveness.
+        """
+
+        paths = {_normalise_path(value) for value in relevant_paths} - {None}
+        categories = {value for value in failure_categories if isinstance(value, str) and value}
+        if not paths or not categories:
+            return 0
+        db = get_db()
+        cursor = db.prevention_rules.find(
+            {
+                "userId": user_id,
+                "sessionId": session_id,
+                "repositoryId": repository_id,
+                "governanceStatus": "approved",
+                "status": "active",
+            },
+            {"_id": 1, "affectedPath": 1, "failureCategory": 1, "policyVersion": 1},
+        ).limit(_MAX_RULES_PER_REFRESH)
+        recorded = 0
+        now = utc_now()
+        async for rule in cursor:
+            path = _normalise_path(rule.get("affectedPath"))
+            category = rule.get("failureCategory")
+            if path not in paths or category not in categories:
+                continue
+            version = int(rule.get("policyVersion") or 0)
+            if version < 1:
+                continue
+            rule_id = str(rule["_id"])
+            observation = {
+                "_id": f"{rule_id}:v{version}:incident:{incident_id}",
+                "ruleId": rule_id,
+                "policyVersion": version,
+                "incidentId": incident_id,
+                "userId": user_id,
+                "sessionId": session_id,
+                "repositoryId": repository_id,
+                "kind": "observed_recurrence",
+                "createdAt": now,
+                "limitations": [
+                    "This is an observed matching incident, not proof of policy effectiveness or causation.",
+                    "The advisory-only deployment has no violation telemetry.",
+                ],
+            }
+            try:
+                await db.prevention_policy_observations.insert_one(observation)
+            except DuplicateKeyError:
+                continue
+            await db.prevention_rules.update_one(
+                {
+                    "_id": rule_id,
+                    "userId": user_id,
+                    "sessionId": session_id,
+                    "governanceStatus": "approved",
+                    "policyVersion": version,
+                },
+                {
+                    "$inc": {"effectivenessMetrics.observedRecurrenceCount": 1},
+                    "$set": {"effectivenessMetrics.observedAt": now, "updatedAt": now},
+                },
+            )
+            recorded += 1
+        return recorded
 
     async def invalidate_for_incident(
         self,

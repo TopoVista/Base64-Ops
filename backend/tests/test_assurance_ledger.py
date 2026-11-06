@@ -192,3 +192,27 @@ async def test_incident_capsule_binds_exact_revision_and_evidence_hashes(ledger_
     assert capsule["evidence"][0]["contentHash"] == "a" * 64
     assert capsule["reproductionInputs"]["runnerLabels"] == ["ubuntu-latest"]
     assert AssuranceLedgerService.verify_receipt(receipt, expected_user_id="usr_1")
+
+
+async def test_prevention_policy_receipt_has_a_dedicated_signed_rule_chain(ledger_db: SimpleNamespace) -> None:
+    receipt = await AssuranceLedgerService().record_prevention_policy_receipt(
+        {
+            "userId": "usr_1",
+            "sessionId": "ses_1",
+            "runId": "prevention-policy:prv_1",
+            "repositoryId": "https://github.com/acme/repo.git",
+            "ruleId": "prv_1",
+            "action": "approve",
+            "policyVersion": 1,
+            "deploymentScope": "advisory_only",
+            "supportingIncidentIds": ["inc_1", "inc_2"],
+            "supportingRunShas": ["a" * 40, "b" * 40],
+            "limitations": ["Historical correlation is not proof of a future failure."],
+        }
+    )
+
+    assert receipt["kind"] == "prevention_policy"
+    assert receipt["runId"] == "prevention-policy:prv_1"
+    assert receipt["manifest"]["action"] == "approve"
+    assert receipt["manifest"]["supportingIncidentIds"] == ["inc_1", "inc_2"]
+    assert AssuranceLedgerService.verify_receipt(receipt, expected_user_id="usr_1")

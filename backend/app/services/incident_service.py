@@ -859,6 +859,8 @@ class IncidentDispatchService:
             incident_id=incident_id,
             automation=automation,
             repository_id=str(event["repositoryId"]),
+            relevant_paths=[str(path) for path in context.relevant_paths],
+            failure_categories=[str(category) for category in context.failure_categories],
         )
         await self._publish_github_check(
             incident={
@@ -878,6 +880,8 @@ class IncidentDispatchService:
         incident_id: str,
         automation: dict[str, Any],
         repository_id: str,
+        relevant_paths: list[str],
+        failure_categories: list[str],
     ) -> None:
         """Persist only eligible recurrence patterns after incident grouping.
 
@@ -890,6 +894,14 @@ class IncidentDispatchService:
                 user_id=str(automation["userId"]),
                 session_id=str(automation["sessionId"]),
                 repository_id=repository_id,
+            )
+            await self.prevention_rules.observe_recurrence(
+                user_id=str(automation["userId"]),
+                session_id=str(automation["sessionId"]),
+                repository_id=repository_id,
+                incident_id=incident_id,
+                relevant_paths=relevant_paths,
+                failure_categories=failure_categories,
             )
         except Exception:
             await get_db().incidents.update_one(

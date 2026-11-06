@@ -62,5 +62,23 @@ class PreventionRuleSummary(BaseModel):
     status: Literal["active", "needs_review"]
     applicability_limitations: list[str] = Field(default_factory=list)
     invalidation_reason: str | None = None
+    governance_status: Literal["proposed", "approved", "rolled_back"] = "proposed"
+    policy_version: int = Field(default=0, ge=0)
+    deployment_scope: Literal["advisory_only"] = "advisory_only"
+    ledger_receipt_id: str | None = None
+    observed_recurrence_count: int = Field(default=0, ge=0)
+    effectiveness_status: Literal["not_measurable"] = "not_measurable"
+    effectiveness_limitations: list[str] = Field(default_factory=list)
     created_at: datetime
     updated_at: datetime
+
+
+class PreventionRuleGovernanceResponse(BaseModel):
+    """A signed policy lifecycle event; advisory deployment is non-blocking."""
+
+    rule_id: str
+    governance_status: Literal["approved", "rolled_back"]
+    policy_version: int = Field(ge=1)
+    deployment_scope: Literal["advisory_only"]
+    ledger_receipt_id: str
+    limitations: list[str] = Field(default_factory=list)

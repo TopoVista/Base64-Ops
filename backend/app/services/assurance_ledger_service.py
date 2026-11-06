@@ -293,6 +293,26 @@ class AssuranceLedgerService:
             delivery_plan_id=str(report["deliveryPlanId"]),
         )
 
+    async def record_prevention_policy_receipt(self, event: dict[str, Any]) -> dict[str, Any]:
+        """Sign a human-governed prevention policy lifecycle event."""
+
+        manifest = {
+            "schemaVersion": _SCHEMA_VERSION,
+            "kind": "prevention_policy",
+            "userId": event["userId"],
+            "sessionId": event["sessionId"],
+            "runId": event["runId"],
+            "repositoryId": event["repositoryId"],
+            "ruleId": event["ruleId"],
+            "action": event["action"],
+            "policyVersion": event["policyVersion"],
+            "deploymentScope": event["deploymentScope"],
+            "supportingIncidentIds": event["supportingIncidentIds"],
+            "supportingRunShas": event["supportingRunShas"],
+            "limitations": event["limitations"],
+        }
+        return await self._append(manifest=manifest, kind="prevention_policy", delivery_plan_id=None)
+
     async def record_delivery_receipt(
         self, *, plan: DeliveryPlan, approval: dict[str, Any], result: DeliveryResult
     ) -> dict[str, Any]:

@@ -20,7 +20,7 @@ from app.schemas.incident import (
     RepositoryAutomationSettingsRequest,
     RepositoryAutomationSettingsResponse,
 )
-from app.schemas.regression_prevention import PreventionRuleSummary
+from app.schemas.regression_prevention import PreventionRuleGovernanceResponse, PreventionRuleSummary
 from app.services.candidate_verification_service import CandidateVerificationService
 from app.services.github_service import github_app_is_configured
 from app.services.incident_export_service import (
@@ -191,6 +191,8 @@ def _prevention_rule_response(document: dict) -> PreventionRuleSummary:
 
     status_value = str(document.get("status") or "needs_review")
     status = status_value if status_value in {"active", "needs_review"} else "needs_review"
+    governance_value = str(document.get("governanceStatus") or "proposed")
+    governance_status = governance_value if governance_value in {"proposed", "approved", "rolled_back"} else "proposed"
     return PreventionRuleSummary(
         id=str(document.get("_id")),
         repository_id=str(document.get("repositoryId") or ""),
@@ -210,6 +212,21 @@ def _prevention_rule_response(document: dict) -> PreventionRuleSummary:
         invalidation_reason=(
             str(document["invalidationReason"]) if isinstance(document.get("invalidationReason"), str) else None
         ),
+        governance_status=governance_status,
+        policy_version=max(0, int(document.get("policyVersion") or 0)),
+        deployment_scope="advisory_only",
+        ledger_receipt_id=(
+            str(document["ledgerReceiptId"]) if isinstance(document.get("ledgerReceiptId"), str) else None
+        ),
+        observed_recurrence_count=max(
+            0, int((document.get("effectivenessMetrics") or {}).get("observedRecurrenceCount") or 0)
+        ),
+        effectiveness_status="not_measurable",
+        effectiveness_limitations=[
+            value
+            for value in (document.get("effectivenessMetrics") or {}).get("limitations", [])
+            if isinstance(value, str)
+        ][:4],
         created_at=document["createdAt"],
         updated_at=document["updatedAt"],
     )
@@ -334,6 +351,54 @@ async def list_prevention_rules(
         user_id=str(user["_id"]), session_id=str(session["_id"]), limit=limit
     )
     return [_prevention_rule_response(record) for record in records]
+
+
+async def _govern_prevention_rule(
+    *, slug_id: str, rule_id: str, action: Literal["approve", "rollback"], user: dict
+) -> PreventionRuleGovernanceResponse:
+    """Apply an explicit human policy decision to one owned advisory.
+
+    The policy has an intentionally fixed advisory-only deployment scope.  It
+    cannot edit GitHub configuration, block a merge, or grant delivery
+    authority; the signed event merely makes its lifecycle reviewable.
+    """
+
+    session = await get_db().sessions.find_one({"userId": user["_id"], "slugId": slug_id})
+    if not session:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
+    try:
+        result = await PreventionRuleService().govern_rule(
+            user_id=str(user["_id"]), session_id=str(session["_id"]), rule_id=rule_id, action=action
+        )
+    except LookupError as exc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc)) from exc
+    return PreventionRuleGovernanceResponse(**result)
+
+
+@router.post(
+    "/sessions/{slug_id}/prevention-rules/{rule_id}/approve",
+    response_model=PreventionRuleGovernanceResponse,
+)
+async def approve_prevention_rule(
+    slug_id: str, rule_id: str, user: dict = Depends(get_current_user)
+) -> PreventionRuleGovernanceResponse:
+    """Record the authenticated human approval of an advisory policy."""
+
+    return await _govern_prevention_rule(slug_id=slug_id, rule_id=rule_id, action="approve", user=user)
+
+
+@router.post(
+    "/sessions/{slug_id}/prevention-rules/{rule_id}/rollback",
+    response_model=PreventionRuleGovernanceResponse,
+)
+async def rollback_prevention_rule(
+    slug_id: str, rule_id: str, user: dict = Depends(get_current_user)
+) -> PreventionRuleGovernanceResponse:
+    """Record a human rollback before a future enforcer could consult it."""
+
+    return await _govern_prevention_rule(slug_id=slug_id, rule_id=rule_id, action="rollback", user=user)
 
 
 @router.get("")
