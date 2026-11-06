@@ -22,6 +22,7 @@ from app.intelligence.impact.store import ChangeImpactStore
 from app.services.assurance_ledger_service import AssuranceLedgerService
 from app.services.background_job_service import BackgroundJobService
 from app.services.candidate_verification_service import CandidateVerificationService
+from app.services.counterfactual_verification_service import CounterfactualVerificationService
 from app.services.github_service import ensure_github_indexes
 from app.services.incident_service import GitHubWebhookService
 from app.services.organization_incident_graph_service import OrganizationIncidentGraphService
@@ -54,6 +55,7 @@ async def _ensure_database_indexes() -> None:
     await GitHubWebhookService().ensure_indexes()
     await PreventionRuleService().ensure_indexes()
     await CandidateVerificationService().ensure_indexes()
+    await CounterfactualVerificationService().ensure_indexes()
     await OrganizationIncidentGraphService().ensure_indexes()
     await ensure_session_indexes()
     await EngineeringGraphStore().ensure_indexes()

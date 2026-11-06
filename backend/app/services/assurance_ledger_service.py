@@ -264,6 +264,35 @@ class AssuranceLedgerService:
         }
         return await self._append(manifest=manifest, kind="incident_capsule", delivery_plan_id=None)
 
+    async def record_counterfactual_receipt(self, report: dict[str, Any]) -> dict[str, Any]:
+        """Sign bounded counterfactual evidence without claiming a proof.
+
+        The report may attest a candidate workflow observed at an exact failed
+        revision. It intentionally records only identifiers and hashes: raw
+        candidate source, logs, commands, and provider payloads never enter
+        this manifest.
+        """
+
+        manifest = {
+            "schemaVersion": _SCHEMA_VERSION,
+            "kind": "counterfactual_verification",
+            "userId": report["userId"],
+            "sessionId": report["sessionId"],
+            "runId": report["runId"],
+            "repositoryId": report["repositoryId"],
+            "deliveryPlanId": report["deliveryPlanId"],
+            "patchDigest": report["patchDigest"],
+            "status": report["status"],
+            "verification": report["verification"],
+            "matrix": report["matrix"],
+            "limitations": report["limitations"],
+        }
+        return await self._append(
+            manifest=manifest,
+            kind="counterfactual_verification",
+            delivery_plan_id=str(report["deliveryPlanId"]),
+        )
+
     async def record_delivery_receipt(
         self, *, plan: DeliveryPlan, approval: dict[str, Any], result: DeliveryResult
     ) -> dict[str, Any]:

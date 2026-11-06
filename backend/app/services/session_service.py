@@ -39,6 +39,7 @@ from app.services.candidate_verification_service import (
 from app.services.ci_investigation_service import CIInvestigationService
 from app.services.ci_request_intent import extract_ci_request_intent
 from app.services.ci_run_resolution_service import CIRunResolutionService
+from app.services.counterfactual_verification_service import CounterfactualVerificationService
 from app.services.delivery_service import DeliveryService, content_hash
 from app.services.evidence_service import EvidenceService
 from app.services.github_service import resolve_authorized_repository
@@ -680,6 +681,30 @@ async def analyze_session_regression_prevention(
     if plan.repository_id != session.get("repoUrl"):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Delivery plan not found")
     return await RegressionPreventionService().analyze_for_plan(
+        user_id=user_id,
+        session_id=str(session["_id"]),
+        plan=plan,
+    )
+
+
+async def analyze_session_counterfactual_verification(
+    user_id: str,
+    slug_id: str,
+    plan_id: str,
+) -> dict:
+    """Build bounded evidence for an exact patch; it never dispatches a run."""
+
+    db = get_db()
+    session = await db.sessions.find_one({"userId": user_id, "slugId": slug_id})
+    if not session:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
+    plan_document = await db.delivery_plans.find_one({"id": plan_id, "userId": user_id, "sessionId": session["_id"]})
+    if not plan_document:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Delivery plan not found")
+    plan = DeliveryPlan.model_validate(plan_document)
+    if plan.repository_id != session.get("repoUrl"):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Delivery plan not found")
+    return await CounterfactualVerificationService().analyze_for_plan(
         user_id=user_id,
         session_id=str(session["_id"]),
         plan=plan,
