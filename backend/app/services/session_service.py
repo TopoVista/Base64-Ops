@@ -244,6 +244,13 @@ async def get_or_create_session(user_id: str, payload: SessionChatRequest, promp
         "title": prompt[:48] or "Untitled Session",
         "repoUrl": repo_url,
         "repoName": repo_name,
+        "repositoryId": str(authorized_repository.get("repositoryId") or ""),
+        "repositoryVisibility": "private" if bool(authorized_repository.get("private", True)) else "public",
+        # Higher classifications (regulated/restricted) are organization
+        # policy data. A newly authorized GitHub repository starts with the
+        # server-derived public/private classification and can never be made
+        # less restrictive by request payload.
+        "repositoryClassification": "private" if bool(authorized_repository.get("private", True)) else "public",
         "defaultBranch": default_branch,
         "branchName": branch_name_from_prompt(prompt),
         "status": "active",
@@ -936,6 +943,7 @@ async def chat_stream(
             "session_id": session["_id"],
             "slug_id": session["slugId"],
             "repo_url": session["repoUrl"],
+            "repository_classification": session.get("repositoryClassification"),
             "default_branch": session.get("defaultBranch") or "main",
             "branch_name": session.get("branchName") or branch_name_from_prompt(prompt),
             "prompt": prompt,
@@ -1859,7 +1867,19 @@ def _public_trace(trace: dict[str, Any] | None) -> dict[str, Any] | None:
 # An explicit allowlist prevents a legacy trace from accidentally surfacing
 # provider payloads, prompts, headers, or arbitrary diagnostic annotations in
 # the browser replay. These are the fields Base64 itself records in AgentGraph.
-_REPLAY_USAGE_TEXT_FIELDS = frozenset({"model", "provider_error"})
+_REPLAY_USAGE_TEXT_FIELDS = frozenset(
+    {
+        "model",
+        "provider_error",
+        # These values come only from ModelRoutingService's finite server-side
+        # route vocabulary. Endpoints, API keys, and provider payloads remain
+        # excluded from replay.
+        "model_provider",
+        "model_route",
+        "data_boundary",
+        "repository_classification",
+    }
+)
 _REPLAY_USAGE_NUMBER_FIELDS = frozenset(
     {
         "prompt_tokens",

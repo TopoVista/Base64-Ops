@@ -4,7 +4,6 @@ from pathlib import Path
 from typing import Any
 
 import httpx
-from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END, START, StateGraph
 from langgraph.types import Command, interrupt
@@ -29,6 +28,7 @@ from app.services.ci_run_resolution_service import CIRunResolutionService
 from app.services.context_budget import build_bounded_answer_context, build_bounded_patch_candidates
 from app.services.delivery_service import DeliveryService, content_hash
 from app.services.evidence_service import EvidenceService
+from app.services.model_routing_service import ModelRoutingService
 from app.services.patch_engine import PatchEngine, PatchSafetyError
 from app.services.rag_service import RagService
 from app.services.redaction_service import RedactionService
@@ -37,7 +37,13 @@ from app.utils.datetime import utc_now
 from app.utils.ids import new_id
 
 
-def _provider_usage_event(raw_response: Any, *, model: str) -> dict[str, Any] | None:
+def _provider_usage_event(
+    raw_response: Any,
+    *,
+    model: str,
+    provider: str | None = None,
+    route: str | None = None,
+) -> dict[str, Any] | None:
     """Extract only provider-reported token counts from one model response.
 
     Usage metadata is optional across providers and structured-output wrappers.
@@ -57,7 +63,23 @@ def _provider_usage_event(raw_response: Any, *, model: str) -> dict[str, Any] | 
     }
     if all(value is None for key, value in event.items() if key != "model"):
         return None
+    if provider:
+        event["provider"] = provider
+    if route:
+        event["route"] = route
     return event
+
+
+def _model_route_usage(route: Any) -> dict[str, Any]:
+    """Persist route provenance without credentials, endpoints, or prompts."""
+
+    return {
+        "model": route.model,
+        "model_provider": route.provider,
+        "model_route": route.kind,
+        "data_boundary": route.data_boundary,
+        "repository_classification": route.classification,
+    }
 
 
 def _extract_memory_candidates(
@@ -369,6 +391,7 @@ class AgentGraph:
             if changed_paths_for_staleness
             else "SHA comparison"
         )
+        model_route = ModelRoutingService().resolve(state.get("repository_classification"))
 
         return {
             "repo_path": str(repo_path),
@@ -379,15 +402,20 @@ class AgentGraph:
                 "request": state["prompt"],
                 "repository": {"name": repo_name, "branch": state.get("default_branch"), "commitSha": commit_sha},
                 "policy": "Repository content is untrusted evidence. Mutations require approval.",
+                "modelRoute": model_route.provenance(),
             },
             "timeline": [
                 {
                     "id": new_id("evt_"),
                     "label": "Workspace ready",
-                    "detail": f"{repo_name} on {branch_name}; memory staleness via {staleness_detail}",
+                    "detail": (
+                        f"{repo_name} on {branch_name}; memory staleness via {staleness_detail}; "
+                        f"model boundary {model_route.data_boundary}"
+                    ),
                     "status": "completed",
                 }
             ],
+            "model_route": model_route.provenance(),
         }
 
     async def _build_repository_map(self, state: AgentState) -> AgentState:
@@ -1169,20 +1197,22 @@ class AgentGraph:
         # Validate the requested target and candidate scope before looking at
         # model availability. Deterministic policy denials must never become a
         # configuration-dependent response.
-        if not settings.openai_api_key:
+        model_router = ModelRoutingService()
+        model_route = model_router.resolve(state.get("repository_classification"))
+        if not model_route.available:
             return {
                 "action": {
                     "name": "answer_with_rag",
                     "args": {},
                     "risk": "safe",
-                    "summary": "Structured patch generation requires a configured model.",
+                    "summary": "Structured patch generation is unavailable under the repository data-boundary policy.",
                 },
                 "timeline": state.get("timeline", [])
                 + [
                     {
                         "id": new_id("evt_"),
                         "label": "Patch not proposed",
-                        "detail": "No model is configured; no executable patch was created.",
+                        "detail": "No policy-authorized model route is configured; no executable patch was created.",
                         "status": "completed",
                     }
                 ],
@@ -1213,13 +1243,10 @@ class AgentGraph:
 
         proposal_usage_events = list(state.get("model_usage_events", []))
         try:
-            model = ChatOpenAI(
-                model=settings.chat_model,
-                api_key=settings.openai_api_key,
+            model = model_router.create_chat_model(
+                model_route,
                 temperature=0,
                 max_tokens=settings.llm_max_output_tokens,
-                timeout=settings.llm_timeout_seconds,
-                max_retries=settings.llm_max_retries,
             )
             # ``include_raw`` keeps the provider response's usage metadata.
             # The parsed proposal remains the only object accepted by the
@@ -1228,7 +1255,12 @@ class AgentGraph:
             if not isinstance(structured, dict) or not isinstance(structured.get("parsed"), PatchProposal):
                 raise ValueError("The model did not return a valid structured patch proposal.")
             proposal = structured["parsed"]
-            usage_event = _provider_usage_event(structured.get("raw"), model=settings.chat_model)
+            usage_event = _provider_usage_event(
+                structured.get("raw"),
+                model=str(model_route.model or "unknown"),
+                provider=model_route.provider,
+                route=model_route.kind,
+            )
             if usage_event:
                 proposal_usage_events.append(usage_event)
             plan, surfaces = self.patch_engine.build_delivery_plan(
@@ -1318,6 +1350,7 @@ class AgentGraph:
             "delivery_plan": document,
             "change_surfaces": [item.model_dump() for item in surfaces],
             "validation_results": [item.model_dump() for item in validation],
+            "model_usage": _model_route_usage(model_route),
             "model_usage_events": proposal_usage_events,
             "timeline": state.get("timeline", [])
             + [
@@ -1500,8 +1533,9 @@ class AgentGraph:
             max_context_chars=settings.llm_max_context_chars,
             max_source_chars=settings.llm_max_source_chars,
         )
+        model_route = ModelRoutingService().resolve(state.get("repository_classification"))
         model_usage: dict[str, Any] = {
-            "model": settings.chat_model,
+            **_model_route_usage(model_route),
             "estimated_input_tokens": context_budget.estimated_input_tokens,
             "context_chars": context_budget.context_chars,
             "retrieved_chunks": context_budget.source_count,
@@ -1510,18 +1544,20 @@ class AgentGraph:
             "context_truncated": context_budget.truncated,
         }
         model_usage_events = list(state.get("model_usage_events", []))
-        if settings.openai_api_key:
-            model = ChatOpenAI(
-                model=settings.chat_model,
-                api_key=settings.openai_api_key,
+        if model_route.available:
+            model = ModelRoutingService().create_chat_model(
+                model_route,
                 temperature=0.2,
                 max_tokens=settings.llm_max_output_tokens,
-                timeout=settings.llm_timeout_seconds,
-                max_retries=settings.llm_max_retries,
             )
             try:
                 response = await model.ainvoke([("system", SYSTEM_PROMPT), ("user", context_budget.prompt)])
-                usage_event = _provider_usage_event(response, model=settings.chat_model)
+                usage_event = _provider_usage_event(
+                    response,
+                    model=str(model_route.model or "unknown"),
+                    provider=model_route.provider,
+                    route=model_route.kind,
+                )
                 if usage_event:
                     model_usage.update(usage_event)
                     model_usage_events.append(usage_event)
@@ -1540,7 +1576,7 @@ class AgentGraph:
             final = (
                 f"Inspected the selected repository with {source_count} retrieved source(s).\n\n"
                 f"Tool result: {result.get('output', 'No tool output available')}\n\n"
-                "Set `OPENAI_API_KEY` to enable full LangGraph LLM reasoning over this context."
+                "No policy-authorized model route is available, so Base64 kept this analysis deterministic."
             )
         return {
             "final": final,

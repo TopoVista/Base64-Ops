@@ -224,7 +224,7 @@ async def get_github_access_token(user_id: str) -> str:
     return decrypt_secret(account["accessToken"])
 
 
-async def resolve_authorized_repository(user_id: str, repo_url: str) -> dict[str, str]:
+async def resolve_authorized_repository(user_id: str, repo_url: str) -> dict[str, str | bool]:
     """Canonicalize a repository and verify the current OAuth token can read it."""
     owner, repository, canonical_clone_url = normalize_github_repository_url(repo_url)
     try:
@@ -246,6 +246,10 @@ async def resolve_authorized_repository(user_id: str, repo_url: str) -> dict[str
         "repository": repository,
         "cloneUrl": str(response.get("clone_url") or canonical_clone_url),
         "defaultBranch": str(response.get("default_branch") or "main"),
+        "repositoryId": str(response.get("id") or ""),
+        # GitHub is the authority for this initial visibility classification;
+        # callers never accept it from browser-supplied session state.
+        "private": bool(response.get("private", True)),
     }
 
 

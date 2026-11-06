@@ -16,6 +16,8 @@ class AgentState(TypedDict, total=False):
     slug_id: str
     repo_url: str
     repo_name: str
+    repository_classification: str
+    model_route: dict[str, Any]
     repo_path: str
     default_branch: str
     branch_name: str

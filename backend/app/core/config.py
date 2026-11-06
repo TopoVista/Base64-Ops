@@ -214,6 +214,18 @@ class Settings(BaseSettings):
     # lease indefinitely or spending unbounded tokens.
     llm_timeout_seconds: int = Field(default=45, ge=5, le=120, alias="LLM_TIMEOUT_SECONDS")
     llm_max_retries: int = Field(default=1, ge=0, le=2, alias="LLM_MAX_RETRIES")
+    # Model execution is selected by a deterministic, server-owned policy.
+    # A route is deliberately not a browser choice: the requestor cannot
+    # downgrade a regulated repository to the hosted route.  The sovereign
+    # route uses an OpenAI-compatible endpoint so a customer VPC or a local
+    # gateway can be substituted without changing the evidence/approval plane.
+    model_routing_public_route: str = Field(default="hosted_openai", alias="MODEL_ROUTING_PUBLIC_ROUTE")
+    model_routing_private_route: str = Field(default="hosted_openai", alias="MODEL_ROUTING_PRIVATE_ROUTE")
+    model_routing_regulated_route: str = Field(default="deterministic_only", alias="MODEL_ROUTING_REGULATED_ROUTE")
+    model_routing_restricted_route: str = Field(default="deterministic_only", alias="MODEL_ROUTING_RESTRICTED_ROUTE")
+    model_sovereign_base_url: str = Field(default="", alias="MODEL_SOVEREIGN_BASE_URL")
+    model_sovereign_api_key: str = Field(default="", alias="MODEL_SOVEREIGN_API_KEY")
+    model_sovereign_model: str = Field(default="", alias="MODEL_SOVEREIGN_MODEL")
 
     # Workspace & Patch Limits
     workspace_root: Path = Field(default=Path(".workspaces"), alias="WORKSPACE_ROOT")
@@ -342,6 +354,20 @@ class Settings(BaseSettings):
             raise ValueError("LEDGER_SIGNING_PRIVATE_KEY must be a URL-safe base64 Ed25519 seed") from exc
         if len(ledger_key) != 32 or not self.ledger_signing_key_id.strip():
             raise ValueError("LEDGER_SIGNING_PRIVATE_KEY and LEDGER_SIGNING_KEY_ID must be configured in production")
+        route_values = {
+            self.model_routing_public_route,
+            self.model_routing_private_route,
+            self.model_routing_regulated_route,
+            self.model_routing_restricted_route,
+        }
+        allowed_model_routes = {"hosted_openai", "sovereign_openai_compatible", "deterministic_only"}
+        if not route_values <= allowed_model_routes:
+            raise ValueError("MODEL_ROUTING_*_ROUTE values must use an approved model route")
+        if "sovereign_openai_compatible" in route_values:
+            if not self.model_sovereign_base_url.startswith("https://"):
+                raise ValueError("MODEL_SOVEREIGN_BASE_URL must use HTTPS when sovereign routing is enabled")
+            if not self.model_sovereign_model.strip():
+                raise ValueError("MODEL_SOVEREIGN_MODEL is required when sovereign routing is enabled")
         return self
 
 
