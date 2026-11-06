@@ -158,6 +158,7 @@ def test_production_rejects_loopback_oauth_callback_base_url() -> None:
         "github_client_secret": "client-secret",
         "github_oauth_state_secret": "x" * 32,
         "github_token_encryption_key": FERNET_KEY,
+        "ledger_signing_private_key": LEDGER_SEED,
         "rate_limit_fail_closed": True,
         "trusted_client_ip_header": "CF-Connecting-IP",
     }
@@ -285,7 +286,7 @@ def test_production_requires_a_real_fernet_key_and_32_byte_oauth_state_secret() 
         Settings(**values)
 
 
-def test_production_requires_a_https_clerk_issuer() -> None:
+def test_production_derives_a_https_clerk_issuer_from_the_required_jwks_endpoint() -> None:
     values = {
         "environment": "production",
         "trusted_hosts": "api.example",
@@ -298,12 +299,14 @@ def test_production_requires_a_https_clerk_issuer() -> None:
         "github_client_secret": "client-secret",
         "github_oauth_state_secret": "x" * 32,
         "github_token_encryption_key": FERNET_KEY,
+        "ledger_signing_private_key": LEDGER_SEED,
         "rate_limit_fail_closed": True,
         "trusted_client_ip_header": "CF-Connecting-IP",
     }
 
-    with pytest.raises(ValueError, match="CLERK_ISSUER"):
-        Settings(**values)
+    settings = Settings(**values)
+
+    assert settings.clerk_issuer == "https://clerk.example"
 
 
 def test_declared_oversized_or_malformed_body_is_rejected_before_parsing() -> None:

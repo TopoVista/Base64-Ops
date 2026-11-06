@@ -324,6 +324,15 @@ class Settings(BaseSettings):
             raise ValueError("MONGO_URI must be configured in production")
         if not self.clerk_jwks_url.startswith("https://"):
             raise ValueError("CLERK_JWKS_URL must use HTTPS in production")
+        if not self.clerk_issuer.strip():
+            # Clerk's issuer is the origin that owns its standard JWKS
+            # endpoint. Deriving it from the already-required HTTPS endpoint
+            # keeps issuer validation enabled when a deployment has supplied
+            # CLERK_JWKS_URL but omitted the redundant CLERK_ISSUER variable.
+            # Do not derive from a malformed URL or permit a non-HTTPS value.
+            jwks_url = urlparse(self.clerk_jwks_url)
+            if jwks_url.scheme == "https" and jwks_url.netloc:
+                self.clerk_issuer = f"https://{jwks_url.netloc}"
         if not self.clerk_issuer.startswith("https://"):
             raise ValueError("CLERK_ISSUER must use HTTPS in production")
         if not self.github_client_id or not self.github_client_secret:
