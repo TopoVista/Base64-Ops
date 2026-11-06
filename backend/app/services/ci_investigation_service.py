@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import re
 from pathlib import Path
 from typing import Any
@@ -22,6 +23,19 @@ from app.services.workspace_service import WorkspaceService
 _PATH_HINT = re.compile(r"(?<![\w.-])((?:\.?/?[\w.-]+/)+[\w.-]+(?:\:\d+)?)")
 _FAILED_CONCLUSIONS = frozenset({"failure", "timed_out", "startup_failure", "action_required"})
 _RUNS_ON = re.compile(r"(?m)^\s*runs-on:\s*(?P<value>[^#\n]+)")
+_CAPSULE_INPUT_PATHS = (
+    "package-lock.json",
+    "pnpm-lock.yaml",
+    "yarn.lock",
+    "requirements.txt",
+    "poetry.lock",
+    "uv.lock",
+    "Pipfile.lock",
+    "pyproject.toml",
+    "Dockerfile",
+    "docker-compose.yml",
+    "compose.yml",
+)
 
 
 class CIInvestigationService:
@@ -383,9 +397,62 @@ class CIInvestigationService:
             applicability_reason=applicability_reason,
             applicability_result=applicability_result,
             history=history,
+            capsule_inputs=self._capsule_inputs(
+                repo_path=repo_path,
+                failed_sha=run.head_sha,
+                workflow_path=run.workflow_path,
+            ),
             incomplete=bool(limitations),
             limitations=limitations,
         )
+
+    def _capsule_inputs(
+        self,
+        *,
+        repo_path: Path | None,
+        failed_sha: str,
+        workflow_path: str | None,
+    ) -> dict[str, Any]:
+        """Hash reproducibility inputs available at the exact failed revision.
+
+        CI runner images, service state, and runtime secrets cannot safely be
+        inferred from repository text, so they are named as limitations.  The
+        return value contains no source contents and is safe to sign/store.
+        """
+
+        unavailable = [
+            "GitHub-hosted runner image digest was not supplied by the Actions API.",
+            "Runtime environment values and external service state are not captured.",
+            "Dependency registry resolution is not replayed during evidence collection.",
+        ]
+        if repo_path is None or not failed_sha:
+            return {"reproducibility": "impossible", "inputs": [], "runnerLabels": [], "limitations": unavailable}
+
+        paths = list(_CAPSULE_INPUT_PATHS)
+        if workflow_path and workflow_path not in paths:
+            paths.append(workflow_path)
+        inputs: list[dict[str, Any]] = []
+        runner_labels: list[str] = []
+        for path in paths:
+            content = self.workspace.read_file_at_ref(repo_path, path, failed_sha)
+            if content is None:
+                continue
+            inputs.append(
+                {
+                    "path": path,
+                    "contentHash": hashlib.sha256(content.encode("utf-8")).hexdigest(),
+                    "bytes": len(content.encode("utf-8")),
+                    "kind": "workflow" if path == workflow_path else "dependency_or_runtime_input",
+                }
+            )
+            if path == workflow_path:
+                runner_labels.extend(match.group("value").strip() for match in _RUNS_ON.finditer(content))
+        return {
+            "reproducibility": "partial",
+            "inputs": sorted(inputs, key=lambda item: item["path"]),
+            "runnerLabels": sorted(set(runner_labels)),
+            "limitations": unavailable,
+        }
 
     async def _collect_run_history(
         self,

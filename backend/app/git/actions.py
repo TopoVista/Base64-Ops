@@ -116,6 +116,11 @@ class CIInvestigationContext(BaseModel):
     applicability_reason: str | None = None
     applicability_result: dict[str, Any] | None = None
     history: CIWorkflowHistory | None = None
+    # Content digests and declared runtime metadata needed to reproduce the
+    # incident without retaining raw source or environment values in the
+    # capsule.  This stays explicitly partial until an isolated executor has
+    # captured image/dependency resolution and replay outputs.
+    capsule_inputs: dict[str, Any] = Field(default_factory=dict)
     incomplete: bool = False
     limitations: list[str] = Field(default_factory=list)
 

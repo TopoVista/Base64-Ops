@@ -254,6 +254,12 @@ class AssuranceLedgerService:
                 "incomplete": bool(context.get("incomplete")),
                 "limitations": sorted(str(item) for item in context.get("limitations", []) if isinstance(item, str)),
                 "evidence": evidence,
+                "reproductionInputs": context.get("capsule_inputs") or {
+                    "reproducibility": "impossible",
+                    "inputs": [],
+                    "runnerLabels": [],
+                    "limitations": ["Capsule inputs were not available for this investigation."],
+                },
             },
         }
         return await self._append(manifest=manifest, kind="incident_capsule", delivery_plan_id=None)

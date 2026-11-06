@@ -105,6 +105,8 @@ async def test_ci_service_persists_separate_historical_current_and_changed_evide
     assert [call["commit_sha"] for call in evidence.calls] == ["failed-sha", "failed-sha", "current-sha", "failed-sha"]
     assert evidence.calls[1]["sources"][0]["metadata"]["state"] == "failed_run"
     assert evidence.calls[2]["sources"][0]["metadata"]["state"] == "current"
+    assert context.capsule_inputs["reproducibility"] == "partial"
+    assert context.capsule_inputs["inputs"][0]["contentHash"]
 
 
 @pytest.mark.asyncio

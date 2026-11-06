@@ -176,6 +176,12 @@ async def test_incident_capsule_binds_exact_revision_and_evidence_hashes(ledger_
             "evidence_ids": ["evd_1"],
             "failure_categories": ["test_failure"],
             "relevant_paths": ["backend/main.py"],
+            "capsule_inputs": {
+                "reproducibility": "partial",
+                "inputs": [{"path": "poetry.lock", "contentHash": "c" * 64, "bytes": 12}],
+                "runnerLabels": ["ubuntu-latest"],
+                "limitations": ["Runner image digest unavailable."],
+            },
         },
     )
 
@@ -184,4 +190,5 @@ async def test_incident_capsule_binds_exact_revision_and_evidence_hashes(ledger_
     assert capsule["reproducibility"] == "partial"
     assert capsule["failedRevision"] == "b" * 40
     assert capsule["evidence"][0]["contentHash"] == "a" * 64
+    assert capsule["reproductionInputs"]["runnerLabels"] == ["ubuntu-latest"]
     assert AssuranceLedgerService.verify_receipt(receipt, expected_user_id="usr_1")
