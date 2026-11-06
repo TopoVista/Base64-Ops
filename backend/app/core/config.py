@@ -1,3 +1,4 @@
+import base64
 from functools import lru_cache
 from pathlib import Path
 from urllib.parse import urlparse
@@ -18,9 +19,7 @@ def _is_fernet_key(value: str) -> bool:
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(
-        env_file=".env", env_file_encoding="utf-8", extra="ignore", populate_by_name=True
-    )
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore", populate_by_name=True)
 
     environment: str = Field(default="development", alias="ENVIRONMENT")
     # The public API has the broadest configuration requirements. Internal
@@ -41,9 +40,7 @@ class Settings(BaseSettings):
     redis_url: str = Field(default="", alias="REDIS_URL")
     rate_limit_enabled: bool = Field(default=True, alias="RATE_LIMIT_ENABLED")
     rate_limit_requests_per_minute: int = Field(default=120, alias="RATE_LIMIT_REQUESTS_PER_MINUTE")
-    rate_limit_expensive_requests_per_minute: int = Field(
-        default=8, alias="RATE_LIMIT_EXPENSIVE_REQUESTS_PER_MINUTE"
-    )
+    rate_limit_expensive_requests_per_minute: int = Field(default=8, alias="RATE_LIMIT_EXPENSIVE_REQUESTS_PER_MINUTE")
     rate_limit_fail_closed: bool = Field(default=False, alias="RATE_LIMIT_FAIL_CLOSED")
     # Never infer a browser address from X-Forwarded-For: intermediaries can
     # append to it and callers may spoof a leading value. Configure only an
@@ -72,9 +69,7 @@ class Settings(BaseSettings):
     # Session state is browser-polled. Keep Actions discovery opt-in so a
     # passive page view never creates external GitHub/workspace work. Manual
     # refresh and the bounded post-delivery verifier remain available.
-    ci_auto_refresh_seconds: int = Field(
-        default=0, ge=0, le=3_600, alias="CI_AUTO_REFRESH_SECONDS"
-    )
+    ci_auto_refresh_seconds: int = Field(default=0, ge=0, le=3_600, alias="CI_AUTO_REFRESH_SECONDS")
 
     # Tenant quotas are enforced server-side before a token-consuming graph
     # run begins. Payment webhooks may change a tenant tier, but browsers never
@@ -88,9 +83,7 @@ class Settings(BaseSettings):
     free_monthly_model_tokens: int = Field(default=250_000, alias="FREE_MONTHLY_MODEL_TOKENS")
     pro_monthly_model_tokens: int = Field(default=5_000_000, alias="PRO_MONTHLY_MODEL_TOKENS")
     team_monthly_model_tokens: int = Field(default=25_000_000, alias="TEAM_MONTHLY_MODEL_TOKENS")
-    agent_run_idempotency_ttl_seconds: int = Field(
-        default=60 * 60 * 24 * 7, alias="AGENT_RUN_IDEMPOTENCY_TTL_SECONDS"
-    )
+    agent_run_idempotency_ttl_seconds: int = Field(default=60 * 60 * 24 * 7, alias="AGENT_RUN_IDEMPOTENCY_TTL_SECONDS")
 
     # Razorpay remains entirely server-side. Plan identifiers are created in
     # the merchant dashboard; a browser may request only a known tier, never a
@@ -109,9 +102,7 @@ class Settings(BaseSettings):
     # Keep a 512 MB replica from opening an unbounded number of Atlas sockets.
     # Scale by adding stateless replicas only after sizing this shared budget.
     mongo_max_pool_size: int = Field(default=20, ge=1, le=100, alias="MONGO_MAX_POOL_SIZE")
-    mongo_wait_queue_timeout_ms: int = Field(
-        default=5_000, ge=100, le=60_000, alias="MONGO_WAIT_QUEUE_TIMEOUT_MS"
-    )
+    mongo_wait_queue_timeout_ms: int = Field(default=5_000, ge=100, le=60_000, alias="MONGO_WAIT_QUEUE_TIMEOUT_MS")
     mongo_reconnect_interval_seconds: int = Field(default=15, alias="MONGO_RECONNECT_INTERVAL_SECONDS")
 
     # Clerk
@@ -132,9 +123,7 @@ class Settings(BaseSettings):
     # the pre-Fernet passphrase derivation. It is read only as a decrypt
     # fallback; all new OAuth tokens use GITHUB_TOKEN_ENCRYPTION_KEY.
     github_token_encryption_legacy_key: str = Field(default="", alias="GITHUB_TOKEN_ENCRYPTION_LEGACY_KEY")
-    github_oauth_state_ttl_seconds: int = Field(
-        default=600, ge=60, le=3_600, alias="GITHUB_OAUTH_STATE_TTL_SECONDS"
-    )
+    github_oauth_state_ttl_seconds: int = Field(default=600, ge=60, le=3_600, alias="GITHUB_OAUTH_STATE_TTL_SECONDS")
     # GitHub repository lists are metadata only and are cached briefly per
     # tenant. Authorization is still verified live before a repository is
     # cloned or attached to a session.
@@ -151,11 +140,22 @@ class Settings(BaseSettings):
     # Disabled by default: enabling this opt-in makes a verified failed
     # workflow run queue a bounded RAG refresh at that run's immutable commit.
     # It never runs in the webhook request itself.
-    github_webhook_reindex_on_failure: bool = Field(
-        default=False, alias="GITHUB_WEBHOOK_REINDEX_ON_FAILURE"
-    )
+    github_webhook_reindex_on_failure: bool = Field(default=False, alias="GITHUB_WEBHOOK_REINDEX_ON_FAILURE")
     github_incident_event_retention_days: int = Field(
         default=90, ge=7, le=365, alias="GITHUB_INCIDENT_EVENT_RETENTION_DAYS"
+    )
+    # An Ed25519 seed encoded as URL-safe base64. The development default is
+    # deliberately recognizable and rejected in production; deployments must
+    # provide a KMS-derived or otherwise separately managed signing key.
+    ledger_signing_private_key: str = Field(
+        default="MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY=",
+        alias="LEDGER_SIGNING_PRIVATE_KEY",
+    )
+    ledger_signing_key_id: str = Field(default="base64-dev-ed25519-v1", alias="LEDGER_SIGNING_KEY_ID")
+    policy_authority_version: str = Field(default="base64-policy-v1", alias="POLICY_AUTHORITY_VERSION")
+    policy_strict_separation_of_duties: bool = Field(default=False, alias="POLICY_STRICT_SEPARATION_OF_DUTIES")
+    policy_require_candidate_verification_for_high_risk: bool = Field(
+        default=False, alias="POLICY_REQUIRE_CANDIDATE_VERIFICATION_FOR_HIGH_RISK"
     )
     # Candidate verification is intentionally a separate GitHub App boundary.
     # OAuth grants user-scoped read/delivery access; it must never be silently
@@ -164,15 +164,11 @@ class Settings(BaseSettings):
     # never serialized into a plan, trace, response, or worker payload.
     github_app_id: str = Field(default="", alias="GITHUB_APP_ID")
     github_app_private_key: str = Field(default="", alias="GITHUB_APP_PRIVATE_KEY")
-    github_candidate_verification_enabled: bool = Field(
-        default=False, alias="GITHUB_CANDIDATE_VERIFICATION_ENABLED"
-    )
+    github_candidate_verification_enabled: bool = Field(default=False, alias="GITHUB_CANDIDATE_VERIFICATION_ENABLED")
     # GitHub-native incident reporting is a separate, explicitly opt-in
     # feature. It only ever publishes a neutral, redacted Check Run after an
     # incident has been persisted; it cannot rerun, cancel, or alter Actions.
-    github_incident_reporting_enabled: bool = Field(
-        default=False, alias="GITHUB_INCIDENT_REPORTING_ENABLED"
-    )
+    github_incident_reporting_enabled: bool = Field(default=False, alias="GITHUB_INCIDENT_REPORTING_ENABLED")
     github_candidate_verification_max_runs_per_day: int = Field(
         default=5, ge=1, le=25, alias="GITHUB_CANDIDATE_VERIFICATION_MAX_RUNS_PER_DAY"
     )
@@ -277,16 +273,15 @@ class Settings(BaseSettings):
                     "GITHUB_TOKEN_ENCRYPTION_KEY must be a URL-safe base64-encoded "
                     "32-byte Fernet key in production workers"
                 )
-            if self.github_token_encryption_legacy_key and len(
-                self.github_token_encryption_legacy_key.encode("utf-8")
-            ) < 32:
+            if (
+                self.github_token_encryption_legacy_key
+                and len(self.github_token_encryption_legacy_key.encode("utf-8")) < 32
+            ):
                 raise ValueError("GITHUB_TOKEN_ENCRYPTION_LEGACY_KEY must be at least 32 bytes when configured")
             if (self.github_candidate_verification_enabled or self.github_incident_reporting_enabled) and (
                 not self.github_app_id.isdigit() or not self.github_app_private_key.strip()
             ):
-                raise ValueError(
-                    "GitHub App credentials are required by the enabled GitHub App feature"
-                )
+                raise ValueError("GitHub App credentials are required by the enabled GitHub App feature")
             return self
         if role != "api":
             raise ValueError("SERVICE_ROLE must be api, maintenance, indexer, ci_observer, or incident_dispatcher")
@@ -321,21 +316,32 @@ class Settings(BaseSettings):
         if self.github_candidate_verification_enabled or self.github_incident_reporting_enabled:
             if not self.github_app_id.isdigit() or not self.github_app_private_key.strip():
                 raise ValueError(
-                    "GITHUB_APP_ID and GITHUB_APP_PRIVATE_KEY must be configured when "
-                    "a GitHub App feature is enabled"
+                    "GITHUB_APP_ID and GITHUB_APP_PRIVATE_KEY must be configured when a GitHub App feature is enabled"
                 )
-        if self.github_oauth_state_secret in {"", "dev-only-github-state"} or len(
-            self.github_oauth_state_secret.encode("utf-8")
-        ) < 32:
+        if (
+            self.github_oauth_state_secret in {"", "dev-only-github-state"}
+            or len(self.github_oauth_state_secret.encode("utf-8")) < 32
+        ):
             raise ValueError("GITHUB_OAUTH_STATE_SECRET must contain at least 32 bytes in production")
         if not _is_fernet_key(self.github_token_encryption_key):
             raise ValueError(
                 "GITHUB_TOKEN_ENCRYPTION_KEY must be a URL-safe base64-encoded 32-byte Fernet key in production"
             )
-        if self.github_token_encryption_legacy_key and len(
-            self.github_token_encryption_legacy_key.encode("utf-8")
-        ) < 32:
+        if (
+            self.github_token_encryption_legacy_key
+            and len(self.github_token_encryption_legacy_key.encode("utf-8")) < 32
+        ):
             raise ValueError("GITHUB_TOKEN_ENCRYPTION_LEGACY_KEY must be at least 32 bytes when configured")
+        if self.ledger_signing_private_key == "MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY=":
+            raise ValueError("LEDGER_SIGNING_PRIVATE_KEY must be configured in production")
+        try:
+            ledger_key = base64.urlsafe_b64decode(
+                self.ledger_signing_private_key + "=" * (-len(self.ledger_signing_private_key) % 4)
+            )
+        except Exception as exc:
+            raise ValueError("LEDGER_SIGNING_PRIVATE_KEY must be a URL-safe base64 Ed25519 seed") from exc
+        if len(ledger_key) != 32 or not self.ledger_signing_key_id.strip():
+            raise ValueError("LEDGER_SIGNING_PRIVATE_KEY and LEDGER_SIGNING_KEY_ID must be configured in production")
         return self
 
 

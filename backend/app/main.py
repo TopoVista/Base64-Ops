@@ -19,10 +19,12 @@ from app.core.rate_limit import InMemoryRateLimitStore, RedisRateLimitStore
 from app.db.mongo import MongoUnavailableError, close_mongo, connect_mongo, get_db, mongo_is_connected
 from app.intelligence.graph.store import EngineeringGraphStore
 from app.intelligence.impact.store import ChangeImpactStore
+from app.services.assurance_ledger_service import AssuranceLedgerService
 from app.services.background_job_service import BackgroundJobService
 from app.services.candidate_verification_service import CandidateVerificationService
 from app.services.github_service import ensure_github_indexes
 from app.services.incident_service import GitHubWebhookService
+from app.services.policy_authority_service import PolicyAuthorityService
 from app.services.prevention_rule_service import PreventionRuleService
 from app.services.session_service import ensure_session_indexes
 
@@ -45,6 +47,8 @@ async def _ensure_database_indexes() -> None:
     await UsageService().ensure_indexes()
     await BillingService().ensure_indexes()
     await BackgroundJobService().ensure_indexes()
+    await AssuranceLedgerService().ensure_indexes()
+    await PolicyAuthorityService().ensure_indexes()
     await ensure_github_indexes()
     await GitHubWebhookService().ensure_indexes()
     await PreventionRuleService().ensure_indexes()

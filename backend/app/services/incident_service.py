@@ -22,6 +22,7 @@ from app.db.mongo import get_db
 from app.memory.memory_service import MemoryService
 from app.memory.models import MemoryEntryCandidate, OperationalMemoryKind
 from app.schemas.incident import EvidenceStrength, IncidentDiagnosis, IncidentStatus
+from app.services.assurance_ledger_service import AssuranceLedgerService
 from app.services.background_job_service import BackgroundJobService
 from app.services.ci_investigation_service import CIInvestigationService
 from app.services.flaky_test_service import FlakyTestObservationService
@@ -757,6 +758,18 @@ class IncidentDispatchService:
                 repo_path=repo_path,
             )
         diagnosis = build_structured_incident_diagnosis(context)
+        capsule_receipt = None
+        try:
+            capsule_receipt = await AssuranceLedgerService().record_incident_capsule(
+                user_id=str(automation["userId"]),
+                session_id=str(session["_id"]),
+                run_id=incident_id,
+                repository_id=str(event["repositoryId"]),
+                context=context.model_dump(mode="json"),
+            )
+        except Exception:
+            context.incomplete = True
+            context.limitations.append("The signed incident capsule could not be recorded.")
         flaky_observations = await self._record_flaky_observations(
             incident_id=incident_id,
             event=event,
@@ -786,6 +799,8 @@ class IncidentDispatchService:
                     "applicability": context.applicability,
                     "applicabilityReason": context.applicability_reason,
                     "history": context.history.model_dump(mode="json") if context.history else None,
+                    "capsuleReceiptId": capsule_receipt["id"] if capsule_receipt else None,
+                    "capsuleManifestHash": capsule_receipt["manifestHash"] if capsule_receipt else None,
                     "incomplete": context.incomplete,
                     "limitations": [
                         *([indexing_limitation] if indexing_limitation else []),

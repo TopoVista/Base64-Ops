@@ -72,6 +72,7 @@ def test_production_oauth_redirect_does_not_allow_the_alternate_loopback_origin(
             github_client_secret="client-secret",
             github_oauth_state_secret="0123456789abcdef0123456789abcdef",
             github_token_encryption_key="MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY=",
+            ledger_signing_private_key="YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXowMTIzNDU=",
         ),
     )
 

@@ -44,6 +44,8 @@ class DeliveryPlan(BaseModel):
     validation_steps: list[ValidationStep]
     risk_level: Literal["low", "medium", "high", "critical"]
     risk_reasons: list[str] = Field(default_factory=list)
+    ledger_receipt_id: str | None = None
+    ledger_manifest_hash: str | None = None
     created_at: datetime
 
 
@@ -60,8 +62,12 @@ class ApprovalRecord(BaseModel):
     canonical_arguments: dict = Field(default_factory=dict)
     diff_hash: str
     approval_hash: str
+    ledger_receipt_id: str | None = None
+    ledger_manifest_hash: str | None = None
     risk_level: str
-    status: Literal["pending", "approved", "rejected", "expired", "invalidated", "executing", "executed", "failed"]
+    status: Literal[
+        "pending", "authorizing", "approved", "rejected", "expired", "invalidated", "executing", "executed", "failed"
+    ]
     created_at: datetime
     approved_at: datetime | None = None
     executed_at: datetime | None = None

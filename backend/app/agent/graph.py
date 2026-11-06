@@ -21,6 +21,7 @@ from app.memory.memory_service import MemoryService
 from app.memory.models import MemoryApplicability, MemoryEntryCandidate, OperationalMemoryKind
 from app.observability.recorder import MongoTraceExporter, TraceRecorder
 from app.schemas.patch import PatchProposal
+from app.services.assurance_ledger_service import AssuranceLedgerService
 from app.services.background_job_service import BackgroundJobService
 from app.services.ci_investigation_service import CIInvestigationService
 from app.services.ci_request_intent import extract_ci_request_intent
@@ -964,6 +965,21 @@ class AgentGraph:
             }
             for item in ci_evidence
         ]
+        capsule_receipt = None
+        try:
+            capsule_receipt = await AssuranceLedgerService().record_incident_capsule(
+                user_id=state["user_id"],
+                session_id=state["session_id"],
+                run_id=state["run_id"],
+                repository_id=state["repo_url"],
+                context=context.model_dump(mode="json"),
+            )
+        except Exception:
+            # A diagnosis remains readable if the independently-signed audit
+            # artifact is temporarily unavailable, but it must not be shown
+            # as an attested incident capsule.
+            context.limitations.append("The signed incident capsule could not be recorded.")
+            context.incomplete = True
         await get_db().ci_investigations.update_one(
             {"userId": state["user_id"], "runId": state["run_id"]},
             {
@@ -972,6 +988,8 @@ class AgentGraph:
                     "sessionId": state["session_id"],
                     "runId": state["run_id"],
                     "context": context.model_dump(mode="json"),
+                    "capsuleReceiptId": capsule_receipt["id"] if capsule_receipt else None,
+                    "capsuleManifestHash": capsule_receipt["manifestHash"] if capsule_receipt else None,
                 }
             },
             upsert=True,

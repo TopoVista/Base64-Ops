@@ -16,7 +16,9 @@ from app.schemas.delivery import (
     ValidationResult,
     ValidationStep,
 )
+from app.services.assurance_ledger_service import AssuranceLedgerService
 from app.services.github_service import github_api
+from app.services.policy_authority_service import PolicyAuthorityService
 from app.services.redaction_service import RedactionService
 from app.services.workspace_service import WorkspaceService
 from app.utils.datetime import utc_now
@@ -160,7 +162,7 @@ class DeliveryService:
     def approval_payload(
         self, plan: DeliveryPlan, action_type: str, arguments: dict[str, Any] | None = None
     ) -> dict[str, Any]:
-        return {
+        payload = {
             "repository_id": plan.repository_id,
             "base_branch": plan.base_branch,
             "base_sha": plan.base_sha,
@@ -169,12 +171,21 @@ class DeliveryService:
             "canonical_arguments": arguments or {},
             "diff_hash": self.diff_hash(plan),
         }
+        # A persisted remediation plan has a signed evidence manifest. Bind
+        # the human decision to that exact manifest so approval cannot later
+        # be replayed against the same diff with substituted evidence.
+        if plan.ledger_manifest_hash:
+            payload["ledger_manifest_hash"] = plan.ledger_manifest_hash
+        return payload
 
     async def persist_plan(
         self, plan: DeliveryPlan, *, static_validation: list[ValidationResult] | None = None
     ) -> dict[str, Any]:
         from app.services.candidate_verification_service import initial_candidate_verification
 
+        ledger_receipt = await AssuranceLedgerService().record_plan_receipt(plan)
+        plan.ledger_receipt_id = str(ledger_receipt["id"])
+        plan.ledger_manifest_hash = str(ledger_receipt["manifestHash"])
         document = plan.model_dump()
         document["files"] = [
             {**change.model_dump(), "proposed_content": change.proposed_content} for change in plan.files
@@ -217,11 +228,17 @@ class DeliveryService:
             canonical_arguments=payload["canonical_arguments"],
             diff_hash=payload["diff_hash"],
             approval_hash=hashlib.sha256(canonical_json(payload).encode()).hexdigest(),
+            ledger_manifest_hash=plan.ledger_manifest_hash,
             risk_level=plan.risk_level,
             status="pending",
             created_at=utc_now(),
         )
         document = record.model_dump()
+        # Sign the canonical action envelope before persisting a record that
+        # could be approved. If signing fails, no executable approval exists.
+        ledger_receipt = await AssuranceLedgerService().record_approval_receipt(document)
+        document["ledger_receipt_id"] = ledger_receipt["id"]
+        document["ledgerReceiptId"] = ledger_receipt["id"]
         document["_id"] = record.id
         document.update({"userId": record.user_id, "sessionId": record.session_id, "runId": record.run_id})
         document["deliveryPlanId"] = record.delivery_plan_id
@@ -237,6 +254,8 @@ class DeliveryService:
         payload = self.approval_payload(typed_plan, approval["action_type"], approval.get("canonical_arguments"))
         if hashlib.sha256(canonical_json(payload).encode()).hexdigest() != approval["approval_hash"]:
             return "Approval invalidated because its canonical binding changed."
+        if approval.get("ledger_manifest_hash") != typed_plan.ledger_manifest_hash:
+            return "Approval invalidated because its signed evidence manifest changed."
         current_branch = self.workspace.current_branch(repo_path)
         if current_branch != approval["base_branch"]:
             return (
@@ -263,6 +282,9 @@ class DeliveryService:
         if reason:
             await db.approvals.update_one({"id": approval_id, "user_id": user_id}, {"$set": {"status": "invalidated"}})
             return {"status": "invalidated", "reason": reason}
+        await PolicyAuthorityService().assert_execution_authorized(
+            approval=approval, plan=DeliveryPlan.model_validate(plan)
+        )
 
         locked = await db.approvals.find_one_and_update(
             {"id": approval_id, "user_id": user_id, "status": "approved"},
@@ -359,6 +381,20 @@ class DeliveryService:
             document["_id"] = result.id
             document["user_id"] = user_id
             await db.delivery_results.insert_one(document)
+            ledger_receipt = await AssuranceLedgerService().record_delivery_receipt(
+                plan=typed_plan, approval=locked, result=result
+            )
+            await db.delivery_results.update_one(
+                {"_id": result.id, "user_id": user_id},
+                {
+                    "$set": {
+                        "ledgerReceiptId": ledger_receipt["id"],
+                        "ledgerManifestHash": ledger_receipt["manifestHash"],
+                    }
+                },
+            )
+            document["ledgerReceiptId"] = ledger_receipt["id"]
+            document["ledgerManifestHash"] = ledger_receipt["manifestHash"]
             await db.approvals.update_one(
                 {"id": approval_id, "user_id": user_id}, {"$set": {"status": "executed", "executed_at": utc_now()}}
             )
@@ -388,6 +424,25 @@ class DeliveryService:
         document["_id"] = result.id
         document["user_id"] = approval["user_id"]
         await get_db().delivery_results.insert_one(document)
+        try:
+            ledger_receipt = await AssuranceLedgerService().record_delivery_receipt(
+                plan=plan, approval=approval, result=result
+            )
+            await get_db().delivery_results.update_one(
+                {"_id": result.id, "user_id": approval["user_id"]},
+                {
+                    "$set": {
+                        "ledgerReceiptId": ledger_receipt["id"],
+                        "ledgerManifestHash": ledger_receipt["manifestHash"],
+                    }
+                },
+            )
+            document["ledgerReceiptId"] = ledger_receipt["id"]
+            document["ledgerManifestHash"] = ledger_receipt["manifestHash"]
+        except Exception:
+            # The failed delivery result is durable even during a secondary
+            # signer outage. It never becomes a successful authorization.
+            pass
         await get_db().approvals.update_one(
             {"id": approval["id"], "user_id": approval["user_id"]},
             {"$set": {"status": "failed", "executed_at": utc_now()}},

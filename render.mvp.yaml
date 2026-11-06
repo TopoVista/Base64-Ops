@@ -103,6 +103,10 @@ services:
       - key: GITHUB_TOKEN_ENCRYPTION_KEY
         # This must be a Fernet.generate_key() value, not a generic secret.
         sync: false
+      - key: LEDGER_SIGNING_PRIVATE_KEY
+        sync: false
+      - key: LEDGER_SIGNING_KEY_ID
+        value: render-mvp-ed25519-v1
       - key: OPENAI_API_KEY
         sync: false
       - key: RAZORPAY_KEY_ID

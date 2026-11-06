@@ -15,6 +15,7 @@ from app.schemas.session import SessionChatRequest
 from app.services import session_service
 
 FERNET_KEY = Fernet.generate_key().decode("ascii")
+LEDGER_SEED = "YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXowMTIzNDU="
 
 
 def test_access_logs_redact_oauth_callback_query_values() -> None:
@@ -135,6 +136,7 @@ def test_production_security_configuration_accepts_explicit_safe_values() -> Non
         github_client_secret="client-secret",
         github_oauth_state_secret="x" * 32,
         github_token_encryption_key=FERNET_KEY,
+        ledger_signing_private_key=LEDGER_SEED,
         rate_limit_fail_closed=True,
         trusted_client_ip_header="CF-Connecting-IP",
     )

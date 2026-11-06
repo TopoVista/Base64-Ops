@@ -15,6 +15,7 @@ from app.schemas.session import (
     RunbookRequest,
     SessionChatRequest,
 )
+from app.services.assurance_ledger_service import AssuranceLedgerService
 from app.services.session_service import (
     analyze_session_delivery_impact,
     analyze_session_regression_prevention,
@@ -118,6 +119,21 @@ async def sources(slug_id: str, user: dict = Depends(get_current_user)) -> dict:
 @router.get("/{slug_id}/evidence")
 async def evidence(slug_id: str, user: dict = Depends(get_current_user)) -> dict:
     return await list_evidence(user["_id"], slug_id)
+
+
+@router.get("/{slug_id}/assurance-receipts/{receipt_id}")
+async def assurance_receipt(slug_id: str, receipt_id: str, user: dict = Depends(get_current_user)) -> dict:
+    """Return a tenant-scoped receipt with a fresh public-key verification."""
+
+    session = await get_session_by_slug(user["_id"], slug_id)
+    receipt = await AssuranceLedgerService().get_verified_receipt(
+        receipt_id=receipt_id, user_id=str(user["_id"]), session_id=str(session["_id"])
+    )
+    if not receipt:
+        from fastapi import HTTPException, status
+
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Assurance receipt not found")
+    return receipt
 
 
 @router.post("/{slug_id}/ci/refresh")

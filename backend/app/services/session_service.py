@@ -43,6 +43,7 @@ from app.services.delivery_service import DeliveryService, content_hash
 from app.services.evidence_service import EvidenceService
 from app.services.github_service import resolve_authorized_repository
 from app.services.patch_engine import PatchEngine, PatchSafetyError
+from app.services.policy_authority_service import PolicyAuthorityService
 from app.services.rag_service import RagService
 from app.services.redaction_service import RedactionService
 from app.services.regression_prevention_service import RegressionPreventionService
@@ -819,7 +820,7 @@ async def propose_code_edit(user_id: str, slug_id: str, payload: CodeEditProposa
             detail="The proposed edit did not pass its required pre-approval validation.",
         )
     plan_document = await delivery.persist_plan(plan, static_validation=validation)
-    approval = await delivery.create_approval(plan)
+    approval = await delivery.create_approval(DeliveryPlan.model_validate(plan_document))
     await db.investigations.update_one(
         {"userId": user_id, "sessionId": session["_id"], "runId": run_id},
         {
@@ -1278,13 +1279,75 @@ async def decide_approval(user_id: str, slug_id: str, approval_id: str, payload:
         )
         return {"approval": {**approval, "status": "reject"}, "message": serialize_doc(message)}
     if approval.get("deliveryPlanId") and approval.get("action_type") == "create_draft_pull_request":
-        approved = await db.approvals.find_one_and_update(
+        authorizing = await db.approvals.find_one_and_update(
             {"id": approval_id, "userId": user_id, "status": "pending"},
-            {"$set": {"status": "approved", "approved_at": utc_now(), "decision": decision, "updatedAt": utc_now()}},
+            {"$set": {"status": "authorizing", "decision": decision, "updatedAt": utc_now()}},
+            return_document=ReturnDocument.AFTER,
+        )
+        if not authorizing:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Approval was already processed")
+        plan = await db.delivery_plans.find_one(
+            {"id": authorizing["deliveryPlanId"], "userId": user_id, "sessionId": session["_id"]}
+        )
+        if not plan:
+            await db.approvals.update_one(
+                {"id": approval_id, "userId": user_id, "status": "authorizing"},
+                {
+                    "$set": {
+                        "status": "invalidated",
+                        "invalidationReason": "Delivery plan unavailable",
+                        "updatedAt": utc_now(),
+                    }
+                },
+            )
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Delivery plan is no longer available")
+        try:
+            policy_decision = await PolicyAuthorityService().authorize_approval(
+                approval=authorizing, plan=DeliveryPlan.model_validate(plan), approver_id=str(user_id)
+            )
+        except HTTPException:
+            await db.approvals.update_one(
+                {"id": approval_id, "userId": user_id, "status": "authorizing"},
+                {
+                    "$set": {
+                        "status": "invalidated",
+                        "invalidationReason": "Policy authorization denied",
+                        "updatedAt": utc_now(),
+                    }
+                },
+            )
+            raise
+        except Exception as exc:
+            logger.exception("Policy authorization persistence failed: %s", type(exc).__name__)
+            await db.approvals.update_one(
+                {"id": approval_id, "userId": user_id, "status": "authorizing"},
+                {
+                    "$set": {
+                        "status": "invalidated",
+                        "invalidationReason": "Policy authorization could not be recorded",
+                        "updatedAt": utc_now(),
+                    }
+                },
+            )
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="Policy authorization is temporarily unavailable. No action was run.",
+            ) from exc
+        approved = await db.approvals.find_one_and_update(
+            {"id": approval_id, "userId": user_id, "status": "authorizing"},
+            {
+                "$set": {
+                    "status": "approved",
+                    "approved_at": utc_now(),
+                    "policyDecisionId": policy_decision["id"],
+                    "policyReceiptId": policy_decision.get("ledgerReceiptId"),
+                    "updatedAt": utc_now(),
+                }
+            },
             return_document=ReturnDocument.AFTER,
         )
         if not approved:
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Approval was already processed")
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Approval authorization was interrupted")
         repo_path, _repo_name = await WorkspaceService().ensure_workspace(
             user_id, slug_id, session["repoUrl"], session.get("defaultBranch") or "main"
         )

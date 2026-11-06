@@ -95,6 +95,10 @@ services:
         generateValue: true
       - key: GITHUB_TOKEN_ENCRYPTION_KEY
         sync: false
+      - key: LEDGER_SIGNING_PRIVATE_KEY
+        sync: false
+      - key: LEDGER_SIGNING_KEY_ID
+        value: render-free-ed25519-v1
       - key: OPENAI_API_KEY
         sync: false
       - key: CHAT_MODEL

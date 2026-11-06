@@ -118,6 +118,12 @@ services:
         # secret manager so startup validation and encryption use the same
         # exact URL-safe base64 format.
         sync: false
+      # An independent Ed25519 seed signs the evidence and authorization
+      # ledger. Store it separately from OAuth encryption material.
+      - key: LEDGER_SIGNING_PRIVATE_KEY
+        sync: false
+      - key: LEDGER_SIGNING_KEY_ID
+        value: render-primary-ed25519-v1
       - key: OPENAI_API_KEY
         sync: false
       - key: RAZORPAY_KEY_ID
