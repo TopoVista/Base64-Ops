@@ -17,7 +17,7 @@ const AppLayout = () => {
       }
     >
       <AppSidebar />
-      <SidebarInset className="h-full overflow-hidden bg-background text-foreground">
+      <SidebarInset className="app-shell h-full overflow-hidden bg-background text-foreground">
         <Outlet />
       </SidebarInset>
       <Suspense fallback={null}>

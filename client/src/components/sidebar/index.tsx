@@ -61,7 +61,7 @@ const AppSidebar = () => {
   ] as const
 
   return (
-    <Sidebar collapsible='icon' className='border-r border-sidebar-border'>
+    <Sidebar collapsible='icon' className='app-sidebar-shell border-r border-sidebar-border'>
       <SidebarHeader className="w-full mb-2 flex flex-row items-center justify-between py-3! pb-0! pl-3">
         <Logo showText={state === "expanded"} />
         <SidebarTrigger className="hidden lg:flex -m-2 mb-0" />

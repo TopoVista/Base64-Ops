@@ -117,9 +117,8 @@ function WorkflowBand() {
   return (
     <section className="workflow-band" id="how-it-works" aria-labelledby="workflow-heading">
       <div className="section-shell workflow-intro">
-        <p className="section-kicker">From failure to a fix</p>
-        <h2 id="workflow-heading">A single, evidence<br />based workflow.</h2>
-        <p>Base64 Ops turns a failure into a reviewed, minimal change with a proof chain at every step.</p>
+        <h2 id="workflow-heading">From failed run<br />to accountable change.</h2>
+        <p>Base64 Ops keeps the proof chain visible from the first failing command to the final human decision.</p>
       </div>
       <div className="section-shell workflow-map">
         {items.map(([title, description], index) => (
@@ -162,8 +161,8 @@ export default function LandingPage() {
 
       <section className="hero-section" id="product">
         <div className="hero-copy">
-          <h1>Make the next<br />production change<br />the easiest one<br />to trust.</h1>
-          <p>Base64 Ops connects real CI failure evidence to a reviewable change, so you can go from red to green with confidence.</p>
+          <h1>Every production change should earn your trust.</h1>
+          <p>Move from a failing run to a constrained, reviewable repair—without separating the fix from the evidence that supports it.</p>
           <div className="hero-actions">
             <Link to="/demo" className="primary-action"><Play size={16} fill="currentColor" /> Watch the repair</Link>
             <Link to="/sign-in" className="secondary-action">Sign in <ArrowRight size={17} /></Link>
@@ -177,9 +176,8 @@ export default function LandingPage() {
 
       <section className="evidence-section" id="safety" aria-labelledby="evidence-heading">
         <div className="section-shell evidence-header">
-          <p className="section-kicker">How it works</p>
-          <h2 id="evidence-heading">Evidence is the interface.</h2>
-          <p>Base64 Ops focuses on the facts that matter, so you can move from failure to a safe fix with confidence.</p>
+          <h2 id="evidence-heading">Not an answer.<br />A chain of evidence.</h2>
+          <p>Every repair stays tied to the log, workflow revision, source path, diff, validation result, and approval that made it safe to consider.</p>
         </div>
         <div className="section-shell evidence-columns">
           <article>
@@ -204,9 +202,8 @@ export default function LandingPage() {
       </section>
 
       <section className="closing-section">
-        <p className="section-kicker">Get started</p>
-        <h2>Stop guessing at the next fix.</h2>
-        <p>Turn failures into verified, minimal changes with clear evidence and human approval.</p>
+        <h2>Make the next fix explainable.</h2>
+        <p>Open a workspace where evidence, scope, validation, and human approval stay connected.</p>
         <Link to="/sign-in" className="primary-action">Open Base64 Ops <ArrowRight size={17} /></Link>
       </section>
 
