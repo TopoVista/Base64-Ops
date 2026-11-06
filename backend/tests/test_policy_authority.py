@@ -10,7 +10,7 @@ from app.services import policy_authority_service
 from app.services.policy_authority_service import PolicyAuthorityService
 
 
-def _plan(*, ledger_manifest_hash: str | None = "a" * 64) -> DeliveryPlan:
+def _plan(*, ledger_manifest_hash: str | None = "a" * 64, risk_level: str = "high") -> DeliveryPlan:
     return DeliveryPlan(
         id="dpl_1",
         user_id="usr_1",
@@ -32,7 +32,7 @@ def _plan(*, ledger_manifest_hash: str | None = "a" * 64) -> DeliveryPlan:
             )
         ],
         validation_steps=[],
-        risk_level="high",
+        risk_level=risk_level,
         ledger_manifest_hash=ledger_manifest_hash,
         created_at=datetime.now(UTC),
     )
@@ -45,6 +45,22 @@ def test_policy_action_requires_signed_manifest() -> None:
             action_type="create_draft_pull_request",
             arguments={"commit_message": "Fix workflow directory"},
         )
+
+
+def test_candidate_dispatch_does_not_require_itself_to_have_already_run(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(
+        policy_authority_service,
+        "get_settings",
+        lambda: Settings(policy_require_candidate_verification_for_high_risk=True),
+    )
+
+    action = PolicyAuthorityService().canonical_action(
+        plan=_plan(risk_level="high"),
+        action_type="dispatch_candidate_verification",
+        arguments={"candidate_branch": "base64-verify/candidate-abcdef"},
+    )
+
+    assert action["requirements"]["candidateVerification"] is False
 
 
 def test_strict_policy_requires_distinct_two_person_review(monkeypatch: pytest.MonkeyPatch) -> None:

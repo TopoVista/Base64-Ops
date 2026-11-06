@@ -49,6 +49,7 @@ class PolicyAuthorityService:
         strict = get_settings().policy_strict_separation_of_duties
         requires_candidate = bool(
             get_settings().policy_require_candidate_verification_for_high_risk
+            and action_type != "dispatch_candidate_verification"
             and (plan.risk_level in {"high", "critical"} or high_assurance_surface)
         )
         reviewer_quorum = 2 if strict and (plan.risk_level in {"high", "critical"} or high_assurance_surface) else 1

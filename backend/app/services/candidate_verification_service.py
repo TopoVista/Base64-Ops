@@ -29,6 +29,7 @@ from app.services.github_service import (
     normalize_github_repository_url,
     validate_github_app_installation_repository,
 )
+from app.services.policy_authority_service import PolicyAuthorityService
 from app.services.redaction_service import RedactionService
 from app.utils.datetime import utc_now
 from app.utils.ids import new_id
@@ -76,6 +77,8 @@ def verification_approval_is_bound(approval: dict[str, Any], plan: DeliveryPlan)
         "canonical_arguments": approval.get("canonical_arguments") or {},
         "diff_hash": diff_hash,
     }
+    if plan.ledger_manifest_hash:
+        payload["ledger_manifest_hash"] = plan.ledger_manifest_hash
     return hashlib.sha256(_canonical_json(payload).encode()).hexdigest() == approval.get("approval_hash")
 
 
@@ -355,6 +358,7 @@ class CandidateVerificationService:
         outcome; no delivery PR is created by this method.
         """
 
+        await PolicyAuthorityService().assert_execution_authorized(approval=approval, plan=plan)
         arguments = approval.get("canonical_arguments") or {}
         installation_id = str(arguments.get("installation_id") or "")
         workflow_path = str(arguments.get("workflow_path") or "")

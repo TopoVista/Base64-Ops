@@ -1410,13 +1410,60 @@ async def decide_approval(user_id: str, slug_id: str, approval_id: str, payload:
                 status_code=status.HTTP_409_CONFLICT,
                 detail="Candidate verification approval was invalidated because its exact binding changed.",
             )
-        approved = await db.approvals.find_one_and_update(
+        authorizing = await db.approvals.find_one_and_update(
             {"id": approval_id, "userId": user_id, "status": "pending"},
-            {"$set": {"status": "approved", "approved_at": utc_now(), "decision": decision, "updatedAt": utc_now()}},
+            {"$set": {"status": "authorizing", "decision": decision, "updatedAt": utc_now()}},
+            return_document=ReturnDocument.AFTER,
+        )
+        if not authorizing:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Approval was already processed")
+        try:
+            policy_decision = await PolicyAuthorityService().authorize_approval(
+                approval=authorizing, plan=typed_plan, approver_id=str(user_id)
+            )
+        except HTTPException:
+            await db.approvals.update_one(
+                {"id": approval_id, "userId": user_id, "status": "authorizing"},
+                {
+                    "$set": {
+                        "status": "invalidated",
+                        "invalidationReason": "Policy authorization denied",
+                        "updatedAt": utc_now(),
+                    }
+                },
+            )
+            raise
+        except Exception as exc:
+            logger.exception("Candidate policy authorization persistence failed: %s", type(exc).__name__)
+            await db.approvals.update_one(
+                {"id": approval_id, "userId": user_id, "status": "authorizing"},
+                {
+                    "$set": {
+                        "status": "invalidated",
+                        "invalidationReason": "Policy authorization could not be recorded",
+                        "updatedAt": utc_now(),
+                    }
+                },
+            )
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="Policy authorization is temporarily unavailable. No action was run.",
+            ) from exc
+        approved = await db.approvals.find_one_and_update(
+            {"id": approval_id, "userId": user_id, "status": "authorizing"},
+            {
+                "$set": {
+                    "status": "approved",
+                    "approved_at": utc_now(),
+                    "policyDecisionId": policy_decision["id"],
+                    "policyReceiptId": policy_decision.get("ledgerReceiptId"),
+                    "updatedAt": utc_now(),
+                }
+            },
             return_document=ReturnDocument.AFTER,
         )
         if not approved:
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Approval was already processed")
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Approval authorization was interrupted")
         traces = getattr(db, "run_traces", None)
         trace = (
             await traces.find_one({"user_id": user_id, "session_id": session["_id"], "run_id": typed_plan.run_id})

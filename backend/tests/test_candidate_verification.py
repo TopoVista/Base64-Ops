@@ -2,6 +2,7 @@ from datetime import UTC, datetime
 from types import SimpleNamespace
 
 import pytest
+from fastapi import HTTPException
 
 from app.schemas.delivery import DeliveryPlan, ProposedFileChange
 from app.services import candidate_verification_service, evidence_service
@@ -15,7 +16,7 @@ from app.services.candidate_verification_service import (
 from app.services.delivery_service import DeliveryService
 
 
-def _plan(*, path: str = "backend/app/service.py") -> DeliveryPlan:
+def _plan(*, path: str = "backend/app/service.py", ledger_manifest_hash: str | None = None) -> DeliveryPlan:
     return DeliveryPlan(
         id="dpl_candidate1",
         user_id="user_1",
@@ -38,6 +39,7 @@ def _plan(*, path: str = "backend/app/service.py") -> DeliveryPlan:
         ],
         validation_steps=[],
         risk_level="medium",
+        ledger_manifest_hash=ledger_manifest_hash,
         created_at=datetime(2026, 10, 13, tzinfo=UTC),
     )
 
@@ -75,7 +77,7 @@ def test_static_validation_is_not_presented_as_remote_verification() -> None:
 
 
 def test_candidate_branch_and_verification_approval_are_exact_plan_bound() -> None:
-    plan = _plan()
+    plan = _plan(ledger_manifest_hash="d" * 64)
     branch = candidate_branch_name(plan)
     assert branch.startswith("base64-verify/")
     arguments = {
@@ -147,6 +149,15 @@ async def test_dispatch_creates_exact_candidate_ref_then_dispatches_reviewed_wor
     runs = _Runs()
     monkeypatch.setattr(candidate_verification_service, "get_db", lambda: SimpleNamespace(verification_runs=runs))
     monkeypatch.setattr(candidate_verification_service, "github_installation_api", github_call)
+
+    async def authorized(*_args, **_kwargs):  # noqa: ANN202
+        return {"id": "pdc_1"}
+
+    monkeypatch.setattr(
+        candidate_verification_service.PolicyAuthorityService,
+        "assert_execution_authorized",
+        authorized,
+    )
     service = CandidateVerificationService()
 
     async def settings(*, user_id: str, session_id: str):  # noqa: ANN202
@@ -176,6 +187,27 @@ async def test_dispatch_creates_exact_candidate_ref_then_dispatches_reviewed_wor
     assert calls[-2][2]["json"]["ref"] == f"refs/heads/{branch}"
     assert calls[-1][1].endswith("/actions/workflows/.github%2Fworkflows%2Fbase64-verify.yml/dispatches")
     assert calls[-1][2]["json"] == {"ref": branch, "inputs": {}}
+
+
+@pytest.mark.asyncio
+async def test_dispatch_requires_policy_authorization_before_github_access(monkeypatch) -> None:
+    plan = _plan()
+    service = CandidateVerificationService()
+    calls: list[object] = []
+
+    async def github_call(*_args, **_kwargs):  # noqa: ANN202
+        calls.append(_args)
+
+    monkeypatch.setattr(candidate_verification_service, "github_installation_api", github_call)
+
+    with pytest.raises(HTTPException, match="No policy authorization"):
+        await service.dispatch_approved(
+            user_id="user_1",
+            approval={"id": "apr_1", "canonical_arguments": {}},
+            plan=plan,
+        )
+
+    assert calls == []
 
 
 @pytest.mark.asyncio
