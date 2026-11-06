@@ -18,6 +18,7 @@
     "@assistant-ui/react-markdown": "^0.14.1",
     "@clerk/clerk-react": "5.61.9",
     "@fontsource-variable/geist": "^5.2.9",
+    "@fontsource-variable/ibm-plex-sans": "^5.2.5",
     "@hookform/resolvers": "^5.4.0",
     "@monaco-editor/react": "^4.7.0",
     "@radix-ui/react-use-controllable-state": "^1.2.2",

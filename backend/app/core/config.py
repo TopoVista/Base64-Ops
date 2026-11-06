@@ -97,13 +97,16 @@ class Settings(BaseSettings):
     # MongoDB
     mongo_uri: str = Field(default="", alias="MONGO_URI")
     mongo_db_name: str = Field(default="langgraph_devops_agent", alias="MONGO_DB_NAME")
-    mongo_connect_max_retries: int = Field(default=2, alias="MONGO_CONNECT_MAX_RETRIES")
-    mongo_connect_timeout_ms: int = Field(default=5_000, alias="MONGO_CONNECT_TIMEOUT_MS")
+    # Atlas can briefly lose DNS/TLS reachability during a deploy or network
+    # transition. Keep startup bounded, but give the driver enough time to
+    # select a healthy node before treating the dependency as unavailable.
+    mongo_connect_max_retries: int = Field(default=4, ge=0, le=10, alias="MONGO_CONNECT_MAX_RETRIES")
+    mongo_connect_timeout_ms: int = Field(default=10_000, ge=1_000, le=60_000, alias="MONGO_CONNECT_TIMEOUT_MS")
     # Keep a 512 MB replica from opening an unbounded number of Atlas sockets.
     # Scale by adding stateless replicas only after sizing this shared budget.
     mongo_max_pool_size: int = Field(default=20, ge=1, le=100, alias="MONGO_MAX_POOL_SIZE")
-    mongo_wait_queue_timeout_ms: int = Field(default=5_000, ge=100, le=60_000, alias="MONGO_WAIT_QUEUE_TIMEOUT_MS")
-    mongo_reconnect_interval_seconds: int = Field(default=15, alias="MONGO_RECONNECT_INTERVAL_SECONDS")
+    mongo_wait_queue_timeout_ms: int = Field(default=10_000, ge=100, le=60_000, alias="MONGO_WAIT_QUEUE_TIMEOUT_MS")
+    mongo_reconnect_interval_seconds: int = Field(default=10, ge=5, le=300, alias="MONGO_RECONNECT_INTERVAL_SECONDS")
 
     # Clerk
     clerk_secret_key: str = Field(default="", alias="CLERK_SECRET_KEY")

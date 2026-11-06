@@ -1,5 +1,7 @@
 from datetime import UTC, datetime, timedelta
 
+from pymongo.errors import ServerSelectionTimeoutError
+
 from app import main
 from app.db.mongo import MongoUnavailableError
 from app.services.session_service import ci_refresh_due
@@ -66,6 +68,21 @@ async def test_database_outage_returns_a_safe_retryable_response() -> None:
     assert b"MONGO_URI" not in response.body
 
 
+async def test_post_startup_atlas_error_returns_the_same_safe_retryable_response(monkeypatch) -> None:
+    calls: list[str] = []
+
+    async def close_database() -> None:
+        calls.append("closed")
+
+    monkeypatch.setattr(main, "close_mongo", close_database)
+
+    response = await main.app_exception_handler(None, ServerSelectionTimeoutError("atlas host unreachable"))
+
+    assert response.status_code == 503
+    assert calls == ["closed"]
+    assert b"atlas" not in response.body
+
+
 async def test_health_reports_a_degraded_database_dependency(monkeypatch) -> None:
     monkeypatch.setattr(main, "mongo_is_connected", lambda: False)
 
@@ -125,3 +142,4 @@ def test_cors_does_not_allow_ambient_browser_credentials() -> None:
     cors = next(item for item in main.app.user_middleware if item.cls.__name__ == "CORSMiddleware")
 
     assert cors.kwargs["allow_credentials"] is False
+    assert "PUT" in cors.kwargs["allow_methods"]

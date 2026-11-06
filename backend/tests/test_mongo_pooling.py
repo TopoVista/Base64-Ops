@@ -1,3 +1,5 @@
+from pymongo.errors import ServerSelectionTimeoutError
+
 from app.core.config import Settings
 from app.db import mongo
 
@@ -37,4 +39,24 @@ async def test_mongo_connection_uses_a_bounded_pool(monkeypatch) -> None:
 
     assert captured["maxPoolSize"] == 17
     assert captured["waitQueueTimeoutMS"] == 4_321
+    assert captured["closed"] is True
+
+
+async def test_failed_liveness_ping_discards_the_stale_client() -> None:
+    captured: dict[str, bool] = {}
+
+    class Admin:
+        async def command(self, _name: str) -> None:
+            raise ServerSelectionTimeoutError("Atlas unavailable")
+
+    class Client:
+        admin = Admin()
+
+        def close(self) -> None:
+            captured["closed"] = True
+
+    mongo._client = Client()
+
+    assert await mongo.ping_mongo() is False
+    assert mongo._client is None
     assert captured["closed"] is True

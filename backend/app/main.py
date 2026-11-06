@@ -6,6 +6,7 @@ from contextlib import asynccontextmanager, suppress
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from pymongo.errors import PyMongoError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from app.api.deps import ensure_user_indexes
@@ -16,7 +17,7 @@ from app.billing.usage_service import UsageService
 from app.core.access_logging import configure_access_log_redaction
 from app.core.config import get_settings
 from app.core.rate_limit import InMemoryRateLimitStore, RedisRateLimitStore
-from app.db.mongo import MongoUnavailableError, close_mongo, connect_mongo, get_db, mongo_is_connected
+from app.db.mongo import MongoUnavailableError, close_mongo, connect_mongo, get_db, mongo_is_connected, ping_mongo
 from app.intelligence.graph.store import EngineeringGraphStore
 from app.intelligence.impact.store import ChangeImpactStore
 from app.services.assurance_ledger_service import AssuranceLedgerService
@@ -87,6 +88,30 @@ async def _retry_mongo_connection() -> None:
             logger.warning("MongoDB reconnect attempt failed: %s", type(exc).__name__)
 
 
+async def _maintain_mongo_connection() -> None:
+    """Continuously recover Atlas after startup as well as during startup.
+
+    Motor's client object can remain allocated after Atlas has become
+    unreachable. Treat the failed ping as an unavailable dependency, rebuild
+    the bounded pool, and re-install every correctness-critical index before
+    readiness can recover.
+    """
+
+    interval = max(5, get_settings().mongo_reconnect_interval_seconds)
+    while True:
+        await asyncio.sleep(interval)
+        if mongo_is_connected() and await ping_mongo():
+            continue
+        try:
+            await connect_mongo()
+            await _ensure_database_indexes()
+            logger.info("MongoDB connection recovered")
+        except Exception as exc:  # Keep only the exception type in server logs.
+            if mongo_is_connected():
+                await close_mongo()
+            logger.warning("MongoDB connection maintenance failed: %s", type(exc).__name__)
+
+
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
     reconnect_task: asyncio.Task[None] | None = None
@@ -103,7 +128,11 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
         # process disappear. Do not include the provider message here: it may
         # contain connection metadata.
         logger.warning("MongoDB was unavailable during startup: %s", type(exc).__name__)
-        reconnect_task = asyncio.create_task(_retry_mongo_connection())
+        logger.info("Starting MongoDB recovery loop after startup degradation")
+    # Keep monitoring after a successful startup too. Atlas disconnects are
+    # common enough during deploys and provider maintenance that a startup-only
+    # retry is not a reliable availability strategy.
+    reconnect_task = asyncio.create_task(_maintain_mongo_connection())
     try:
         yield
     finally:
@@ -138,7 +167,7 @@ app.add_middleware(
     # it does not use browser cookies. Keeping CORS credentials disabled avoids
     # creating a cross-origin cookie/CSRF channel we do not need.
     allow_credentials=False,
-    allow_methods=["GET", "POST", "PATCH", "OPTIONS"],
+    allow_methods=["GET", "POST", "PUT", "PATCH", "OPTIONS"],
     allow_headers=["Authorization", "Content-Type"],
 )
 
@@ -233,7 +262,12 @@ app.include_router(billing.router, prefix="/api/billing", tags=["billing"])
 
 @app.exception_handler(Exception)
 async def app_exception_handler(_request, exc: Exception) -> JSONResponse:
-    if isinstance(exc, MongoUnavailableError):
+    if isinstance(exc, (MongoUnavailableError, PyMongoError)):
+        if isinstance(exc, PyMongoError):
+            # A request discovered a post-startup socket failure before the
+            # maintenance tick did. Drop the stale client immediately; the
+            # lifecycle task will reconnect and restore indexes.
+            await close_mongo()
         return JSONResponse(
             status_code=503,
             content={

@@ -22,6 +22,8 @@ import type {
   IncidentsResponse,
   FlakyTestObservation,
   PreventionRule,
+  PreventionRuleGovernance,
+  FleetIntelligence,
   CandidateVerificationRun,
   CandidateVerificationSettings,
   CandidateVerificationSettingsInput,
@@ -97,6 +99,26 @@ export const getPreventionRules = async (
     `/incidents/sessions/${encodeURIComponent(slugId)}/prevention-rules`,
     { params: { limit: 30 } },
   );
+  return response.data;
+};
+
+/** Records an explicit human policy decision for an advisory-only rule. */
+export const governPreventionRule = async (
+  slugId: string,
+  ruleId: string,
+  action: "approve" | "rollback",
+): Promise<PreventionRuleGovernance> => {
+  const response = await API.post<PreventionRuleGovernance>(
+    `/incidents/sessions/${encodeURIComponent(slugId)}/prevention-rules/${encodeURIComponent(ruleId)}/${action}`,
+  );
+  return response.data;
+};
+
+/** Returns bounded tenant-scoped correlations, never causal conclusions. */
+export const getFleetIntelligence = async (): Promise<FleetIntelligence> => {
+  const response = await API.get<FleetIntelligence>("/incidents/fleet-intelligence", {
+    params: { limit: 50 },
+  });
   return response.data;
 };
 
@@ -446,6 +468,32 @@ export type RegressionPreventionReport = {
   analyzed_at: string;
 };
 
+/** Bounded evidence linking an exact candidate verification to CI capsules. */
+export type CounterfactualVerificationReport = {
+  id: string;
+  deliveryPlanId: string;
+  patchDigest: string;
+  status: "targeted_evidence_available" | "inconclusive";
+  verification: {
+    verificationRunId?: string | null;
+    verificationLevel?: string | null;
+    workflowPath?: string | null;
+    githubRunId?: number | null;
+  };
+  matrix: Array<{
+    incidentId: string;
+    capsuleManifestHash: string;
+    baseSha: string;
+    baseline: string;
+    patched: string;
+    replayed: boolean;
+    scope: string;
+  }>;
+  ledgerReceiptId: string;
+  limitations: string[];
+  createdAt: string;
+};
+
 export const getSessionEngineeringGraphStatus = async (
   slugId: string,
 ): Promise<EngineeringGraphStatus> => {
@@ -476,6 +524,17 @@ export const analyzeSessionRegressionPrevention = async (
 ): Promise<RegressionPreventionReport> => {
   const response = await API.post<RegressionPreventionReport>(
     `/session/${slugId}/delivery-plan/${planId}/regression-prevention`,
+  );
+  return response.data;
+};
+
+/** Records existing candidate evidence against exact incident capsules only. */
+export const analyzeSessionCounterfactualVerification = async (
+  slugId: string,
+  planId: string,
+): Promise<CounterfactualVerificationReport> => {
+  const response = await API.post<CounterfactualVerificationReport>(
+    `/session/${encodeURIComponent(slugId)}/delivery-plan/${encodeURIComponent(planId)}/counterfactual-verification`,
   );
   return response.data;
 };

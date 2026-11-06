@@ -4,6 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { IDEWorkspace } from "@/components/ide-workspace";
 import {
   decideSessionApproval,
+  analyzeSessionCounterfactualVerification,
   analyzeSessionDeliveryImpact,
   analyzeSessionRegressionPrevention,
   getCandidateVerificationSettings,
@@ -887,6 +888,16 @@ function Changes({ data }: { data: SingleSessionResponse }) {
       toast.error(message);
     },
   });
+  const counterfactual = useMutation({
+    mutationFn: () => {
+      if (!p?.id) throw new Error("No exact delivery plan is available.");
+      return analyzeSessionCounterfactualVerification(data.session.slugId, p.id);
+    },
+    onError: (error: unknown) => {
+      const message = error instanceof Error ? error.message : "Verification evidence could not be recorded.";
+      toast.error(message);
+    },
+  });
   const renderTargets = (targets: NonNullable<typeof impact.data>["directly_affected"], empty: string) =>
     targets.length ? (
       <ul className="mt-2 space-y-2">
@@ -1056,6 +1067,39 @@ function Changes({ data }: { data: SingleSessionResponse }) {
                         {prevention.data.limitations.map((limitation) => <li key={limitation}>{limitation}</li>)}
                       </ul>
                     ) : null}
+                  </div>
+                ) : null}
+              </section>
+              <section className="mt-5 rounded-lg border border-border bg-muted/25 p-4">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <h3 className="text-sm font-medium">Counterfactual verification record</h3>
+                    <p className="mt-1 max-w-2xl text-xs leading-5 text-muted-foreground">
+                      Binds an already-observed exact candidate verification to signed incident capsules. It does not dispatch a workflow, replay historical CI, or prove that the full pipeline would pass.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => counterfactual.mutate()}
+                    disabled={counterfactual.isPending}
+                    className="inline-flex items-center gap-2 rounded-md border border-emerald-500/40 bg-emerald-500/10 px-3 py-2 text-sm font-medium text-emerald-700 transition-colors hover:bg-emerald-500/20 disabled:cursor-not-allowed disabled:opacity-60 dark:text-emerald-200"
+                  >
+                    <CheckCircle2 className={cn("size-4", counterfactual.isPending && "animate-pulse")} />
+                    {counterfactual.isPending ? "Recording evidence…" : "Create verification record"}
+                  </button>
+                </div>
+                {counterfactual.data ? (
+                  <div className="mt-4 border-t border-border pt-4">
+                    <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs text-muted-foreground">
+                      <span>Status <span className="font-medium text-foreground">{label(counterfactual.data.status)}</span></span>
+                      <span>Capsules <span className="font-medium text-foreground">{counterfactual.data.matrix.length}</span></span>
+                      <span className="font-mono">Receipt {counterfactual.data.ledgerReceiptId.slice(-12)}</span>
+                    </div>
+                    {counterfactual.data.verification.verificationRunId ? <p className="mt-3 text-xs text-muted-foreground">Observed verification {counterfactual.data.verification.verificationLevel ?? "candidate"} · {counterfactual.data.verification.workflowPath ?? "workflow path unavailable"}</p> : null}
+                    <div className="mt-3 space-y-2">
+                      {counterfactual.data.matrix.map((entry) => <div key={`${entry.incidentId}-${entry.capsuleManifestHash}`} className="rounded-md border border-border bg-background p-2.5 text-xs"><span className="font-mono text-foreground">{entry.incidentId.slice(-12)}</span><span className="px-2 text-muted-foreground">·</span>{label(entry.scope)}<span className="px-2 text-muted-foreground">·</span>{label(entry.patched)}</div>)}
+                    </div>
+                    {counterfactual.data.limitations.length ? <ul className="mt-3 list-disc space-y-1 pl-5 text-xs leading-5 text-muted-foreground">{counterfactual.data.limitations.map((limitation) => <li key={limitation}>{limitation}</li>)}</ul> : null}
                   </div>
                 ) : null}
               </section>

@@ -27,6 +27,10 @@ async def connect_mongo() -> None:
             socketTimeoutMS=settings.mongo_connect_timeout_ms,
             maxPoolSize=settings.mongo_max_pool_size,
             waitQueueTimeoutMS=settings.mongo_wait_queue_timeout_ms,
+            maxIdleTimeMS=60_000,
+            retryReads=True,
+            retryWrites=True,
+            appname="base64-ops",
         )
         try:
             await client.admin.command("ping")
@@ -36,7 +40,10 @@ async def connect_mongo() -> None:
             last_error = exc
             client.close()
             if attempt < settings.mongo_connect_max_retries:
-                await asyncio.sleep(0.25 * (2**attempt))
+                # Short exponential backoff prevents a DNS/TLS outage from
+                # creating a tight connection loop, while still recovering
+                # quickly enough for a stateless API replica.
+                await asyncio.sleep(min(5.0, 0.5 * (2**attempt)))
     _client = None
     if last_error:
         raise last_error
@@ -47,6 +54,31 @@ async def close_mongo() -> None:
     if _client is not None:
         _client.close()
     _client = None
+
+
+async def ping_mongo() -> bool:
+    """Probe the current client and discard it if Atlas has dropped it.
+
+    ``mongo_is_connected`` reports whether a client has been established, not
+    whether its underlying sockets are still usable. The application lifecycle
+    calls this bounded ping on an interval so an outage after startup enters
+    the same safe reconnect path as a startup outage.
+    """
+
+    global _client
+    client = _client
+    if client is None:
+        return False
+    try:
+        await client.admin.command("ping")
+        return True
+    except PyMongoError:
+        # Only clear the exact client we probed. A newer client may have been
+        # installed by a concurrent recovery attempt.
+        if _client is client:
+            client.close()
+            _client = None
+        return False
 
 
 def get_db() -> AsyncIOMotorDatabase:

@@ -389,14 +389,20 @@ class RagService:
     ) -> list[dict[str, Any]]:
         settings = get_settings()
         if settings.rag_vector_enabled and settings.openai_api_key:
+            vector_client = None
             try:
-                vector_store = self._vector_store()
+                vector_store, vector_client = self._vector_store()
                 pre_filter: dict[str, Any] = {"sessionId": {"$eq": session_id}}
                 if valid_at:
                     pre_filter["validAt"] = {"$eq": valid_at}
                 if known_at:
                     pre_filter["knownAt"] = {"$lte": known_at}
-                results = vector_store.similarity_search(
+                # The vector adapter is synchronous. Keep its Atlas work off
+                # the API event loop and close the short-lived client after
+                # each bounded query so optional vector search cannot leak
+                # pools during a transient Atlas outage.
+                results = await asyncio.to_thread(
+                    vector_store.similarity_search,
                     query,
                     k=limit,
                     pre_filter=pre_filter,
@@ -416,6 +422,9 @@ class RagService:
                 ]
             except Exception:
                 pass
+            finally:
+                if vector_client is not None:
+                    vector_client.close()
         # Natural-language prompts almost never equal a source line verbatim.
         # Score meaningful query terms locally so lexical retrieval remains
         # useful without Atlas Search, then use a conservative repository-file
@@ -568,8 +577,11 @@ class RagService:
                 pass
 
     async def _index_with_vector_store(self, documents: list[Document]) -> None:
-        vector_store = self._vector_store()
-        vector_store.add_documents(documents)
+        vector_store, vector_client = self._vector_store()
+        try:
+            await asyncio.to_thread(vector_store.add_documents, documents)
+        finally:
+            vector_client.close()
 
     def _vector_store(self):
         from langchain_mongodb import MongoDBAtlasVectorSearch
@@ -577,13 +589,27 @@ class RagService:
         from pymongo import MongoClient
 
         settings = get_settings()
-        client = MongoClient(settings.mongo_uri)
+        client = MongoClient(
+            settings.mongo_uri,
+            serverSelectionTimeoutMS=settings.mongo_connect_timeout_ms,
+            connectTimeoutMS=settings.mongo_connect_timeout_ms,
+            socketTimeoutMS=settings.mongo_connect_timeout_ms,
+            maxPoolSize=min(settings.mongo_max_pool_size, 5),
+            waitQueueTimeoutMS=settings.mongo_wait_queue_timeout_ms,
+            maxIdleTimeMS=60_000,
+            retryReads=True,
+            retryWrites=True,
+            appname="base64-ops-vector",
+        )
         collection = client[settings.mongo_db_name]["rag_chunks"]
         embeddings = OpenAIEmbeddings(model=settings.embedding_model, api_key=settings.openai_api_key)
-        return MongoDBAtlasVectorSearch(
-            collection=collection,
-            embedding=embeddings,
-            index_name=settings.vector_index_name,
-            text_key="text",
-            relevance_score_fn="cosine",
+        return (
+            MongoDBAtlasVectorSearch(
+                collection=collection,
+                embedding=embeddings,
+                index_name=settings.vector_index_name,
+                text_key="text",
+                relevance_score_fn="cosine",
+            ),
+            client,
         )

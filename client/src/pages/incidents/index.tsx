@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import {
   downloadIncidentExport,
   getCandidateVerificationSettings,
+  getFleetIntelligence,
   getIncident,
   getIncidents,
   getPreventionRules,
@@ -13,12 +14,14 @@ import {
   getSystemCapabilities,
   getUserSessions,
   submitIncidentFeedback,
+  governPreventionRule,
   updateCandidateVerificationSettings,
   updateRepositoryAutomationSettings,
 } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import type {
   CandidateVerificationSettingsInput,
+  FleetIntelligence,
   IncidentRecord,
   PreventionRule,
   RepositoryAutomationSettingsInput,
@@ -48,6 +51,7 @@ const shortSha = (sha: string) => sha.slice(0, 12);
 const EMPTY_INCIDENTS: IncidentRecord[] = [];
 const EMPTY_SESSIONS: SessionRecord[] = [];
 const EMPTY_PREVENTION_RULES: PreventionRule[] = [];
+const EMPTY_FLEET_INTELLIGENCE: FleetIntelligence = { incidents: [], correlations: [] };
 const dateTime = (value: string) => {
   const parsed = new Date(value);
   return Number.isNaN(parsed.getTime()) ? "Time unavailable" : parsed.toLocaleString();
@@ -145,6 +149,11 @@ function AutomationSettingsPanel() {
     enabled: Boolean(selectedSlugId),
     staleTime: 20_000,
   });
+  const fleetIntelligenceQuery = useQuery({
+    queryKey: ["fleet-intelligence"],
+    queryFn: getFleetIntelligence,
+    staleTime: 30_000,
+  });
   const capabilitiesQuery = useQuery({
     queryKey: ["system-capabilities"],
     queryFn: () => getSystemCapabilities<{
@@ -200,6 +209,13 @@ function AutomationSettingsPanel() {
     mutationFn: () => updateCandidateVerificationSettings(selectedSlugId, candidateDraft),
     onSuccess: () => {
       void candidateVerificationQuery.refetch();
+    },
+  });
+  const governPrevention = useMutation({
+    mutationFn: ({ ruleId, action }: { ruleId: string; action: "approve" | "rollback" }) =>
+      governPreventionRule(selectedSlugId, ruleId, action),
+    onSuccess: () => {
+      void preventionRulesQuery.refetch();
     },
   });
 
@@ -382,14 +398,55 @@ function AutomationSettingsPanel() {
                   {prettify(rule.status)}
                 </Badge>
               </div>
+              <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+                <Badge variant="outline" className={rule.governance_status === "approved" ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300" : rule.governance_status === "rolled_back" ? "border-amber-500/40 bg-amber-500/10 text-amber-800 dark:text-amber-200" : "border-border text-muted-foreground"}>
+                  Policy {prettify(rule.governance_status)} · v{rule.policy_version}
+                </Badge>
+                <span className="text-muted-foreground">Scope: advisory only</span>
+                {rule.ledger_receipt_id ? <span className="font-mono text-muted-foreground">Receipt {rule.ledger_receipt_id.slice(-10)}</span> : null}
+                {rule.governance_status !== "approved" ? (
+                  <Button size="sm" variant="outline" disabled={governPrevention.isPending} onClick={() => governPrevention.mutate({ ruleId: rule.id, action: "approve" })}>
+                    Approve advisory policy
+                  </Button>
+                ) : (
+                  <Button size="sm" variant="outline" disabled={governPrevention.isPending} onClick={() => governPrevention.mutate({ ruleId: rule.id, action: "rollback" })}>
+                    Roll back policy
+                  </Button>
+                )}
+              </div>
               <div className="mt-3 flex flex-wrap gap-2 text-xs">
                 {rule.historical_incident_ids.map((incidentId) => <Link key={incidentId} to={`/incidents/${incidentId}`} className="rounded border border-border px-2 py-1 font-mono text-primary hover:bg-muted">Incident {incidentId.slice(-8)}</Link>)}
               </div>
               {rule.invalidation_reason ? <p className="mt-3 text-xs leading-5 text-amber-800 dark:text-amber-200">Review required: {rule.invalidation_reason}</p> : null}
               {rule.applicability_limitations.map((limitation) => <p key={limitation} className="mt-2 text-xs leading-5 text-muted-foreground">Limitation: {limitation}</p>)}
+              {rule.effectiveness_limitations.map((limitation) => <p key={limitation} className="mt-2 text-xs leading-5 text-muted-foreground">Effectiveness: {limitation}</p>)}
             </div>
           ))}
         </div>
+      </section>
+      <section className="mt-6 border-t border-border pt-5" aria-labelledby="fleet-intelligence-heading">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h3 id="fleet-intelligence-heading" className="font-semibold">Fleet intelligence</h3>
+            <p className="mt-1 max-w-3xl text-sm leading-6 text-muted-foreground">Observed incident links across your tenant. Shared workflow, runner, or failure signals indicate correlation only—not a root cause or a delivery decision.</p>
+          </div>
+          <Button type="button" size="sm" variant="outline" onClick={() => void fleetIntelligenceQuery.refetch()} disabled={fleetIntelligenceQuery.isFetching}>
+            <RefreshCw className={cn("mr-2 size-3.5", fleetIntelligenceQuery.isFetching && "animate-spin")} />
+            Refresh fleet view
+          </Button>
+        </div>
+        {fleetIntelligenceQuery.isError ? <p className="mt-3 text-sm text-destructive">Fleet intelligence could not be loaded. No incident records were changed.</p> : null}
+        {fleetIntelligenceQuery.isPending ? <Skeleton className="mt-4 h-24 w-full rounded-lg" /> : null}
+        {!fleetIntelligenceQuery.isPending && !fleetIntelligenceQuery.isError ? (() => {
+          const fleet = fleetIntelligenceQuery.data ?? EMPTY_FLEET_INTELLIGENCE;
+          const byId = new Map(fleet.incidents.map((incident) => [incident._id, incident]));
+          return fleet.correlations.length ? <div className="mt-4 grid gap-3">{fleet.correlations.slice(0, 8).map((correlation) => (
+            <article key={`${correlation.sourceNodeId}-${correlation.targetNodeId}`} className="rounded-lg border border-border bg-background/60 p-4 text-sm">
+              <p className="font-medium">{byId.get(correlation.sourceNodeId)?.label ?? "Observed incident"} <span className="px-1 text-muted-foreground">↔</span> {byId.get(correlation.targetNodeId)?.label ?? "Observed incident"}</p>
+              <p className="mt-2 text-xs leading-5 text-muted-foreground">Shared observed signals: {correlation.basis.map(prettify).join(", ") || "none recorded"}.</p>
+            </article>
+          ))}</div> : <p className="mt-3 rounded-md border border-dashed border-border px-3 py-3 text-sm leading-6 text-muted-foreground">No bounded cross-incident correlations have been observed yet. New evidence will remain scoped to your tenant.</p>;
+        })() : null}
       </section>
     </section>
   );

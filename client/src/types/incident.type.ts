@@ -118,8 +118,48 @@ export type PreventionRule = {
   status: "active" | "needs_review";
   applicability_limitations: string[];
   invalidation_reason?: string | null;
+  governance_status: "proposed" | "approved" | "rolled_back";
+  policy_version: number;
+  deployment_scope: "advisory_only";
+  ledger_receipt_id?: string | null;
+  observed_recurrence_count: number;
+  effectiveness_status: "not_measurable";
+  effectiveness_limitations: string[];
   created_at: string;
   updated_at: string;
+};
+
+export type PreventionRuleGovernance = {
+  rule_id: string;
+  governance_status: "approved" | "rolled_back";
+  policy_version: number;
+  deployment_scope: "advisory_only";
+  ledger_receipt_id: string;
+  limitations: string[];
+};
+
+/** Tenant-scoped observed incident correlations; never causal claims. */
+export type FleetIntelligence = {
+  incidents: Array<{
+    _id: string;
+    key: string;
+    label: string;
+    signals?: {
+      workflowKey?: string | null;
+      runnerLabels?: string[];
+      failureCategories?: string[];
+      relevantPaths?: string[];
+    };
+    updatedAt: string;
+  }>;
+  correlations: Array<{
+    sourceNodeId: string;
+    targetNodeId: string;
+    relation: "correlated_with";
+    certainty: "correlated";
+    basis: string[];
+    updatedAt: string;
+  }>;
 };
 
 export type RepositoryAutomationSettings = {
