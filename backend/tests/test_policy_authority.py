@@ -100,6 +100,57 @@ async def test_unimplemented_reviewer_quorum_fails_closed(monkeypatch: pytest.Mo
         await PolicyAuthorityService().authorize_approval(approval=approval, plan=_plan(), approver_id="usr_2")
 
 
+async def test_successful_candidate_verification_satisfies_high_risk_delivery_policy(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class VerificationRuns:
+        def __init__(self) -> None:
+            self.query: dict | None = None
+
+        async def find_one(self, query, *_args):  # noqa: ANN001, ANN201
+            self.query = query
+            return {"_id": "vrf_1", "status": "succeeded"}
+
+    class Decisions:
+        async def find_one(self, _query):  # noqa: ANN001, ANN201
+            return None
+
+        async def insert_one(self, _document):  # noqa: ANN001, ANN201
+            return None
+
+        async def update_one(self, _query, _update):  # noqa: ANN001, ANN201
+            return None
+
+    runs = VerificationRuns()
+    monkeypatch.setattr(
+        policy_authority_service,
+        "get_settings",
+        lambda: Settings(policy_require_candidate_verification_for_high_risk=True),
+    )
+    monkeypatch.setattr(
+        policy_authority_service,
+        "get_db",
+        lambda: SimpleNamespace(verification_runs=runs, policy_decisions=Decisions()),
+    )
+
+    async def receipt(_self, _decision):  # noqa: ANN001, ANN202
+        return {"id": "lgr_1", "manifestHash": "e" * 64}
+
+    monkeypatch.setattr(policy_authority_service.AssuranceLedgerService, "record_policy_receipt", receipt)
+    approval = {
+        "id": "apr_1",
+        "user_id": "usr_1",
+        "action_type": "create_draft_pull_request",
+        "canonical_arguments": {"commit_message": "Fix workflow directory"},
+        "ledger_manifest_hash": "a" * 64,
+    }
+
+    decision = await PolicyAuthorityService().authorize_approval(approval=approval, plan=_plan(), approver_id="usr_2")
+
+    assert decision["status"] == "authorized"
+    assert runs.query and runs.query["status"] == {"$in": ["succeeded", "passed"]}
+
+
 async def test_executor_rejects_missing_or_changed_policy_authorization(monkeypatch: pytest.MonkeyPatch) -> None:
     class Decisions:
         async def find_one(self, _query):  # noqa: ANN001, ANN201

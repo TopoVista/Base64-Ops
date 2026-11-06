@@ -112,7 +112,12 @@ class PolicyAuthorityService:
                     "userId": plan.user_id,
                     "sessionId": plan.session_id,
                     "deliveryPlanId": plan.id,
-                    "status": "passed",
+                    # CandidateVerificationService's terminal successful
+                    # state is ``succeeded``. Retain ``passed`` only for
+                    # records created by the earlier pre-observer contract;
+                    # without this compatibility gate a genuine targeted
+                    # verification could never satisfy high-risk policy.
+                    "status": {"$in": ["succeeded", "passed"]},
                     "candidatePatchHash": AssuranceLedgerService.plan_diff_hash(plan),
                 },
                 {"_id": 1},
