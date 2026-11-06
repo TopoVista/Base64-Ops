@@ -944,6 +944,7 @@ async def chat_stream(
             "slug_id": session["slugId"],
             "repo_url": session["repoUrl"],
             "repository_classification": session.get("repositoryClassification"),
+            "rag_known_at": utc_now(),
             "default_branch": session.get("defaultBranch") or "main",
             "branch_name": session.get("branchName") or branch_name_from_prompt(prompt),
             "prompt": prompt,

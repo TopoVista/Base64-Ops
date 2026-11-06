@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Any, Literal, TypedDict
 
 RiskLevel = Literal["safe", "approval_required"]
@@ -18,6 +19,9 @@ class AgentState(TypedDict, total=False):
     repo_name: str
     repository_classification: str
     model_route: dict[str, Any]
+    # Bitemporal retrieval must distinguish the failing repository revision
+    # from what Base64 had actually indexed when this investigation began.
+    rag_known_at: datetime
     repo_path: str
     default_branch: str
     branch_name: str

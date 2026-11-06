@@ -154,6 +154,8 @@ def test_commit_scoped_rag_keeps_historical_chunks_and_retrieves_only_the_reques
     source = tmp_path / "backend" / "main.py"
     source.parent.mkdir()
     source.write_text("FAILED_SHA_TOKEN = 'historical'\n", encoding="utf-8")
+    deleted_source = tmp_path / "backend" / "removed.py"
+    deleted_source.write_text("DELETED_AFTER_FAILURE_TOKEN = 'historical-only'\n", encoding="utf-8")
 
     class Cursor:
         def __init__(self, rows: list[dict]) -> None:
@@ -232,11 +234,14 @@ def test_commit_scoped_rag_keeps_historical_chunks_and_retrieves_only_the_reques
 
     first = asyncio.run(service.index_workspace(session, tmp_path, revision=sha_a))
     source.write_text("CURRENT_SHA_TOKEN = 'current'\n", encoding="utf-8")
+    deleted_source.unlink()
     second = asyncio.run(service.index_workspace(session, tmp_path, revision=sha_b))
 
     historical = asyncio.run(service.retrieve("ses_1", "FAILED_SHA_TOKEN", valid_at=sha_a))
     current = asyncio.run(service.retrieve("ses_1", "CURRENT_SHA_TOKEN", valid_at=sha_b))
     missing = asyncio.run(service.retrieve("ses_1", "CURRENT_SHA_TOKEN", valid_at="c" * 40))
+    deleted_at_failure = asyncio.run(service.retrieve("ses_1", "DELETED_AFTER_FAILURE_TOKEN", valid_at=sha_a))
+    deleted_at_current = asyncio.run(service.retrieve("ses_1", "DELETED_AFTER_FAILURE_TOKEN", valid_at=sha_b))
     not_yet_known = asyncio.run(
         service.retrieve("ses_1", "FAILED_SHA_TOKEN", valid_at=sha_a, known_at=datetime(2000, 1, 1, tzinfo=UTC))
     )
@@ -254,6 +259,8 @@ def test_commit_scoped_rag_keeps_historical_chunks_and_retrieves_only_the_reques
     assert "historical" in historical[0]["excerpt"] and historical[0]["freshness"] == "valid_at"
     assert "current" in current[0]["excerpt"] and current[0]["validAt"] == sha_b
     assert missing == []
+    assert "historical-only" in deleted_at_failure[0]["excerpt"]
+    assert all("historical-only" not in item["excerpt"] for item in deleted_at_current)
     assert not_yet_known == []
     assert snapshot and snapshot["status"] == "ready" and snapshot["commitSha"] == sha_a
 

@@ -533,6 +533,7 @@ class AgentGraph:
             state["prompt"],
             limit=get_settings().rag_retrieval_limit,
             valid_at=state.get("repo_commit_sha"),
+            known_at=state.get("rag_known_at"),
         )
         fallback_used = False
         if not sources:
