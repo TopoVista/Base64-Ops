@@ -29,6 +29,7 @@ from app.services.incident_export_service import (
     incident_export_markdown,
 )
 from app.services.incident_service import GitHubWebhookService
+from app.services.organization_incident_graph_service import OrganizationIncidentGraphService
 from app.services.prevention_rule_service import PreventionRuleService
 from app.services.redaction_service import RedactionService
 from app.utils.datetime import utc_now
@@ -347,6 +348,20 @@ async def list_incidents(
     )
     records = [_incident_response(record) async for record in cursor]
     return {"incidents": records}
+
+
+@router.get("/fleet-intelligence")
+async def organization_fleet_intelligence(
+    limit: int = Query(default=50, ge=1, le=100), user: dict = Depends(get_current_user)
+) -> dict:
+    """Return observed/correlated fleet links, never causal assertions.
+
+    The graph is scoped by the authenticated tenant ID. It exposes only the
+    compact graph surface intended for a fleet view; raw evidence remains in
+    the incident and export routes' existing tenant checks.
+    """
+
+    return await OrganizationIncidentGraphService().fleet_view(tenant_id=str(user["_id"]), limit=limit)
 
 
 @router.get("/flaky-tests", response_model=list[FlakyTestObservationSummary])

@@ -28,6 +28,7 @@ from app.services.ci_investigation_service import CIInvestigationService
 from app.services.flaky_test_service import FlakyTestObservationService
 from app.services.github_service import list_repositories, normalize_github_repository_url
 from app.services.incident_reporting_service import IncidentReportingService
+from app.services.organization_incident_graph_service import OrganizationIncidentGraphService
 from app.services.prevention_rule_service import PreventionRuleService
 from app.services.workspace_service import WorkspaceService
 from app.utils.datetime import utc_now
@@ -547,12 +548,14 @@ class IncidentDispatchService:
         memory: MemoryService | None = None,
         flaky_observations: FlakyTestObservationService | None = None,
         prevention_rules: PreventionRuleService | None = None,
+        organization_graph: OrganizationIncidentGraphService | None = None,
     ) -> None:
         self.workspace = workspace or WorkspaceService()
         self.ci_investigation = ci_investigation or CIInvestigationService(workspace=self.workspace)
         self.memory = memory or MemoryService()
         self.flaky_observations = flaky_observations or FlakyTestObservationService()
         self.prevention_rules = prevention_rules or PreventionRuleService()
+        self.organization_graph = organization_graph or OrganizationIncidentGraphService()
 
     async def dispatch(self, *, event_id: str) -> bool:
         """Dispatch an event once any requested revision index has settled.
@@ -816,6 +819,29 @@ class IncidentDispatchService:
                 }
             },
         )
+        try:
+            await self.organization_graph.ingest_incident(
+                tenant_id=str(automation["userId"]),
+                incident={
+                    **incident,
+                    "failureCategories": [str(category) for category in context.failure_categories],
+                    "failedTestIdentifiers": context.failed_test_identifiers,
+                    "relevantPaths": context.relevant_paths,
+                    "capsuleManifestHash": capsule_receipt["manifestHash"] if capsule_receipt else None,
+                    "evidenceIds": context.evidence_ids,
+                },
+                context=context.model_dump(mode="json"),
+            )
+        except Exception:
+            # Fleet intelligence is derived visibility. Its persistence must
+            # never erase the incident or turn a GitHub delivery into a retry.
+            await db.incidents.update_one(
+                {"_id": incident_id, "userId": automation["userId"]},
+                {
+                    "$addToSet": {"limitations": "Organization incident graph could not be refreshed."},
+                    "$set": {"updatedAt": utc_now()},
+                },
+            )
         await self._record_incident_memory(
             incident_id=incident_id,
             event=event,
