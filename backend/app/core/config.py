@@ -1,4 +1,5 @@
 import base64
+import hashlib
 from functools import lru_cache
 from pathlib import Path
 from urllib.parse import urlparse
@@ -16,6 +17,18 @@ def _is_fernet_key(value: str) -> bool:
     except (AttributeError, UnicodeEncodeError, ValueError):
         return False
     return True
+
+
+def _legacy_fernet_key(value: str) -> str:
+    """Return the native Fernet representation of the historical passphrase key.
+
+    Older deployments stored a long random passphrase and deterministically
+    derived the Fernet key at runtime. The equivalent native representation is
+    safe to use during a bounded, backward-compatible configuration migration.
+    """
+
+    digest = hashlib.sha256(value.encode("utf-8")).digest()
+    return base64.urlsafe_b64encode(digest).decode("ascii")
 
 
 class Settings(BaseSettings):
@@ -275,6 +288,20 @@ class Settings(BaseSettings):
 
         if not self.is_production:
             return self
+        if not _is_fernet_key(self.github_token_encryption_key):
+            legacy_key = self.github_token_encryption_key.strip()
+            # Preserve existing deployments that predate the native-Fernet
+            # requirement. Only a non-default, 32+-byte legacy secret is
+            # eligible; short or recognizable development values still fail
+            # closed. The derived key is byte-for-byte compatible with the
+            # historical encrypt/decrypt implementation.
+            if (
+                legacy_key not in {"", "dev-only-token-key"}
+                and len(legacy_key.encode("utf-8")) >= 32
+            ):
+                if not self.github_token_encryption_legacy_key:
+                    self.github_token_encryption_legacy_key = legacy_key
+                self.github_token_encryption_key = _legacy_fernet_key(legacy_key)
         role = self.service_role.strip().lower()
         if role == "maintenance":
             if not self.mongo_uri:

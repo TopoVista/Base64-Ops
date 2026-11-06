@@ -9,7 +9,7 @@ from app.api.middleware import (
     trusted_client_ip,
 )
 from app.core.access_logging import AccessLogQueryRedactionFilter, redact_access_path_query
-from app.core.config import Settings
+from app.core.config import Settings, _legacy_fernet_key
 from app.core.rate_limit import InMemoryRateLimitStore, rate_limit_key
 from app.schemas.session import SessionChatRequest
 from app.services import session_service
@@ -307,6 +307,29 @@ def test_production_derives_a_https_clerk_issuer_from_the_required_jwks_endpoint
     settings = Settings(**values)
 
     assert settings.clerk_issuer == "https://clerk.example"
+
+
+def test_production_normalizes_a_long_legacy_github_token_passphrase() -> None:
+    legacy_key = "previous-production-encryption-key-that-is-long-enough"
+    settings = Settings(
+        environment="production",
+        trusted_hosts="api.example",
+        redis_url="redis://example",
+        frontend_origin="https://app.example",
+        base_url="https://api.example",
+        mongo_uri="mongodb://example",
+        clerk_jwks_url="https://clerk.example/jwks",
+        github_client_id="client-id",
+        github_client_secret="client-secret",
+        github_oauth_state_secret="x" * 32,
+        github_token_encryption_key=legacy_key,
+        ledger_signing_private_key=LEDGER_SEED,
+        rate_limit_fail_closed=True,
+        trusted_client_ip_header="CF-Connecting-IP",
+    )
+
+    assert settings.github_token_encryption_key == _legacy_fernet_key(legacy_key)
+    assert settings.github_token_encryption_legacy_key == legacy_key
 
 
 def test_declared_oversized_or_malformed_body_is_rejected_before_parsing() -> None:
